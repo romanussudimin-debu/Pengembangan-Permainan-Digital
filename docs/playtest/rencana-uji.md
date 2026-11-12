@@ -5,7 +5,7 @@ Centang ☐ → ☑ saat menguji di Godot. Catat bug di tabel paling bawah.
 ## 1. Fungsional: kontrol & fisika
 | # | Uji | Hasil diharapkan | ☐ |
 |---|---|---|---|
-| F1 | WASD/panah | Nara berjalan ke 4 arah, model menghadap arah gerak | ☐ |
+| F1 | WASD/panah | Nggohak berjalan ke 4 arah, model menghadap arah gerak | ☐ |
 | F2 | Spasi | Melompat; tahan = lebih tinggi, ketuk = lebih rendah | ☐ |
 | F3 | Lompat dari tepi batu sesaat setelah jatuh | Masih bisa melompat (coyote time) | ☐ |
 | F4 | Naik batu pijakan 1 → 2 → 3 (barat daya) | Bisa dicapai; tidak tembus batu | ☐ |
@@ -16,10 +16,10 @@ Centang ☐ → ☑ saat menguji di Godot. Catat bug di tabel paling bawah.
 ## 2. State management
 | # | Uji | Hasil diharapkan | ☐ |
 |---|---|---|---|
-| S1 | Bicara ke NPC | Nara tidak bisa bergerak selama dialog; HUD tersembunyi | ☐ |
+| S1 | Bicara ke NPC | Nggohak tidak bisa bergerak selama dialog; HUD tersembunyi | ☐ |
 | S2 | Tekan Esc saat dialog | Menu jeda **tidak** terbuka | ☐ |
 | S3 | Esc saat berjalan / saat duel | Game berhenti; Lanjutkan mengembalikan ke state semula | ☐ |
-| S4 | Bicara ke Fransi sebelum mengalahkan Rangga | Dialog "kalahkan dulu pemain sebelumnya" | ☐ |
+| S4 | Bicara ke Fransi sebelum mengalahkan Hingha | Dialog "kalahkan dulu pemain sebelumnya" | ☐ |
 | S5 | Bicara ke lawan sebelum bertemu Tu'a Golo | Diarahkan menemui Tu'a Golo | ☐ |
 | S6 | Kartu diambil lalu kembali dari arena | Kartu tidak muncul lagi; hitungan tetap | ☐ |
 
@@ -38,8 +38,8 @@ Centang ☐ → ☑ saat menguji di Godot. Catat bug di tabel paling bawah.
 ## 3b. Jeda kopi & dialog bersuara
 | # | Uji | Hasil diharapkan | ☐ |
 |---|---|---|---|
-| K1 | Selesai ronde 1 dan 2 | Ine Rosa & Ine Lina berjalan membawa nampan kopi ke kedua pemain, lalu kembali; stamina penuh | ☐ |
-| K2 | Bicara ke Ine Rosa/Ine Lina di dekat arena | Dialog tentang kopi untuk pemain caci | ☐ |
+| K1 | Selesai ronde 1 dan 2 | Ende Lono & Marngem berjalan membawa nampan kopi ke kedua pemain, lalu kembali; stamina penuh | ☐ |
+| K2 | Bicara ke Ende Lono/Marngem di dekat arena | Dialog tentang kopi untuk pemain caci | ☐ |
 | V1 | Bicara ke NPC mana pun | Dialog **terdengar** (bahasa Indonesia), hanya nama pembicara yang tampil, lalu lanjut otomatis | ☐ |
 | V2 | Tekan E saat suara berbicara | Kalimat dilewati ke baris berikutnya | ☐ |
 | V3 | Menu jeda → centang "Tampilkan teks dialog" | Teks dialog ikut tampil | ☐ |

@@ -5,7 +5,7 @@ Semua aset dalam prototipe **dibuat sendiri** secara prosedural oleh pembuat pro
 ## Model 3D
 | Aset | Jenis | Dibuat dengan | Lokasi kode | Lisensi |
 |---|---|---|---|---|
-| Karakter (Nara, NPC, pemain caci, penonton) | Model low-poly dari mesh primitif + animasi prosedural | Godot (CapsuleMesh, BoxMesh, SphereMesh, CylinderMesh, TorusMesh) | `src/scripts/karakter/karakter_model.gd` | Milik pembuat |
+| Karakter (Nggohak, NPC, pemain caci, penonton) | Model low-poly dari mesh primitif + animasi prosedural | Godot (CapsuleMesh, BoxMesh, SphereMesh, CylinderMesh, TorusMesh) | `src/scripts/karakter/karakter_model.gd` | Milik pembuat |
 | Mbaru Niang, compang, gong & gendang, pohon, bukit, batu, arena, papan | Model low-poly | Godot (mesh primitif) | `src/scripts/dunia/dunia.gd` | Milik pembuat |
 
 ## Tekstur (`src/assets/textures/`, 64×64 px kecuali disebut lain)

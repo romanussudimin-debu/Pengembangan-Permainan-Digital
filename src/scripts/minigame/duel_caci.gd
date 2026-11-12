@@ -19,12 +19,12 @@ const BIAYA_TANGKIS: float = 30.0
 const PEMULIHAN_STAMINA: float = 22.0
 const JEDA_TANGKIS: float = 0.35
 const BATAS_WAKTU_CAMBUK: float = 3.0
-## Posisi awal perempuan pembawa kopi di tepi arena (kiri untuk Nara, kanan untuk lawan).
+## Posisi awal perempuan pembawa kopi di tepi arena (kiri untuk Nggohak, kanan untuk lawan).
 const POSISI_PEMBAWA_KOPI: Array = [Vector3(-4.2, 0, 1.6), Vector3(4.2, 0, 1.6)]
 
 ## Konfigurasi tiap lawan: makin tinggi indeks, makin sulit.
 const KONFIG_LAWAN: Array = [
-	{"nama": "Rangga", "songke": "res://assets/textures/songke_biru.png", "ancang_min": 1.0, "ancang_maks": 1.4,
+	{"nama": "Hingha", "songke": "res://assets/textures/songke_biru.png", "ancang_min": 1.0, "ancang_maks": 1.4,
 		"jendela": 0.38, "zona": 0.26, "laju_bilah": 0.8, "tipuan": 0.0, "kartu": "caci"},
 	{"nama": "Fransi", "songke": "res://assets/textures/songke_hijau.png", "ancang_min": 0.65, "ancang_maks": 1.15,
 		"jendela": 0.3, "zona": 0.19, "laju_bilah": 1.15, "tipuan": 0.2, "kartu": "perlengkapan_caci"},
@@ -95,7 +95,7 @@ func _bangun_arena() -> void:
 
 	# Perempuan kampung pembawa kopi untuk para pemain caci
 	var tekstur_kopi: Array[String] = ["songke_merah", "songke_hijau"]
-	var nama_kopi: Array[String] = ["Ine Rosa", "Ine Lina"]
+	var nama_kopi: Array[String] = ["Ende Lono", "Marngem"]
 	for i in POSISI_PEMBAWA_KOPI.size():
 		var w := KarakterModel.new()
 		w.perempuan = true
@@ -117,7 +117,7 @@ func _bangun_arena() -> void:
 	add_child(_nara)
 	_nara.rotation.y = -PI / 2.0
 	_nara.mode = "siaga"
-	Dunia.label_nama(_nara, "Nara", 2.7)
+	Dunia.label_nama(_nara, "Nggohak", 2.7)
 
 	_lawan = ADEGAN_LAWAN.instantiate()
 	var model_lawan: KarakterModel = _lawan.get_node("Model")
@@ -411,7 +411,7 @@ func _saat_waktu_cambuk_habis() -> void:
 
 func _perbarui_ui() -> void:
 	_label_info.text = "Lawan %d/%d: %s" % [_indeks_lawan + 1, KONFIG_LAWAN.size(), _konfig["nama"]]
-	_label_skor_pemain.text = "Nara: %d" % poin_pemain
+	_label_skor_pemain.text = "Nggohak: %d" % poin_pemain
 	_label_skor_lawan.text = "%s: %d" % [_konfig["nama"], poin_lawan]
 
 

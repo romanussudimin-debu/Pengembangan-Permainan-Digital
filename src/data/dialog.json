@@ -9,12 +9,12 @@
 	  "teks": "Saat Penti, para pemuda akan menampilkan caci. Kamu ingin ikut bermain, bukan?"
 	 },
 	 {
-	  "nama": "Nara",
+	  "nama": "Nggohak",
 	  "teks": "Iya, Tu'a. Saya ingin belajar menjadi paki dan ta'ang."
 	 },
 	 {
 	  "nama": "Tu'a Golo",
-	  "teks": "Bagus. Berlatihlah dengan tiga pemain caci kampung kita: Rangga, Fransi, lalu Ema Agus, juara kampung."
+	  "teks": "Bagus. Berlatihlah dengan tiga pemain caci kampung kita: Hingha, Fransi, lalu Ema Agus, juara kampung."
 	 },
 	 {
 	  "nama": "Tu'a Golo",
@@ -67,14 +67,14 @@
 	],
 	"rangga_ajak": [
 	 {
-	  "nama": "Rangga",
+	  "nama": "Hingha",
 	  "teks": "Kraeng! Mau berlatih caci? Aku akan pelan-pelan saja, ini latihan pertamamu."
 	 }
 	],
 	"fransi_ajak": [
 	 {
 	  "nama": "Fransi",
-	  "teks": "Kudengar kamu mengalahkan Rangga. Sekarang coba hadapi aku. Ayunanku lebih cepat!"
+	  "teks": "Kudengar kamu mengalahkan Hingha. Sekarang coba hadapi aku. Ayunanku lebih cepat!"
 	 }
 	],
 	"agus_ajak": [
@@ -137,17 +137,17 @@
 	],
 	"kopi_caci_1": [
 	 {
-	  "nama": "Ine Rosa",
+	  "nama": "Ende Lono",
 	  "teks": "Kraeng, minum kopi dulu supaya tenagamu pulih."
 	 },
 	 {
-	  "nama": "Ine Lina",
+	  "nama": "Marngem",
 	  "teks": "Lawanmu juga kami bawakan kopi. Di arena kalian bertanding, di luar arena kalian bersaudara."
 	 }
 	],
 	"kopi_caci_2": [
 	 {
-	  "nama": "Ine Rosa",
+	  "nama": "Ende Lono",
 	  "teks": "Satu ronde lagi! Kopi ini untuk menguatkanmu, Kraeng."
 	 }
 	]

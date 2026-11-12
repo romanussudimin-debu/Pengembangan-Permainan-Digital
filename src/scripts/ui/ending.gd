@@ -51,7 +51,7 @@ func _bangun_ui() -> void:
 	isi.position = Vector2(20, 52)
 	isi.size = Vector2(300, 100)
 	isi.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	isi.text = "Nara bertanding caci dengan berani dan sportif, lalu bergabung dalam perayaan tahun baru adat.\n\nKartu budaya terkumpul: %d dari %d\nLawan caci dikalahkan: %d dari %d" % [
+	isi.text = "Nggohak bertanding caci dengan berani dan sportif, lalu bergabung dalam perayaan tahun baru adat.\n\nKartu budaya terkumpul: %d dari %d\nLawan caci dikalahkan: %d dari %d" % [
 		GameState.kartu_terkumpul.size(), GameState.jumlah_kartu_total(),
 		GameState.lawan_dikalahkan, GameState.JUMLAH_LAWAN]
 	panel.add_child(isi)

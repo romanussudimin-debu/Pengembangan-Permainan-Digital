@@ -35,7 +35,7 @@ a) File executable (`.exe` / `.apk` / web build) · b) Source code · c) GDD + a
 ## Konsep yang sudah ditetapkan (lihat `docs/prompt-proyek.md` & `docs/gdd/GDD.md`)
 **Judul:** *Caci: Jejak Anak Wae Rebo* — game 3D orang ketiga (kamera tetap).
 - Jelajah kampung 3D bergaya Wae Rebo (7 Mbaru Niang melingkari compang), NPC Tu'a Golo & Ine Wela, 9 kartu budaya.
-- Inti budaya **Caci**: mekanik 1 **TA'ANG** (menangkis tepat waktu + stamina + tipuan), mekanik 2 **PAKI** (bilah timing). Peran bergantian, 3 ronde, 3 lawan (Rangga, Fransi, Ema Agus).
+- Inti budaya **Caci**: mekanik 1 **TA'ANG** (menangkis tepat waktu + stamina + tipuan), mekanik 2 **PAKI** (bilah timing). Peran bergantian, 3 ronde, 3 lawan (Hingha, Fransi, Ema Agus).
 - Bingkai cerita **Penti**; ending warga menari di natas.
 - Bahasa Indonesia + istilah Manggarai terverifikasi (`docs/riset/glosarium.md`). Compang tidak dijadikan arena bermain (sakral).
 - Semua aset dibuat sendiri (`tools/generate_textures.py`, `tools/generate_audio.py`).

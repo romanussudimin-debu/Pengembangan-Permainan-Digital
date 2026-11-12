@@ -103,6 +103,6 @@ func teks_tujuan() -> String:
 	if not sudah_bertemu_tua:
 		return "Temui Tu'a Golo di dekat compang (tengah kampung)"
 	if lawan_dikalahkan < JUMLAH_LAWAN:
-		var nama: Array[String] = ["Rangga", "Fransi", "Ema Agus"]
+		var nama: Array[String] = ["Hingha", "Fransi", "Ema Agus"]
 		return "Berlatih caci dengan %s (%d/%d) di arena timur" % [nama[lawan_dikalahkan], lawan_dikalahkan, JUMLAH_LAWAN]
 	return "Kembali ke Tu'a Golo untuk memulai Penti"

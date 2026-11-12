@@ -2,7 +2,7 @@
 
 Prototipe **game 3D berbasis budaya Manggarai** (Flores, NTT) untuk tugas *Pengembangan Permainan Digital: Rencana Tugas 1*. Engine: **Godot 4.3+**.
 
-Pemain berperan sebagai Nara yang pulang ke kampung adat bergaya Wae Rebo menjelang **Penti**. Nara menjelajahi Mbaru Niang dan compang, mengumpulkan 9 kartu budaya, lalu berlatih **caci** melawan 3 pemain kampung:
+Pemain berperan sebagai Nggohak yang pulang ke kampung adat bergaya Wae Rebo menjelang **Penti**. Nggohak menjelajahi Mbaru Niang dan compang, mengumpulkan 9 kartu budaya, lalu berlatih **caci** melawan 3 pemain kampung:
 - **Ta'ang (menangkis):** baca ancang-ancang lawan, lalu tangkis tepat waktu dengan nggiling (memakai stamina).
 - **Paki (mencambuk):** tekan cambuk saat penanda berada di zona kuning bilah timing.
 

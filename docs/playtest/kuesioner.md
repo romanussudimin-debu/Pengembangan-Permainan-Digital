@@ -8,7 +8,7 @@ Pengamat mencatat: di mana penguji bingung, berapa kali kalah per lawan, dan ber
 ## Pertanyaan setelah bermain
 | No | Pertanyaan | Jawaban |
 |---|---|---|
-| 1 | Seberapa mudah mengendalikan Nara? (1 = sulit … 5 = mudah) | |
+| 1 | Seberapa mudah mengendalikan Nggohak? (1 = sulit … 5 = mudah) | |
 | 2 | Apakah tujuan permainan jelas? (1–5) | |
 | 3 | Seberapa seru mekanik **menangkis (ta'ang)**? (1–5) | |
 | 4 | Seberapa seru mekanik **mencambuk (paki)**? (1–5) | |

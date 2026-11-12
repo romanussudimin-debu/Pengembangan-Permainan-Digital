@@ -24,7 +24,7 @@
 | Unsur pendukung | Mbaru Niang & Kampung Wae Rebo, Compang, Penti, kain Songke, gong-gendang & nyanyian adat |
 
 ## 2. Latar & Cerita (ringkas)
-Nara, pemuda Manggarai, pulang ke kampung adat yang terinspirasi Wae Rebo menjelang **Penti** (tahun baru adat dan syukur pergantian musim). **Tu'a Golo** (tetua kampung) memintanya berlatih caci dengan tiga pemain kampung, yaitu **Rangga**, **Fransi**, dan **Ema Agus** (juara kampung), sambil mengingatkan bahwa *caci bukan untuk melukai, melainkan tentang sportivitas dan persaudaraan*. **Ine Wela**, seorang penenun, mengenalkan songke. Setelah ketiga lawan mengakui Nara, Penti dimulai dan warga menari mengelilingi natas.
+Nggohak, pemuda Manggarai, pulang ke kampung adat yang terinspirasi Wae Rebo menjelang **Penti** (tahun baru adat dan syukur pergantian musim). **Tu'a Golo** (tetua kampung) memintanya berlatih caci dengan tiga pemain kampung, yaitu **Hingha**, **Fransi**, dan **Ema Agus** (juara kampung), sambil mengingatkan bahwa *caci bukan untuk melukai, melainkan tentang sportivitas dan persaudaraan*. **Ine Wela**, seorang penenun, mengenalkan songke. Setelah ketiga lawan mengakui Nggohak, Penti dimulai dan warga menari mengelilingi natas.
 
 Struktur 3 babak:
 1. **Pulang:** tiba di kampung, bertemu Tu'a Golo, menjelajah, dan mengumpulkan kartu budaya.
@@ -73,13 +73,13 @@ Struktur 3 babak:
 - Tutorial interaktif (dialog Tu'a Golo) muncul sebelum duel pertama.
 
 ### 4.3b Jeda kopi antarronde
-Setelah ronde 1 dan 2, dua perempuan kampung (**Ine Rosa** dan **Ine Lina**) berjalan dari tepi arena membawa nampan berisi cangkir kopi untuk Nara **dan** lawannya. Dialognya menekankan bahwa di arena mereka bertanding, di luar arena mereka bersaudara. Efeknya: **stamina pulih penuh**.
+Setelah ronde 1 dan 2, dua perempuan kampung (**Ende Lono** dan **Marngem**) berjalan dari tepi arena membawa nampan berisi cangkir kopi untuk Nggohak **dan** lawannya. Dialognya menekankan bahwa di arena mereka bertanding, di luar arena mereka bersaudara. Efeknya: **stamina pulih penuh**.
 > Catatan budaya: adegan menyuguhkan kopi adalah **tafsir kreatif** pengembang untuk menggambarkan keramahan dan dukungan warga. Belum ada sumber riset yang mendukungnya [PERLU VERIFIKASI].
 
 ### 4.4 Parameter lawan
 | Lawan | Ancang-ancang (dtk) | Jendela tangkis (dtk) | Lebar zona | Laju bilah | Peluang tipuan | Kartu hadiah |
 |---|---|---|---|---|---|---|
-| Rangga (latihan) | 1,0–1,4 | 0,38 | 0,26 | 0,8 | 0% | Caci: Paki & Ta'ang |
+| Hingha (latihan) | 1,0–1,4 | 0,38 | 0,26 | 0,8 | 0% | Caci: Paki & Ta'ang |
 | Fransi (menengah) | 0,65–1,15 | 0,30 | 0,19 | 1,15 | 20% | Perlengkapan Caci |
 | Ema Agus (juara) | 0,45–1,0 | 0,24 | 0,14 | 1,5 | 33% | Nilai Sportivitas Caci |
 
@@ -149,7 +149,7 @@ Transisi yang tidak terdaftar di `TRANSISI_SAH` **ditolak** dan diberi peringata
  ✦[Gena] (kartu Gong-Gendang)       [Gena]
             gong  ┌─────┐
  [Gena]           │  ◎  │ compang (dilihat)   ──── papan "Arena Caci"
-   Ine Wela       └─────┘  Tu'a Golo              ( ARENA )  Rangga · Fransi · Ema Agus
+   Ine Wela       └─────┘  Tu'a Golo              ( ARENA )  Hingha · Fransi · Ema Agus
  [Gena]                         ✦[Gena] (kartu Penti)
      ✦[Gena] (kartu Wae Rebo)
   batu▲▲▲          ▼ papan "Kampung Wae Rebo"

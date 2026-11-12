@@ -17,12 +17,12 @@ const NADA_TOKOH: Dictionary = {
 	"Tu'a Golo": 0.75,
 	"Ema Agus": 0.8,
 	"Fransi": 0.92,
-	"Rangga": 1.0,
+	"Hingha": 1.0,
 	"Pemain Caci": 0.95,
-	"Nara": 1.05,
+	"Nggohak": 1.05,
 	"Ine Wela": 1.2,
-	"Ine Rosa": 1.3,
-	"Ine Lina": 1.15,
+	"Ende Lono": 1.3,
+	"Marngem": 1.15,
 }
 
 var aktif: bool = false

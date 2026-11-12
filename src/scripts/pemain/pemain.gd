@@ -1,6 +1,6 @@
 class_name Pemain
 extends CharacterBody3D
-## Pemain 3D (Nara). Logika gerak dipecah ke state: Idle, Jalan, Lompat, Jatuh, Interaksi.
+## Pemain 3D (Nggohak). Logika gerak dipecah ke state: Idle, Jalan, Lompat, Jatuh, Interaksi.
 
 @export var kecepatan: float = 5.0
 @export var akselerasi: float = 30.0

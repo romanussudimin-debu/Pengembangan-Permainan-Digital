@@ -117,7 +117,7 @@ Di arena caci (peran bergantian tiap ronde):
 
 Dialog diucapkan dengan suara (E: lewati). Teks dialog bisa dinyalakan di menu jeda.
 
-Kalahkan Rangga, Fransi, dan Ema Agus, kumpulkan kartu budaya di dalam Mbaru Niang yang pintunya bercahaya, lalu kembali ke Tu'a Golo untuk merayakan Penti."""
+Kalahkan Hingha, Fransi, dan Ema Agus, kumpulkan kartu budaya di dalam Mbaru Niang yang pintunya bercahaya, lalu kembali ke Tu'a Golo untuk merayakan Penti."""
 
 
 func _teks_tentang() -> String:

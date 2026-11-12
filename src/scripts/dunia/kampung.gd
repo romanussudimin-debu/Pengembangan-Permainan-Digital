@@ -21,7 +21,7 @@ const JARI_KAMPUNG: float = 15.0
 const KARTU_DI_RUMAH: Dictionary = {0: "mbaru_niang", 1: "gong_gendang", 4: "wae_rebo", 6: "penti"}
 
 const DATA_LAWAN: Array = [
-	{"nama": "Rangga", "dialog": "rangga_ajak", "posisi": Vector3(23, 0, -4), "songke": "res://assets/textures/songke_biru.png"},
+	{"nama": "Hingha", "dialog": "rangga_ajak", "posisi": Vector3(23, 0, -4), "songke": "res://assets/textures/songke_biru.png"},
 	{"nama": "Fransi", "dialog": "fransi_ajak", "posisi": Vector3(27, 0, -5), "songke": "res://assets/textures/songke_hijau.png"},
 	{"nama": "Ema Agus", "dialog": "agus_ajak", "posisi": Vector3(31, 0, -3), "songke": "res://assets/textures/songke_kuning.png"},
 ]
@@ -86,8 +86,8 @@ func _bangun_npc() -> void:
 		n.model.mode = "siaga"
 		n.diajak_bicara.connect(_bicara_lawan.bind(i))
 	# Perempuan kampung yang menyiapkan kopi untuk para pemain caci, di tepi arena
-	for data: Array in [["Ine Rosa", Vector3(21, 0, 4), "res://assets/textures/songke_merah.png", Color("2c5c96")],
-			["Ine Lina", Vector3(23, 0, 5.6), "res://assets/textures/songke_hijau.png", Color("e8e2d2")]]:
+	for data: Array in [["Ende Lono", Vector3(21, 0, 4), "res://assets/textures/songke_merah.png", Color("2c5c96")],
+			["Marngem", Vector3(23, 0, 5.6), "res://assets/textures/songke_hijau.png", Color("e8e2d2")]]:
 		var p := NpcKampung.new()
 		p.nama = data[0]
 		p.position = data[1]
@@ -154,9 +154,9 @@ func _posisi_pintu(indeks: int) -> Vector3:
 func _masuk_rumah(_p: Pemain, id: String, indeks: int) -> void:
 	var nama_rumah: String = "mbaru gendang" if indeks == 0 else "mbaru gena"
 	if GameState.kartu_terkumpul.has(id):
-		DialogManager.mulai_baris("rumah_" + id, [{"nama": "Nara", "teks": "Aku sudah berkunjung ke %s ini. Isi kartunya bisa dibaca lagi di menu jeda (Esc)." % nama_rumah}])
+		DialogManager.mulai_baris("rumah_" + id, [{"nama": "Nggohak", "teks": "Aku sudah berkunjung ke %s ini. Isi kartunya bisa dibaca lagi di menu jeda (Esc)." % nama_rumah}])
 	else:
-		DialogManager.mulai_baris("rumah_" + id, [{"nama": "Nara", "teks": "Aku masuk ke dalam %s. Ada pengetahuan yang tersimpan di sini..." % nama_rumah}],
+		DialogManager.mulai_baris("rumah_" + id, [{"nama": "Nggohak", "teks": "Aku masuk ke dalam %s. Ada pengetahuan yang tersimpan di sini..." % nama_rumah}],
 				_temukan_kartu.bind(id))
 
 

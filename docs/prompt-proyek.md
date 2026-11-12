@@ -47,7 +47,7 @@ Kamu adalah **developer game Godot 4 senior** sekaligus **game designer** yang p
 Contoh baris dialog (`data/dialog.json`):
 ```json
 "tua_awal": [
-  {"nama": "Tu'a Golo", "teks": "Ité sudah pulang, Nara! Penti sebentar lagi. Sebelum itu, buktikan dirimu di arena caci."},
+  {"nama": "Tu'a Golo", "teks": "Ité sudah pulang, Nggohak! Penti sebentar lagi. Sebelum itu, buktikan dirimu di arena caci."},
   {"nama": "Tu'a Golo", "teks": "Ingat: caci bukan untuk melukai. Ini tentang sportivitas dan persaudaraan."}
 ]
 ```

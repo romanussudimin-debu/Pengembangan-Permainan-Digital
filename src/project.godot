@@ -1,0 +1,41 @@
+; File konfigurasi project Godot 4.
+
+config_version=5
+
+[application]
+
+config/name="Caci: Jejak Anak Wae Rebo"
+config/description="Prototipe game 3D berbasis budaya Manggarai (Flores, NTT)."
+run/main_scene="res://scenes/main_menu.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+
+[autoload]
+
+Kontrol="*res://scripts/autoload/kontrol.gd"
+GameState="*res://scripts/autoload/game_state.gd"
+AudioManager="*res://scripts/autoload/audio_manager.gd"
+Transisi="*res://scripts/autoload/transisi.gd"
+DialogManager="*res://scripts/autoload/dialog_manager.gd"
+MenuJeda="*res://scripts/autoload/menu_jeda.gd"
+
+[display]
+
+window/size/viewport_width=640
+window/size/viewport_height=360
+window/size/window_width_override=1280
+window/size/window_height_override=720
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+
+[layer_names]
+
+2d_physics/layer_1="dunia"
+2d_physics/layer_2="pemain"
+2d_physics/layer_3="interaksi"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.08, 0.07, 0.07, 1)

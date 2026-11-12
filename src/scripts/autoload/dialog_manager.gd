@@ -1,0 +1,146 @@
+extends CanvasLayer
+## Menampilkan dialog berbasis data (data/dialog.json) dan kartu pengetahuan budaya.
+## Selama dialog, GameState berada di state DIALOG lalu dikembalikan ke state sebelumnya.
+
+signal dialog_selesai(id: String)
+
+const DATA_DIALOG: JSON = preload("res://data/dialog.json")
+const KECEPATAN_KETIK: float = 45.0  # karakter per detik
+
+var aktif: bool = false
+
+var _panel: NinePatchRect
+var _label_nama: Label
+var _label_teks: Label
+var _label_lanjut: Label
+var _baris: Array = []
+var _indeks: int = 0
+var _id: String = ""
+var _state_sebelum: int = GameState.State.BERMAIN
+var _callback: Callable = Callable()
+var _frame_mulai: int = -1
+var _tween_ketik: Tween
+
+
+func _ready() -> void:
+	layer = 50
+	_bangun_ui()
+	_panel.visible = false
+
+
+func _bangun_ui() -> void:
+	_panel = NinePatchRect.new()
+	_panel.texture = preload("res://assets/textures/bingkai_songke.png")
+	_panel.patch_margin_left = 8
+	_panel.patch_margin_right = 8
+	_panel.patch_margin_top = 8
+	_panel.patch_margin_bottom = 8
+	_panel.position = Vector2(24, 258)
+	_panel.size = Vector2(592, 92)
+	add_child(_panel)
+
+	_label_nama = Gaya.label("", 11, Gaya.KUNING)
+	_label_nama.position = Vector2(14, 8)
+	_panel.add_child(_label_nama)
+
+	_label_teks = Gaya.label("", 10, Gaya.PUTIH)
+	_label_teks.position = Vector2(14, 24)
+	_label_teks.size = Vector2(564, 54)
+	_label_teks.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_panel.add_child(_label_teks)
+
+	_label_lanjut = Gaya.label("[E] lanjut", 8, Gaya.ABU)
+	_label_lanjut.position = Vector2(530, 76)
+	_panel.add_child(_label_lanjut)
+
+
+## Mulai dialog berdasarkan id di dialog.json.
+func mulai(id: String, callback: Callable = Callable()) -> void:
+	var semua: Dictionary = DATA_DIALOG.data
+	if not semua.has(id):
+		push_error("Dialog tidak ditemukan: " + id)
+		if callback.is_valid():
+			callback.call()
+		return
+	mulai_baris(id, semua[id], callback)
+
+
+## Mulai dialog dari daftar baris {"nama": ..., "teks": ...}.
+func mulai_baris(id: String, baris: Array, callback: Callable = Callable()) -> void:
+	if aktif:
+		return
+	_id = id
+	_baris = baris
+	_indeks = 0
+	_callback = callback
+	_state_sebelum = GameState.state
+	if not GameState.ubah_state(GameState.State.DIALOG):
+		return
+	aktif = true
+	_frame_mulai = Engine.get_process_frames()
+	_panel.visible = true
+	_tampilkan_baris()
+
+
+## Tampilkan kartu pengetahuan budaya sebagai dialog.
+func tampilkan_kartu(id_kartu: String, callback: Callable = Callable()) -> void:
+	var k: Dictionary = GameState.data_kartu(id_kartu)
+	if k.is_empty():
+		if callback.is_valid():
+			callback.call()
+		return
+	AudioManager.putar_sfx("ambil")
+	var baris: Array = []
+	var halaman: Array = k["isi"]
+	for teks: String in halaman:
+		baris.append({"nama": "Kartu Budaya: " + str(k["judul"]), "teks": teks})
+	mulai_baris("kartu_" + id_kartu, baris, callback)
+
+
+func _tampilkan_baris() -> void:
+	var b: Dictionary = _baris[_indeks]
+	_label_nama.text = str(b.get("nama", ""))
+	_label_teks.text = str(b.get("teks", ""))
+	_label_teks.visible_ratio = 0.0
+	if _tween_ketik:
+		_tween_ketik.kill()
+	_tween_ketik = create_tween()
+	var durasi: float = maxf(_label_teks.text.length() / KECEPATAN_KETIK, 0.1)
+	_tween_ketik.tween_property(_label_teks, "visible_ratio", 1.0, durasi)
+
+
+func _process(_delta: float) -> void:
+	if not aktif or Engine.get_process_frames() == _frame_mulai:
+		return
+	if Input.is_action_just_pressed("interaksi") or Input.is_action_just_pressed("lompat"):
+		_maju()
+
+
+func _input(event: InputEvent) -> void:
+	if aktif and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		_maju()
+
+
+func _maju() -> void:
+	if _label_teks.visible_ratio < 1.0:
+		if _tween_ketik:
+			_tween_ketik.kill()
+		_label_teks.visible_ratio = 1.0
+		return
+	AudioManager.putar_sfx("klik")
+	_indeks += 1
+	if _indeks < _baris.size():
+		_tampilkan_baris()
+	else:
+		_selesai()
+
+
+func _selesai() -> void:
+	aktif = false
+	_panel.visible = false
+	GameState.ubah_state(_state_sebelum)
+	var cb: Callable = _callback
+	_callback = Callable()
+	dialog_selesai.emit(_id)
+	if cb.is_valid():
+		cb.call()

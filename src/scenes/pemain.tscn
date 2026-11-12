@@ -1,0 +1,48 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/pemain/pemain.gd" id="1_pemain"]
+[ext_resource type="Script" path="res://scripts/karakter/karakter_model.gd" id="2_model"]
+[ext_resource type="Script" path="res://scripts/state_machine/state_machine.gd" id="3_fsm"]
+[ext_resource type="Script" path="res://scripts/pemain/states/idle.gd" id="4_idle"]
+[ext_resource type="Script" path="res://scripts/pemain/states/jalan.gd" id="5_jalan"]
+[ext_resource type="Script" path="res://scripts/pemain/states/lompat.gd" id="6_lompat"]
+[ext_resource type="Script" path="res://scripts/pemain/states/jatuh.gd" id="7_jatuh"]
+[ext_resource type="Script" path="res://scripts/pemain/states/interaksi.gd" id="8_interaksi"]
+[ext_resource type="Texture2D" path="res://assets/textures/songke_merah.png" id="9_songke"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_badan"]
+radius = 0.3
+height = 1.8
+
+[node name="Pemain" type="CharacterBody3D"]
+collision_layer = 2
+collision_mask = 1
+floor_snap_length = 0.3
+script = ExtResource("1_pemain")
+
+[node name="Collision" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+shape = SubResource("CapsuleShape3D_badan")
+
+[node name="Model" type="Node3D" parent="."]
+script = ExtResource("2_model")
+tekstur_songke = ExtResource("9_songke")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("state_awal")]
+script = ExtResource("3_fsm")
+state_awal = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("4_idle")
+
+[node name="Jalan" type="Node" parent="StateMachine"]
+script = ExtResource("5_jalan")
+
+[node name="Lompat" type="Node" parent="StateMachine"]
+script = ExtResource("6_lompat")
+
+[node name="Jatuh" type="Node" parent="StateMachine"]
+script = ExtResource("7_jatuh")
+
+[node name="Interaksi" type="Node" parent="StateMachine"]
+script = ExtResource("8_interaksi")

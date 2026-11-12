@@ -1,0 +1,50 @@
+[gd_scene load_steps=10 format=3]
+
+[ext_resource type="Script" path="res://scripts/lawan/lawan_caci.gd" id="1_lawan"]
+[ext_resource type="Script" path="res://scripts/karakter/karakter_model.gd" id="2_model"]
+[ext_resource type="Script" path="res://scripts/state_machine/state_machine.gd" id="3_fsm"]
+[ext_resource type="Script" path="res://scripts/lawan/states/siaga.gd" id="4_siaga"]
+[ext_resource type="Script" path="res://scripts/lawan/states/ancang.gd" id="5_ancang"]
+[ext_resource type="Script" path="res://scripts/lawan/states/serang.gd" id="6_serang"]
+[ext_resource type="Script" path="res://scripts/lawan/states/tangkis.gd" id="7_tangkis"]
+[ext_resource type="Script" path="res://scripts/lawan/states/terkena.gd" id="8_terkena"]
+[ext_resource type="Texture2D" path="res://assets/textures/songke_biru.png" id="9_songke"]
+
+[node name="LawanCaci" type="Node3D"]
+script = ExtResource("1_lawan")
+
+[node name="Model" type="Node3D" parent="."]
+script = ExtResource("2_model")
+tekstur_songke = ExtResource("9_songke")
+warna_ikat = Color(0.172549, 0.360784, 0.588235, 1)
+telanjang_dada = true
+pakai_panggal = true
+bawa_senjata = true
+
+[node name="Isyarat" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+billboard = 1
+no_depth_test = true
+modulate = Color(0.909804, 0.705882, 0.188235, 1)
+outline_size = 16
+font_size = 96
+text = "!"
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("state_awal")]
+script = ExtResource("3_fsm")
+state_awal = NodePath("Siaga")
+
+[node name="Siaga" type="Node" parent="StateMachine"]
+script = ExtResource("4_siaga")
+
+[node name="Ancang" type="Node" parent="StateMachine"]
+script = ExtResource("5_ancang")
+
+[node name="Serang" type="Node" parent="StateMachine"]
+script = ExtResource("6_serang")
+
+[node name="Tangkis" type="Node" parent="StateMachine"]
+script = ExtResource("7_tangkis")
+
+[node name="Terkena" type="Node" parent="StateMachine"]
+script = ExtResource("8_terkena")

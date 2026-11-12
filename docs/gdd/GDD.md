@@ -60,14 +60,14 @@ Pengetahuan dari setiap kartu menjadi bekal untuk menjawab teka-teki berikutnya,
 | Komponen | Rincian |
 |---|---|
 | Tujuan | Menyamakan kain 5×5 dengan contoh motif belah ketupat (dasar hitam, cincin kuning, merah, pusat hijau) |
-| Kontrol | Panah/WASD memilih kotak; E/Spasi atau klik mengganti warna benang; 1–4 memilih warna langsung; Backspace berhenti |
+| Kontrol | Panah/WASD memilih kotak; E/Spasi atau klik/ketuk mengganti warna benang; 1–4 atau ketuk palet memilih warna; tombol Berhenti/Backspace |
 | Umpan balik | Jumlah kotak yang belum sama, jumlah langkah, warna terpilih; SFX klik; selesai otomatis saat kain sama persis |
 
 ### 4.3 Mekanik 3 — Tabuh Gong-Gendang (ritme)
 | Komponen | Rincian |
 |---|---|
 | Tujuan | Menabuh mengikuti irama untuk mengiringi Penti |
-| Kontrol | **J** = gong, **K** = gendang |
+| Kontrol | **J** = gong, **K** = gendang, atau ketuk tombol GONG/GENDANG |
 | Aturan | 18 ketukan bergerak dari kanan ke garis tabuh (tempo 76 BPM). Tepat bila ditekan ±0,2 detik dari ketukan. Lulus bila ≥ 60% tepat; bila gagal, coba lagi. |
 | Umpan balik | Suara gong/gendang setiap tabuhan, teks "Tepat!/Luput" yang meletup, skor berjalan; musik latar dijeda selama mini-game |
 
@@ -85,15 +85,17 @@ Pengetahuan dari setiap kartu menjadi bekal untuk menjawab teka-teki berikutnya,
 | 9 | Tu'a Golo | Tahun penghargaan UNESCO Wae Rebo → **2012** | Penti | → Ending Penti |
 
 ## 5. Kontrol
-| Aksi | Keyboard / mouse |
-|---|---|
-| Bergerak | W A S D / panah |
-| Lompat | Spasi |
-| Bicara / lanjut / lewati dialog | E / Enter (juga Spasi atau klik) |
-| Jawab teka-teki | klik, panah + Enter, atau 1–4 |
-| Menenun | panah/WASD, E/Spasi/klik, 1–4 |
-| Tabuh | J (gong), K (gendang) |
-| Jeda & koleksi kartu | Esc / P |
+| Aksi | Keyboard / mouse | Layar sentuh (HP/tablet) |
+|---|---|---|
+| Bergerak | W A S D / panah | joystick virtual (separuh kiri layar) |
+| Lompat | Spasi | tombol LOMPAT |
+| Bicara / lanjut / lewati dialog | E / Enter (juga Spasi atau klik) | tombol BICARA; ketuk layar untuk lanjut |
+| Jawab teka-teki | klik, panah + Enter, atau 1–4 | ketuk pilihan |
+| Menenun | panah/WASD, E/Spasi/klik, 1–4 | ketuk kotak kain & palet benang; tombol Berhenti |
+| Tabuh | J (gong), K (gendang) | tombol GONG / GENDANG |
+| Jeda & koleksi kartu | Esc / P | tombol II (kanan atas) |
+
+Kontrol sentuh (`KontrolSentuh`) hanya muncul di perangkat layar sentuh dan hanya saat state BERMAIN.
 
 ## 6. State Management
 - **GameState (autoload):** `MENU → BERMAIN ⇄ DIALOG`, `BERMAIN ⇄ JEDA`, `BERMAIN ⇄ MINIGAME`, `BERMAIN → SELESAI → MENU`. Transisi yang tidak ada di `TRANSISI_SAH` ditolak. Contohnya, jeda tidak bisa dibuka saat dialog atau saat menjawab teka-teki. Progres disimpan di `langkah_rantai` dan `kartu_terkumpul`.
@@ -167,7 +169,7 @@ Low-poly prosedural dari mesh primitif Godot; tekstur pixel 64×64 buatan sendir
 src/
 ├─ scenes/        main_menu, kampung, ending, pemain, penampil_caci
 ├─ scripts/
-│  ├─ autoload/   Kontrol, GameState, AudioManager, Transisi, DialogManager (TTS + teka-teki), MenuJeda
+│  ├─ autoload/   Kontrol, GameState, AudioManager, Transisi, DialogManager (TTS + teka-teki), MenuJeda, KontrolSentuh
 │  ├─ state_machine/  StateMachine + StateDasar
 │  ├─ karakter/   KarakterModel (model prosedural + animasi; laki-laki/perempuan, nampan kopi)
 │  ├─ pemain/     Pemain + states

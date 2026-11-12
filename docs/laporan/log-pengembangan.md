@@ -23,3 +23,4 @@
 | _(isi)_ | Playtest dengan 3+ penguji & iterasi | | |
 | _(isi)_ | Ekspor .exe / web, rekam video demo | | |
 - **Ekspor:** menambahkan `src/export_presets.cfg` (Windows, Web, macOS) dan folder `build/`; panduan ekspor & publikasi diperbarui.
+- **Mobile:** kontrol sentuh (autoload `KontrolSentuh`: joystick virtual + tombol LOMPAT/BICARA/jeda, tampil hanya di perangkat sentuh saat BERMAIN), tombol ketuk GONG/GENDANG & palet benang di mini-game, tombol Berhenti di tenun, layar landscape, preset ekspor Android & Web-mobile.

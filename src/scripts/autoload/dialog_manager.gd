@@ -292,7 +292,9 @@ func _process(_delta: float) -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if aktif and not _menjawab and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+	if not aktif or _menjawab or Engine.get_process_frames() == _frame_mulai:
+		return  # klik/ketukan yang sama dengan yang membuka dialog tidak boleh melewati baris pertama
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_maju()
 
 

@@ -19,6 +19,7 @@ func _ready() -> void:
 	panel.add_child(_label_kartu)
 	var kontrol := Gaya.label("WASD: jalan  Spasi: lompat  E: interaksi  Esc: jeda", 8, Gaya.PUTIH)
 	kontrol.position = Vector2(8, 344)
+	kontrol.visible = not KontrolSentuh.aktif_di_perangkat  # di HP diganti joystick & tombol sentuh
 	add_child(kontrol)
 	GameState.progres_berubah.connect(_perbarui)
 	GameState.state_berubah.connect(func(_l: int, baru: int) -> void: visible = baru != GameState.State.DIALOG)

@@ -21,6 +21,7 @@ AudioManager="*res://scripts/autoload/audio_manager.gd"
 Transisi="*res://scripts/autoload/transisi.gd"
 DialogManager="*res://scripts/autoload/dialog_manager.gd"
 MenuJeda="*res://scripts/autoload/menu_jeda.gd"
+KontrolSentuh="*res://scripts/autoload/kontrol_sentuh.gd"
 
 [display]
 
@@ -30,6 +31,7 @@ window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
 window/stretch/aspect="keep"
+window/handheld/orientation=4
 
 [layer_names]
 
@@ -37,7 +39,13 @@ window/stretch/aspect="keep"
 2d_physics/layer_2="pemain"
 2d_physics/layer_3="interaksi"
 
+[input_devices]
+
+pointing/emulate_mouse_from_touch=true
+
 [rendering]
+
+textures/vram_compression/import_etc2_astc=true
 
 textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"

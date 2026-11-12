@@ -67,6 +67,9 @@ func _bangun_ui() -> void:
 	var l2 := Gaya.label("Kain tenunanmu", 10, Gaya.PUTIH)
 	l2.position = POS_KAIN + Vector2(0, -18)
 	add_child(l2)
+	var l3 := Gaya.label("Benang", 10, Gaya.PUTIH)
+	l3.position = Vector2(298, 104)
+	add_child(l3)
 	_label_info = Gaya.label("", 9, Gaya.PUTIH)
 	_label_info.position = Vector2(60, 290)
 	_label_info.size = Vector2(520, 30)
@@ -78,6 +81,12 @@ func _bangun_ui() -> void:
 	add_child(_kanvas)
 	_kanvas.draw.connect(_gambar)
 	_kanvas.gui_input.connect(_input_mouse)
+	var berhenti := Gaya.tombol("Berhenti")
+	berhenti.custom_minimum_size = Vector2(110, 24)
+	berhenti.position = Vector2(470, 40)
+	berhenti.focus_mode = Control.FOCUS_NONE  # Spasi/E tidak boleh menekan tombol ini
+	berhenti.pressed.connect(_akhiri.bind(false))
+	add_child(berhenti)
 	_perbarui_info()
 
 
@@ -85,11 +94,16 @@ func _gambar() -> void:
 	_gambar_grid(POS_CONTOH, _contoh, false)
 	_gambar_grid(POS_KAIN, _kain, true)
 	# Palet benang
+	# Palet benang tersusun vertikal di antara kedua kain (cukup besar untuk diketuk).
 	for i in WARNA_BENANG.size():
-		var p := Vector2(400 + i * 40, 286 - 36)
-		_kanvas.draw_rect(Rect2(p, Vector2(28, 14)), WARNA_BENANG[i])
-		_kanvas.draw_rect(Rect2(p, Vector2(28, 14)), Gaya.PUTIH, false, 1.0)
-		_kanvas.draw_string(ThemeDB.fallback_font, p + Vector2(10, 26), str(i + 1), HORIZONTAL_ALIGNMENT_LEFT, -1, 9, Gaya.PUTIH)
+		var r := _kotak_palet(i)
+		_kanvas.draw_rect(r, WARNA_BENANG[i])
+		_kanvas.draw_rect(r, Gaya.KUNING if _kain[_indeks_kursor()] == i else Gaya.PUTIH, false, 2.0)
+		_kanvas.draw_string(ThemeDB.fallback_font, r.position + Vector2(-12, 20), str(i + 1), HORIZONTAL_ALIGNMENT_LEFT, -1, 10, Gaya.PUTIH)
+
+
+func _kotak_palet(i: int) -> Rect2:
+	return Rect2(Vector2(298, 122 + i * 37), Vector2(44, 30))
 
 
 func _gambar_grid(asal: Vector2, data: Array[int], dengan_kursor: bool) -> void:
@@ -134,6 +148,10 @@ func _input_mouse(event: InputEvent) -> void:
 	if _selesai or not GameState.sedang(GameState.State.MINIGAME):
 		return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		for i in WARNA_BENANG.size():  # ketuk palet benang = pakai warna itu di kotak terpilih
+			if _kotak_palet(i).grow(3.0).has_point(event.position):
+				_ganti_warna(i)
+				return
 		var lokal: Vector2 = (event.position - POS_KAIN) / SISI_KOTAK
 		var sel := Vector2i(floori(lokal.x), floori(lokal.y))
 		if sel.x >= 0 and sel.y >= 0 and sel.x < UKURAN and sel.y < UKURAN:
@@ -169,7 +187,8 @@ func _sisa_berbeda() -> int:
 
 
 func _perbarui_info() -> void:
-	_label_info.text = "Panah/WASD: pilih kotak · E/Spasi atau klik: ganti benang · 1-4: pilih warna · Backspace: berhenti\nKotak yang belum sama: %d · Langkah: %d · Benang terpilih: %s" % [
+	var cara: String = "Ketuk/klik kotak: ganti benang · ketuk palet: pilih warna · Panah/WASD, E/Spasi, 1-4 juga bisa"
+	_label_info.text = cara + "\nKotak yang belum sama: %d · Langkah: %d · Benang terpilih: %s" % [
 		_sisa_berbeda(), _langkah, NAMA_BENANG[_kain[_indeks_kursor()]]]
 
 

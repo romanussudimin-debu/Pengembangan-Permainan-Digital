@@ -69,6 +69,14 @@ func _bangun_ui() -> void:
 	_label_info = Gaya.label("", 9, Gaya.PUTIH)
 	_label_info.position = Vector2(60, 280)
 	add_child(_label_info)
+	# Tombol sentuh/klik; button_down agar ketukan terdaftar tepat saat jari menyentuh.
+	for jalur in 2:
+		var b := Gaya.tombol("GONG" if jalur == 0 else "GENDANG")
+		b.custom_minimum_size = Vector2(130, 34)
+		b.position = Vector2(310 + jalur * 145, 254)
+		b.focus_mode = Control.FOCUS_NONE
+		b.button_down.connect(_tabuh_sentuh.bind(jalur))
+		add_child(b)
 
 
 func _process(delta: float) -> void:
@@ -92,6 +100,11 @@ func _process(delta: float) -> void:
 	_kanvas.queue_redraw()
 	if sisa == 0:
 		_hasil()
+
+
+func _tabuh_sentuh(jalur: int) -> void:
+	if not _selesai and GameState.sedang(GameState.State.MINIGAME):
+		_tabuh(jalur)
 
 
 func _tabuh(jalur: int) -> void:

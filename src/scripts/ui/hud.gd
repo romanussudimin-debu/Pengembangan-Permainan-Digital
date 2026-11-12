@@ -7,15 +7,15 @@ var _label_kartu: Label
 
 func _ready() -> void:
 	layer = 10
-	var panel := Gaya.panel_songke(Vector2(8, 8), Vector2(420, 58))
+	var panel := Gaya.panel_songke(Vector2(8, 8), Vector2(440, 74))
 	add_child(panel)
-	_label_tujuan = Gaya.label("", 10, Gaya.PUTIH)
+	_label_tujuan = Gaya.label("", 9, Gaya.PUTIH)
 	_label_tujuan.position = Vector2(12, 9)
-	_label_tujuan.size = Vector2(400, 28)
+	_label_tujuan.size = Vector2(420, 44)
 	_label_tujuan.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	panel.add_child(_label_tujuan)
 	_label_kartu = Gaya.label("", 10, Gaya.KUNING)
-	_label_kartu.position = Vector2(12, 38)
+	_label_kartu.position = Vector2(12, 54)
 	panel.add_child(_label_kartu)
 	var kontrol := Gaya.label("WASD: jalan  Spasi: lompat  E: interaksi  Esc: jeda", 8, Gaya.PUTIH)
 	kontrol.position = Vector2(8, 344)

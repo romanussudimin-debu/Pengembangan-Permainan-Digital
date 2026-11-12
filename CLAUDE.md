@@ -35,7 +35,7 @@ a) File executable (`.exe` / `.apk` / web build) · b) Source code · c) GDD + a
 ## Konsep yang sudah ditetapkan (lihat `docs/gdd/GDD.md` v2.0)
 **Judul:** *Jejak Penti di Wae Rebo*, game 3D jelajah budaya orang ketiga (kamera tetap).
 - Kampung 3D bergaya Wae Rebo (7 Mbaru Niang melingkari compang). Tokoh pemain: **Nggohak** (disapa "Kraeng").
-- **Rantai teka-teki**: 9 kartu budaya dipegang 8 warga (Tu'a Golo, Ine Wela, Ema Agus, Ende Lono, Fransi, Hingha, Marngem, Ema Yakobus) dan dikumpulkan BERURUTAN; setiap warga memberi tantangan + petunjuk ke warga berikutnya. Data: `src/data/rantai_teka_teki.json`.
+- **Rantai teka-teki**: 9 kartu budaya dipegang 8 warga (Tu'a Golo, Ine Wela, Ema Agus, Ende Lono, Fransi, Hingha, Marngem, Ema Yakobus) dan dikumpulkan BERURUTAN; setiap warga memberi tantangan + petunjuk berupa teka-teki (ciri orang/rumah) ke warga berikutnya. 3 pemegang menunggu di DALAM Mbaru Niang (semua rumah dapat dimasuki); Fransi, Hingha, Marngem berjalan/bertukar tempat. Data: `src/data/rantai_teka_teki.json`.
 - Mini-game: **Menenun Songke** (pola 5×5) dan **Tabuh Gong-Gendang** (ritme).
 - Dialog diucapkan dengan TTS bahasa Indonesia; teks hanya cadangan/aksesibilitas.
 - Caci **tidak dimainkan**; tampil sebagai pertunjukan di ending Penti (FSM penampil caci).

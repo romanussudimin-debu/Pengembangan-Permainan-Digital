@@ -16,20 +16,27 @@ const PUSAT_ARENA := Vector3(26, 0, 0)
 const SUDUT_RUMAH: Array = [-90.0, -130.0, -170.0, 150.0, 110.0, -50.0, 40.0]
 const JARI_KAMPUNG: float = 15.0
 
-## Warga kampung: nama, posisi, tekstur songke, warna baju, perempuan, pemain caci, bawa nampan kopi.
+## Warga kampung pemegang kartu. "rumah" = indeks Mbaru Niang tempat ia menunggu di DALAM;
+## "patroli" = titik-titik yang dikunjungi bergantian (warga berjalan/bertukar tempat).
 const DATA_WARGA: Array = [
-	["Tu'a Golo", Vector3(0, 0, 5.8), "songke_kuning", Color("1b1818"), false, false, false],
-	["Ine Wela", Vector3(-8, 0, 0.5), "songke_hijau", Color("b02a2a"), true, false, false],
-	["Ema Agus", Vector3(1.2, 0, -9.2), "songke_merah", Color("e8e2d2"), false, false, false],
-	["Ende Lono", Vector3(-5, 0, 20), "songke_merah", Color("2c5c96"), true, false, false],
-	["Fransi", Vector3(-7.2, 0, -4.6), "songke_biru", Color("e8e2d2"), false, false, false],
-	["Hingha", Vector3(23, 0, -4), "songke_biru", Color.WHITE, false, true, false],
-	["Marngem", Vector3(22, 0, 5), "songke_hijau", Color("e8e2d2"), true, false, true],
-	["Ema Yakobus", Vector3(31, 0, -3), "songke_kuning", Color.WHITE, false, true, false],
+	{"nama": "Tu'a Golo", "pos": Vector3(0, 0, 5.8), "songke": "songke_kuning", "baju": Color("1b1818")},
+	{"nama": "Ine Wela", "pos": Vector3(-8, 0, 0.5), "songke": "songke_hijau", "baju": Color("b02a2a"), "perempuan": true},
+	{"nama": "Ema Agus", "rumah": 0, "songke": "songke_merah", "baju": Color("e8e2d2")},
+	{"nama": "Ende Lono", "rumah": 5, "songke": "songke_merah", "baju": Color("2c5c96"), "perempuan": true},
+	{"nama": "Fransi", "pos": Vector3(-7.2, 0, -4.6), "songke": "songke_biru", "baju": Color("e8e2d2"),
+		"patroli": [Vector3(-7.2, 0, -4.6), Vector3(-3.5, 0, -10), Vector3(-1, 0, -6.5)]},
+	{"nama": "Hingha", "pos": Vector3(23, 0, -4), "songke": "songke_biru", "baju": Color.WHITE, "caci": true,
+		"patroli": [Vector3(23, 0, -4), Vector3(22, 0, 5), Vector3(27, 0, -6)]},
+	{"nama": "Marngem", "pos": Vector3(22, 0, 5), "songke": "songke_hijau", "baju": Color("e8e2d2"), "perempuan": true, "nampan": true,
+		"patroli": [Vector3(22, 0, 5), Vector3(23, 0, -4)]},
+	{"nama": "Ema Yakobus", "rumah": 3, "songke": "songke_kuning", "baju": Color.WHITE, "caci": true},
 ]
+## Rumah berciri khusus (dipakai sebagai petunjuk): indeks -> jenis penanda.
+const PENANDA_RUMAH: Dictionary = {5: "jemuran_songke", 3: "kayu_bakar"}
 
 var pemain: Pemain
 var kamera: KameraIkut
+var _rumah: Array[Node3D] = []
 
 
 func _ready() -> void:
@@ -51,10 +58,21 @@ func _bangun_dunia() -> void:
 	Dunia.tanah(self, 220.0)
 	Dunia.batas_dunia(self, 40.0)
 	Dunia.compang(self, Vector3.ZERO)
+	# Semua Mbaru Niang dapat dimasuki; sebagian berisi pemegang kartu, sisanya pengecoh
 	for i in SUDUT_RUMAH.size():
 		var a: float = deg_to_rad(SUDUT_RUMAH[i])
 		var pos := Vector3(cos(a), 0, sin(a)) * JARI_KAMPUNG
-		Dunia.mbaru_niang(self, pos, Vector3.ZERO, 1.25 if i == 0 else 1.0)
+		_rumah.append(Dunia.mbaru_niang(self, pos, Vector3.ZERO, 1.25 if i == 0 else 1.0, true))
+	for indeks: int in PENANDA_RUMAH:
+		var a: float = deg_to_rad(SUDUT_RUMAH[indeks])
+		var arah := Vector3(cos(a), 0, sin(a))
+		var samping := Vector3(-arah.z, 0, arah.x)  # menyinggung lingkaran kampung
+		var posisi: Vector3 = arah * (JARI_KAMPUNG - 4.5) + samping * 1.8
+		if PENANDA_RUMAH[indeks] == "jemuran_songke":
+			Dunia.jemuran_songke(self, posisi, _rumah[indeks].rotation.y, preload("res://assets/textures/songke_biru.png"))
+		else:
+			Dunia.kayu_bakar(self, posisi, _rumah[indeks].rotation.y)
+	Dunia.alat_tenun(self, Vector3(-9.3, 0, -0.8), 0.3, preload("res://assets/textures/songke_hijau.png"))
 	Dunia.gong_gendang(self, Vector3(-5, 0, -4))
 	Dunia.arena(self, PUSAT_ARENA, 5.0)
 	Dunia.papan(self, Vector3(17, 0, -1.5), "Arena Caci (Penti)")
@@ -78,22 +96,28 @@ func _bangun_dunia() -> void:
 
 
 func _bangun_warga() -> void:
-	for data: Array in DATA_WARGA:
+	for data: Dictionary in DATA_WARGA:
 		var n := NpcKampung.new()
-		n.nama = data[0]
-		n.position = data[1]
-		n.tekstur_songke = load("res://assets/textures/%s.png" % data[2])
-		n.warna_baju = data[3]
-		n.perempuan = data[4]
-		n.pemain_caci = data[5]
-		n.bawa_nampan = data[6]
+		n.nama = data["nama"]
+		n.tekstur_songke = load("res://assets/textures/%s.png" % data["songke"])
+		n.warna_baju = data["baju"]
+		n.perempuan = data.get("perempuan", false)
+		n.pemain_caci = data.get("caci", false)
+		n.bawa_nampan = data.get("nampan", false)
+		var patroli: Array = data.get("patroli", [])
+		for titik: Vector3 in patroli:
+			n.titik_patroli.append(titik)
+		var di_rumah: int = data.get("rumah", -1)
+		var rumah: Node3D = _rumah[di_rumah] if di_rumah >= 0 else null
+		n.position = rumah.to_global(Vector3(0, 0, 1.3)) if rumah else data["pos"]
 		add_child(n)
-		if n.pemain_caci:
-			n.model.mode = "siaga"
-		# Menghadap ke tengah kampung (atau ke arena bagi warga di dekat arena)
-		var pusat: Vector3 = PUSAT_ARENA if n.position.x > 16.0 else Vector3.ZERO
-		var arah: Vector3 = pusat - n.position
-		n.model.rotation.y = atan2(-arah.x, -arah.z)
+		n.model.mode = "siaga" if n.pemain_caci else "idle"
+		if rumah:
+			n.model.rotation.y = rumah.rotation.y  # di dalam rumah, menghadap pintu
+		else:
+			var pusat: Vector3 = PUSAT_ARENA if n.position.x > 16.0 else Vector3.ZERO
+			var arah: Vector3 = pusat - n.position
+			n.model.rotation.y = atan2(-arah.x, -arah.z)
 		n.diajak_bicara.connect(_bicara_warga)
 
 

@@ -104,7 +104,9 @@ static func batas_dunia(induk: Node3D, setengah: float) -> void:
 
 ## Mbaru Niang: rumah kerucut beratap ijuk, 5 tingkat, di atas tiang (panggung).
 ## `menghadap` adalah titik yang dituju pintu (biasanya compang di tengah kampung).
-static func mbaru_niang(induk: Node3D, posisi: Vector3, menghadap: Vector3, skala: float = 1.0) -> Node3D:
+## Bila `bisa_dimasuki`, dinding collision berbentuk cincin dengan celah pintu dan bagian dalam
+## (lantai, tungku, tikar) dibuat; atap disembunyikan saat pemain berada di dalam (tampilan potong).
+static func mbaru_niang(induk: Node3D, posisi: Vector3, menghadap: Vector3, skala: float = 1.0, bisa_dimasuki: bool = false) -> Node3D:
 	var rumah := Node3D.new()
 	rumah.position = posisi
 	induk.add_child(rumah)
@@ -112,13 +114,16 @@ static func mbaru_niang(induk: Node3D, posisi: Vector3, menghadap: Vector3, skal
 	rumah.rotation.y = atan2(-arah.x, -arah.z)  # sisi -Z menghadap titik tujuan
 	var r: float = 3.6 * skala
 	var t: float = 8.0 * skala
-	# Tiang panggung
 	var m_kayu := mat(Color.WHITE, TEX_KAYU)
+	# Tiang panggung
 	for i in 8:
 		var a: float = TAU * i / 8.0
 		mesh(rumah, silinder(0.12, 0.12, 0.8, 6), Vector3(cos(a) * r * 0.8, 0.4, sin(a) * r * 0.8), m_kayu)
-	# Atap ijuk kerucut hingga hampir menyentuh tanah
-	mesh(rumah, silinder(0.08, r, t, 20), Vector3(0, 0.6 + t / 2.0, 0), mat(Color.WHITE, TEX_IJUK, Vector3(6, 3, 1)))
+	# Atap (dikelompokkan agar bisa disembunyikan saat pemain di dalam)
+	var atap := Node3D.new()
+	atap.name = "Atap"
+	rumah.add_child(atap)
+	mesh(atap, silinder(0.08, r, t, 20), Vector3(0, 0.6 + t / 2.0, 0), mat(Color.WHITE, TEX_IJUK, Vector3(6, 3, 1)))
 	# Penanda 5 tingkat (lutur, lobo, lentar, lempa rae, hekang kode)
 	var m_garis := mat(Color("4a3424"))
 	for k in range(1, 5):
@@ -129,23 +134,129 @@ static func mbaru_niang(induk: Node3D, posisi: Vector3, menghadap: Vector3, skal
 		cincin.outer_radius = jari + 0.05
 		cincin.rings = 24
 		cincin.ring_segments = 4
-		mesh(rumah, cincin, Vector3(0, tinggi_garis, 0), m_garis)
-	# Puncak (mahkota kayu)
-	mesh(rumah, silinder(0.05, 0.15, 0.7 * skala, 6), Vector3(0, 0.6 + t + 0.3, 0), m_kayu)
-	# Pintu menghadap compang
+		mesh(atap, cincin, Vector3(0, tinggi_garis, 0), m_garis)
+	mesh(atap, silinder(0.05, 0.15, 0.7 * skala, 6), Vector3(0, 0.6 + t + 0.3, 0), m_kayu)
 	var pintu := BoxMesh.new()
 	pintu.size = Vector3(0.9, 1.5, 0.2) * skala
-	mesh(rumah, pintu, Vector3(0, 1.4 * skala, -r * 0.82), mat(Color("1b1414")))
+	mesh(atap, pintu, Vector3(0, 1.4 * skala, -r * 0.82), mat(Color("1b1414")))
 	var tangga := BoxMesh.new()
 	tangga.size = Vector3(1.0, 0.15, 0.8) * skala
-	mesh(rumah, tangga, Vector3(0, 0.35, -r * 0.95), m_kayu)
-	# Collision kasar berbentuk silinder
-	var bentuk := CylinderShape3D.new()
-	bentuk.radius = r * 0.85
-	bentuk.height = t
-	var badan := badan_statis(rumah, bentuk, Vector3(0, t / 2.0, 0))
-	badan.rotation = Vector3.ZERO
+	mesh(rumah, tangga, Vector3(0, 0.08, -r * 0.95), m_kayu)
+	if bisa_dimasuki:
+		_dinding_bercelah(rumah, r * 0.85, t)
+		_isi_rumah(rumah, r)
+		_pemicu_atap(rumah, atap, r * 0.8)
+	else:
+		var bentuk := CylinderShape3D.new()
+		bentuk.radius = r * 0.85
+		bentuk.height = t
+		badan_statis(rumah, bentuk, Vector3(0, t / 2.0, 0))
 	return rumah
+
+
+## Dinding collision melingkar dari segmen-segmen kotak, dengan celah pintu di sisi -Z.
+static func _dinding_bercelah(rumah: Node3D, jari: float, tinggi: float) -> void:
+	var jumlah: int = 18
+	var panjang: float = TAU * jari / jumlah * 1.15
+	for i in jumlah:
+		var a: float = TAU * i / jumlah
+		if absf(wrapf(a + PI / 2.0, -PI, PI)) < deg_to_rad(25.0):
+			continue  # celah pintu (arah -Z lokal)
+		var bentuk := BoxShape3D.new()
+		bentuk.size = Vector3(panjang, tinggi, 0.3)
+		var badan := badan_statis(rumah, bentuk, Vector3(cos(a) * jari, tinggi / 2.0, sin(a) * jari))
+		badan.rotation.y = -a - PI / 2.0  # sumbu X kotak menyinggung lingkaran
+
+
+## Bagian dalam rumah (lutur): lantai kayu, tungku api di tengah, tikar.
+static func _isi_rumah(rumah: Node3D, r: float) -> void:
+	mesh(rumah, silinder(r * 0.84, r * 0.84, 0.06, 24), Vector3(0, 0.03, 0), mat(Color.WHITE, TEX_KAYU, Vector3(4, 4, 1)))
+	var m_batu := mat(Color("6e6a62"), TEX_BATU)
+	for i in 3:
+		var a: float = TAU * i / 3.0
+		var batu := SphereMesh.new()
+		batu.radius = 0.16
+		batu.height = 0.22
+		mesh(rumah, batu, Vector3(cos(a) * 0.3, 0.12, sin(a) * 0.3 - 0.2), m_batu)
+	var api := StandardMaterial3D.new()
+	api.albedo_color = Color("ff9a3c")
+	api.emission_enabled = true
+	api.emission = Color("ff7a1c")
+	api.emission_energy_multiplier = 2.0
+	mesh(rumah, silinder(0.0, 0.16, 0.35, 8), Vector3(0, 0.25, -0.2), api)
+	var cahaya := OmniLight3D.new()
+	cahaya.light_color = Color("ffb057")
+	cahaya.light_energy = 1.4
+	cahaya.omni_range = r
+	cahaya.position = Vector3(0, 0.8, -0.2)
+	rumah.add_child(cahaya)
+	var tikar := BoxMesh.new()
+	tikar.size = Vector3(1.6, 0.02, 1.0)
+	mesh(rumah, tikar, Vector3(0, 0.07, r * 0.4), mat(Color("c8a868")))
+
+
+## Area di dalam rumah yang menyembunyikan atap saat pemain masuk.
+static func _pemicu_atap(rumah: Node3D, atap: Node3D, jari: float) -> void:
+	var area := PemicuAtap.new()
+	area.atap = atap
+	var bentuk := CylinderShape3D.new()
+	bentuk.radius = jari
+	bentuk.height = 3.0
+	var c := CollisionShape3D.new()
+	c.shape = bentuk
+	c.position = Vector3(0, 1.5, 0)
+	area.add_child(c)
+	rumah.add_child(area)
+
+
+## Alat tenun sederhana: rangka kayu rendah dengan kain songke yang sedang ditenun.
+static func alat_tenun(induk: Node3D, posisi: Vector3, rotasi_y: float, tekstur: Texture2D) -> void:
+	var g := Node3D.new()
+	g.position = posisi
+	g.rotation.y = rotasi_y
+	induk.add_child(g)
+	var m_kayu := mat(Color.WHITE, TEX_KAYU)
+	for x: float in [-0.6, 0.6]:
+		for z: float in [-0.5, 0.5]:
+			mesh(g, silinder(0.04, 0.04, 0.6, 6), Vector3(x, 0.3, z), m_kayu)
+	for z: float in [-0.5, 0.5]:
+		var balok := BoxMesh.new()
+		balok.size = Vector3(1.3, 0.06, 0.06)
+		mesh(g, balok, Vector3(0, 0.6, z), m_kayu)
+	var kain := BoxMesh.new()
+	kain.size = Vector3(1.0, 0.02, 0.9)
+	var mi := mesh(g, kain, Vector3(0, 0.62, 0), mat(Color.WHITE, tekstur, Vector3(2, 2, 1)))
+	mi.rotation.x = -0.15
+
+
+## Kain songke yang dijemur pada rangka kayu (penanda rumah).
+static func jemuran_songke(induk: Node3D, posisi: Vector3, rotasi_y: float, tekstur: Texture2D) -> void:
+	var g := Node3D.new()
+	g.position = posisi
+	g.rotation.y = rotasi_y
+	induk.add_child(g)
+	var m_kayu := mat(Color.WHITE, TEX_KAYU)
+	for x: float in [-0.9, 0.9]:
+		mesh(g, silinder(0.05, 0.05, 1.8, 6), Vector3(x, 0.9, 0), m_kayu)
+	var balok := BoxMesh.new()
+	balok.size = Vector3(2.0, 0.08, 0.08)
+	mesh(g, balok, Vector3(0, 1.75, 0), m_kayu)
+	var kain := BoxMesh.new()
+	kain.size = Vector3(1.5, 1.1, 0.03)
+	mesh(g, kain, Vector3(0, 1.15, 0), mat(Color.WHITE, tekstur, Vector3(2, 2, 1)))
+
+
+## Tumpukan kayu bakar (penanda rumah).
+static func kayu_bakar(induk: Node3D, posisi: Vector3, rotasi_y: float) -> void:
+	var g := Node3D.new()
+	g.position = posisi
+	g.rotation.y = rotasi_y
+	induk.add_child(g)
+	var m_kayu := mat(Color("6a4428"))
+	var baris: Array = [[-0.3, 0.12], [0.0, 0.12], [0.3, 0.12], [-0.15, 0.36], [0.15, 0.36], [0.0, 0.6]]
+	for posisi_kayu: Array in baris:
+		var batang := mesh(g, silinder(0.12, 0.12, 1.2, 8), Vector3(posisi_kayu[0], posisi_kayu[1], 0), m_kayu)
+		batang.rotation.x = PI / 2.0
 
 
 ## Compang: altar batu berundak di tengah kampung (natas).

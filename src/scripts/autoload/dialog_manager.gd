@@ -109,7 +109,7 @@ func _bangun_ui() -> void:
 
 
 func _bangun_ui_teka_teki() -> void:
-	_panel_teka_teki = Gaya.panel_songke(Vector2(90, 70), Vector2(460, 230))
+	_panel_teka_teki = Gaya.panel_songke(Vector2(90, 40), Vector2(460, 280))
 	_panel_teka_teki.visible = false
 	add_child(_panel_teka_teki)
 	_label_tanya_nama = Gaya.label("", 11, Gaya.KUNING)
@@ -117,15 +117,15 @@ func _bangun_ui_teka_teki() -> void:
 	_panel_teka_teki.add_child(_label_tanya_nama)
 	_label_pertanyaan = Gaya.label("", 12, Gaya.PUTIH)
 	_label_pertanyaan.position = Vector2(16, 30)
-	_label_pertanyaan.size = Vector2(428, 60)
+	_label_pertanyaan.size = Vector2(428, 70)
 	_label_pertanyaan.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_panel_teka_teki.add_child(_label_pertanyaan)
 	_kolom_pilihan = VBoxContainer.new()
-	_kolom_pilihan.position = Vector2(60, 96)
+	_kolom_pilihan.position = Vector2(60, 104)
 	_kolom_pilihan.add_theme_constant_override("separation", 8)
 	_panel_teka_teki.add_child(_kolom_pilihan)
-	var bantuan := Gaya.label("Pilih dengan mouse, panah + Enter, atau tombol 1 / 2 / 3", 8, Gaya.ABU)
-	bantuan.position = Vector2(16, 208)
+	var bantuan := Gaya.label("Pilih dengan mouse, panah + Enter, atau tombol angka 1-4", 8, Gaya.ABU)
+	bantuan.position = Vector2(16, 258)
 	_panel_teka_teki.add_child(bantuan)
 
 

@@ -6,7 +6,7 @@
 |---|---|---|---|
 | 0:00–0:08 | Menu utama: kamera mengorbit Wae Rebo, judul "JEJAK PENTI" | "Jejak Penti di Wae Rebo, game 3D jelajah budaya Manggarai, Flores, NTT." | Musik kampung |
 | 0:08–0:20 | Mulai → Nggohak berjalan di kampung, melewati Mbaru Niang & compang, melompat di batu pijakan | "Menjelang Penti, Nggohak pulang ke kampung adat. Tujuh Mbaru Niang melingkari compang, seperti di Wae Rebo." | Langkah, lompat |
-| 0:20–0:38 | Bicara dengan Tu'a Golo (suara dialog terdengar) → teka-teki pertama → jawab → kartu Compang dibacakan → petunjuk muncul di HUD | "Delapan warga menyimpan kartu budaya yang harus dikumpulkan berurutan. Setiap warga memberi teka-teki dan petunjuk ke warga berikutnya." | Suara dialog TTS |
+| 0:20–0:38 | Bicara dengan Tu'a Golo (suara dialog terdengar) → teka-teki "berapa Mbaru Niang?" → jawab → kartu Compang dibacakan → petunjuk teka-teki muncul di HUD; lalu masuk ke mbaru gendang (atap menghilang, Ema Agus di dekat tungku) | "Delapan warga menyimpan kartu budaya yang harus dikumpulkan berurutan. Setiap warga memberi teka-teki dan petunjuk ke warga berikutnya." | Suara dialog TTS |
 | 0:38–0:55 | Ine Wela: mini-game menenun songke sampai "Kain songke selesai" | "Mekanik kedua: menenun songke. Samakan kain dengan contoh motif." | Klik, berhasil |
 | 0:55–1:12 | Fransi: mini-game tabuh gong-gendang, "Tepat!" | "Mekanik ketiga: menabuh gong dan gendang mengikuti irama Penti." | Gong & gendang |
 | 1:12–1:25 | Teka-teki Hingha / Marngem di arena (perempuan membawa nampan kopi); salah sekali → saran membuka koleksi kartu (Esc) | "Jawaban teka-teki ada di kartu yang sudah dikumpulkan. Semua kartu bisa dibaca ulang di menu jeda." | Suara dialog |

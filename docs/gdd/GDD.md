@@ -47,12 +47,14 @@ Pengetahuan dari setiap kartu menjadi bekal untuk menjawab teka-teki berikutnya,
 ### 4.1 Mekanik 1 — Rantai Teka-teki & Jelajah
 | Komponen | Rincian |
 |---|---|
-| Tujuan | Menemukan warga berikutnya dari petunjuk, lalu menjawab teka-tekinya |
-| Petunjuk | Diucapkan warga dan ditampilkan di HUD ("Petunjuk: ..."), berupa deskripsi tempat/peran, misalnya *"perempuan yang menenun kain berdasar hitam di sisi barat kampung"* |
-| Urutan | Warga yang belum gilirannya menolak dengan sopan ("Ikuti dulu petunjukmu"); warga yang sudah memberi kartu mengucapkan terima kasih |
-| Teka-teki | Pilihan ganda (3 opsi) yang dibacakan dengan suara; jawab dengan klik, panah + Enter, atau tombol 1/2/3. Jawabannya ada di isi kartu sebelumnya. |
+| Tujuan | Menafsirkan petunjuk berupa teka-teki untuk menemukan warga berikutnya, lalu menjawab tantangannya |
+| Petunjuk | Diucapkan warga dan tampil di HUD. Petunjuk **tidak menyebut nama atau lokasi secara langsung**, tetapi ciri orang atau rumah, misalnya *"Di depan sebuah rumah, sehelai kain berdasar hitam dijemur… Pemiliknya tidak berada di luar."* |
+| Di dalam rumah | Ketujuh Mbaru Niang **dapat dimasuki** lewat pintunya. Atap menghilang saat pemain di dalam (tampilan potong) sehingga lantai, tungku api, dan tikar terlihat. **Tiga pemegang kartu menunggu di dalam rumah** yang urutannya tidak bersebelahan (utara → timur laut → barat daya); rumah lain kosong sebagai pengecoh. Rumah dikenali dari cirinya: paling besar (mbaru gendang), **jemuran kain songke**, atau **tumpukan kayu bakar**. |
+| Warga bergerak | Fransi mondar-mandir di antara tiga titik; **Hingha dan Marngem bertukar tempat** bolak-balik di sekitar arena (FSM DIAM/JALAN). Warga berhenti saat diajak bicara. |
+| Urutan | Warga yang belum gilirannya menolak dengan sopan; warga yang sudah memberi kartu mengucapkan terima kasih |
+| Teka-teki | Pilihan ganda **4 opsi** dengan pengecoh mirip (misalnya *sanda/mbata/danding*, *lobo/lentar/lempa rae*), dibacakan dengan suara; jawab dengan klik, panah + Enter, atau 1–4. Jawabannya ada di isi kartu, termasuk kartu yang didapat jauh sebelumnya. Teka-teki pertama menuntut pengamatan (menghitung Mbaru Niang). |
 | Salah | Warga menyarankan membuka koleksi kartu (Esc) lalu kembali lagi |
-| Gerak | Berjalan, melompat (coyote time, jump buffer, tinggi variabel), dan batu pijakan bertingkat 1–3 m |
+| Gerak | Berjalan, melompat (coyote time, jump buffer, tinggi variabel), batu pijakan bertingkat 1–3 m |
 
 ### 4.2 Mekanik 2 — Menenun Songke (teka-teki pola)
 | Komponen | Rincian |
@@ -70,17 +72,17 @@ Pengetahuan dari setiap kartu menjadi bekal untuk menjawab teka-teki berikutnya,
 | Umpan balik | Suara gong/gendang setiap tabuhan, teks "Tepat!/Luput" yang meletup, skor berjalan; musik latar dijeda selama mini-game |
 
 ### 4.4 Urutan rantai (data: `src/data/rantai_teka_teki.json`)
-| # | Warga (lokasi) | Tantangan | Kartu | Petunjuk ke berikutnya |
+| # | Warga (keberadaan) | Tantangan → jawaban | Kartu | Petunjuk ke berikutnya (ringkas) |
 |---|---|---|---|---|
-| 1 | Tu'a Golo (compang) | Teka-teki: nama rumah kerucut → **Mbaru Niang** | Compang | Penenun kain berdasar hitam di barat |
-| 2 | Ine Wela (barat) | **Menenun songke** | Kain Songke | Mbaru gendang di utara |
-| 3 | Ema Agus (pintu mbaru gendang) | Warna dasar songke → **Hitam** | Mbaru Niang | Ibu di dekat tangga batu, selatan |
-| 4 | Ende Lono (selatan) | Tingkat teratas Mbaru Niang → **Hekang kode** | Kampung Wae Rebo | Penabuh di dekat gong |
-| 5 | Fransi (gong-gendang) | **Tabuh gong-gendang** | Gong, Gendang & Nyanyian | Pemain caci termuda di arena timur |
-| 6 | Hingha (arena) | Nyanyian berdiri melingkar tanpa alat musik → **Sanda** | Caci: Paki & Ta'ang | Perempuan pembawa kopi |
-| 7 | Marngem (tepi arena) | Pemain yang menangkis → **Ta'ang** | Perlengkapan Caci | Pemain caci senior di ujung timur |
-| 8 | Ema Yakobus (ujung arena) | Perisai bundar kulit kerbau → **Nggiling** | Nilai Sportivitas Caci | Kembali ke Tu'a Golo |
-| 9 | Tu'a Golo | Nilai utama caci → **Sportivitas dan persaudaraan** | Penti | → Ending Penti |
+| 1 | Tu'a Golo (luar, dekat compang) | Jumlah Mbaru Niang → **Tujuh** (diamati) | Compang | Penyusun warna di atas hitam, sisi matahari terbenam |
+| 2 | Ine Wela (luar, alat tenun di barat) | **Menenun songke** | Kain Songke | Rumah paling besar penyimpan pusaka, penjaga di dekat api |
+| 3 | Ema Agus (**di dalam** mbaru gendang, utara) | Motif hewan penenun jaring → **Ranggong** | Mbaru Niang | Kain berdasar hitam dijemur di depan rumah |
+| 4 | Ende Lono (**di dalam** rumah berjemuran songke, timur laut) | Tingkat penyimpan benih → **Lentar** | Kampung Wae Rebo | Benda bulat bersuara dalam; penabuhnya tak pernah diam |
+| 5 | Fransi (**berpindah-pindah** di sekitar gong) | **Tabuh gong-gendang** | Gong, Gendang & Nyanyian | Pemakai panggal yang masih muda di timur, suka bertukar tempat |
+| 6 | Hingha (**bertukar tempat** di arena) | Nyanyian sambil duduk diiringi gong → **Mbata** | Caci: Paki & Ta'ang | "Hitam, pahit, menghangatkan", dibawa di atas nampan |
+| 7 | Marngem (**bertukar tempat** dengan Hingha) | Sasaran sah pukulan → **Di atas pinggang** | Perlengkapan Caci | Pemain tertua beristirahat; kayu bakar di depan pintu |
+| 8 | Ema Yakobus (**di dalam** rumah berkayu bakar, barat daya) | Hiasan ekor di pinggang → **Ndeki** | Nilai Sportivitas Caci | Dia yang pertama menyambut, di samping batu yang tak boleh dipijak |
+| 9 | Tu'a Golo | Tahun penghargaan UNESCO Wae Rebo → **2012** | Penti | → Ending Penti |
 
 ## 5. Kontrol
 | Aksi | Keyboard / mouse |
@@ -88,7 +90,7 @@ Pengetahuan dari setiap kartu menjadi bekal untuk menjawab teka-teki berikutnya,
 | Bergerak | W A S D / panah |
 | Lompat | Spasi |
 | Bicara / lanjut / lewati dialog | E / Enter (juga Spasi atau klik) |
-| Jawab teka-teki | klik, panah + Enter, atau 1/2/3 |
+| Jawab teka-teki | klik, panah + Enter, atau 1–4 |
 | Menenun | panah/WASD, E/Spasi/klik, 1–4 |
 | Tabuh | J (gong), K (gendang) |
 | Jeda & koleksi kartu | Esc / P |
@@ -117,17 +119,18 @@ Pengetahuan dari setiap kartu menjadi bekal untuk menjawab teka-teki berikutnya,
 ## 8. Desain Level
 ```
                   UTARA
-         [Mbaru Gendang] ← Ema Agus (#3)
-  [Gena]                         [Gena]
-     Fransi (#5) gong
+         [Mbaru Gendang] ← Ema Agus DI DALAM (#3)
+  [Gena]                         [Gena] ← jemuran songke, Ende Lono DI DALAM (#4)
+     Fransi (#5) ↔ berkeliling di sekitar gong
   [Gena]        ◎ compang      ──── papan "Arena Caci (Penti)"
-   Ine Wela (#2)   Tu'a Golo (#1, #9)     ( ARENA )  Hingha (#6) · Ema Yakobus (#8)
-  [Gena]                    [Gena]            Marngem (#7, kopi)
-            [Gena]
-  batu▲▲▲   Ende Lono (#4)   ▼ papan "Kampung Wae Rebo"
+   Ine Wela (#2) + alat tenun   Tu'a Golo (#1, #9)   ( ARENA )  Hingha (#6) ⇄ Marngem (#7)
+  [Gena] ← kayu bakar, Ema Yakobus DI DALAM (#8)
+            [Gena]                 [Gena]
+  batu▲▲▲              ▼ papan "Kampung Wae Rebo"
                  ★ titik muncul (selatan)
 ```
-Area bermain 80×80 m dengan dinding batas tak terlihat; tanah 220 m; pohon & bukit di sekeliling.
+- Semua rumah dapat dimasuki; isi rumah: lantai kayu, tungku api (cahaya hangat), tikar.
+- Area bermain 80×80 m dengan dinding batas tak terlihat; tanah 220 m; pohon & bukit; anjing dan ayam berkeliaran.
 
 **Ending:** natas dengan 10 penari melingkar dan dua penampil caci yang bergantian menyerang/menangkis; kamera mengorbit.
 

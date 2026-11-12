@@ -15,7 +15,9 @@ Centang ☐ → ☑ saat menguji di Godot. Catat bug di tabel paling bawah.
 | # | Uji | Hasil diharapkan | ☐ |
 |---|---|---|---|
 | R1 | Bicara ke warga selain Tu'a Golo di awal | "Kartuku belum bisa kuberikan sekarang" | ☐ |
-| R2 | Tu'a Golo → jawab benar | Kartu Compang dibacakan; HUD menampilkan petunjuk ke Ine Wela | ☐ |
+| R2 | Tu'a Golo → jawab benar (Tujuh) | Kartu Compang dibacakan; HUD menampilkan petunjuk berupa teka-teki | ☐ |
+| R2b | Masuk ke Mbaru Niang lewat pintu | Atap menghilang, terlihat tungku & tikar; tidak bisa tembus dinding selain pintu; atap muncul lagi saat keluar | ☐ |
+| R2c | Fransi, Hingha, Marngem | Berjalan/bertukar tempat; berhenti saat diajak bicara | ☐ |
 | R3 | Jawab salah | Saran membuka koleksi (Esc); bicara lagi → teka-teki diulang | ☐ |
 | R4 | Ikuti 9 langkah sampai Tu'a Golo kedua | Ending Penti; kartu 9/9 | ☐ |
 | R5 | Bicara ke warga yang sudah memberi kartu | "Terima kasih, Kraeng" | ☐ |
@@ -38,7 +40,7 @@ Centang ☐ → ☑ saat menguji di Godot. Catat bug di tabel paling bawah.
 | V1 | Dialog | Terdengar (bahasa Indonesia), hanya nama pembicara tampil, lanjut otomatis | ☐ |
 | V2 | E saat berbicara | Dilewati | ☐ |
 | V3 | Menu jeda → "Tampilkan teks dialog" | Teks ikut tampil | ☐ |
-| V4 | Teka-teki | Pertanyaan & pilihan dibacakan; tombol 1/2/3 berfungsi | ☐ |
+| V4 | Teka-teki | Pertanyaan & 4 pilihan dibacakan; tombol 1–4 berfungsi | ☐ |
 | H1 | Anjing & ayam di kampung | Berkeliaran, ayam mematuk, ekor anjing bergoyang, sesekali bersuara saat didekati | ☐ |
 | A1 | Tampilan karakter | Gaya anime: kepala & mata besar, kulit cokelat, rambut bergelombang; tidak tembus rumah | ☐ |
 | E1 | Ending | Penari & dua penampil caci bergantian menyerang/menangkis | ☐ |

@@ -123,10 +123,10 @@ func _teks_cara_bermain() -> String:
 • WASD / panah: berjalan   • Spasi: melompat
 • E: bicara / lanjut dialog   • Esc: jeda & koleksi kartu
 
-Delapan warga kampung masing-masing menyimpan kartu budaya. Kumpulkan kartu BERURUTAN: mulailah dari Tu'a Golo di dekat compang. Setiap warga memberi tantangan, lalu petunjuk menuju warga berikutnya (lihat "Petunjuk" di kiri atas).
+Delapan warga kampung masing-masing menyimpan kartu budaya. Kumpulkan kartu BERURUTAN: mulailah dari Tu'a Golo di dekat compang. Setiap warga memberi tantangan, lalu petunjuk berupa teka-teki menuju warga berikutnya (lihat kiri atas). Ada warga yang menunggu di DALAM Mbaru Niang (masuklah lewat pintunya) dan ada yang suka berpindah tempat.
 
 Tantangan:
-• Teka-teki: jawab dengan klik, panah + Enter, atau tombol 1/2/3. Jawabannya ada di kartu yang sudah kamu kumpulkan.
+• Teka-teki: jawab dengan klik, panah + Enter, atau tombol 1-4. Jawabannya ada di kartu yang sudah kamu kumpulkan (Esc untuk membacanya lagi).
 • Menenun songke: samakan kain dengan contoh motif (E/klik ganti warna benang).
 • Tabuh gong-gendang: tekan J (gong) atau K (gendang) saat ketukan tiba di garis.
 

@@ -72,17 +72,26 @@ func _siapkan_suara() -> void:
 	if not DisplayServer.has_feature(DisplayServer.FEATURE_TEXT_TO_SPEECH):
 		push_warning("Text-to-Speech tidak didukung di platform ini; dialog ditampilkan sebagai teks.")
 		return
-	var suara: PackedStringArray = DisplayServer.tts_get_voices_for_language(BAHASA_SUARA)
-	if suara.is_empty():
-		push_warning("Suara bahasa Indonesia tidak ditemukan di sistem; dialog ditampilkan sebagai teks.")
-		return
-	_suara_id = suara[0]
 	DisplayServer.tts_set_utterance_callback(DisplayServer.TTS_UTTERANCE_ENDED, _saat_ucapan_selesai)
+	if not _cari_suara():
+		push_warning("Suara bahasa Indonesia belum ditemukan; dialog ditampilkan sebagai teks sampai suara tersedia.")
+
+
+## Di browser (terutama HP) daftar suara dimuat belakangan, jadi pencarian diulang saat dialog dimulai.
+func _cari_suara() -> bool:
+	if _suara_id != "":
+		return true
+	if not DisplayServer.has_feature(DisplayServer.FEATURE_TEXT_TO_SPEECH):
+		return false
+	var suara: PackedStringArray = DisplayServer.tts_get_voices_for_language(BAHASA_SUARA)
+	if not suara.is_empty():
+		_suara_id = suara[0]
+	return _suara_id != ""
 
 
 ## True bila dialog diucapkan (ada suara bahasa Indonesia).
 func suara_tersedia() -> bool:
-	return _suara_id != ""
+	return _cari_suara()
 
 
 func _bangun_ui() -> void:

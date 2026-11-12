@@ -26,7 +26,7 @@ File `src/export_presets.cfg` sudah berisi empat preset: **Windows Desktop**, **
 ### Bermain di HP/tablet
 Game otomatis menampilkan **kontrol sentuh** di perangkat layar sentuh: joystick di kiri untuk berjalan, tombol **LOMPAT**, **BICARA**, dan **II** (jeda) di kanan. Dialog, teka-teki, menenun, dan tabuh gong cukup diketuk. Layar dikunci mendatar (landscape).
 
-**Cara 1 — Browser HP (paling mudah, Android & iPhone):** ekspor preset **Web**, unggah ke itch.io, lalu buka tautannya di Chrome/Safari HP. Putar HP mendatar.
+**Cara 1 — Browser HP (paling mudah, Android & iPhone):** buka https://romanussudimin-debu.github.io/Pengembangan-Permainan-Digital/ di Chrome/Safari HP dan putar HP mendatar. Versi ini dibangun otomatis oleh GitHub Actions dan dipasang ke cabang `gh-pages` (aktifkan sekali di *Settings → Pages → Branch: gh-pages / root*). Bisa juga diunggah ke itch.io.
 
 **Cara 2 — APK Android:**
 1. Pasang **JDK 17** dan **Android SDK** (paling mudah lewat Android Studio).

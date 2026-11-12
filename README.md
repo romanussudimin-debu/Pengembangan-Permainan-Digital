@@ -1,5 +1,7 @@
 # Jejak Penti di Wae Rebo
 
+**▶ Main langsung di browser (HP/laptop):** https://romanussudimin-debu.github.io/Pengembangan-Permainan-Digital/ — putar HP mendatar. Versi web dibangun otomatis oleh GitHub Actions (`.github/workflows/web.yml`) setiap ada perubahan di `src/`.
+
 Prototipe **game 3D jelajah budaya Manggarai** (Flores, NTT) untuk tugas *Pengembangan Permainan Digital: Rencana Tugas 1*. Engine: **Godot 4.3+**.
 
 Game 3D **jelajah budaya**. Menjelang **Penti**, Nggohak pulang ke kampung adat bergaya Wae Rebo. Delapan warga masing-masing menyimpan kartu budaya yang harus dikumpulkan **berurutan**. Setiap warga memberi tantangan dan petunjuk ke warga berikutnya. Tantangannya:

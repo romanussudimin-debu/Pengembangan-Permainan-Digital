@@ -57,7 +57,7 @@ _[Tambahkan screenshot: teka-teki Tu'a Golo, menenun songke, tabuh gong-gendang,
 - **Validasi statis:** seluruh skrip lolos parser GDScript (gdtoolkit 4.3). Path resource, nama state, id dialog, dan id kartu diperiksa otomatis dengan skrip.
 - **Uji fungsional:** mengikuti `docs/playtest/rencana-uji.md`. Game berhasil dijalankan dari menu sampai bermain di Godot 4.7.2 (macOS). Versi web dibangun otomatis oleh GitHub Actions dan diuji di Chromium mode HP: menu tampil, permainan dapat dimulai dengan ketukan, kontrol sentuh muncul, dan tidak ada error di konsol.
 - **Iterasi dari uji coba pengembang:** kabut dihapus agar kampung terlihat; kartu dipindah dari atas batu ke tangan warga; petunjuk diubah menjadi teka-teki ciri orang/rumah; 3 pemegang kartu ditempatkan di dalam Mbaru Niang dan 3 lainnya berpindah tempat; ditambah kontrol sentuh untuk HP.
-- **Playtest:** _[isi ringkasan dari `docs/playtest/hasil-playtest.md`: jumlah penguji, temuan utama, iterasi yang dilakukan]_
+- **Playtest:** 3 penguji mengisi kuesioner 7 pertanyaan (skala 1–5) dengan rata-rata skor **4/5**. Temuan utama: tampilan di HP masih kecil dan tombol sentuh masih kurang. Rincian ada di lampiran Hasil Playtest.
 
 ## 7. Hasil Akhir & Keterbatasan
 **Hasil:** game 3D jelajah budaya yang dapat dimainkan dari awal sampai akhir, dengan rantai teka-teki 9 langkah, 2 mini-game (tenun & tabuh), dialog bersuara, 9 kartu budaya, pertunjukan caci, musik dan SFX gong-gendang, serta animasi yang menerapkan prinsip animasi dasar.

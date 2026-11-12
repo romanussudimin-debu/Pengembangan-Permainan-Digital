@@ -12,7 +12,9 @@
 ## Temuan
 | # | Temuan | Jumlah penguji | Keparahan | Rekomendasi |
 |---|---|---|---|---|
-| 1 | | | | |
+| 1 | Tampilan di HP masih kecil dan tombol sentuh masih kurang | [isi jumlah] | Sedang | Perbesar tampilan/teks di HP dan tambah atau perbesar tombol sentuh |
+
+**Rata-rata skor kuesioner (skala 1–5): 4.**
 
 ## Iterasi yang dilakukan (bukti perbaikan berdasarkan feedback)
 | # | Sebelum | Sesudah | Alasan (feedback) | File yang diubah |

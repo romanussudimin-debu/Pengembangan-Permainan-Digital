@@ -1,0 +1,56 @@
+# Membangun versi Web (HTML5) game dengan Godot lalu memasangnya di GitHub Pages
+# (cabang gh-pages), supaya game bisa dimainkan lewat browser HP/laptop.
+name: Bangun & Pasang Versi Web
+
+on:
+  push:
+    branches: [main]
+    paths: ["src/**", ".github/workflows/web.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: web
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSI: "4.7.2"
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unduh Godot dan export templates
+        run: |
+          V="${GODOT_VERSI}-stable"
+          URL="https://github.com/godotengine/godot/releases/download/${V}"
+          wget -q "${URL}/Godot_v${V}_linux.x86_64.zip" -O godot.zip
+          wget -q "${URL}/Godot_v${V}_export_templates.tpz" -O templates.tpz
+          unzip -q godot.zip && mv "Godot_v${V}_linux.x86_64" /usr/local/bin/godot
+          TPL="$HOME/.local/share/godot/export_templates/${GODOT_VERSI}.stable"
+          mkdir -p "$TPL" && unzip -q templates.tpz -d tpl && mv tpl/templates/* "$TPL/"
+
+      - name: Impor aset
+        working-directory: src
+        run: godot --headless --import || true
+
+      - name: Ekspor Web
+        working-directory: src
+        run: |
+          mkdir -p "$GITHUB_WORKSPACE/public"
+          godot --headless --export-release "Web" "$GITHUB_WORKSPACE/public/index.html"
+          test -f "$GITHUB_WORKSPACE/public/index.wasm"
+          touch "$GITHUB_WORKSPACE/public/.nojekyll"
+          ls -la "$GITHUB_WORKSPACE/public"
+
+      - name: Pasang ke cabang gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          force_orphan: true
+          commit_message: "Versi web terbaru"

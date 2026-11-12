@@ -5,8 +5,9 @@ Semua aset dalam prototipe **dibuat sendiri** secara prosedural oleh pembuat pro
 ## Model 3D
 | Aset | Jenis | Dibuat dengan | Lokasi kode | Lisensi |
 |---|---|---|---|---|
-| Karakter (Nggohak, NPC, pemain caci, penonton) | Model low-poly dari mesh primitif + animasi prosedural | Godot (CapsuleMesh, BoxMesh, SphereMesh, CylinderMesh, TorusMesh) | `src/scripts/karakter/karakter_model.gd` | Milik pembuat |
+| Karakter (Nggohak, warga, penampil caci, penari) | Model bergaya anime 3D dari mesh primitif (kepala besar, mata berkilau, rambut bergelombang) + animasi prosedural | Godot (CapsuleMesh, BoxMesh, SphereMesh, CylinderMesh, TorusMesh) | `src/scripts/karakter/karakter_model.gd` | Milik pembuat |
 | Mbaru Niang, compang, gong & gendang, pohon, bukit, batu, arena, papan | Model low-poly | Godot (mesh primitif) | `src/scripts/dunia/dunia.gd` | Milik pembuat |
+| Anjing, ayam | Model low-poly + animasi prosedural | Godot (mesh primitif) | `src/scripts/dunia/hewan.gd` | Milik pembuat |
 
 ## Tekstur (`src/assets/textures/`, 64×64 px kecuali disebut lain)
 | File | Isi | Dibuat dengan | Dipakai di |
@@ -22,7 +23,7 @@ Semua aset dalam prototipe **dibuat sendiri** secara prosedural oleh pembuat pro
 |---|---|---|
 | musik_kampung.wav | Pola gong-gendang tenang + lonceng pentatonik (loop) | `tools/generate_audio.py` (numpy, sintesis aditif) |
 | musik_caci.wav | Pola gong-gendang cepat untuk arena (loop) | idem |
-| gong.wav, cambuk.wav, perisai.wav, terkena.wav, lompat.wav, langkah.wav, ambil.wav, berhasil.wav, gagal.wav, klik.wav | Efek suara | idem |
+| gendang.wav, anjing.wav (gonggong), ayam.wav (kotek), gong.wav, cambuk.wav, perisai.wav, terkena.wav, lompat.wav, langkah.wav, ambil.wav, berhasil.wav, gagal.wav, klik.wav | Efek suara | idem |
 
 > Catatan etis: musik **bukan rekaman** gong-gendang atau nyanyian Manggarai asli. Musik disintesis sebagai penghormatan, sehingga tidak ada rekaman budaya yang dipakai tanpa izin.
 

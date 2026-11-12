@@ -39,6 +39,8 @@ Centang ☐ → ☑ saat menguji di Godot. Catat bug di tabel paling bawah.
 | V2 | E saat berbicara | Dilewati | ☐ |
 | V3 | Menu jeda → "Tampilkan teks dialog" | Teks ikut tampil | ☐ |
 | V4 | Teka-teki | Pertanyaan & pilihan dibacakan; tombol 1/2/3 berfungsi | ☐ |
+| H1 | Anjing & ayam di kampung | Berkeliaran, ayam mematuk, ekor anjing bergoyang, sesekali bersuara saat didekati | ☐ |
+| A1 | Tampilan karakter | Gaya anime: kepala & mata besar, kulit cokelat, rambut bergelombang; tidak tembus rumah | ☐ |
 | E1 | Ending | Penari & dua penampil caci bergantian menyerang/menangkis | ☐ |
 | P1 | Main dari awal sampai ending | Tidak crash, tidak ada error merah | ☐ |
 | P2 | FPS | Stabil ±60 | ☐ |

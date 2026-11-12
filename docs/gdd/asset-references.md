@@ -16,7 +16,6 @@ Semua aset dalam prototipe **dibuat sendiri** secara prosedural oleh pembuat pro
 | rumput.png, tanah.png, batu.png, kayu.png | Material lingkungan | idem | Tanah, arena, compang, tiang |
 | kulit_kerbau.png | Kulit perisai | idem | Nggiling, kulit gendang |
 | bingkai_songke.png (48×48) | Bingkai UI 9-patch | idem | Panel, dialog |
-| kartu.png (64×80) | Ikon kartu budaya | idem | Pickup kartu |
 
 ## Audio (`src/assets/audio/`, WAV 22.050 Hz mono)
 | File | Isi | Dibuat dengan |

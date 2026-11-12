@@ -70,8 +70,8 @@ func _ready() -> void:
 # ------------------------------------------------------------- pembangunan
 
 func _bangun_arena() -> void:
-	Dunia.lingkungan(self, 0.012)
-	Dunia.tanah(self, 60.0)
+	Dunia.lingkungan(self)
+	Dunia.tanah(self, 220.0)
 	Dunia.arena(self, Vector3.ZERO, 4.5)
 	Dunia.gong_gendang(self, Vector3(-3.5, 0, -6.5))
 	Dunia.mbaru_niang(self, Vector3(-9, 0, -14), Vector3.ZERO)

@@ -98,17 +98,5 @@ def bingkai():
     img.save(os.path.join(OUT, "bingkai_songke.png"))
 
 
-def kartu():
-    img = Image.new("RGB", (64, 80), PUTIH)
-    d = ImageDraw.Draw(img)
-    d.rectangle([0, 0, 63, 79], outline=HITAM, width=3)
-    sub = Image.open(os.path.join(OUT, "songke_merah.png")).crop((0, 0, 52, 30))
-    img.paste(sub, (6, 6))
-    for y in (46, 56, 66):
-        d.line([10, y, 54, y], fill=(120, 110, 100), width=2)
-    img.save(os.path.join(OUT, "kartu.png"))
-
-
 bingkai()
-kartu()
 print("tekstur selesai ->", os.path.abspath(OUT))

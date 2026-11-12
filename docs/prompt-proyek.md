@@ -23,8 +23,8 @@ Kamu adalah **developer game Godot 4 senior** sekaligus **game designer** yang p
 - Fakta budaya kunci: Caci = paki vs ta'ang; pukulan sah hanya di atas pinggang; nilai sportivitas & persaudaraan. Wae Rebo punya 7 Mbaru Niang (1 mbaru gendang + 6 mbaru gena), 5 tingkat (lutur, lobo, lentar, lempa rae, hekang kode), dan meraih penghargaan UNESCO Asia-Pacific 2012. Compang adalah altar batu di tengah kampung. Penti adalah syukur atau tahun baru adat. Songke berdasar hitam dengan motif bermakna.
 
 ## 3. TUGAS
-1. **Kampung 3D:** tanah, 7 Mbaru Niang melingkari compang, gong & gendang, bukit dan kabut, batas dunia, dan batu pijakan untuk platforming.
-2. **Interaksi:** 4 NPC (Tu'a Golo, Ine Wela, dan 3 lawan Caci) dengan label 3D "[E] Bicara". Ada 8 kartu budaya yang bisa dikumpulkan, berupa pickup dan hadiah.
+1. **Kampung 3D:** tanah, 7 Mbaru Niang melingkari compang, gong & gendang, bukit (tanpa kabut), batas dunia, dan batu pijakan untuk platforming.
+2. **Interaksi:** 4 NPC (Tu'a Golo, Ine Wela, dan 3 lawan Caci) dengan label 3D "[E] Bicara". Ada 9 kartu budaya: ditemukan di dalam Mbaru Niang, dari NPC/compang, dan sebagai hadiah duel.
 3. **Mekanik 1 — Ta'ang (menangkis):** lawan memberi isyarat ancang-ancang (*anticipation*). Pemain menekan tangkis tepat waktu. Tangkisan memakai stamina.
 4. **Mekanik 2 — Paki (mencambuk):** bilah timing dengan zona tepat. Zona makin sempit untuk lawan yang lebih kuat.
 5. **Struktur duel:** 3 ronde, peran bergantian, skor, lalu menang atau ulangi. Ada tutorial pada lawan pertama.

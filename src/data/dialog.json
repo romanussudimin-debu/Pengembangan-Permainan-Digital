@@ -1,10 +1,10 @@
 {
 	"tua_awal": [
-		{"nama": "Tu'a Golo", "teks": "Ité sudah pulang, Nara! Kampung Wae Rebo menyambutmu. Sebentar lagi Penti, tahun baru adat kita."},
+		{"nama": "Tu'a Golo", "teks": "Ité sudah pulang, Kraeng! Kampung Wae Rebo menyambutmu. Sebentar lagi Penti, tahun baru adat kita."},
 		{"nama": "Tu'a Golo", "teks": "Saat Penti, para pemuda akan menampilkan caci. Kamu ingin ikut bermain, bukan?"},
 		{"nama": "Nara", "teks": "Iya, Tu'a. Saya ingin belajar menjadi paki dan ta'ang."},
 		{"nama": "Tu'a Golo", "teks": "Bagus. Berlatihlah dengan tiga pemain caci kampung kita: Rangga, Fransi, lalu Ema Agus, juara kampung."},
-		{"nama": "Tu'a Golo", "teks": "Ingat: caci bukan untuk melukai. Ini tentang sportivitas dan persaudaraan. Jelajahi juga kampung; banyak pengetahuan menunggumu."}
+		{"nama": "Tu'a Golo", "teks": "Ingat: caci bukan untuk melukai. Ini tentang sportivitas dan persaudaraan. Masuklah juga ke Mbaru Niang yang pintunya bercahaya; banyak pengetahuan tersimpan di sana."}
 	],
 	"tua_belum": [
 		{"nama": "Tu'a Golo", "teks": "Teruslah berlatih caci. Kalahkan ketiga pemain dengan sportif, lalu kembali kepadaku."}
@@ -14,7 +14,7 @@
 		{"nama": "Tu'a Golo", "teks": "Mari kita mulai Penti! Tabuh gong dan gendang. Kita bersyukur kepada Mori Kraeng dan mengenang para empo."}
 	],
 	"ine_awal": [
-		{"nama": "Ine Wela", "teks": "Nara, lihat kain songke yang sedang kutenun ini. Pakailah songke saat bermain caci nanti."},
+		{"nama": "Ine Wela", "teks": "Kraeng, lihat kain songke yang sedang kutenun ini. Pakailah songke saat bermain caci nanti."},
 		{"nama": "Ine Wela", "teks": "Setiap motif punya makna. Simpan kartu ini supaya kamu ingat."}
 	],
 	"ine_lagi": [
@@ -27,7 +27,7 @@
 		{"nama": "Pemain Caci", "teks": "Kalahkan dulu pemain sebelumnya. Aku menunggumu di arena."}
 	],
 	"rangga_ajak": [
-		{"nama": "Rangga", "teks": "Nara! Mau berlatih caci? Aku akan pelan-pelan saja, ini latihan pertamamu."}
+		{"nama": "Rangga", "teks": "Kraeng! Mau berlatih caci? Aku akan pelan-pelan saja, ini latihan pertamamu."}
 	],
 	"fransi_ajak": [
 		{"nama": "Fransi", "teks": "Kudengar kamu mengalahkan Rangga. Sekarang coba hadapi aku. Ayunanku lebih cepat!"}

@@ -80,7 +80,7 @@ Struktur 3 babak:
 | Ema Agus (juara) | 0,45–1,0 | 0,24 | 0,14 | 1,5 | 33% | Nilai Sportivitas Caci |
 
 ### 4.5 Mekanik pendukung: eksplorasi & platforming
-- Berjalan bebas di kampung 3D, melompat ke **batu pijakan** bertingkat (tinggi 0,9–3 m) untuk meraih kartu.
+- Berjalan bebas di kampung 3D, mengunjungi Mbaru Niang yang pintunya bercahaya untuk menemukan kartu, dan melompat ke **batu pijakan** bertingkat (tinggi 1–3 m).
 - Lompatan memakai *coyote time* (0,12 dtk), *jump buffer* (0,12 dtk), dan tinggi lompat variabel (lepas tombol lebih awal = lompatan lebih rendah).
 
 ## 5. Kontrol
@@ -128,7 +128,7 @@ Transisi yang tidak terdaftar di `TRANSISI_SAH` **ditolak** dan diberi peringata
 |---|---|
 | **Mekanik** | Peran paki dan ta'ang bergantian; ancang-ancang lawan menjadi isyarat menangkis; menang lewat poin, bukan menghabisi lawan; sasaran di tubuh atas |
 | **Visual: karakter** | Pemain caci bertelanjang dada dengan **panggal** bertanduk, **larik**, **nggiling** kulit kerbau, dan sarung **songke**; tetua berbaju hitam; penenun berbaju merah |
-| **Visual: lingkungan** | 7 **Mbaru Niang** (1 mbaru gendang lebih besar + 6 mbaru gena) melingkari **compang** di natas, atap ijuk dengan penanda 5 tingkat, gong dan gendang, lembah berkabut |
+| **Visual: lingkungan** | 7 **Mbaru Niang** (1 mbaru gendang lebih besar + 6 mbaru gena) melingkari **compang** di natas, atap ijuk dengan penanda 5 tingkat, gong dan gendang, lembah hijau berlangit cerah |
 | **Visual: UI** | Bingkai panel dan dialog bermotif **songke** (dasar hitam, garis merah-kuning-hijau-biru) |
 | **Audio** | Musik pola **gong-gendang** sintetis (kampung lebih tenang, arena caci lebih cepat), SFX cambuk, perisai, dan gong pembuka ronde |
 | **Narasi** | Bingkai **Penti**; pesan sportivitas dan persaudaraan; sapaan hormat *ité*; *Mori Kraeng* dan *empo* dalam doa syukur |
@@ -140,18 +140,20 @@ Transisi yang tidak terdaftar di `TRANSISI_SAH` **ditolak** dan diberi peringata
 ### 8.1 Kampung (hub)
 ```
                     UTARA
-              [Mbaru Gendang]
-     [Gena]      ┌─────┐       [Gena]
-                 │gong │ (kartu: gong)
- [Gena]   [kartu]│  ◎  │ compang      ──── papan "Arena Caci"
-   Ine Wela      └─────┘  Tu'a Golo         ( ARENA )  Rangga · Fransi · Ema Agus
- [Gena]     batu▲▲(kartu Wae Rebo)    batu▲▲▲(kartu Penti)
-              [Gena]           [Gena]
-                    ▼ papan "Kampung Wae Rebo"
+          [Mbaru Gendang]✦ (kartu Mbaru Niang)
+ ✦[Gena] (kartu Gong-Gendang)       [Gena]
+            gong  ┌─────┐
+ [Gena]           │  ◎  │ compang (dilihat)   ──── papan "Arena Caci"
+   Ine Wela       └─────┘  Tu'a Golo              ( ARENA )  Rangga · Fransi · Ema Agus
+ [Gena]                         ✦[Gena] (kartu Penti)
+     ✦[Gena] (kartu Wae Rebo)
+  batu▲▲▲          ▼ papan "Kampung Wae Rebo"
                  ★ titik muncul (selatan)
+ ✦ = pintu Mbaru Niang bercahaya, berisi kartu budaya ("[E] Masuk Mbaru Niang")
 ```
-- Ukuran 80×80 m dengan dinding batas tak terlihat; pohon di radius 22–36 m; bukit di kejauhan.
-- Kartu: 4 pickup (dua di atas batu pijakan), 1 dari compang, 1 dari Ine Wela, 3 hadiah duel. Total **9**.
+- Area bermain 80×80 m dengan dinding batas tak terlihat (tanah 220×220 m agar cakrawala bersih tanpa kabut); pohon di radius 22–36 m; bukit di kejauhan.
+- Kartu: 4 ditemukan **di dalam Mbaru Niang** (pintu bercahaya hangat sampai kartunya diambil), 1 dari compang, 1 dari Ine Wela, 3 hadiah duel. Total **9**.
+- Tiga batu pijakan bertingkat (1–3 m) di barat daya untuk latihan melompat dan memandang kampung dari atas.
 
 ### 8.2 Arena caci
 Lingkaran tanah dikelilingi batu, 7 penonton setengah lingkaran (sebagian menari), gong-gendang, tiga Mbaru Niang di latar. Kamera samping tetap.
@@ -202,7 +204,7 @@ src/
 │  ├─ karakter/               KarakterModel (model prosedural + animasi)
 │  ├─ pemain/ (+states)       Pemain (CharacterBody3D) + Idle/Jalan/Lompat/Jatuh/Interaksi
 │  ├─ lawan/ (+states)        LawanCaci + Siaga/Ancang/Serang/Tangkis/Terkena
-│  ├─ dunia/                  Dunia (builder), kampung, Interaktif, KartuPickup, NpcKampung, KameraIkut
+│  ├─ dunia/                  Dunia (builder), kampung, Interaktif, NpcKampung, KameraIkut
 │  ├─ minigame/               duel_caci, BilahTiming
 │  ├─ ui/                     hud, main_menu, ending
 │  └─ util/                   Gaya (palet & komponen UI)

@@ -85,7 +85,7 @@ Catatan ejaan: sumber berbeda dalam penulisan (mis. *tu'a/tua*, *pe'ang/peang*).
 | Go'et | ungkapan/peribahasa adat | [S40] | ✔ |
 | Tabe | (sering dipakai sebagai salam/permisi) | — | ✘ [PERLU VERIFIKASI] |
 | Di'a / "Di'a koe?" | (sering diartikan "baik") | — | ✘ [PERLU VERIFIKASI] |
-| Kraeng (sebagai sapaan pria) | (dalam *Mori Kraeng* = Tuhan; sebagai sapaan belum terverifikasi) | [S38] | ✘ sebagai sapaan |
+| Kraeng (sebagai sapaan pria) | (dalam *Mori Kraeng* = Tuhan); dipakai di game sebagai sapaan hormat kepada tokoh pemain atas keputusan pengembang [PERLU VERIFIKASI sumber tertulis] | [S38] | ⚠ dipakai di dialog |
 | Ase kae, ende, amang, inang | istilah kekerabatan (belum ada sumber) | — | ✘ [PERLU VERIFIKASI] |
 
 **Rekomendasi dialog:** pakai *ité* untuk menyapa tetua, *ema* untuk ayah/bapak, *neka rabo* untuk "maaf", *Mori Kraeng* untuk menyebut Tuhan dalam doa syukur, serta istilah benda/tempat (lingko, lodok, moso, compang, mbaru gendang, songke, larik, nggiling, panggal). Salam pembuka gunakan Bahasa Indonesia sampai *tabe/di'a* diverifikasi.

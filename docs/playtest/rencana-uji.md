@@ -8,7 +8,8 @@ Centang ☐ → ☑ saat menguji di Godot. Catat bug di tabel paling bawah.
 | F1 | WASD/panah | Nara berjalan ke 4 arah, model menghadap arah gerak | ☐ |
 | F2 | Spasi | Melompat; tahan = lebih tinggi, ketuk = lebih rendah | ☐ |
 | F3 | Lompat dari tepi batu sesaat setelah jatuh | Masih bisa melompat (coyote time) | ☐ |
-| F4 | Naik batu pijakan 1 → 2 → 3 | Bisa dicapai; tidak tembus batu | ☐ |
+| F4 | Naik batu pijakan 1 → 2 → 3 (barat daya) | Bisa dicapai; tidak tembus batu | ☐ |
+| F4b | Masuk Mbaru Niang yang pintunya bercahaya (E) | Kartu didapat, cahaya pintu padam; masuk lagi → "sudah berkunjung" | ☐ |
 | F5 | Menabrak Mbaru Niang, pohon, compang, dinding batas | Tertahan, tidak tembus | ☐ |
 | F6 | Mendekati NPC | Muncul "[E] Bicara"; hanya objek terdekat yang menampilkan petunjuk | ☐ |
 

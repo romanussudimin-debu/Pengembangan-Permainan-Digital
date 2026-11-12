@@ -28,8 +28,8 @@ Konsep dan desain lengkap ada di `docs/gdd/GDD.md`. Core loop: jelajah kampung â
 | Fondasi | Input Map lewat kode; GameState FSM; StateMachine generik berbasis node |
 | Kontrol pemain | CharacterBody3D, akselerasi/gesekan, coyote time, jump buffer, lompat variabel, collision dengan tanah/rumah/batu/pohon/dinding |
 | Karakter | KarakterModel dari mesh primitif dengan sendi pivot dan animasi prosedural (Tween + sinus) |
-| Dunia | Builder `Dunia`: Mbaru Niang, compang, gong-gendang, arena, pohon, bukit, kabut |
-| Interaksi | Area3D `Interaktif` (memilih objek terdekat), NPC, `KartuPickup`, dialog berbasis JSON |
+| Dunia | Builder `Dunia`: Mbaru Niang, compang, gong-gendang, arena, pohon, bukit, langit |
+| Interaksi | Area3D `Interaktif` (memilih objek terdekat), NPC, kartu budaya di dalam Mbaru Niang, dialog berbasis JSON |
 | Duel | Dua mekanik, FSM lawan 5 state, 3 tingkat kesulitan, tutorial, kondisi menang/kalah |
 | UI | Menu utama 3D, HUD, menu jeda, transisi fade, ending Penti |
 

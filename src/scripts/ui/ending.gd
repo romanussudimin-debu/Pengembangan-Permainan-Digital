@@ -9,8 +9,8 @@ func _ready() -> void:
 	GameState.ubah_state(GameState.State.SELESAI)
 	AudioManager.putar_musik("caci")
 	AudioManager.putar_sfx("gong")
-	Dunia.lingkungan(self, 0.02)
-	Dunia.tanah(self, 80.0)
+	Dunia.lingkungan(self)
+	Dunia.tanah(self, 220.0)
 	Dunia.compang(self, Vector3.ZERO)
 	Dunia.gong_gendang(self, Vector3(-6, 0, -6))
 	for i in 7:

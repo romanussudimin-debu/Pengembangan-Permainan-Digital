@@ -6,7 +6,7 @@
 |---|---|---|---|
 | 0:00–0:08 | Menu utama: kamera mengorbit Wae Rebo, judul "CACI" | "Caci: Jejak Anak Wae Rebo, game 3D berbasis budaya Manggarai, Flores, NTT." | Musik kampung |
 | 0:08–0:22 | Tekan Mulai → Nara berjalan di kampung, kamera melewati Mbaru Niang & compang | "Pemain berperan sebagai Nara yang pulang ke kampung adat menjelang Penti. Tujuh Mbaru Niang melingkari compang, seperti di Wae Rebo." | Musik kampung, langkah |
-| 0:22–0:35 | Bicara dengan Tu'a Golo (dialog), lalu lompat ke batu pijakan dan ambil kartu | "Kontrol: berjalan, melompat, berinteraksi. Kartu budaya tersebar di kampung, misalnya kartu tentang Mbaru Niang dan lima tingkatnya." | SFX lompat, ambil kartu |
+| 0:22–0:35 | Bicara dengan Tu'a Golo (dialog), lompat di batu pijakan, lalu masuk Mbaru Niang yang pintunya bercahaya dan dapat kartu | "Kontrol: berjalan, melompat, berinteraksi. Kartu budaya tersimpan di dalam Mbaru Niang, misalnya kartu tentang lima tingkat Mbaru Niang." | SFX lompat, ambil kartu |
 | 0:35–0:45 | Buka menu jeda → koleksi kartu → tutup | "Semua kartu dapat dibaca ulang di menu jeda." | Klik |
 | 0:45–1:05 | Masuk arena (Rangga). Fase TA'ANG: lawan ancang-ancang "!", Nara menangkis → "Tertangkis! +1"; sekali terkena → layar bergetar | "Mekanik pertama: TA'ANG. Baca ancang-ancang lawan, lalu tangkis dengan nggiling tepat waktu. Setiap tangkisan memakai stamina." | Gong, musik caci, perisai, cambuk |
 | 1:05–1:22 | Fase PAKI: bilah timing → "Kena! +2" lalu "Ditangkis lawan" | "Mekanik kedua: PAKI. Cambuk dengan larik saat penanda di zona kuning. Peran bergantian setiap ronde, seperti caci sesungguhnya." | Cambuk, terkena |

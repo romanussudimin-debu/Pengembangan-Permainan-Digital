@@ -15,7 +15,7 @@ scripts/
   karakter/       KarakterModel (model low-poly prosedural + animasi Tween)
   pemain/         Pemain (CharacterBody3D) + states Idle/Jalan/Lompat/Jatuh/Interaksi
   lawan/          LawanCaci + states Siaga/Ancang/Serang/Tangkis/Terkena
-  dunia/          Dunia (builder mesh), kampung, Interaktif, KartuPickup, NpcKampung, KameraIkut
+  dunia/          Dunia (builder mesh), kampung, Interaktif, NpcKampung, KameraIkut
   minigame/       duel_caci (TA'ANG & PAKI), BilahTiming
   ui/             hud, main_menu, ending
   util/           Gaya (palet songke & komponen UI)

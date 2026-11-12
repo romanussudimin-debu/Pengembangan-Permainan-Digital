@@ -12,6 +12,8 @@
 | 12 Nov 2026 | Duel caci: mekanik TA'ANG (stamina, tipuan) & PAKI (bilah timing), 3 lawan, FSM lawan, tutorial, menang/kalah | Await coroutine bisa error jika scene ditutup saat jeda | Menunggu memakai Timer milik scene sehingga ikut terhapus dengan aman |
 | 12 Nov 2026 | Menu utama diorama 3D, menu jeda (volume + koleksi kartu), transisi fade, ending Penti | — | — |
 | 12 Nov 2026 | Validasi: seluruh 39 skrip lolos parser GDScript (gdtoolkit); path resource, nama state, id dialog/kartu dicek otomatis | Godot tidak bisa dijalankan di lingkungan pengembangan | Uji runtime dilakukan di laptop pengembang (lihat rencana uji) |
-| _(isi)_ | Uji coba di Godot & perbaikan error | | |
+| 12 Nov 2026 | Uji coba pertama di Godot 4.7 berhasil (kampung tampil) | — | — |
+| 12 Nov 2026 | Iterasi dari masukan pengembang: kabut dihapus agar warna jernih; kartu budaya dipindah dari atas batu ke dalam 4 Mbaru Niang (pintu bercahaya sebagai penanda); sapaan tokoh pemain diganti "Kraeng" | Tanpa kabut, tepi tanah dan pintu rumah yang terhalang batu menjadi terlihat | Tanah diperluas menjadi 220 m; batu pijakan dipindah menjadi tangga di barat daya; jarak pintu dicek dengan skrip |
+| _(isi)_ | Uji coba lanjutan & perbaikan error | | |
 | _(isi)_ | Playtest dengan 3+ penguji & iterasi | | |
 | _(isi)_ | Ekspor .exe / web, rekam video demo | | |

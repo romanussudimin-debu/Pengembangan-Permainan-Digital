@@ -54,8 +54,8 @@ static func silinder(r_atas: float, r_bawah: float, tinggi: float, segmen: int =
 	return c
 
 
-## Langit, kabut pegunungan (khas lembah Wae Rebo), cahaya matahari dengan bayangan.
-static func lingkungan(induk: Node3D, kabut: float = 0.018) -> void:
+## Langit cerah dan cahaya matahari dengan bayangan (tanpa kabut agar warna tetap jernih).
+static func lingkungan(induk: Node3D) -> void:
 	var env := Environment.new()
 	var langit := Sky.new()
 	var mat_langit := ProceduralSkyMaterial.new()
@@ -69,9 +69,7 @@ static func lingkungan(induk: Node3D, kabut: float = 0.018) -> void:
 	env.ambient_light_source = Environment.AMBIENT_SOURCE_SKY
 	env.ambient_light_energy = 0.8
 	env.tonemap_mode = Environment.TONE_MAPPER_FILMIC
-	env.fog_enabled = true
-	env.fog_light_color = Color("d5e0e0")
-	env.fog_density = kabut
+	env.fog_enabled = false
 	var we := WorldEnvironment.new()
 	we.environment = env
 	induk.add_child(we)
@@ -81,7 +79,7 @@ static func lingkungan(induk: Node3D, kabut: float = 0.018) -> void:
 	matahari.light_energy = 1.1
 	matahari.light_color = Color("fff1d8")
 	matahari.shadow_enabled = true
-	matahari.directional_shadow_max_distance = 60.0
+	matahari.directional_shadow_max_distance = 80.0
 	induk.add_child(matahari)
 
 

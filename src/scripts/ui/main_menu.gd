@@ -19,8 +19,8 @@ func _ready() -> void:
 
 
 func _bangun_diorama() -> void:
-	Dunia.lingkungan(self, 0.025)
-	Dunia.tanah(self, 80.0)
+	Dunia.lingkungan(self)
+	Dunia.tanah(self, 220.0)
 	Dunia.compang(self, Vector3.ZERO)
 	for i in 7:
 		var a: float = TAU * i / 7.0

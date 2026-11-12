@@ -1,6 +1,6 @@
 extends Node3D
 ## Level utama: Kampung adat Wae Rebo dalam 3D.
-## 7 Mbaru Niang melingkari compang; arena caci di timur; kartu budaya tersebar.
+## 7 Mbaru Niang melingkari compang; arena caci di timur; kartu budaya disimpan di dalam rumah.
 
 const ADEGAN_PEMAIN: PackedScene = preload("res://scenes/pemain.tscn")
 const ADEGAN_DUEL: String = "res://scenes/duel_caci.tscn"
@@ -16,6 +16,10 @@ const PUSAT_ARENA := Vector3(26, 0, 0)
 const SUDUT_RUMAH: Array = [-90.0, -130.0, -170.0, 150.0, 110.0, -50.0, 40.0]
 const JARI_KAMPUNG: float = 15.0
 
+## Kartu budaya yang ditemukan dengan masuk ke Mbaru Niang (indeks rumah -> id kartu).
+## Rumah 0 adalah mbaru gendang; lainnya mbaru gena.
+const KARTU_DI_RUMAH: Dictionary = {0: "mbaru_niang", 1: "gong_gendang", 4: "wae_rebo", 6: "penti"}
+
 const DATA_LAWAN: Array = [
 	{"nama": "Rangga", "dialog": "rangga_ajak", "posisi": Vector3(23, 0, -4), "songke": "res://assets/textures/songke_biru.png"},
 	{"nama": "Fransi", "dialog": "fransi_ajak", "posisi": Vector3(27, 0, -5), "songke": "res://assets/textures/songke_hijau.png"},
@@ -24,6 +28,7 @@ const DATA_LAWAN: Array = [
 
 var pemain: Pemain
 var kamera: KameraIkut
+var _cahaya_rumah: Dictionary = {}  ## id kartu -> OmniLight3D penanda pintu
 
 
 func _ready() -> void:
@@ -41,7 +46,7 @@ func _ready() -> void:
 
 func _bangun_dunia() -> void:
 	Dunia.lingkungan(self)
-	Dunia.tanah(self, 90.0)
+	Dunia.tanah(self, 220.0)
 	Dunia.batas_dunia(self, 40.0)
 	Dunia.compang(self, Vector3.ZERO)
 	for i in SUDUT_RUMAH.size():
@@ -52,20 +57,18 @@ func _bangun_dunia() -> void:
 	Dunia.arena(self, PUSAT_ARENA, 5.0)
 	Dunia.papan(self, Vector3(17, 0, -1.5), "Arena Caci")
 	Dunia.papan(self, Vector3(3, 0, 18), "Kampung Wae Rebo")
-	# Batu pijakan menuju kartu budaya (melatih lompat & collision)
-	Dunia.batu_pijakan(self, Vector3(-4.5, 0, 8.5), 0.9)
-	Dunia.batu_pijakan(self, Vector3(-6.5, 0, 6.2), 1.8)
-	Dunia.batu_pijakan(self, Vector3(5, 0, 9), 1.0)
-	Dunia.batu_pijakan(self, Vector3(7.6, 0, 6.6), 2.0, 0.9)
-	Dunia.batu_pijakan(self, Vector3(9.0, 0, 3.6), 3.0, 0.9)
-	# Pepohonan dan bukit (lembah berkabut)
+	# Batu pijakan untuk melompat dan memandang kampung dari atas (melatih lompat & collision)
+	Dunia.batu_pijakan(self, Vector3(-9, 0, 19), 1.0)
+	Dunia.batu_pijakan(self, Vector3(-11.8, 0, 17.2), 2.0, 1.0)
+	Dunia.batu_pijakan(self, Vector3(-14.2, 0, 15), 3.0, 0.9)
+	# Pepohonan dan bukit di sekeliling lembah
 	var acak := RandomNumberGenerator.new()
 	acak.seed = 42
 	for i in 26:
 		var a: float = acak.randf() * TAU
 		var r: float = acak.randf_range(22.0, 36.0)
 		var pos := Vector3(cos(a) * r, 0, sin(a) * r)
-		if pos.distance_to(PUSAT_ARENA) > 8.0 and pos.distance_to(TITIK_MUNCUL["awal"]) > 5.0:
+		if pos.distance_to(PUSAT_ARENA) > 8.0 and pos.distance_to(TITIK_MUNCUL["awal"]) > 5.0 and pos.distance_to(Vector3(-11.8, 0, 17.2)) > 6.0:
 			Dunia.pohon(self, pos, acak.randf_range(0.8, 1.4))
 	for i in 12:
 		var a: float = TAU * i / 12.0
@@ -97,27 +100,58 @@ func _npc(nama: String, posisi: Vector3, songke: String, baju: Color, ikat: Colo
 
 
 func _bangun_kartu() -> void:
-	var daftar: Array[Array] = [
-		["wae_rebo", Vector3(-6.5, 2.6, 6.2)],
-		["penti", Vector3(9.0, 3.8, 3.6)],
-		["mbaru_niang", Vector3(1.5, 1.0, -9)],
-		["gong_gendang", Vector3(-5, 1.0, -2)],
-	]
-	for item in daftar:
-		var id: String = item[0]
-		if GameState.kartu_terkumpul.has(id):
-			continue
-		var k := KartuPickup.new()
-		k.id_kartu = id
-		k.position = item[1]
-		add_child(k)
+	# Pintu Mbaru Niang yang menyimpan kartu: masuk untuk menemukannya
+	for indeks: int in KARTU_DI_RUMAH:
+		var id: String = KARTU_DI_RUMAH[indeks]
+		var pintu: Vector3 = _posisi_pintu(indeks)
+		var area := Interaktif.new()
+		area.teks_petunjuk = "Masuk Mbaru Niang"
+		area.jari_jari = 1.8
+		area.tinggi_petunjuk = 2.6
+		area.position = pintu
+		add_child(area)
+		area.diinteraksi.connect(_masuk_rumah.bind(id, indeks))
+		if not GameState.kartu_terkumpul.has(id):
+			# Cahaya hangat dari pintu menandai rumah yang masih menyimpan pengetahuan
+			var cahaya := OmniLight3D.new()
+			cahaya.light_color = Color("ffb057")
+			cahaya.light_energy = 1.6
+			cahaya.omni_range = 3.0
+			cahaya.position = pintu + Vector3(0, 1.4, 0)
+			add_child(cahaya)
+			_cahaya_rumah[id] = cahaya
 	# Compang: dilihat dan dijelaskan (tanpa dijadikan tempat bermain karena sakral)
-	var area := Interaktif.new()
-	area.teks_petunjuk = "Lihat Compang"
-	area.jari_jari = 3.4
-	area.tinggi_petunjuk = 3.2
-	add_child(area)
-	area.diinteraksi.connect(_lihat_compang)
+	var area_compang := Interaktif.new()
+	area_compang.teks_petunjuk = "Lihat Compang"
+	area_compang.jari_jari = 3.4
+	area_compang.tinggi_petunjuk = 3.2
+	add_child(area_compang)
+	area_compang.diinteraksi.connect(_lihat_compang)
+
+
+## Titik di depan pintu rumah ke-`indeks` (pintu selalu menghadap compang).
+func _posisi_pintu(indeks: int) -> Vector3:
+	var a: float = deg_to_rad(SUDUT_RUMAH[indeks])
+	var arah := Vector3(cos(a), 0, sin(a))
+	var skala: float = 1.25 if indeks == 0 else 1.0
+	return arah * (JARI_KAMPUNG - 3.6 * skala - 0.9)
+
+
+func _masuk_rumah(_p: Pemain, id: String, indeks: int) -> void:
+	var nama_rumah: String = "mbaru gendang" if indeks == 0 else "mbaru gena"
+	if GameState.kartu_terkumpul.has(id):
+		DialogManager.mulai_baris("rumah_" + id, [{"nama": "Nara", "teks": "Aku sudah berkunjung ke %s ini. Isi kartunya bisa dibaca lagi di menu jeda (Esc)." % nama_rumah}])
+	else:
+		DialogManager.mulai_baris("rumah_" + id, [{"nama": "Nara", "teks": "Aku masuk ke dalam %s. Ada pengetahuan yang tersimpan di sini..." % nama_rumah}],
+				_temukan_kartu.bind(id))
+
+
+func _temukan_kartu(id: String) -> void:
+	if _cahaya_rumah.has(id):
+		var cahaya: OmniLight3D = _cahaya_rumah[id]
+		cahaya.queue_free()
+		_cahaya_rumah.erase(id)
+	_beri_kartu(id)
 
 
 func _lihat_compang(_p: Pemain) -> void:

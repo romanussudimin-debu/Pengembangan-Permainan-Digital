@@ -3,11 +3,12 @@
 
 | | |
 |---|---|
-| **Nama / NIM** | [NAMA] / [NIM] |
+| **Nama / NIM** | Romanus Sudimin / 240030260 |
+| **Program studi** | Sistem Informasi |
 | **Mata kuliah** | Pengembangan Permainan Digital — Rencana Tugas 1 |
 | **Versi dokumen** | 2.0 (revisi konsep: dari duel caci menjadi jelajah budaya) |
 | **Engine** | Godot 4.3+ (renderer Compatibility) |
-| **Platform** | Windows (.exe), macOS, dan Web (HTML5) |
+| **Platform** | Web (HTML5, termasuk browser HP), Windows (.exe), macOS, dan Android (.apk) |
 
 ---
 

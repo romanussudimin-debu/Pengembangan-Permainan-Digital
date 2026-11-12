@@ -3,7 +3,7 @@
 **Penguji:** minimal 3 orang (teman sekelas/keluarga) · **Durasi:** 8–10 menit/orang
 **Skrip:** "Silakan mainkan dari menu utama. Saya hanya mengamati dan tidak akan membantu kecuali Anda benar-benar macet. Sambil bermain, ceritakan apa yang Anda pikirkan."
 
-Pengamat mencatat: di mana penguji bingung, berapa kali kalah per lawan, dan berapa kartu yang ditemukan.
+Pengamat mencatat: di mana penguji bingung, berapa kali salah menjawab teka-teki, dan berapa kartu yang ditemukan.
 
 ## Pertanyaan setelah bermain
 | No | Pertanyaan | Jawaban |

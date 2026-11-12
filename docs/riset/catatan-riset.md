@@ -1,6 +1,6 @@
 # Catatan Riset — Budaya Manggarai untuk *Jejak Penti di Wae Rebo*
 
-**Peneliti:** agent `peneliti-budaya-manggarai` (untuk [NAMA], [NIM])
+**Peneliti:** agent `peneliti-budaya-manggarai` (untuk Romanus Sudimin, 240030260)
 **Tanggal riset & akses sumber:** 12 November 2026
 **Metode:** studi literatur daring (WebSearch) atas jurnal ilmiah Indonesia, situs pemerintah (Kemenparekraf/Indonesia.travel, Jadesta, Badan Bahasa), arsip UNESCO/lembaga warisan budaya, dan media kredibel.
 

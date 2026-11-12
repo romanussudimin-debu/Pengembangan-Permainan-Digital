@@ -1,7 +1,7 @@
 # Laporan Proses Pengembangan
 ## Prototipe Game 3D Berbasis Budaya Lokal: *Jejak Penti di Wae Rebo*
 
-**Nama:** [NAMA] · **NIM:** [NIM] · **Mata kuliah:** Pengembangan Permainan Digital
+**Nama:** Romanus Sudimin · **NIM:** 240030260 · **Program studi:** Sistem Informasi · **Mata kuliah:** Pengembangan Permainan Digital
 
 ---
 
@@ -39,7 +39,13 @@ Konsep dan desain lengkap ada di `docs/gdd/GDD.md`. Core loop: temui warga yang 
 
 Detail kronologis ada di `docs/laporan/log-pengembangan.md`.
 
-`[SCREENSHOT: menu utama]` `[SCREENSHOT: kampung & Mbaru Niang]` `[SCREENSHOT: teka-teki Tu'a Golo]` `[SCREENSHOT: menenun songke]` `[SCREENSHOT: tabuh gong-gendang]` `[SCREENSHOT: ending Penti]`
+![Gambar 1. Menu utama dengan diorama kampung Wae Rebo](gambar/menu-utama.jpg){width=75%}
+
+![Gambar 2. Nggohak di kampung: Mbaru Niang, compang, batu pijakan, ayam dan anjing](gambar/kampung.jpg){width=75%}
+
+![Gambar 3. Versi web di browser HP dengan kontrol sentuh (joystick, BICARA, LOMPAT, jeda)](gambar/kontrol-sentuh-hp.jpg){width=75%}
+
+_[Tambahkan screenshot: teka-teki Tu'a Golo, menenun songke, tabuh gong-gendang, ending Penti]_
 
 ## 5. Arsitektur Teknis
 - **State management tiga lapis:** (1) `GameState` dengan transisi tervalidasi dan progres `langkah_rantai`; (2) FSM pemain (Idle, Jalan, Lompat, Jatuh, Interaksi); (3) FSM penampil caci (Siaga, Ancang, Serang, Tangkis, Terkena) pada pertunjukan Penti.
@@ -49,7 +55,8 @@ Detail kronologis ada di `docs/laporan/log-pengembangan.md`.
 
 ## 6. Pengujian & Iterasi
 - **Validasi statis:** seluruh skrip lolos parser GDScript (gdtoolkit 4.3). Path resource, nama state, id dialog, dan id kartu diperiksa otomatis dengan skrip.
-- **Uji fungsional:** mengikuti `docs/playtest/rencana-uji.md`. _[isi hasil]_
+- **Uji fungsional:** mengikuti `docs/playtest/rencana-uji.md`. Game berhasil dijalankan dari menu sampai bermain di Godot 4.7.2 (macOS). Versi web dibangun otomatis oleh GitHub Actions dan diuji di Chromium mode HP: menu tampil, permainan dapat dimulai dengan ketukan, kontrol sentuh muncul, dan tidak ada error di konsol.
+- **Iterasi dari uji coba pengembang:** kabut dihapus agar kampung terlihat; kartu dipindah dari atas batu ke tangan warga; petunjuk diubah menjadi teka-teki ciri orang/rumah; 3 pemegang kartu ditempatkan di dalam Mbaru Niang dan 3 lainnya berpindah tempat; ditambah kontrol sentuh untuk HP.
 - **Playtest:** _[isi ringkasan dari `docs/playtest/hasil-playtest.md`: jumlah penguji, temuan utama, iterasi yang dilakukan]_
 
 ## 7. Hasil Akhir & Keterbatasan

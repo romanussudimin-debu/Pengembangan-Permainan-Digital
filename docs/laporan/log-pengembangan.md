@@ -25,3 +25,4 @@
 - **Ekspor:** menambahkan `src/export_presets.cfg` (Windows, Web, macOS) dan folder `build/`; panduan ekspor & publikasi diperbarui.
 - **Mobile:** kontrol sentuh (autoload `KontrolSentuh`: joystick virtual + tombol LOMPAT/BICARA/jeda, tampil hanya di perangkat sentuh saat BERMAIN), tombol ketuk GONG/GENDANG & palet benang di mini-game, tombol Berhenti di tenun, layar landscape, preset ekspor Android & Web-mobile.
 - **Web otomatis:** workflow `.github/workflows/web.yml` (Godot 4.7.2 headless) membangun versi Web dan memasangnya ke cabang `gh-pages` (GitHub Pages). Uji asap di Chromium mobile: menu utama tampil tanpa error. Pencarian suara TTS diulang saat dialog dimulai karena browser memuat daftar suara belakangan.
+- **Pengumpulan:** folder `pengumpulan/` berisi dokumen Word & PDF (identitas Romanus Sudimin, 240030260, Sistem Informasi) dan slide presentasi 10 halaman (.pptx/.pdf); screenshot game ditambahkan ke laporan proses development.

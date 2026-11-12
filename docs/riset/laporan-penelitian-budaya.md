@@ -1,9 +1,10 @@
 # Laporan Penelitian Budaya
 ## Budaya Manggarai sebagai Fondasi Game 3D *Jejak Penti di Wae Rebo*
 
-**Nama:** [NAMA]
-**NIM:** [NIM]
-**Mata kuliah:** Pengembangan Permainan Digital — Rencana Tugas 1: Prototipe Game Berbasis Budaya Lokal
+**Nama:** Romanus Sudimin  
+**NIM:** 240030260  
+**Program studi:** Sistem Informasi  
+**Mata kuliah:** Pengembangan Permainan Digital — Rencana Tugas 1: Prototipe Game Berbasis Budaya Lokal  
 **Tanggal:** 12 November 2026
 
 ---

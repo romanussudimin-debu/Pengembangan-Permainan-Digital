@@ -78,16 +78,29 @@ func _bangun_dunia() -> void:
 func _bangun_npc() -> void:
 	var tua := _npc("Tu'a Golo", Vector3(0, 0, 5.8), "res://assets/textures/songke_kuning.png", Color("1b1818"), Color("e8b430"), false)
 	tua.diajak_bicara.connect(_bicara_tua)
-	var ine := _npc("Ine Wela", Vector3(-8, 0, 0.5), "res://assets/textures/songke_hijau.png", Color("b02a2a"), Color("2e7d46"), false)
+	var ine := _npc("Ine Wela", Vector3(-8, 0, 0.5), "res://assets/textures/songke_hijau.png", Color("b02a2a"), Color("2e7d46"), false, true)
 	ine.diajak_bicara.connect(_bicara_ine)
 	for i in DATA_LAWAN.size():
 		var d: Dictionary = DATA_LAWAN[i]
 		var n := _npc(d["nama"], d["posisi"], d["songke"], Color.WHITE, Color("b02a2a"), true)
 		n.model.mode = "siaga"
 		n.diajak_bicara.connect(_bicara_lawan.bind(i))
+	# Perempuan kampung yang menyiapkan kopi untuk para pemain caci, di tepi arena
+	for data: Array in [["Ine Rosa", Vector3(21, 0, 4), "res://assets/textures/songke_merah.png", Color("2c5c96")],
+			["Ine Lina", Vector3(23, 0, 5.6), "res://assets/textures/songke_hijau.png", Color("e8e2d2")]]:
+		var p := NpcKampung.new()
+		p.nama = data[0]
+		p.position = data[1]
+		p.tekstur_songke = load(data[2])
+		p.warna_baju = data[3]
+		p.perempuan = true
+		p.bawa_nampan = true
+		add_child(p)
+		p.model.rotation.y = atan2(-(PUSAT_ARENA.x - p.position.x), -(PUSAT_ARENA.z - p.position.z))
+		p.diajak_bicara.connect(_bicara_pembawa_kopi)
 
 
-func _npc(nama: String, posisi: Vector3, songke: String, baju: Color, ikat: Color, caci: bool) -> NpcKampung:
+func _npc(nama: String, posisi: Vector3, songke: String, baju: Color, ikat: Color, caci: bool, perempuan: bool = false) -> NpcKampung:
 	var n := NpcKampung.new()
 	n.nama = nama
 	n.position = posisi
@@ -95,6 +108,7 @@ func _npc(nama: String, posisi: Vector3, songke: String, baju: Color, ikat: Colo
 	n.warna_baju = baju
 	n.warna_ikat = ikat
 	n.pemain_caci = caci
+	n.perempuan = perempuan
 	add_child(n)
 	return n
 
@@ -186,6 +200,16 @@ func _bicara_tua(_npc_node: NpcKampung) -> void:
 func _mulai_penti() -> void:
 	AudioManager.putar_sfx("gong")
 	Transisi.pindah_scene(ADEGAN_ENDING)
+
+
+func _bicara_pembawa_kopi(npc_node: NpcKampung) -> void:
+	var baris: Array = []
+	for b: Dictionary in DialogManager.DATA_DIALOG.data["pembawa_kopi"]:
+		var salinan: Dictionary = b.duplicate()
+		if salinan.get("nama", "") == "Perempuan":
+			salinan["nama"] = npc_node.nama
+		baris.append(salinan)
+	DialogManager.mulai_baris("pembawa_kopi", baris)
 
 
 func _bicara_ine(_npc_node: NpcKampung) -> void:

@@ -33,8 +33,8 @@ func _bangun_ui() -> void:
 
 	var kolom := VBoxContainer.new()
 	kolom.position = Vector2(20, 44)
-	kolom.size = Vector2(170, 240)
-	kolom.add_theme_constant_override("separation", 8)
+	kolom.size = Vector2(170, 250)
+	kolom.add_theme_constant_override("separation", 4)
 	panel.add_child(kolom)
 
 	_tombol_lanjut = Gaya.tombol("Lanjutkan")
@@ -45,6 +45,21 @@ func _bangun_ui() -> void:
 	kolom.add_child(_slider("Musik"))
 	kolom.add_child(Gaya.label("Volume Efek Suara", 9, Gaya.PUTIH))
 	kolom.add_child(_slider("SFX"))
+	kolom.add_child(Gaya.label("Volume Suara Dialog", 9, Gaya.PUTIH))
+	var slider_suara := HSlider.new()
+	slider_suara.min_value = 0.0
+	slider_suara.max_value = 1.0
+	slider_suara.step = 0.05
+	slider_suara.value = DialogManager.volume_suara
+	slider_suara.custom_minimum_size = Vector2(160, 16)
+	slider_suara.value_changed.connect(func(v: float) -> void: DialogManager.volume_suara = v)
+	kolom.add_child(slider_suara)
+	var cek_teks := CheckBox.new()
+	cek_teks.text = "Tampilkan teks dialog"
+	cek_teks.add_theme_font_size_override("font_size", 9)
+	cek_teks.button_pressed = DialogManager.tampilkan_teks
+	cek_teks.toggled.connect(func(aktif: bool) -> void: DialogManager.tampilkan_teks = aktif)
+	kolom.add_child(cek_teks)
 
 	var ke_menu := Gaya.tombol("Ke Menu Utama")
 	ke_menu.pressed.connect(_ke_menu)

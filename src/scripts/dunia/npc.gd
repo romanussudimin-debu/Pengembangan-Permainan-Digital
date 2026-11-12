@@ -9,6 +9,8 @@ signal diajak_bicara(npc: NpcKampung)
 @export var warna_baju: Color = Color("e8e2d2")
 @export var warna_ikat: Color = Color("e8b430")
 @export var pemain_caci: bool = false
+@export var perempuan: bool = false
+@export var bawa_nampan: bool = false
 
 var model: KarakterModel
 var area: Interaktif
@@ -23,6 +25,8 @@ func _ready() -> void:
 	model.telanjang_dada = pemain_caci
 	model.pakai_panggal = pemain_caci
 	model.bawa_senjata = pemain_caci
+	model.perempuan = perempuan
+	model.bawa_nampan = bawa_nampan
 	add_child(model)
 	Dunia.label_nama(self, nama, 2.6 if pemain_caci else 2.2)
 	area = Interaktif.new()

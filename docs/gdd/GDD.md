@@ -72,6 +72,10 @@ Struktur 3 babak:
 - Kalah: dialog penyemangat, lalu pilih **Ulangi Duel** atau **Kembali ke Kampung**.
 - Tutorial interaktif (dialog Tu'a Golo) muncul sebelum duel pertama.
 
+### 4.3b Jeda kopi antarronde
+Setelah ronde 1 dan 2, dua perempuan kampung (**Ine Rosa** dan **Ine Lina**) berjalan dari tepi arena membawa nampan berisi cangkir kopi untuk Nara **dan** lawannya. Dialognya menekankan bahwa di arena mereka bertanding, di luar arena mereka bersaudara. Efeknya: **stamina pulih penuh**.
+> Catatan budaya: adegan menyuguhkan kopi adalah **tafsir kreatif** pengembang untuk menggambarkan keramahan dan dukungan warga. Belum ada sumber riset yang mendukungnya [PERLU VERIFIKASI].
+
 ### 4.4 Parameter lawan
 | Lawan | Ancang-ancang (dtk) | Jendela tangkis (dtk) | Lebar zona | Laju bilah | Peluang tipuan | Kartu hadiah |
 |---|---|---|---|---|---|---|
@@ -131,7 +135,8 @@ Transisi yang tidak terdaftar di `TRANSISI_SAH` **ditolak** dan diberi peringata
 | **Visual: lingkungan** | 7 **Mbaru Niang** (1 mbaru gendang lebih besar + 6 mbaru gena) melingkari **compang** di natas, atap ijuk dengan penanda 5 tingkat, gong dan gendang, lembah hijau berlangit cerah |
 | **Visual: UI** | Bingkai panel dan dialog bermotif **songke** (dasar hitam, garis merah-kuning-hijau-biru) |
 | **Audio** | Musik pola **gong-gendang** sintetis (kampung lebih tenang, arena caci lebih cepat), SFX cambuk, perisai, dan gong pembuka ronde |
-| **Narasi** | Bingkai **Penti**; pesan sportivitas dan persaudaraan; sapaan hormat *ité*; *Mori Kraeng* dan *empo* dalam doa syukur |
+| **Narasi** | Bingkai **Penti**; pesan sportivitas dan persaudaraan; sapaan hormat *ité* dan *Kraeng*; *Mori Kraeng* dan *empo* dalam doa syukur; dialog diucapkan (suara) |
+| **Warga** | Perempuan kampung bersanggul dan bersarung songke panjang mengantar kopi untuk kedua pemain caci saat jeda (tafsir kreatif) |
 | **Edukasi** | 9 kartu budaya yang dapat dibaca ulang di menu jeda |
 | **Kepekaan** | Compang hanya *dilihat*, tidak dijadikan arena atau platform; ritus Penti tidak diperagakan detail; stamina dan tipuan ditandai sebagai unsur desain |
 
@@ -165,9 +170,9 @@ Natas dengan 10 penari melingkar (*danding*), kamera mengorbit, ringkasan kartu 
 - **Menu utama:** diorama 3D Wae Rebo dengan kamera mengorbit; tombol Mulai, Cara Bermain, Tentang Game, Keluar.
 - **HUD kampung:** tujuan saat ini, jumlah kartu x/9, jumlah lawan x/3, petunjuk kontrol.
 - **Petunjuk 3D:** label nama mengambang di atas NPC dan "[E] Bicara" pada objek interaksi terdekat.
-- **Dialog:** kotak bermotif songke, efek mesin ketik.
+- **Dialog bersuara:** dialog dan kartu budaya **diucapkan** dengan Text-to-Speech bahasa Indonesia dari sistem operasi (Godot `DisplayServer.tts_speak`). Tiap tokoh punya nada suara berbeda (Tu'a Golo lebih berat, para ine lebih tinggi). Di layar hanya tampil panel kecil bermotif songke berisi nama pembicara. Dialog lanjut otomatis setelah kalimat selesai, dan E bisa dipakai untuk melewati. Bila komputer tidak memiliki suara bahasa Indonesia, teks ditampilkan sebagai cadangan. Di menu jeda pemain dapat menyalakan "Tampilkan teks dialog" (aksesibilitas) dan mengatur volume suara dialog.
 - **HUD duel:** nama lawan, peran saat ini, skor kedua pihak, bar stamina, bilah timing, teks umpan balik yang "meletup".
-- **Menu jeda:** lanjutkan, slider volume musik/SFX, koleksi kartu budaya, kembali ke menu.
+- **Menu jeda:** lanjutkan, slider volume musik/SFX/suara dialog, pilihan tampilkan teks dialog, koleksi kartu budaya, kembali ke menu.
 
 ## 10. Gaya Visual & Audio
 - Low-poly prosedural: semua model dibangun dari mesh primitif Godot (kapsul, silinder, kerucut, torus, bola).
@@ -183,7 +188,7 @@ Natas dengan 10 penari melingkar (*danding*), kamera mengorbit, ringkasan kartu 
 | Follow-through | Lengan dan larik terus bergerak melewati target, lalu kembali dengan easing elastis |
 | Squash & stretch | Stretch saat melompat, squash saat mendarat (sebanding kecepatan jatuh), squash saat terkena, teks umpan balik "meletup" |
 | Ease in/out | Tween transisi layar, ayunan lengan, perisai turun perlahan |
-| Secondary action | Napas saat idle, ayunan lengan saat berjalan, penonton menari |
+| Secondary action | Napas saat idle, ayunan lengan saat berjalan, penonton menari, perempuan pembawa kopi berjalan sambil menahan nampan |
 | Arcs | Ayunan lengan berbasis rotasi pada sendi bahu dan pinggul |
 
 ## 12. Ruang Lingkup

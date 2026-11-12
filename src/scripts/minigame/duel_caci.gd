@@ -19,6 +19,8 @@ const BIAYA_TANGKIS: float = 30.0
 const PEMULIHAN_STAMINA: float = 22.0
 const JEDA_TANGKIS: float = 0.35
 const BATAS_WAKTU_CAMBUK: float = 3.0
+## Posisi awal perempuan pembawa kopi di tepi arena (kiri untuk Nara, kanan untuk lawan).
+const POSISI_PEMBAWA_KOPI: Array = [Vector3(-4.2, 0, 1.6), Vector3(4.2, 0, 1.6)]
 
 ## Konfigurasi tiap lawan: makin tinggi indeks, makin sulit.
 const KONFIG_LAWAN: Array = [
@@ -44,6 +46,7 @@ var _jam: float = 0.0
 var _waktu_tangkis: float = -10.0
 var _menunggu_cambuk: bool = false
 var _timer_cambuk: Timer
+var _pembawa_kopi: Array[KarakterModel] = []
 
 # UI
 var _label_info: Label
@@ -89,6 +92,21 @@ func _bangun_arena() -> void:
 		add_child(p)
 		p.rotation.y = atan2(pos.x, pos.z)  # menghadap pusat arena
 		p.mode = "menari" if i % 3 == 0 else "idle"
+
+	# Perempuan kampung pembawa kopi untuk para pemain caci
+	var tekstur_kopi: Array[String] = ["songke_merah", "songke_hijau"]
+	var nama_kopi: Array[String] = ["Ine Rosa", "Ine Lina"]
+	for i in POSISI_PEMBAWA_KOPI.size():
+		var w := KarakterModel.new()
+		w.perempuan = true
+		w.bawa_nampan = true
+		w.tekstur_songke = load("res://assets/textures/%s.png" % tekstur_kopi[i])
+		w.warna_baju = [Color("2c5c96"), Color("e8e2d2")][i]
+		w.position = POSISI_PEMBAWA_KOPI[i]
+		add_child(w)
+		w.rotation.y = atan2(w.position.x, w.position.z)
+		Dunia.label_nama(w, nama_kopi[i], 2.2)
+		_pembawa_kopi.append(w)
 
 	_nara = KarakterModel.new()
 	_nara.tekstur_songke = preload("res://assets/textures/songke_merah.png")
@@ -216,7 +234,43 @@ func _jalankan_duel() -> void:
 	for ronde in JUMLAH_RONDE:
 		await _fase_taang(ronde)
 		await _fase_paki(ronde)
+		if ronde < JUMLAH_RONDE - 1:
+			await _jeda_kopi(ronde)
 	await _akhiri_duel()
+
+
+## Jeda antarronde: perempuan kampung mengantar kopi ke kedua pemain; stamina pulih penuh.
+func _jeda_kopi(ronde: int) -> void:
+	fase = Fase.PERSIAPAN
+	_label_peran.text = "Jeda: kopi untuk para pemain"
+	_label_petunjuk.text = ""
+	var tujuan: Array = [_nara.position + Vector3(-0.3, 0, 0.9), _lawan.position + Vector3(0.3, 0, 0.9)]
+	for i in _pembawa_kopi.size():
+		_jalan_ke(_pembawa_kopi[i], tujuan[i], 1.4)
+	await _tunggu(1.5)
+	await _dialog("kopi_caci_%d" % (ronde + 1))
+	stamina = STAMINA_MAKS
+	AudioManager.putar_sfx("ambil")
+	_umpan_balik("Stamina pulih!", Gaya.HIJAU)
+	for i in _pembawa_kopi.size():
+		_jalan_ke(_pembawa_kopi[i], POSISI_PEMBAWA_KOPI[i], 1.4)
+	await _tunggu(1.2)
+
+
+func _jalan_ke(model: KarakterModel, tujuan: Vector3, durasi: float) -> void:
+	var arah: Vector3 = tujuan - model.position
+	model.rotation.y = atan2(-arah.x, -arah.z)
+	model.mode = "jalan"
+	model.kecepatan_jalan = 0.5
+	var tw := create_tween()
+	tw.tween_property(model, "position", tujuan, durasi).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tw.tween_callback(_berhenti_jalan.bind(model))
+
+
+func _berhenti_jalan(model: KarakterModel) -> void:
+	model.mode = "idle"
+	# Menghadap ke tengah arena setelah tiba
+	model.rotation.y = atan2(model.position.x, model.position.z)
 
 
 func _fase_taang(ronde: int) -> void:

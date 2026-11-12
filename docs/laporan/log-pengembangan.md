@@ -14,6 +14,7 @@
 | 12 Nov 2026 | Validasi: seluruh 39 skrip lolos parser GDScript (gdtoolkit); path resource, nama state, id dialog/kartu dicek otomatis | Godot tidak bisa dijalankan di lingkungan pengembangan | Uji runtime dilakukan di laptop pengembang (lihat rencana uji) |
 | 12 Nov 2026 | Uji coba pertama di Godot 4.7 berhasil (kampung tampil) | — | — |
 | 12 Nov 2026 | Iterasi dari masukan pengembang: kabut dihapus agar warna jernih; kartu budaya dipindah dari atas batu ke dalam 4 Mbaru Niang (pintu bercahaya sebagai penanda); sapaan tokoh pemain diganti "Kraeng" | Tanpa kabut, tepi tanah dan pintu rumah yang terhalang batu menjadi terlihat | Tanah diperluas menjadi 220 m; batu pijakan dipindah menjadi tangga di barat daya; jarak pintu dicek dengan skrip |
+| 12 Nov 2026 | Fitur baru dari masukan pengembang: perempuan kampung pembawa kopi (model perempuan bersanggul + nampan kopi) di kampung dan jeda kopi antarronde di arena (stamina pulih); dialog **diucapkan** dengan Text-to-Speech bahasa Indonesia, nada suara berbeda per tokoh, teks hanya sebagai cadangan/aksesibilitas | Tidak semua komputer punya suara bahasa Indonesia | Deteksi suara saat mulai; bila tidak ada, teks dialog otomatis ditampilkan |
 | _(isi)_ | Uji coba lanjutan & perbaikan error | | |
 | _(isi)_ | Playtest dengan 3+ penguji & iterasi | | |
 | _(isi)_ | Ekspor .exe / web, rekam video demo | | |

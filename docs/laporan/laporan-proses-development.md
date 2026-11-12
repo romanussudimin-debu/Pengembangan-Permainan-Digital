@@ -32,6 +32,8 @@ Konsep dan desain lengkap ada di `docs/gdd/GDD.md`. Core loop: jelajah kampung â
 | Interaksi | Area3D `Interaktif` (memilih objek terdekat), NPC, kartu budaya di dalam Mbaru Niang, dialog berbasis JSON |
 | Duel | Dua mekanik, FSM lawan 5 state, 3 tingkat kesulitan, tutorial, kondisi menang/kalah |
 | UI | Menu utama 3D, HUD, menu jeda, transisi fade, ending Penti |
+| Suara dialog | Text-to-Speech bahasa Indonesia (`DisplayServer.tts_speak`) dengan nada berbeda per tokoh; teks sebagai cadangan |
+| Warga | Model perempuan + nampan kopi; jeda kopi antarronde yang memulihkan stamina |
 
 Detail kronologis ada di `docs/laporan/log-pengembangan.md`.
 

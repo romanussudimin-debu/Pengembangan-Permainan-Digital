@@ -14,6 +14,8 @@ signal momen_pukul  ## dipancarkan saat cambuk mencapai titik pukul
 @export var pakai_panggal: bool = false
 @export var bawa_senjata: bool = false
 @export var skala_tubuh: float = 1.0
+@export var perempuan: bool = false  ## rambut bersanggul, sarung songke panjang
+@export var bawa_nampan: bool = false  ## membawa nampan berisi cangkir kopi
 
 const KULIT := Color("8d552e")
 const RAMBUT := Color("1a1414")
@@ -30,6 +32,7 @@ var _kaki_kiri: Node3D
 var _kaki_kanan: Node3D
 var _larik: Node3D
 var _nggiling: Node3D
+var _nampan: Node3D
 var _fase: float = 0.0
 var _waktu: float = 0.0
 var _aksi_aktif: bool = false
@@ -93,13 +96,13 @@ func _bangun() -> void:
 		_bagian(k, _kapsul(0.08, 0.85), Vector3(0, -0.42, 0), m_kulit)
 
 	_badan = _pivot(_akar, Vector3(0, 0.85, 0))
-	# Sarung songke (kerucut terpotong)
+	# Sarung songke (kerucut terpotong); perempuan memakai sarung panjang hingga mata kaki
 	var sarung := CylinderMesh.new()
 	sarung.top_radius = 0.2
-	sarung.bottom_radius = 0.26
-	sarung.height = 0.55
+	sarung.bottom_radius = 0.3 if perempuan else 0.26
+	sarung.height = 0.85 if perempuan else 0.55
 	sarung.radial_segments = 10
-	_bagian(_badan, sarung, Vector3(0, -0.12, 0), m_songke)
+	_bagian(_badan, sarung, Vector3(0, -0.27 if perempuan else -0.12, 0), m_songke)
 	# Tubuh
 	var tubuh := BoxMesh.new()
 	tubuh.size = Vector3(0.4, 0.46, 0.24)
@@ -126,13 +129,20 @@ func _bangun() -> void:
 		mata.radius = 0.022
 		mata.height = 0.044
 		_bagian(_badan, mata, Vector3(x, 0.82, -0.135), _mat(RAMBUT))
-	# Ikat kepala songke
-	var ikat := TorusMesh.new()
-	ikat.inner_radius = 0.14
-	ikat.outer_radius = 0.175
-	ikat.rings = 12
-	ikat.ring_segments = 4
-	_bagian(_badan, ikat, Vector3(0, 0.86, 0), m_ikat)
+	if perempuan:
+		# Rambut panjang disanggul di belakang kepala
+		var sanggul := SphereMesh.new()
+		sanggul.radius = 0.09
+		sanggul.height = 0.16
+		_bagian(_badan, sanggul, Vector3(0, 0.84, 0.16), _mat(RAMBUT))
+	else:
+		# Ikat kepala songke
+		var ikat := TorusMesh.new()
+		ikat.inner_radius = 0.14
+		ikat.outer_radius = 0.175
+		ikat.rings = 12
+		ikat.ring_segments = 4
+		_bagian(_badan, ikat, Vector3(0, 0.86, 0), m_ikat)
 	if pakai_panggal:
 		_bangun_panggal(m_songke, m_ikat)
 
@@ -143,6 +153,31 @@ func _bangun() -> void:
 		_bagian(l, _kapsul(0.065, 0.6), Vector3(0, -0.28, 0), m_kulit)
 
 	_bangun_senjata()
+	if bawa_nampan:
+		_bangun_nampan()
+
+
+## Nampan kayu berisi cangkir kopi, dipegang dengan dua tangan di depan badan.
+func _bangun_nampan() -> void:
+	_nampan = _pivot(_badan, Vector3(0, 0.3, -0.36))
+	var papan := BoxMesh.new()
+	papan.size = Vector3(0.5, 0.03, 0.3)
+	_bagian(_nampan, papan, Vector3.ZERO, _mat(Color("7a5030")))
+	var m_cangkir := _mat(Color("f1ede4"))
+	var m_kopi := _mat(Color("2a1a10"))
+	for x: float in [-0.15, 0.0, 0.15]:
+		var cangkir := CylinderMesh.new()
+		cangkir.top_radius = 0.045
+		cangkir.bottom_radius = 0.035
+		cangkir.height = 0.08
+		cangkir.radial_segments = 8
+		_bagian(_nampan, cangkir, Vector3(x, 0.055, 0), m_cangkir)
+		var isi := CylinderMesh.new()
+		isi.top_radius = 0.038
+		isi.bottom_radius = 0.038
+		isi.height = 0.01
+		isi.radial_segments = 8
+		_bagian(_nampan, isi, Vector3(x, 0.095, 0), m_kopi)
 
 
 func _bangun_panggal(m_songke: Material, m_ikat: Material) -> void:
@@ -233,6 +268,13 @@ func _process(delta: float) -> void:
 		_lengan_kanan.rotation.z = lerpf(_lengan_kanan.rotation.z, 0.0, delta * 10.0)
 	if mode != "menari":
 		_badan.rotation.z = lerpf(_badan.rotation.z, 0.0, delta * 10.0)
+	if bawa_nampan:
+		# Kedua lengan menahan nampan di depan badan (menimpa ayunan lengan)
+		_lengan_kiri.rotation.x = lerpf(_lengan_kiri.rotation.x, 1.15, delta * 10.0)
+		_lengan_kanan.rotation.x = lerpf(_lengan_kanan.rotation.x, 1.15, delta * 10.0)
+		_lengan_kiri.rotation.z = lerpf(_lengan_kiri.rotation.z, -0.25, delta * 10.0)
+		_lengan_kanan.rotation.z = lerpf(_lengan_kanan.rotation.z, 0.25, delta * 10.0)
+		_badan.rotation.x = 0.0
 
 
 # ---------------------------------------------------------------- aksi sekali jalan

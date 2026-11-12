@@ -35,6 +35,16 @@ Centang ☐ → ☑ saat menguji di Godot. Catat bug di tabel paling bawah.
 | C7 | Kalah | Muncul tombol Ulangi Duel / Kembali ke Kampung | ☐ |
 | C8 | Menang 3 lawan → Tu'a Golo | Ending Penti tampil, ringkasan benar | ☐ |
 
+## 3b. Jeda kopi & dialog bersuara
+| # | Uji | Hasil diharapkan | ☐ |
+|---|---|---|---|
+| K1 | Selesai ronde 1 dan 2 | Ine Rosa & Ine Lina berjalan membawa nampan kopi ke kedua pemain, lalu kembali; stamina penuh | ☐ |
+| K2 | Bicara ke Ine Rosa/Ine Lina di dekat arena | Dialog tentang kopi untuk pemain caci | ☐ |
+| V1 | Bicara ke NPC mana pun | Dialog **terdengar** (bahasa Indonesia), hanya nama pembicara yang tampil, lalu lanjut otomatis | ☐ |
+| V2 | Tekan E saat suara berbicara | Kalimat dilewati ke baris berikutnya | ☐ |
+| V3 | Menu jeda → centang "Tampilkan teks dialog" | Teks dialog ikut tampil | ☐ |
+| V4 | Komputer tanpa suara bahasa Indonesia | Teks dialog tampil otomatis (cadangan) | ☐ |
+
 ## 4. Audio, visual, stabilitas
 | # | Uji | Hasil diharapkan | ☐ |
 |---|---|---|---|

@@ -1,13 +1,33 @@
 extends CanvasLayer
 ## Menampilkan dialog berbasis data (data/dialog.json) dan kartu pengetahuan budaya.
+## Dialog DIUCAPKAN dengan Text-to-Speech (suara bahasa Indonesia dari sistem operasi);
+## layar hanya menampilkan nama pembicara. Bila suara bahasa Indonesia tidak tersedia,
+## atau pemain menyalakan "Tampilkan teks dialog" di menu jeda, teks ditampilkan.
 ## Selama dialog, GameState berada di state DIALOG lalu dikembalikan ke state sebelumnya.
 
 signal dialog_selesai(id: String)
 
 const DATA_DIALOG: JSON = preload("res://data/dialog.json")
-const KECEPATAN_KETIK: float = 45.0  # karakter per detik
+const KECEPATAN_KETIK: float = 45.0  # karakter per detik (mode teks)
+const JEDA_SETELAH_UCAPAN: float = 0.35
+const BAHASA_SUARA: String = "id"
+
+## Nada suara per tokoh agar setiap karakter terdengar berbeda.
+const NADA_TOKOH: Dictionary = {
+	"Tu'a Golo": 0.75,
+	"Ema Agus": 0.8,
+	"Fransi": 0.92,
+	"Rangga": 1.0,
+	"Pemain Caci": 0.95,
+	"Nara": 1.05,
+	"Ine Wela": 1.2,
+	"Ine Rosa": 1.3,
+	"Ine Lina": 1.15,
+}
 
 var aktif: bool = false
+var tampilkan_teks: bool = false  ## diatur dari menu jeda
+var volume_suara: float = 1.0  ## 0..1, diatur dari menu jeda
 
 var _panel: NinePatchRect
 var _label_nama: Label
@@ -20,12 +40,37 @@ var _state_sebelum: int = GameState.State.BERMAIN
 var _callback: Callable = Callable()
 var _frame_mulai: int = -1
 var _tween_ketik: Tween
+var _suara_id: String = ""
+var _nomor_ucapan: int = 0
+var _timer_lanjut: Timer
 
 
 func _ready() -> void:
 	layer = 50
 	_bangun_ui()
 	_panel.visible = false
+	_timer_lanjut = Timer.new()
+	_timer_lanjut.one_shot = true
+	_timer_lanjut.timeout.connect(_maju)
+	add_child(_timer_lanjut)
+	_siapkan_suara()
+
+
+func _siapkan_suara() -> void:
+	if not DisplayServer.has_feature(DisplayServer.FEATURE_TEXT_TO_SPEECH):
+		push_warning("Text-to-Speech tidak didukung di platform ini; dialog ditampilkan sebagai teks.")
+		return
+	var suara: PackedStringArray = DisplayServer.tts_get_voices_for_language(BAHASA_SUARA)
+	if suara.is_empty():
+		push_warning("Suara bahasa Indonesia tidak ditemukan di sistem; dialog ditampilkan sebagai teks.")
+		return
+	_suara_id = suara[0]
+	DisplayServer.tts_set_utterance_callback(DisplayServer.TTS_UTTERANCE_ENDED, _saat_ucapan_selesai)
+
+
+## True bila dialog diucapkan (ada suara bahasa Indonesia).
+func suara_tersedia() -> bool:
+	return _suara_id != ""
 
 
 func _bangun_ui() -> void:
@@ -35,8 +80,6 @@ func _bangun_ui() -> void:
 	_panel.patch_margin_right = 8
 	_panel.patch_margin_top = 8
 	_panel.patch_margin_bottom = 8
-	_panel.position = Vector2(24, 258)
-	_panel.size = Vector2(592, 92)
 	add_child(_panel)
 
 	_label_nama = Gaya.label("", 11, Gaya.KUNING)
@@ -50,8 +93,22 @@ func _bangun_ui() -> void:
 	_panel.add_child(_label_teks)
 
 	_label_lanjut = Gaya.label("[E] lanjut", 8, Gaya.ABU)
-	_label_lanjut.position = Vector2(530, 76)
 	_panel.add_child(_label_lanjut)
+
+
+## Ukuran panel: lebar dengan teks, atau ringkas (nama pembicara saja) saat diucapkan.
+func _atur_tata_letak(dengan_teks: bool) -> void:
+	if dengan_teks:
+		_panel.position = Vector2(24, 258)
+		_panel.size = Vector2(592, 92)
+		_label_lanjut.text = "[E] lanjut"
+		_label_lanjut.position = Vector2(530, 76)
+	else:
+		_panel.position = Vector2(170, 300)
+		_panel.size = Vector2(300, 46)
+		_label_lanjut.text = "berbicara...  [E] lewati"
+		_label_lanjut.position = Vector2(14, 27)
+	_label_teks.visible = dengan_teks
 
 
 ## Mulai dialog berdasarkan id di dialog.json.
@@ -82,7 +139,7 @@ func mulai_baris(id: String, baris: Array, callback: Callable = Callable()) -> v
 	_tampilkan_baris()
 
 
-## Tampilkan kartu pengetahuan budaya sebagai dialog.
+## Tampilkan (dan ucapkan) kartu pengetahuan budaya.
 func tampilkan_kartu(id_kartu: String, callback: Callable = Callable()) -> void:
 	var k: Dictionary = GameState.data_kartu(id_kartu)
 	if k.is_empty():
@@ -92,21 +149,48 @@ func tampilkan_kartu(id_kartu: String, callback: Callable = Callable()) -> void:
 	AudioManager.putar_sfx("ambil")
 	var baris: Array = []
 	var halaman: Array = k["isi"]
-	for teks: String in halaman:
-		baris.append({"nama": "Kartu Budaya: " + str(k["judul"]), "teks": teks})
+	for i in halaman.size():
+		var teks: String = halaman[i]
+		var ucapan: String = ("Kartu budaya, %s. %s" % [k["judul"], teks]) if i == 0 else teks
+		baris.append({"nama": "Kartu Budaya: " + str(k["judul"]), "teks": teks, "ucapan": ucapan})
 	mulai_baris("kartu_" + id_kartu, baris, callback)
 
 
 func _tampilkan_baris() -> void:
 	var b: Dictionary = _baris[_indeks]
-	_label_nama.text = str(b.get("nama", ""))
+	var nama: String = str(b.get("nama", ""))
+	_label_nama.text = nama
 	_label_teks.text = str(b.get("teks", ""))
-	_label_teks.visible_ratio = 0.0
+	var bersuara: bool = suara_tersedia()
+	_atur_tata_letak(tampilkan_teks or not bersuara)
 	if _tween_ketik:
 		_tween_ketik.kill()
-	_tween_ketik = create_tween()
-	var durasi: float = maxf(_label_teks.text.length() / KECEPATAN_KETIK, 0.1)
-	_tween_ketik.tween_property(_label_teks, "visible_ratio", 1.0, durasi)
+	if _label_teks.visible:
+		_label_teks.visible_ratio = 0.0
+		_tween_ketik = create_tween()
+		var durasi: float = maxf(_label_teks.text.length() / KECEPATAN_KETIK, 0.1)
+		_tween_ketik.tween_property(_label_teks, "visible_ratio", 1.0, durasi)
+	else:
+		_label_teks.visible_ratio = 1.0
+	if bersuara:
+		_ucapkan(str(b.get("ucapan", b.get("teks", ""))), nama)
+
+
+func _ucapkan(teks: String, nama: String) -> void:
+	_nomor_ucapan += 1
+	var nada: float = NADA_TOKOH.get(nama, 1.0)
+	var volume: int = int(clampf(volume_suara, 0.0, 1.0) * 100.0)
+	DisplayServer.tts_speak(teks, _suara_id, volume, nada, 1.0, _nomor_ucapan, true)
+
+
+func _saat_ucapan_selesai(nomor: int) -> void:
+	# Callback TTS bisa datang dari luar alur utama; teruskan dengan aman.
+	call_deferred("_lanjut_setelah_ucapan", nomor)
+
+
+func _lanjut_setelah_ucapan(nomor: int) -> void:
+	if aktif and nomor == _nomor_ucapan:
+		_timer_lanjut.start(JEDA_SETELAH_UCAPAN)
 
 
 func _process(_delta: float) -> void:
@@ -122,11 +206,16 @@ func _input(event: InputEvent) -> void:
 
 
 func _maju() -> void:
-	if _label_teks.visible_ratio < 1.0:
+	if not aktif:
+		return
+	if _label_teks.visible and _label_teks.visible_ratio < 1.0 and not suara_tersedia():
 		if _tween_ketik:
 			_tween_ketik.kill()
 		_label_teks.visible_ratio = 1.0
 		return
+	_timer_lanjut.stop()
+	if suara_tersedia():
+		DisplayServer.tts_stop()
 	AudioManager.putar_sfx("klik")
 	_indeks += 1
 	if _indeks < _baris.size():

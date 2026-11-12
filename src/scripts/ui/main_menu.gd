@@ -115,7 +115,9 @@ Di arena caci (peran bergantian tiap ronde):
 • TA'ANG: saat lawan menarik larik (tanda \"!\"), tekan K / X tepat sebelum pukulan. Menangkis memakai stamina.
 • PAKI: tekan J / Z ketika penanda berada di zona kuning.
 
-Kalahkan Rangga, Fransi, dan Ema Agus, kumpulkan kartu budaya, lalu kembali ke Tu'a Golo untuk merayakan Penti."""
+Dialog diucapkan dengan suara (E: lewati). Teks dialog bisa dinyalakan di menu jeda.
+
+Kalahkan Rangga, Fransi, dan Ema Agus, kumpulkan kartu budaya di dalam Mbaru Niang yang pintunya bercahaya, lalu kembali ke Tu'a Golo untuk merayakan Penti."""
 
 
 func _teks_tentang() -> String:

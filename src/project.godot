@@ -9,6 +9,10 @@ config/description="Prototipe game 3D berbasis budaya Manggarai (Flores, NTT)."
 run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 
+[audio]
+
+general/text_to_speech=true
+
 [autoload]
 
 Kontrol="*res://scripts/autoload/kontrol.gd"

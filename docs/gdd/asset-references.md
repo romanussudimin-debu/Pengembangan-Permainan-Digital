@@ -26,6 +26,9 @@ Semua aset dalam prototipe **dibuat sendiri** secara prosedural oleh pembuat pro
 
 > Catatan etis: musik **bukan rekaman** gong-gendang atau nyanyian Manggarai asli. Musik disintesis sebagai penghormatan, sehingga tidak ada rekaman budaya yang dipakai tanpa izin.
 
+## Suara dialog (Text-to-Speech)
+Dialog diucapkan memakai **mesin Text-to-Speech bawaan sistem operasi** (macOS: suara bahasa Indonesia "Damayanti"; Windows: suara bahasa Indonesia bila terpasang) lewat API Godot `DisplayServer.tts_speak`. Tidak ada file rekaman suara yang disertakan dalam proyek.
+
 ## Font
 Font bawaan Godot (tanpa font eksternal).
 

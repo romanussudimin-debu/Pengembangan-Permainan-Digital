@@ -1,0 +1,20 @@
+Rencana Tugas 1 - Prototipe Game Berbasis Budaya Lokal
+Judul game : Jejak Penti di Wae Rebo
+Nama       : Romanus Sudimin
+NIM        : 240030260
+Prodi      : Sistem Informasi
+Mata kuliah: Pengembangan Permainan Digital
+
+Game (dimainkan langsung di browser laptop/HP):
+https://romanussudimin-debu.github.io/Pengembangan-Permainan-Digital/
+
+Source code:
+https://github.com/romanussudimin-debu/Pengembangan-Permainan-Digital
+
+Isi folder:
+01 Laporan Penelitian Budaya (.docx/.pdf)
+02 GDD dan Asset References (.docx/.pdf)
+03 Laporan Proses Development (.docx/.pdf)
+04 Naskah Video Demo (.docx/.pdf)
+05 Panduan Menjalankan Game (.docx/.pdf)
+06 Slide Presentasi (.pptx/.pdf)

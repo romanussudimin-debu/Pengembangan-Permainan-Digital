@@ -22,6 +22,7 @@ var _sisa_buffer: float = 0.0
 
 
 func _ready() -> void:
+	add_to_group("pemain")
 	mesin.mulai()
 	GameState.state_berubah.connect(_pada_state_game)
 

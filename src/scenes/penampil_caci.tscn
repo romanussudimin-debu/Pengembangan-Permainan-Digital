@@ -22,7 +22,7 @@ pakai_panggal = true
 bawa_senjata = true
 
 [node name="Isyarat" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 0)
 billboard = 1
 no_depth_test = true
 modulate = Color(0.909804, 0.705882, 0.188235, 1)

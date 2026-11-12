@@ -104,7 +104,8 @@ Pengetahuan dari setiap kartu menjadi bekal untuk menjawab teka-teki berikutnya,
 |---|---|
 | **Mekanik** | Menenun motif songke; menabuh gong-gendang; teka-teki tentang Mbaru Niang, songke, nyanyian adat, dan caci; menghormati compang (hanya dilihat) |
 | **Visual: lingkungan** | 7 Mbaru Niang (1 mbaru gendang + 6 mbaru gena) melingkari compang di natas, atap ijuk 5 tingkat, gong & gendang, arena, langit cerah |
-| **Visual: karakter** | Sarung songke; perempuan bersanggul dengan sarung panjang; pemain caci dengan panggal, larik, nggiling |
+| **Visual: karakter** | Gaya **anime 3D**: tubuh lebih besar, kepala besar, mata besar berkilau, **kulit cokelat**, **rambut bergelombang** (pendek untuk laki-laki, panjang terurai untuk perempuan); sarung songke; pemain caci dengan panggal, larik, nggiling |
+| **Suasana kampung** | Anjing dan ayam berkeliaran (FSM diam/jalan; ayam mematuk, ekor anjing bergoyang) dan sesekali bersuara saat pemain dekat |
 | **Visual: UI** | Panel bermotif songke |
 | **Audio** | Musik pola gong-gendang sintetis; SFX gong/gendang interaktif; **dialog diucapkan** (TTS bahasa Indonesia, nada berbeda per tokoh) |
 | **Narasi** | Bingkai Penti; sapaan *ité* dan *Kraeng*; pesan sportivitas & persaudaraan; warga saling mengenalkan budaya |
@@ -149,7 +150,7 @@ Low-poly prosedural dari mesh primitif Godot; tekstur pixel 64×64 buatan sendir
 | Follow-through | Lengan dan larik melewati target lalu kembali dengan easing elastis |
 | Squash & stretch | Stretch saat melompat, squash saat mendarat; teks umpan balik "meletup" |
 | Ease in/out | Transisi layar, langkah pembawa kopi, perisai turun |
-| Secondary action | Napas saat idle, ayunan lengan, penari Penti, perempuan menahan nampan |
+| Secondary action | Napas saat idle, ayunan lengan, penari Penti, perempuan menahan nampan, ekor anjing bergoyang, ayam mematuk |
 
 ## 12. Ruang Lingkup
 | Prioritas | Fitur | Status |
@@ -168,7 +169,7 @@ src/
 │  ├─ karakter/   KarakterModel (model prosedural + animasi; laki-laki/perempuan, nampan kopi)
 │  ├─ pemain/     Pemain + states
 │  ├─ caci/       PenampilCaci + states (Siaga, Ancang, Serang, Tangkis, Terkena)
-│  ├─ dunia/      Dunia (builder), kampung (rantai teka-teki), Interaktif, NpcKampung, KameraIkut
+│  ├─ dunia/      Dunia (builder), kampung (rantai teka-teki), Interaktif, NpcKampung, Hewan, KameraIkut
 │  ├─ minigame/   TenunSongke, TabuhGong
 │  ├─ ui/         hud, main_menu, ending
 │  └─ util/       Gaya

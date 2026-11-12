@@ -3,8 +3,8 @@ extends Camera3D
 ## Kamera orang ketiga dengan arah tetap yang mengikuti target secara halus.
 ## Mendukung guncangan layar (screen shake) untuk umpan balik.
 
-@export var offset_kamera: Vector3 = Vector3(0, 5.5, 9.0)
-@export var titik_lihat: Vector3 = Vector3(0, 1.2, 0)
+@export var offset_kamera: Vector3 = Vector3(0, 6.5, 10.5)
+@export var titik_lihat: Vector3 = Vector3(0, 1.6, 0)
 @export var kehalusan: float = 6.0
 
 var target: Node3D

@@ -1,6 +1,7 @@
 class_name KarakterModel
 extends Node3D
-## Model karakter low-poly yang dibangun dari mesh primitif + animasi prosedural.
+## Model karakter bergaya anime 3D (kepala besar, mata besar berkilau, kulit cokelat,
+## rambut bergelombang) yang dibangun dari mesh primitif + animasi prosedural.
 ## Menerapkan prinsip animasi: anticipation, follow-through, squash & stretch,
 ## ease in/out, timing, dan secondary action (napas, ayunan lengan).
 ## Arah depan model = -Z.
@@ -13,12 +14,15 @@ signal momen_pukul  ## dipancarkan saat cambuk mencapai titik pukul
 @export var telanjang_dada: bool = false
 @export var pakai_panggal: bool = false
 @export var bawa_senjata: bool = false
-@export var skala_tubuh: float = 1.0
-@export var perempuan: bool = false  ## rambut bersanggul, sarung songke panjang
+@export var skala_tubuh: float = 1.25
+@export var perempuan: bool = false  ## rambut ombak panjang terurai, sarung songke panjang
 @export var bawa_nampan: bool = false  ## membawa nampan berisi cangkir kopi
 
-const KULIT := Color("8d552e")
-const RAMBUT := Color("1a1414")
+const KULIT := Color("8a5432")  ## cokelat hangat
+const RAMBUT := Color("1e1512")
+const IRIS := Color("4a2a18")
+const TINGGI_KEPALA: float = 0.98  ## pusat kepala, relatif terhadap pivot badan
+const JARI_KEPALA: float = 0.23
 
 ## "idle", "jalan", "udara", "menari", "siaga"
 var mode: String = "idle"
@@ -103,46 +107,29 @@ func _bangun() -> void:
 	sarung.height = 0.85 if perempuan else 0.55
 	sarung.radial_segments = 10
 	_bagian(_badan, sarung, Vector3(0, -0.27 if perempuan else -0.12, 0), m_songke)
-	# Tubuh
+	# Tubuh (ramping, gaya anime)
 	var tubuh := BoxMesh.new()
-	tubuh.size = Vector3(0.4, 0.46, 0.24)
+	tubuh.size = Vector3(0.36, 0.46, 0.22)
 	_bagian(_badan, tubuh, Vector3(0, 0.38, 0), m_baju)
 	if telanjang_dada:
 		var selempang := BoxMesh.new()
-		selempang.size = Vector3(0.42, 0.06, 0.26)
+		selempang.size = Vector3(0.38, 0.06, 0.24)
 		_bagian(_badan, selempang, Vector3(0, 0.18, 0), m_songke)
-	# Kepala
-	var kepala := SphereMesh.new()
-	kepala.radius = 0.15
-	kepala.height = 0.32
-	kepala.radial_segments = 10
-	kepala.rings = 6
-	_bagian(_badan, kepala, Vector3(0, 0.8, 0), m_kulit)
-	var rambut := SphereMesh.new()
-	rambut.radius = 0.155
-	rambut.height = 0.2
-	rambut.radial_segments = 10
-	rambut.rings = 4
-	_bagian(_badan, rambut, Vector3(0, 0.88, 0.02), _mat(RAMBUT))
-	for x: float in [-0.055, 0.055]:
-		var mata := SphereMesh.new()
-		mata.radius = 0.022
-		mata.height = 0.044
-		_bagian(_badan, mata, Vector3(x, 0.82, -0.135), _mat(RAMBUT))
-	if perempuan:
-		# Rambut panjang disanggul di belakang kepala
-		var sanggul := SphereMesh.new()
-		sanggul.radius = 0.09
-		sanggul.height = 0.16
-		_bagian(_badan, sanggul, Vector3(0, 0.84, 0.16), _mat(RAMBUT))
-	else:
+	var leher := CylinderMesh.new()
+	leher.top_radius = 0.06
+	leher.bottom_radius = 0.07
+	leher.height = 0.16
+	_bagian(_badan, leher, Vector3(0, 0.66, 0), m_kulit)
+	_bangun_kepala(m_kulit)
+	_bangun_rambut()
+	if not perempuan and not pakai_panggal:
 		# Ikat kepala songke
 		var ikat := TorusMesh.new()
-		ikat.inner_radius = 0.14
-		ikat.outer_radius = 0.175
-		ikat.rings = 12
+		ikat.inner_radius = JARI_KEPALA + 0.01
+		ikat.outer_radius = JARI_KEPALA + 0.045
+		ikat.rings = 16
 		ikat.ring_segments = 4
-		_bagian(_badan, ikat, Vector3(0, 0.86, 0), m_ikat)
+		_bagian(_badan, ikat, Vector3(0, TINGGI_KEPALA + 0.05, 0), m_ikat)
 	if pakai_panggal:
 		_bangun_panggal(m_songke, m_ikat)
 
@@ -150,7 +137,11 @@ func _bangun() -> void:
 	_lengan_kiri = _pivot(_badan, Vector3(-0.27, 0.58, 0))
 	_lengan_kanan = _pivot(_badan, Vector3(0.27, 0.58, 0))
 	for l: Node3D in [_lengan_kiri, _lengan_kanan]:
-		_bagian(l, _kapsul(0.065, 0.6), Vector3(0, -0.28, 0), m_kulit)
+		_bagian(l, _kapsul(0.06, 0.58), Vector3(0, -0.28, 0), m_kulit)
+		var tangan := SphereMesh.new()
+		tangan.radius = 0.06
+		tangan.height = 0.12
+		_bagian(l, tangan, Vector3(0, -0.58, 0), m_kulit)
 
 	_bangun_senjata()
 	if bawa_nampan:
@@ -180,19 +171,98 @@ func _bangun_nampan() -> void:
 		_bagian(_nampan, isi, Vector3(x, 0.095, 0), m_kopi)
 
 
+## Kepala anime: bulat besar, mata besar dengan iris cokelat dan kilau, alis, mulut kecil.
+func _bangun_kepala(m_kulit: Material) -> void:
+	var kepala := SphereMesh.new()
+	kepala.radius = JARI_KEPALA
+	kepala.height = JARI_KEPALA * 2.05
+	kepala.radial_segments = 16
+	kepala.rings = 10
+	_bagian(_badan, kepala, Vector3(0, TINGGI_KEPALA, 0), m_kulit)
+	var m_putih := _mat_tanpa_bayangan(Color("fbf7ef"))
+	var m_iris := _mat_tanpa_bayangan(IRIS)
+	var m_hitam := _mat_tanpa_bayangan(Color("140c08"))
+	var m_kilau := _mat_tanpa_bayangan(Color.WHITE)
+	var y_mata: float = TINGGI_KEPALA - 0.02
+	var z_muka: float = -JARI_KEPALA * 0.86
+	for sisi: float in [-1.0, 1.0]:
+		var x: float = 0.085 * sisi
+		var putih := _bagian(_badan, _bola(0.055), Vector3(x, y_mata, z_muka), m_putih)
+		putih.scale = Vector3(1.0, 1.3, 0.35)
+		var iris := _bagian(_badan, _bola(0.04), Vector3(x, y_mata - 0.005, z_muka - 0.014), m_iris)
+		iris.scale = Vector3(1.0, 1.3, 0.35)
+		var pupil := _bagian(_badan, _bola(0.02), Vector3(x, y_mata - 0.005, z_muka - 0.022), m_hitam)
+		pupil.scale = Vector3(1.0, 1.3, 0.4)
+		_bagian(_badan, _bola(0.012), Vector3(x + 0.013, y_mata + 0.025, z_muka - 0.03), m_kilau)
+		var alis := BoxMesh.new()
+		alis.size = Vector3(0.075, 0.012, 0.012)
+		var mi_alis := _bagian(_badan, alis, Vector3(x, y_mata + 0.085, z_muka - 0.012), m_hitam)
+		mi_alis.rotation.z = -0.12 * sisi
+	var mulut := BoxMesh.new()
+	mulut.size = Vector3(0.045, 0.01, 0.01)
+	_bagian(_badan, mulut, Vector3(0, TINGGI_KEPALA - 0.12, -JARI_KEPALA * 0.9), _mat(Color("6a3024")))
+
+
+## Rambut bergelombang (ombak): tudung di atas kepala, gumpalan bergelombang mengelilingi
+## sisi dan belakang kepala, poni di depan; perempuan berambut panjang terurai ke punggung.
+func _bangun_rambut() -> void:
+	var m_rambut := _mat(RAMBUT)
+	m_rambut.roughness = 0.6
+	var tudung := _bagian(_badan, _bola(JARI_KEPALA + 0.015), Vector3(0, TINGGI_KEPALA + 0.09, 0.05), m_rambut)
+	tudung.scale = Vector3(1.0, 0.65, 1.0)
+	# Gelombang di sisi & belakang (wajah di -Z dibiarkan terbuka)
+	var jumlah: int = 15
+	for i in jumlah:
+		var sudut: float = deg_to_rad(-35.0 + 250.0 * i / float(jumlah - 1))
+		var jari: float = JARI_KEPALA + (0.01 if i % 2 == 0 else 0.03)
+		var y: float = TINGGI_KEPALA + 0.02 + sin(i * 1.7) * 0.035
+		_bagian(_badan, _bola(0.075), Vector3(cos(sudut) * jari, y, sin(sudut) * jari), m_rambut)
+	# Poni bergelombang
+	for i in 5:
+		var x: float = -0.14 + i * 0.07
+		var poni := _bagian(_badan, _bola(0.06), Vector3(x, TINGGI_KEPALA + 0.13 - absf(x) * 0.25 + (0.015 if i % 2 == 0 else 0.0), -JARI_KEPALA * 0.78), m_rambut)
+		poni.scale = Vector3(1.0, 0.85, 0.6)
+	if perempuan:
+		# Rambut panjang bergelombang terurai sampai punggung
+		for baris in 6:
+			var y: float = TINGGI_KEPALA - 0.1 - baris * 0.1
+			var lebar: float = 0.13 - baris * 0.008
+			for kolom in 3:
+				var x: float = (kolom - 1) * lebar + sin(baris * 1.6 + kolom) * 0.03
+				var z: float = JARI_KEPALA * 0.7 + 0.015 * baris
+				_bagian(_badan, _bola(0.09 - baris * 0.006), Vector3(x, y, z), m_rambut)
+
+
+func _bola(jari: float) -> SphereMesh:
+	var b := SphereMesh.new()
+	b.radius = jari
+	b.height = jari * 2.0
+	b.radial_segments = 10
+	b.rings = 6
+	return b
+
+
+## Material tanpa bayangan agar mata anime tetap cerah dan "berkilau".
+func _mat_tanpa_bayangan(warna: Color) -> StandardMaterial3D:
+	var m := StandardMaterial3D.new()
+	m.albedo_color = warna
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	return m
+
+
 func _bangun_panggal(m_songke: Material, m_ikat: Material) -> void:
 	# Panggal: penutup kepala pemain caci dengan dua ujung menjulang
 	var pita := CylinderMesh.new()
-	pita.top_radius = 0.17
-	pita.bottom_radius = 0.18
+	pita.top_radius = JARI_KEPALA + 0.02
+	pita.bottom_radius = JARI_KEPALA + 0.04
 	pita.height = 0.12
-	_bagian(_badan, pita, Vector3(0, 0.9, 0), m_songke)
+	_bagian(_badan, pita, Vector3(0, TINGGI_KEPALA + 0.12, 0), m_songke)
 	for sisi: float in [-1.0, 1.0]:
 		var tanduk := CylinderMesh.new()
 		tanduk.top_radius = 0.0
 		tanduk.bottom_radius = 0.06
 		tanduk.height = 0.35
-		var mi := _bagian(_badan, tanduk, Vector3(0.14 * sisi, 1.07, 0), m_ikat)
+		var mi := _bagian(_badan, tanduk, Vector3(0.19 * sisi, TINGGI_KEPALA + 0.3, 0), m_ikat)
 		mi.rotation = Vector3(0, 0, -0.6 * sisi)
 
 

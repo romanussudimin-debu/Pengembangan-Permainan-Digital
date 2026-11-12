@@ -63,6 +63,35 @@ simpan("klik.wav", lonceng(1000, .07), .4)
 simpan("gong.wav", gong(98, 3.0))
 simpan("gendang.wav", gendang(95, .35))
 
+
+def gonggong():
+    """Dua gonggongan anjing: nada turun cepat + desis."""
+    potong = []
+    for f0 in (520, 470):
+        tt = t(.16)
+        f = f0 * (1 - 0.45 * tt / .16)
+        nada = np.sin(2 * np.pi * np.cumsum(f) / SR) + 0.5 * np.sin(4 * np.pi * np.cumsum(f) / SR)
+        desis = rng.standard_normal(len(tt)) * 0.35
+        selubung = np.minimum(1, tt * 120) * np.exp(-tt * 14)
+        potong.append((nada + desis) * selubung)
+        potong.append(np.zeros(int(SR * .08)))
+    return np.concatenate(potong)
+
+
+def kokok():
+    """Kotek ayam: rangkaian ketukan pendek bernada tinggi."""
+    potong = []
+    for f0, d in ((900, .07), (950, .07), (1200, .18)):
+        tt = t(d)
+        f = f0 * (1 + 0.3 * np.sin(np.pi * tt / d))
+        potong.append(np.sin(2 * np.pi * np.cumsum(f) / SR) * np.exp(-tt * 10) * np.minimum(1, tt * 200))
+        potong.append(np.zeros(int(SR * .05)))
+    return np.concatenate(potong)
+
+
+simpan("anjing.wav", gonggong(), .6)
+simpan("ayam.wav", kokok(), .5)
+
 # --- Musik: pola gong-gendang berulang (loop) ---
 def musik(bpm, pola_gendang, pola_gong, nada, bar=8, ketuk=8):
     step = 60 / bpm / 2

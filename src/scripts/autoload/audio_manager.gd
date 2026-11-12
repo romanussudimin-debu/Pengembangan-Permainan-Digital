@@ -18,6 +18,8 @@ const SFX: Dictionary = {
 	"klik": preload("res://assets/audio/klik.wav"),
 	"gong": preload("res://assets/audio/gong.wav"),
 	"gendang": preload("res://assets/audio/gendang.wav"),
+	"anjing": preload("res://assets/audio/anjing.wav"),
+	"ayam": preload("res://assets/audio/ayam.wav"),
 }
 
 const JUMLAH_KANAL_SFX: int = 8

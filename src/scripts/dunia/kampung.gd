@@ -36,6 +36,7 @@ func _ready() -> void:
 	_bangun_dunia()
 	_bangun_warga()
 	_bangun_compang()
+	_bangun_hewan()
 	_munculkan_pemain()
 	add_child(preload("res://scripts/ui/hud.gd").new())
 	AudioManager.putar_musik("kampung")
@@ -94,6 +95,27 @@ func _bangun_warga() -> void:
 		var arah: Vector3 = pusat - n.position
 		n.model.rotation.y = atan2(-arah.x, -arah.z)
 		n.diajak_bicara.connect(_bicara_warga)
+
+
+## Anjing dan ayam berkeliaran di area terbuka (jauh dari rumah dan compang).
+func _bangun_hewan() -> void:
+	var daftar: Array = [
+		["anjing", Vector3(4, 0, 14), Color("a0703c"), 3.5],
+		["anjing", Vector3(17, 0, 4), Color("e8e0d0"), 2.5],
+		["ayam", Vector3(3, 0, 10.5), Color("f1ede4"), 2.5],
+		["ayam", Vector3(3.8, 0, 11.2), Color("9a4a22"), 2.5],
+		["ayam", Vector3(2.2, 0, 11), Color("1e1a1a"), 2.5],
+		["ayam", Vector3(6, 0, -6), Color("b8622a"), 2.5],
+		["ayam", Vector3(6.6, 0, -5.4), Color("f1ede4"), 2.5],
+		["ayam", Vector3(-4, 0, -8.5), Color("9a4a22"), 2.0],
+	]
+	for data: Array in daftar:
+		var h := Hewan.new()
+		h.jenis = data[0]
+		h.position = data[1]
+		h.warna_utama = data[2]
+		h.jari_jelajah = data[3]
+		add_child(h)
 
 
 ## Compang hanya dilihat dan dijelaskan (tidak dijadikan tempat bermain karena sakral).

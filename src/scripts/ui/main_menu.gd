@@ -37,6 +37,19 @@ func _bangun_diorama() -> void:
 		m.bawa_senjata = true
 		add_child(m)
 		m.mode = "siaga"
+	for i in 4:
+		var ayam := Hewan.new()
+		ayam.jenis = "ayam"
+		ayam.position = Vector3(-3.0 + i * 0.7, 0, 7.5)
+		ayam.warna_utama = [Color("f1ede4"), Color("9a4a22"), Color("1e1a1a"), Color("b8622a")][i]
+		ayam.jari_jelajah = 1.5
+		add_child(ayam)
+	var anjing := Hewan.new()
+	anjing.jenis = "anjing"
+	anjing.position = Vector3(6, 0, 6)
+	anjing.warna_utama = Color("a0703c")
+	anjing.jari_jelajah = 1.5
+	add_child(anjing)
 	_kamera = Camera3D.new()
 	add_child(_kamera)
 	_kamera.current = true

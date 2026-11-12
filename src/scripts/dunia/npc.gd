@@ -28,10 +28,10 @@ func _ready() -> void:
 	model.perempuan = perempuan
 	model.bawa_nampan = bawa_nampan
 	add_child(model)
-	Dunia.label_nama(self, nama, 2.6 if pemain_caci else 2.2)
+	Dunia.label_nama(self, nama, 3.6 if pemain_caci else 3.1)
 	area = Interaktif.new()
 	area.teks_petunjuk = "Bicara"
-	area.tinggi_petunjuk = 3.0
+	area.tinggi_petunjuk = 3.9
 	add_child(area)
 	area.diinteraksi.connect(_saat_diinteraksi)
 

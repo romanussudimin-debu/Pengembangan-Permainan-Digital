@@ -33,6 +33,19 @@ func _ready() -> void:
 		add_child(m)
 		m.rotation.y = atan2(m.position.x, m.position.z)
 		m.mode = "menari"
+	for i in 3:
+		var ayam := Hewan.new()
+		ayam.jenis = "ayam"
+		ayam.position = Vector3(-8.0 + i * 0.8, 0, -3.0)
+		ayam.warna_utama = [Color("f1ede4"), Color("9a4a22"), Color("1e1a1a")][i]
+		ayam.jari_jelajah = 1.5
+		add_child(ayam)
+	var anjing := Hewan.new()
+	anjing.jenis = "anjing"
+	anjing.position = Vector3(8, 0, -4)
+	anjing.warna_utama = Color("e8e0d0")
+	anjing.jari_jelajah = 1.5
+	add_child(anjing)
 	_bangun_pertunjukan_caci()
 	_kamera = Camera3D.new()
 	add_child(_kamera)

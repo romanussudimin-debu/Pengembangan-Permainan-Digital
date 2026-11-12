@@ -22,3 +22,4 @@
 | _(isi)_ | Uji coba lanjutan & perbaikan error | | |
 | _(isi)_ | Playtest dengan 3+ penguji & iterasi | | |
 | _(isi)_ | Ekspor .exe / web, rekam video demo | | |
+- **Ekspor:** menambahkan `src/export_presets.cfg` (Windows, Web, macOS) dan folder `build/`; panduan ekspor & publikasi diperbarui.

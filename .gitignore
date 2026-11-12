@@ -1,5 +1,7 @@
 .godot/
-build/
+build/**
+!build/**/
+!build/**/.gitkeep
 *.tmp
 __pycache__/
 *.zip

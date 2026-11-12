@@ -6,6 +6,7 @@ extends CanvasLayer
 ## Selama dialog, GameState berada di state DIALOG lalu dikembalikan ke state sebelumnya.
 
 signal dialog_selesai(id: String)
+signal teka_teki_dijawab(benar: bool)
 
 const DATA_DIALOG: JSON = preload("res://data/dialog.json")
 const KECEPATAN_KETIK: float = 45.0  # karakter per detik (mode teks)
@@ -23,6 +24,7 @@ const NADA_TOKOH: Dictionary = {
 	"Ine Wela": 1.2,
 	"Ende Lono": 1.3,
 	"Marngem": 1.15,
+	"Ema Yakobus": 0.78,
 }
 
 var aktif: bool = false
@@ -44,6 +46,15 @@ var _suara_id: String = ""
 var _nomor_ucapan: int = 0
 var _timer_lanjut: Timer
 
+# Teka-teki (pertanyaan pilihan ganda)
+var _panel_teka_teki: NinePatchRect
+var _label_tanya_nama: Label
+var _label_pertanyaan: Label
+var _kolom_pilihan: VBoxContainer
+var _indeks_benar: int = 0
+var _callback_jawaban: Callable = Callable()
+var _menjawab: bool = false
+
 
 func _ready() -> void:
 	layer = 50
@@ -54,6 +65,7 @@ func _ready() -> void:
 	_timer_lanjut.timeout.connect(_maju)
 	add_child(_timer_lanjut)
 	_siapkan_suara()
+	_bangun_ui_teka_teki()
 
 
 func _siapkan_suara() -> void:
@@ -94,6 +106,85 @@ func _bangun_ui() -> void:
 
 	_label_lanjut = Gaya.label("[E] lanjut", 8, Gaya.ABU)
 	_panel.add_child(_label_lanjut)
+
+
+func _bangun_ui_teka_teki() -> void:
+	_panel_teka_teki = Gaya.panel_songke(Vector2(90, 70), Vector2(460, 230))
+	_panel_teka_teki.visible = false
+	add_child(_panel_teka_teki)
+	_label_tanya_nama = Gaya.label("", 11, Gaya.KUNING)
+	_label_tanya_nama.position = Vector2(16, 10)
+	_panel_teka_teki.add_child(_label_tanya_nama)
+	_label_pertanyaan = Gaya.label("", 12, Gaya.PUTIH)
+	_label_pertanyaan.position = Vector2(16, 30)
+	_label_pertanyaan.size = Vector2(428, 60)
+	_label_pertanyaan.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_panel_teka_teki.add_child(_label_pertanyaan)
+	_kolom_pilihan = VBoxContainer.new()
+	_kolom_pilihan.position = Vector2(60, 96)
+	_kolom_pilihan.add_theme_constant_override("separation", 8)
+	_panel_teka_teki.add_child(_kolom_pilihan)
+	var bantuan := Gaya.label("Pilih dengan mouse, panah + Enter, atau tombol 1 / 2 / 3", 8, Gaya.ABU)
+	bantuan.position = Vector2(16, 208)
+	_panel_teka_teki.add_child(bantuan)
+
+
+## Ajukan teka-teki pilihan ganda. `callback` dipanggil dengan argumen bool (benar/salah)
+## setelah dialog ditutup dan state game dikembalikan.
+func ajukan_teka_teki(nama: String, pertanyaan: String, pilihan: Array, indeks_benar: int, callback: Callable) -> void:
+	if aktif:
+		return
+	_state_sebelum = GameState.state
+	if not GameState.ubah_state(GameState.State.DIALOG):
+		return
+	aktif = true
+	_menjawab = true
+	_indeks_benar = indeks_benar
+	_callback_jawaban = callback
+	_label_tanya_nama.text = nama + " bertanya:"
+	_label_pertanyaan.text = pertanyaan
+	for anak in _kolom_pilihan.get_children():
+		anak.queue_free()
+	var ucapan: String = pertanyaan
+	var huruf: Array[String] = ["A", "B", "C", "D"]
+	for i in pilihan.size():
+		var b := Gaya.tombol("%d.  %s" % [i + 1, str(pilihan[i])])
+		b.custom_minimum_size = Vector2(340, 26)
+		b.pressed.connect(_jawab.bind(i))
+		_kolom_pilihan.add_child(b)
+		ucapan += " %s, %s." % [huruf[i % huruf.size()], str(pilihan[i])]
+	_panel_teka_teki.visible = true
+	_kolom_pilihan.get_child(0).call_deferred("grab_focus")
+	if suara_tersedia():
+		_ucapkan(ucapan, nama)
+
+
+func _jawab(indeks: int) -> void:
+	if not _menjawab:
+		return
+	_menjawab = false
+	aktif = false
+	_panel_teka_teki.visible = false
+	if suara_tersedia():
+		DisplayServer.tts_stop()
+	var benar: bool = indeks == _indeks_benar
+	AudioManager.putar_sfx("berhasil" if benar else "gagal")
+	GameState.ubah_state(_state_sebelum)
+	var cb: Callable = _callback_jawaban
+	_callback_jawaban = Callable()
+	teka_teki_dijawab.emit(benar)
+	if cb.is_valid():
+		cb.call(benar)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if not _menjawab or not event is InputEventKey or not event.pressed:
+		return
+	var tombol: InputEventKey = event
+	var angka: int = tombol.keycode - KEY_1
+	if angka >= 0 and angka < _kolom_pilihan.get_child_count():
+		get_viewport().set_input_as_handled()
+		_jawab(angka)
 
 
 ## Ukuran panel: lebar dengan teks, atau ringkas (nama pembicara saja) saat diucapkan.
@@ -189,24 +280,24 @@ func _saat_ucapan_selesai(nomor: int) -> void:
 
 
 func _lanjut_setelah_ucapan(nomor: int) -> void:
-	if aktif and nomor == _nomor_ucapan:
+	if aktif and not _menjawab and nomor == _nomor_ucapan:
 		_timer_lanjut.start(JEDA_SETELAH_UCAPAN)
 
 
 func _process(_delta: float) -> void:
-	if not aktif or Engine.get_process_frames() == _frame_mulai:
+	if not aktif or _menjawab or Engine.get_process_frames() == _frame_mulai:
 		return
 	if Input.is_action_just_pressed("interaksi") or Input.is_action_just_pressed("lompat"):
 		_maju()
 
 
 func _input(event: InputEvent) -> void:
-	if aktif and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+	if aktif and not _menjawab and event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_maju()
 
 
 func _maju() -> void:
-	if not aktif:
+	if not aktif or _menjawab:
 		return
 	if _label_teks.visible and _label_teks.visible_ratio < 1.0 and not suara_tersedia():
 		if _tween_ketik:

@@ -1,9 +1,9 @@
-class_name LawanCaci
+class_name PenampilCaci
 extends Node3D
-## Lawan caci yang dikendalikan FSM: Siaga, Ancang, Serang, Tangkis, Terkena.
-## Pengendali duel hanya memberi perintah; detail perilaku ada di tiap state.
+## Penampil caci (pertunjukan saat Penti) yang dikendalikan FSM: Siaga, Ancang, Serang, Tangkis, Terkena.
+## Pengendali pertunjukan hanya memberi perintah; detail perilaku ada di tiap state.
 
-signal pukulan_mendarat  ## momen cambuk lawan mengenai/ditangkis
+signal pukulan_mendarat  ## momen cambuk penampil mengenai/ditangkis
 signal serangan_selesai  ## satu siklus serangan (termasuk tipuan) selesai
 
 @onready var model: KarakterModel = $Model

@@ -4,8 +4,8 @@ config_version=5
 
 [application]
 
-config/name="Caci: Jejak Anak Wae Rebo"
-config/description="Prototipe game 3D berbasis budaya Manggarai (Flores, NTT)."
+config/name="Jejak Penti di Wae Rebo"
+config/description="Prototipe game 3D jelajah budaya Manggarai (Flores, NTT)."
 run/main_scene="res://scenes/main_menu.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
 

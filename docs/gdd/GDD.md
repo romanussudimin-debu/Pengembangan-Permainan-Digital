@@ -1,13 +1,13 @@
 # Game Design Document (GDD)
-# *Caci: Jejak Anak Wae Rebo*
+# *Jejak Penti di Wae Rebo*
 
 | | |
 |---|---|
 | **Nama / NIM** | [NAMA] / [NIM] |
 | **Mata kuliah** | Pengembangan Permainan Digital — Rencana Tugas 1 |
-| **Versi dokumen** | 1.0 (prototipe) |
+| **Versi dokumen** | 2.0 (revisi konsep: dari duel caci menjadi jelajah budaya) |
 | **Engine** | Godot 4.3+ (renderer Compatibility) |
-| **Platform** | Windows (.exe) dan Web (HTML5) |
+| **Platform** | Windows (.exe), macOS, dan Web (HTML5) |
 
 ---
 
@@ -15,205 +15,164 @@
 
 | Aspek | Keterangan |
 |---|---|
-| Judul | Caci: Jejak Anak Wae Rebo |
-| Genre | Petualangan 3D orang ketiga + duel ritme/timing |
+| Judul | Jejak Penti di Wae Rebo |
+| Genre | Petualangan jelajah budaya 3D orang ketiga dengan rantai teka-teki dan mini-game |
 | Target pemain | Remaja–dewasa (13+), pemain kasual, pelajar/mahasiswa yang ingin mengenal budaya Nusantara |
-| Durasi main | ±10 menit |
-| Pitch satu kalimat | Pulang ke kampung adat Wae Rebo menjelang Penti, jelajahi Mbaru Niang, lalu buktikan sportivitasmu dalam **caci**, menangkis sebagai *ta'ang* dan mencambuk sebagai *paki*. |
-| Unsur budaya inti | **Caci** (paki & ta'ang, larik, nggiling, panggal) |
-| Unsur pendukung | Mbaru Niang & Kampung Wae Rebo, Compang, Penti, kain Songke, gong-gendang & nyanyian adat |
+| Durasi main | ±10–15 menit |
+| Pitch satu kalimat | Menjelang Penti, Nggohak menelusuri kampung adat Wae Rebo, menemui delapan warga secara berurutan, lalu menjawab teka-teki, menenun songke, dan menabuh gong-gendang untuk mengumpulkan sembilan kartu pengetahuan budaya. |
+| Unsur budaya | Mbaru Niang & Wae Rebo, compang, Penti, kain songke, gong-gendang & nyanyian adat (sanda, mbata, danding), caci (pertunjukan) |
 
-## 2. Latar & Cerita (ringkas)
-Nggohak, pemuda Manggarai, pulang ke kampung adat yang terinspirasi Wae Rebo menjelang **Penti** (tahun baru adat dan syukur pergantian musim). **Tu'a Golo** (tetua kampung) memintanya berlatih caci dengan tiga pemain kampung, yaitu **Hingha**, **Fransi**, dan **Ema Agus** (juara kampung), sambil mengingatkan bahwa *caci bukan untuk melukai, melainkan tentang sportivitas dan persaudaraan*. **Ine Wela**, seorang penenun, mengenalkan songke. Setelah ketiga lawan mengakui Nggohak, Penti dimulai dan warga menari mengelilingi natas.
+### Riwayat revisi konsep
+| Versi | Konsep | Alasan perubahan |
+|---|---|---|
+| 0.x | 2D: teka-teki lingko + duel caci | — |
+| 1.x | 3D: jelajah kampung + duel caci (ta'ang/paki, 3 lawan) | Lebih imersif |
+| **2.0** | **3D: jelajah budaya dengan rantai teka-teki, menenun songke, tabuh gong-gendang; caci sebagai pertunjukan Penti** | Duel caci dinilai terlalu sulit untuk pemain umum. Jelajah budaya mengenalkan lebih banyak unsur budaya. Caci tetap tampil dengan hormat sebagai pertunjukan. |
 
-Struktur 3 babak:
-1. **Pulang:** tiba di kampung, bertemu Tu'a Golo, menjelajah, dan mengumpulkan kartu budaya.
-2. **Berlatih:** tiga duel caci dengan kesulitan bertahap.
-3. **Penti:** kembali ke Tu'a Golo, lalu ending perayaan.
+## 2. Latar & Cerita
+Nggohak, pemuda Manggarai, pulang ke kampung adat bergaya Wae Rebo menjelang **Penti** (tahun baru adat, syukur pergantian musim kerja). Menurut **Tu'a Golo** (tetua kampung), setiap warga menyimpan satu **kartu pengetahuan budaya**. Kartu harus dikumpulkan **berurutan**. Setiap warga memberi tantangan, dan setelah berhasil, ia menunjukkan siapa yang harus ditemui berikutnya. Setelah semua kartu terkumpul, Penti dimulai: warga menari dan dua pemuda menampilkan **caci**.
 
 ## 3. Core Loop
 ```
- ┌─► Jelajahi kampung 3D (jalan, lompat, temukan kartu) ─┐
- │                                                        ▼
- │   Bicara dengan NPC / baca kartu budaya ◄──── Dapat pengetahuan
- │                                                        │
- │                                                        ▼
- │   Duel caci: TA'ANG (tangkis) ⇄ PAKI (cambuk), 3 ronde
- │                                                        │
- └──── Menang: kartu hadiah + lawan berikutnya terbuka ◄──┘
-                     (Kalah: ulangi duel / kembali ke kampung)
+ Temui warga yang ditunjuk petunjuk ──► Tantangan (teka-teki / tenun / tabuh)
+            ▲                                         │ berhasil
+            │                                         ▼
+ Jelajahi kampung 3D ◄── Petunjuk ke warga berikutnya ◄── Kartu budaya (dibacakan)
+                         (salah/gagal → ingat isi kartu, coba lagi)
 ```
+Pengetahuan dari setiap kartu menjadi bekal untuk menjawab teka-teki berikutnya, sehingga loop ini sekaligus menjadi **loop belajar**.
 
 ## 4. Mekanik Gameplay
 
-### 4.1 Mekanik 1 — TA'ANG (menangkis)
+### 4.1 Mekanik 1 — Rantai Teka-teki & Jelajah
 | Komponen | Rincian |
 |---|---|
-| Tujuan | Menangkis pukulan larik lawan dengan nggiling |
-| Kontrol | **K** atau **X** |
-| Aturan | Lawan masuk state **Ancang** (menarik larik ke belakang; muncul tanda "!" kuning lalu merah). Tangkisan **berhasil** bila ditekan paling lama *jendela* detik sebelum pukulan mendarat. |
-| Stamina | Maks 100; tiap tangkisan −30; pulih +22/detik; jeda antartangkisan 0,35 detik. Menangkis sembarangan menghabiskan stamina. |
-| Tipuan | Lawan 2 dan 3 kadang ancang-ancang tanpa memukul (tipuan) untuk menghukum pemain yang asal menekan tombol. |
-| Skor | Tertangkis: pemain +1 · Terkena: lawan +2 |
-| Umpan balik | SFX perisai/cambuk, animasi tangkis/terkena, *screen shake*, teks "Tertangkis! +1" / "Terkena!" |
+| Tujuan | Menemukan warga berikutnya dari petunjuk, lalu menjawab teka-tekinya |
+| Petunjuk | Diucapkan warga dan ditampilkan di HUD ("Petunjuk: ..."), berupa deskripsi tempat/peran, misalnya *"perempuan yang menenun kain berdasar hitam di sisi barat kampung"* |
+| Urutan | Warga yang belum gilirannya menolak dengan sopan ("Ikuti dulu petunjukmu"); warga yang sudah memberi kartu mengucapkan terima kasih |
+| Teka-teki | Pilihan ganda (3 opsi) yang dibacakan dengan suara; jawab dengan klik, panah + Enter, atau tombol 1/2/3. Jawabannya ada di isi kartu sebelumnya. |
+| Salah | Warga menyarankan membuka koleksi kartu (Esc) lalu kembali lagi |
+| Gerak | Berjalan, melompat (coyote time, jump buffer, tinggi variabel), dan batu pijakan bertingkat 1–3 m |
 
-### 4.2 Mekanik 2 — PAKI (mencambuk)
+### 4.2 Mekanik 2 — Menenun Songke (teka-teki pola)
 | Komponen | Rincian |
 |---|---|
-| Tujuan | Mencambuk lawan dengan tepat |
-| Kontrol | **J** atau **Z** |
-| Aturan | Penanda bergerak bolak-balik pada bilah timing. Zona **kuning** = tepat, **oranye** = hampir, sisanya = meleset. Batas waktu 3 detik per cambukan. |
-| Skor | Tepat: pemain +2 (lawan terkena) · Hampir: ditangkis lawan (0) · Meleset/terlambat: 0 |
-| Kesulitan | Zona menyempit dan bilah makin cepat untuk lawan berikutnya; bilah juga sedikit lebih cepat setiap ronde. |
+| Tujuan | Menyamakan kain 5×5 dengan contoh motif belah ketupat (dasar hitam, cincin kuning, merah, pusat hijau) |
+| Kontrol | Panah/WASD memilih kotak; E/Spasi atau klik mengganti warna benang; 1–4 memilih warna langsung; Backspace berhenti |
+| Umpan balik | Jumlah kotak yang belum sama, jumlah langkah, warna terpilih; SFX klik; selesai otomatis saat kain sama persis |
 
-### 4.3 Struktur duel
-- 3 ronde. Setiap ronde terdiri atas fase **TA'ANG** (2 serangan lawan) lalu fase **PAKI** (2 cambukan). Peran bergantian seperti caci sesungguhnya.
-- Menang jika poin pemain > poin lawan. Hadiah: kartu budaya dan lawan berikutnya terbuka.
-- Kalah: dialog penyemangat, lalu pilih **Ulangi Duel** atau **Kembali ke Kampung**.
-- Tutorial interaktif (dialog Tu'a Golo) muncul sebelum duel pertama.
+### 4.3 Mekanik 3 — Tabuh Gong-Gendang (ritme)
+| Komponen | Rincian |
+|---|---|
+| Tujuan | Menabuh mengikuti irama untuk mengiringi Penti |
+| Kontrol | **J** = gong, **K** = gendang |
+| Aturan | 18 ketukan bergerak dari kanan ke garis tabuh (tempo 76 BPM). Tepat bila ditekan ±0,2 detik dari ketukan. Lulus bila ≥ 60% tepat; bila gagal, coba lagi. |
+| Umpan balik | Suara gong/gendang setiap tabuhan, teks "Tepat!/Luput" yang meletup, skor berjalan; musik latar dijeda selama mini-game |
 
-### 4.3b Jeda kopi antarronde
-Setelah ronde 1 dan 2, dua perempuan kampung (**Ende Lono** dan **Marngem**) berjalan dari tepi arena membawa nampan berisi cangkir kopi untuk Nggohak **dan** lawannya. Dialognya menekankan bahwa di arena mereka bertanding, di luar arena mereka bersaudara. Efeknya: **stamina pulih penuh**.
-> Catatan budaya: adegan menyuguhkan kopi adalah **tafsir kreatif** pengembang untuk menggambarkan keramahan dan dukungan warga. Belum ada sumber riset yang mendukungnya [PERLU VERIFIKASI].
-
-### 4.4 Parameter lawan
-| Lawan | Ancang-ancang (dtk) | Jendela tangkis (dtk) | Lebar zona | Laju bilah | Peluang tipuan | Kartu hadiah |
-|---|---|---|---|---|---|---|
-| Hingha (latihan) | 1,0–1,4 | 0,38 | 0,26 | 0,8 | 0% | Caci: Paki & Ta'ang |
-| Fransi (menengah) | 0,65–1,15 | 0,30 | 0,19 | 1,15 | 20% | Perlengkapan Caci |
-| Ema Agus (juara) | 0,45–1,0 | 0,24 | 0,14 | 1,5 | 33% | Nilai Sportivitas Caci |
-
-### 4.5 Mekanik pendukung: eksplorasi & platforming
-- Berjalan bebas di kampung 3D, mengunjungi Mbaru Niang yang pintunya bercahaya untuk menemukan kartu, dan melompat ke **batu pijakan** bertingkat (tinggi 1–3 m).
-- Lompatan memakai *coyote time* (0,12 dtk), *jump buffer* (0,12 dtk), dan tinggi lompat variabel (lepas tombol lebih awal = lompatan lebih rendah).
+### 4.4 Urutan rantai (data: `src/data/rantai_teka_teki.json`)
+| # | Warga (lokasi) | Tantangan | Kartu | Petunjuk ke berikutnya |
+|---|---|---|---|---|
+| 1 | Tu'a Golo (compang) | Teka-teki: nama rumah kerucut → **Mbaru Niang** | Compang | Penenun kain berdasar hitam di barat |
+| 2 | Ine Wela (barat) | **Menenun songke** | Kain Songke | Mbaru gendang di utara |
+| 3 | Ema Agus (pintu mbaru gendang) | Warna dasar songke → **Hitam** | Mbaru Niang | Ibu di dekat tangga batu, selatan |
+| 4 | Ende Lono (selatan) | Tingkat teratas Mbaru Niang → **Hekang kode** | Kampung Wae Rebo | Penabuh di dekat gong |
+| 5 | Fransi (gong-gendang) | **Tabuh gong-gendang** | Gong, Gendang & Nyanyian | Pemain caci termuda di arena timur |
+| 6 | Hingha (arena) | Nyanyian berdiri melingkar tanpa alat musik → **Sanda** | Caci: Paki & Ta'ang | Perempuan pembawa kopi |
+| 7 | Marngem (tepi arena) | Pemain yang menangkis → **Ta'ang** | Perlengkapan Caci | Pemain caci senior di ujung timur |
+| 8 | Ema Yakobus (ujung arena) | Perisai bundar kulit kerbau → **Nggiling** | Nilai Sportivitas Caci | Kembali ke Tu'a Golo |
+| 9 | Tu'a Golo | Nilai utama caci → **Sportivitas dan persaudaraan** | Penti | → Ending Penti |
 
 ## 5. Kontrol
-| Aksi | Keyboard |
+| Aksi | Keyboard / mouse |
 |---|---|
-| Bergerak | W A S D / tombol panah |
+| Bergerak | W A S D / panah |
 | Lompat | Spasi |
-| Interaksi / lanjut dialog | E / Enter (dialog juga bisa dilanjutkan dengan Spasi atau klik) |
-| Cambuk (paki) | J / Z |
-| Tangkis (ta'ang) | K / X |
-| Jeda | Esc / P |
-| Navigasi menu | Mouse atau panah + Enter |
-
-Input Map didaftarkan lewat kode di `scripts/autoload/kontrol.gd`.
+| Bicara / lanjut / lewati dialog | E / Enter (juga Spasi atau klik) |
+| Jawab teka-teki | klik, panah + Enter, atau 1/2/3 |
+| Menenun | panah/WASD, E/Spasi/klik, 1–4 |
+| Tabuh | J (gong), K (gendang) |
+| Jeda & koleksi kartu | Esc / P |
 
 ## 6. State Management
-
-### 6.1 State game (`GameState`, autoload)
-`MENU → BERMAIN ⇄ DIALOG`, `BERMAIN ⇄ JEDA`, `BERMAIN → MINIGAME ⇄ DIALOG`, `MINIGAME ⇄ JEDA`, `BERMAIN → SELESAI → MENU`.
-Transisi yang tidak terdaftar di `TRANSISI_SAH` **ditolak** dan diberi peringatan, sehingga state game selalu konsisten. Contohnya, jeda tidak bisa dibuka saat dialog berlangsung.
-
-### 6.2 FSM Pemain (`scenes/pemain.tscn`)
-| State | Masuk ke state ini ketika | Perilaku |
-|---|---|---|
-| Idle | tidak ada input & di tanah | animasi napas |
-| Jalan | ada input arah | ayunan kaki/lengan, SFX langkah |
-| Lompat | tombol lompat (dengan buffer & coyote) | stretch, tinggi variabel |
-| Jatuh | kecepatan vertikal ≤ 0 / lepas dari tepi | squash saat mendarat |
-| Interaksi | GameState menjadi DIALOG | diam, tidak menerima input gerak |
-
-### 6.3 FSM Lawan Caci (`scenes/lawan_caci.tscn`)
-| State | Perilaku | Transisi |
-|---|---|---|
-| Siaga | kuda-kuda caci | ← perintah duel |
-| Ancang | menarik larik (*anticipation*), tanda "!" | → Serang, atau → Siaga bila tipuan |
-| Serang | pukulan cepat + *follow-through*, memancarkan `pukulan_mendarat` | → Siaga |
-| Tangkis | mengangkat nggiling | → Siaga (0,55 dtk) |
-| Terkena | terdorong ke belakang + squash | → Siaga (0,6 dtk) |
-
-### 6.4 Fase duel (`duel_caci.gd`)
-`PERSIAPAN → (TA'ANG → PAKI) × 3 ronde → HASIL`
+- **GameState (autoload):** `MENU → BERMAIN ⇄ DIALOG`, `BERMAIN ⇄ JEDA`, `BERMAIN ⇄ MINIGAME`, `BERMAIN → SELESAI → MENU`. Transisi yang tidak ada di `TRANSISI_SAH` ditolak. Contohnya, jeda tidak bisa dibuka saat dialog atau saat menjawab teka-teki. Progres disimpan di `langkah_rantai` dan `kartu_terkumpul`.
+- **FSM Pemain:** Idle, Jalan, Lompat, Jatuh, Interaksi (dikunci saat DIALOG).
+- **FSM Penampil Caci (ending):** Siaga, Ancang, Serang, Tangkis, Terkena. Dua penampil bergantian menjadi paki dan ta'ang.
+- **State tantangan:** rantai berbasis data, dengan tiga jenis tantangan (`teka_teki`, `tenun`, `gong`) yang dikendalikan `kampung.gd`.
 
 ## 7. Integrasi Budaya per Aspek
 | Aspek | Wujud dalam game |
 |---|---|
-| **Mekanik** | Peran paki dan ta'ang bergantian; ancang-ancang lawan menjadi isyarat menangkis; menang lewat poin, bukan menghabisi lawan; sasaran di tubuh atas |
-| **Visual: karakter** | Pemain caci bertelanjang dada dengan **panggal** bertanduk, **larik**, **nggiling** kulit kerbau, dan sarung **songke**; tetua berbaju hitam; penenun berbaju merah |
-| **Visual: lingkungan** | 7 **Mbaru Niang** (1 mbaru gendang lebih besar + 6 mbaru gena) melingkari **compang** di natas, atap ijuk dengan penanda 5 tingkat, gong dan gendang, lembah hijau berlangit cerah |
-| **Visual: UI** | Bingkai panel dan dialog bermotif **songke** (dasar hitam, garis merah-kuning-hijau-biru) |
-| **Audio** | Musik pola **gong-gendang** sintetis (kampung lebih tenang, arena caci lebih cepat), SFX cambuk, perisai, dan gong pembuka ronde |
-| **Narasi** | Bingkai **Penti**; pesan sportivitas dan persaudaraan; sapaan hormat *ité* dan *Kraeng*; *Mori Kraeng* dan *empo* dalam doa syukur; dialog diucapkan (suara) |
-| **Warga** | Perempuan kampung bersanggul dan bersarung songke panjang mengantar kopi untuk kedua pemain caci saat jeda (tafsir kreatif) |
-| **Edukasi** | 9 kartu budaya yang dapat dibaca ulang di menu jeda |
-| **Kepekaan** | Compang hanya *dilihat*, tidak dijadikan arena atau platform; ritus Penti tidak diperagakan detail; stamina dan tipuan ditandai sebagai unsur desain |
+| **Mekanik** | Menenun motif songke; menabuh gong-gendang; teka-teki tentang Mbaru Niang, songke, nyanyian adat, dan caci; menghormati compang (hanya dilihat) |
+| **Visual: lingkungan** | 7 Mbaru Niang (1 mbaru gendang + 6 mbaru gena) melingkari compang di natas, atap ijuk 5 tingkat, gong & gendang, arena, langit cerah |
+| **Visual: karakter** | Sarung songke; perempuan bersanggul dengan sarung panjang; pemain caci dengan panggal, larik, nggiling |
+| **Visual: UI** | Panel bermotif songke |
+| **Audio** | Musik pola gong-gendang sintetis; SFX gong/gendang interaktif; **dialog diucapkan** (TTS bahasa Indonesia, nada berbeda per tokoh) |
+| **Narasi** | Bingkai Penti; sapaan *ité* dan *Kraeng*; pesan sportivitas & persaudaraan; warga saling mengenalkan budaya |
+| **Edukasi** | 9 kartu budaya yang dibacakan dan dapat dibaca ulang di menu jeda; teka-teki menguji isi kartu |
+| **Kepekaan** | Compang tidak dijadikan tempat bermain; caci ditampilkan sebagai pertunjukan, bukan pertarungan; kopi dan pola motif adalah tafsir kreatif |
+
+> **Tafsir kreatif [PERLU VERIFIKASI]:** perempuan pembawa kopi untuk pemain caci; motif belah ketupat 5×5 sebagai penyederhanaan motif songke; pola irama gong-gendang (bukan pola adat tertentu).
 
 ## 8. Desain Level
-
-### 8.1 Kampung (hub)
 ```
-                    UTARA
-          [Mbaru Gendang]✦ (kartu Mbaru Niang)
- ✦[Gena] (kartu Gong-Gendang)       [Gena]
-            gong  ┌─────┐
- [Gena]           │  ◎  │ compang (dilihat)   ──── papan "Arena Caci"
-   Ine Wela       └─────┘  Tu'a Golo              ( ARENA )  Hingha · Fransi · Ema Agus
- [Gena]                         ✦[Gena] (kartu Penti)
-     ✦[Gena] (kartu Wae Rebo)
-  batu▲▲▲          ▼ papan "Kampung Wae Rebo"
+                  UTARA
+         [Mbaru Gendang] ← Ema Agus (#3)
+  [Gena]                         [Gena]
+     Fransi (#5) gong
+  [Gena]        ◎ compang      ──── papan "Arena Caci (Penti)"
+   Ine Wela (#2)   Tu'a Golo (#1, #9)     ( ARENA )  Hingha (#6) · Ema Yakobus (#8)
+  [Gena]                    [Gena]            Marngem (#7, kopi)
+            [Gena]
+  batu▲▲▲   Ende Lono (#4)   ▼ papan "Kampung Wae Rebo"
                  ★ titik muncul (selatan)
- ✦ = pintu Mbaru Niang bercahaya, berisi kartu budaya ("[E] Masuk Mbaru Niang")
 ```
-- Area bermain 80×80 m dengan dinding batas tak terlihat (tanah 220×220 m agar cakrawala bersih tanpa kabut); pohon di radius 22–36 m; bukit di kejauhan.
-- Kartu: 4 ditemukan **di dalam Mbaru Niang** (pintu bercahaya hangat sampai kartunya diambil), 1 dari compang, 1 dari Ine Wela, 3 hadiah duel. Total **9**.
-- Tiga batu pijakan bertingkat (1–3 m) di barat daya untuk latihan melompat dan memandang kampung dari atas.
+Area bermain 80×80 m dengan dinding batas tak terlihat; tanah 220 m; pohon & bukit di sekeliling.
 
-### 8.2 Arena caci
-Lingkaran tanah dikelilingi batu, 7 penonton setengah lingkaran (sebagian menari), gong-gendang, tiga Mbaru Niang di latar. Kamera samping tetap.
-
-### 8.3 Ending
-Natas dengan 10 penari melingkar (*danding*), kamera mengorbit, ringkasan kartu & kemenangan.
+**Ending:** natas dengan 10 penari melingkar dan dua penampil caci yang bergantian menyerang/menangkis; kamera mengorbit.
 
 ## 9. UI / HUD
-- **Menu utama:** diorama 3D Wae Rebo dengan kamera mengorbit; tombol Mulai, Cara Bermain, Tentang Game, Keluar.
-- **HUD kampung:** tujuan saat ini, jumlah kartu x/9, jumlah lawan x/3, petunjuk kontrol.
-- **Petunjuk 3D:** label nama mengambang di atas NPC dan "[E] Bicara" pada objek interaksi terdekat.
-- **Dialog bersuara:** dialog dan kartu budaya **diucapkan** dengan Text-to-Speech bahasa Indonesia dari sistem operasi (Godot `DisplayServer.tts_speak`). Tiap tokoh punya nada suara berbeda (Tu'a Golo lebih berat, para ine lebih tinggi). Di layar hanya tampil panel kecil bermotif songke berisi nama pembicara. Dialog lanjut otomatis setelah kalimat selesai, dan E bisa dipakai untuk melewati. Bila komputer tidak memiliki suara bahasa Indonesia, teks ditampilkan sebagai cadangan. Di menu jeda pemain dapat menyalakan "Tampilkan teks dialog" (aksesibilitas) dan mengatur volume suara dialog.
-- **HUD duel:** nama lawan, peran saat ini, skor kedua pihak, bar stamina, bilah timing, teks umpan balik yang "meletup".
-- **Menu jeda:** lanjutkan, slider volume musik/SFX/suara dialog, pilihan tampilkan teks dialog, koleksi kartu budaya, kembali ke menu.
+- **Menu utama:** diorama 3D, judul "JEJAK PENTI di Wae Rebo", tombol Mulai, Cara Bermain, Tentang, Keluar.
+- **HUD:** "Petunjuk: ..." (petunjuk aktif) dan jumlah kartu x/9.
+- **Dialog bersuara:** panel kecil berisi nama pembicara; kalimat diucapkan lewat TTS; lanjut otomatis; E untuk melewati. Teks tampil bila suara tidak tersedia atau dinyalakan di menu jeda.
+- **Teka-teki:** panel pertanyaan + 3 tombol jawaban.
+- **Mini-game:** overlay bermotif songke (tenun, tabuh).
+- **Menu jeda:** volume musik/SFX/suara dialog, tampilkan teks dialog, koleksi kartu, kembali ke menu.
 
 ## 10. Gaya Visual & Audio
-- Low-poly prosedural: semua model dibangun dari mesh primitif Godot (kapsul, silinder, kerucut, torus, bola).
-- Tekstur pixel 64×64 buatan sendiri: songke (4 varian), ijuk, rumput, tanah, batu, kayu, kulit kerbau.
-- Palet: hitam songke `#1B1818`, merah `#B02A2A`, kuning `#E8B430`, hijau `#2E7D46`, biru `#2C5C96`, krem `#E8E2D2`.
-- Audio disintesis dengan Python (numpy): gong (parsial inharmonik + dengung), gendang (pitch-drop + noise), lonceng pentatonik.
+Low-poly prosedural dari mesh primitif Godot; tekstur pixel 64×64 buatan sendiri (songke 4 varian, ijuk, rumput, tanah, batu, kayu, kulit kerbau). Palet: hitam `#1B1818`, merah `#B02A2A`, kuning `#E8B430`, hijau `#2E7D46`, biru `#2C5C96`, krem `#E8E2D2`. Audio disintesis (gong, gendang, lonceng pentatonik).
 
-## 11. Prinsip Animasi yang Diterapkan
+## 11. Prinsip Animasi
 | Prinsip | Penerapan |
 |---|---|
-| Anticipation | Lawan menarik larik jauh ke belakang sebelum memukul; ini juga menjadi isyarat gameplay |
-| Timing | Ancang-ancang lambat (0,45–1,4 dtk) vs pukulan sangat cepat (0,09 dtk) |
-| Follow-through | Lengan dan larik terus bergerak melewati target, lalu kembali dengan easing elastis |
-| Squash & stretch | Stretch saat melompat, squash saat mendarat (sebanding kecepatan jatuh), squash saat terkena, teks umpan balik "meletup" |
-| Ease in/out | Tween transisi layar, ayunan lengan, perisai turun perlahan |
-| Secondary action | Napas saat idle, ayunan lengan saat berjalan, penonton menari, perempuan pembawa kopi berjalan sambil menahan nampan |
-| Arcs | Ayunan lengan berbasis rotasi pada sendi bahu dan pinggul |
+| Anticipation | Penampil caci menarik larik ke belakang sebelum memukul |
+| Timing | Ancang-ancang lambat vs pukulan sangat cepat (0,09 dtk) |
+| Follow-through | Lengan dan larik melewati target lalu kembali dengan easing elastis |
+| Squash & stretch | Stretch saat melompat, squash saat mendarat; teks umpan balik "meletup" |
+| Ease in/out | Transisi layar, langkah pembawa kopi, perisai turun |
+| Secondary action | Napas saat idle, ayunan lengan, penari Penti, perempuan menahan nampan |
 
 ## 12. Ruang Lingkup
 | Prioritas | Fitur | Status |
 |---|---|---|
-| Must | Gerak, lompat, collision 3D; FSM pemain & lawan; GameState; 2 mekanik caci; 3 lawan; dialog; kartu; audio | ✅ diimplementasikan |
-| Should | Menu jeda + volume + koleksi kartu, tutorial, ending Penti, screen shake | ✅ diimplementasikan |
-| Nice | Kamera bisa diputar, simpan permainan, teka-teki lingko, model 3D detail, suara rekaman asli (dengan izin) | ⏳ pengembangan lanjutan |
+| Must | Gerak/lompat/collision 3D; FSM pemain; GameState; rantai teka-teki 9 langkah; 2 mini-game; dialog; kartu; audio | ✅ |
+| Should | Dialog bersuara, menu jeda + koleksi kartu, ending Penti dengan pertunjukan caci | ✅ |
+| Nice | Simpan permainan, kamera bebas, lebih banyak motif tenun, rekaman suara asli (dengan izin) | ⏳ |
 
-## 13. Arsitektur Teknis (ringkas)
+## 13. Arsitektur Teknis
 ```
 src/
-├─ project.godot              (autoload, display 640×360 → 1280×720, renderer Compatibility)
-├─ scenes/                    main_menu, kampung, duel_caci, ending, pemain, lawan_caci
+├─ scenes/        main_menu, kampung, ending, pemain, penampil_caci
 ├─ scripts/
-│  ├─ autoload/               Kontrol, GameState, AudioManager, Transisi, DialogManager, MenuJeda
-│  ├─ state_machine/          StateMachine + StateDasar (dipakai ulang)
-│  ├─ karakter/               KarakterModel (model prosedural + animasi)
-│  ├─ pemain/ (+states)       Pemain (CharacterBody3D) + Idle/Jalan/Lompat/Jatuh/Interaksi
-│  ├─ lawan/ (+states)        LawanCaci + Siaga/Ancang/Serang/Tangkis/Terkena
-│  ├─ dunia/                  Dunia (builder), kampung, Interaktif, NpcKampung, KameraIkut
-│  ├─ minigame/               duel_caci, BilahTiming
-│  ├─ ui/                     hud, main_menu, ending
-│  └─ util/                   Gaya (palet & komponen UI)
-├─ data/                      dialog.json, kartu_budaya.json (konten terpisah dari kode)
-└─ assets/                    textures/ (PNG), audio/ (WAV)
+│  ├─ autoload/   Kontrol, GameState, AudioManager, Transisi, DialogManager (TTS + teka-teki), MenuJeda
+│  ├─ state_machine/  StateMachine + StateDasar
+│  ├─ karakter/   KarakterModel (model prosedural + animasi; laki-laki/perempuan, nampan kopi)
+│  ├─ pemain/     Pemain + states
+│  ├─ caci/       PenampilCaci + states (Siaga, Ancang, Serang, Tangkis, Terkena)
+│  ├─ dunia/      Dunia (builder), kampung (rantai teka-teki), Interaktif, NpcKampung, KameraIkut
+│  ├─ minigame/   TenunSongke, TabuhGong
+│  ├─ ui/         hud, main_menu, ending
+│  └─ util/       Gaya
+├─ data/          rantai_teka_teki.json, kartu_budaya.json, dialog.json
+└─ assets/        textures/, audio/
 ```
-Komunikasi antarbagian memakai **sinyal** (`state_berubah`, `progres_berubah`, `dialog_selesai`, `pukulan_mendarat`, `serangan_selesai`, `momen_pukul`, `keputusan_cambuk`).
+Konten (urutan warga, pertanyaan, jawaban, petunjuk, isi kartu) terpisah dari kode, sehingga dapat diubah tanpa pemrograman.

@@ -2,57 +2,47 @@
 
 Centang ☐ → ☑ saat menguji di Godot. Catat bug di tabel paling bawah.
 
-## 1. Fungsional: kontrol & fisika
+## 1. Kontrol & fisika
 | # | Uji | Hasil diharapkan | ☐ |
 |---|---|---|---|
-| F1 | WASD/panah | Nggohak berjalan ke 4 arah, model menghadap arah gerak | ☐ |
-| F2 | Spasi | Melompat; tahan = lebih tinggi, ketuk = lebih rendah | ☐ |
-| F3 | Lompat dari tepi batu sesaat setelah jatuh | Masih bisa melompat (coyote time) | ☐ |
-| F4 | Naik batu pijakan 1 → 2 → 3 (barat daya) | Bisa dicapai; tidak tembus batu | ☐ |
-| F4b | Masuk Mbaru Niang yang pintunya bercahaya (E) | Kartu didapat, cahaya pintu padam; masuk lagi → "sudah berkunjung" | ☐ |
-| F5 | Menabrak Mbaru Niang, pohon, compang, dinding batas | Tertahan, tidak tembus | ☐ |
-| F6 | Mendekati NPC | Muncul "[E] Bicara"; hanya objek terdekat yang menampilkan petunjuk | ☐ |
+| F1 | WASD/panah | Nggohak berjalan ke 4 arah, menghadap arah gerak | ☐ |
+| F2 | Spasi (tahan vs ketuk) | Lompat tinggi vs rendah | ☐ |
+| F3 | Naik batu pijakan 1 → 2 → 3 (barat daya) | Bisa dicapai; tidak tembus | ☐ |
+| F4 | Menabrak rumah, pohon, compang, batas dunia | Tertahan | ☐ |
+| F5 | Mendekati warga | "[E] Bicara" hanya pada warga terdekat | ☐ |
 
-## 2. State management
+## 2. Rantai teka-teki & state
 | # | Uji | Hasil diharapkan | ☐ |
 |---|---|---|---|
-| S1 | Bicara ke NPC | Nggohak tidak bisa bergerak selama dialog; HUD tersembunyi | ☐ |
-| S2 | Tekan Esc saat dialog | Menu jeda **tidak** terbuka | ☐ |
-| S3 | Esc saat berjalan / saat duel | Game berhenti; Lanjutkan mengembalikan ke state semula | ☐ |
-| S4 | Bicara ke Fransi sebelum mengalahkan Hingha | Dialog "kalahkan dulu pemain sebelumnya" | ☐ |
-| S5 | Bicara ke lawan sebelum bertemu Tu'a Golo | Diarahkan menemui Tu'a Golo | ☐ |
-| S6 | Kartu diambil lalu kembali dari arena | Kartu tidak muncul lagi; hitungan tetap | ☐ |
+| R1 | Bicara ke warga selain Tu'a Golo di awal | "Kartuku belum bisa kuberikan sekarang" | ☐ |
+| R2 | Tu'a Golo → jawab benar | Kartu Compang dibacakan; HUD menampilkan petunjuk ke Ine Wela | ☐ |
+| R3 | Jawab salah | Saran membuka koleksi (Esc); bicara lagi → teka-teki diulang | ☐ |
+| R4 | Ikuti 9 langkah sampai Tu'a Golo kedua | Ending Penti; kartu 9/9 | ☐ |
+| R5 | Bicara ke warga yang sudah memberi kartu | "Terima kasih, Kraeng" | ☐ |
+| S1 | Esc saat dialog/teka-teki | Menu jeda tidak terbuka | ☐ |
+| S2 | Esc saat jalan / saat mini-game | Game berhenti; Lanjutkan kembali normal | ☐ |
 
-## 3. Mekanik caci
+## 3. Mini-game
 | # | Uji | Hasil diharapkan | ☐ |
 |---|---|---|---|
-| C1 | Tangkis tepat saat "!" merah | "Tertangkis! +1", SFX perisai | ☐ |
-| C2 | Tidak menangkis | "Terkena!", lawan +2, layar bergetar | ☐ |
-| C3 | Tekan K berulang-ulang | Stamina habis → "Stamina habis!" | ☐ |
-| C4 | Lawan Fransi/Ema Agus | Kadang ada "Tipuan!" tanpa pukulan | ☐ |
-| C5 | Tekan J di zona kuning / oranye / luar | Kena +2 / ditangkis / meleset | ☐ |
-| C6 | Tidak menekan J selama 3 detik | "Terlambat!" | ☐ |
-| C7 | Kalah | Muncul tombol Ulangi Duel / Kembali ke Kampung | ☐ |
-| C8 | Menang 3 lawan → Tu'a Golo | Ending Penti tampil, ringkasan benar | ☐ |
+| T1 | Tenun: panah, E/Spasi, 1–4, klik mouse | Kursor bergerak, warna benang berganti | ☐ |
+| T2 | Kain sama persis dengan contoh | "Kain songke selesai", kartu Songke | ☐ |
+| T3 | Backspace saat menenun | Keluar; Ine Wela bisa dicoba lagi | ☐ |
+| G1 | Tabuh: J/K tepat di garis | "Tepat!", suara gong/gendang | ☐ |
+| G2 | Tepat < 60% | "Belum pas" → Fransi mengajak mencoba lagi | ☐ |
+| G3 | Musik latar | Berhenti selama tabuh, lanjut setelahnya | ☐ |
 
-## 3b. Jeda kopi & dialog bersuara
+## 4. Suara, visual, stabilitas
 | # | Uji | Hasil diharapkan | ☐ |
 |---|---|---|---|
-| K1 | Selesai ronde 1 dan 2 | Ende Lono & Marngem berjalan membawa nampan kopi ke kedua pemain, lalu kembali; stamina penuh | ☐ |
-| K2 | Bicara ke Ende Lono/Marngem di dekat arena | Dialog tentang kopi untuk pemain caci | ☐ |
-| V1 | Bicara ke NPC mana pun | Dialog **terdengar** (bahasa Indonesia), hanya nama pembicara yang tampil, lalu lanjut otomatis | ☐ |
-| V2 | Tekan E saat suara berbicara | Kalimat dilewati ke baris berikutnya | ☐ |
-| V3 | Menu jeda → centang "Tampilkan teks dialog" | Teks dialog ikut tampil | ☐ |
-| V4 | Komputer tanpa suara bahasa Indonesia | Teks dialog tampil otomatis (cadangan) | ☐ |
-
-## 4. Audio, visual, stabilitas
-| # | Uji | Hasil diharapkan | ☐ |
-|---|---|---|---|
-| A1 | Musik kampung/arena | Berganti dengan fade, berulang tanpa putus | ☐ |
-| A2 | Slider volume di menu jeda | Volume musik/SFX berubah | ☐ |
-| P1 | Main dari awal sampai ending | Tidak crash, tidak ada error merah di Output | ☐ |
-| P2 | FPS (Debugger → Monitors) | Stabil ±60 fps di laptop biasa | ☐ |
-| P3 | Build .exe dijalankan di luar Godot | Berjalan normal | ☐ |
+| V1 | Dialog | Terdengar (bahasa Indonesia), hanya nama pembicara tampil, lanjut otomatis | ☐ |
+| V2 | E saat berbicara | Dilewati | ☐ |
+| V3 | Menu jeda → "Tampilkan teks dialog" | Teks ikut tampil | ☐ |
+| V4 | Teka-teki | Pertanyaan & pilihan dibacakan; tombol 1/2/3 berfungsi | ☐ |
+| E1 | Ending | Penari & dua penampil caci bergantian menyerang/menangkis | ☐ |
+| P1 | Main dari awal sampai ending | Tidak crash, tidak ada error merah | ☐ |
+| P2 | FPS | Stabil ±60 | ☐ |
+| P3 | Build .exe/.app dijalankan di luar Godot | Normal | ☐ |
 
 ## Daftar bug
 | ID | Deskripsi | Langkah reproduksi | Keparahan | Status |

@@ -1,17 +1,16 @@
-# Naskah Video Demo Gameplay (±1 menit 50 detik)
+# Naskah Video Demo Gameplay (±1 menit 55 detik)
 
-**Alat:** OBS Studio atau Xbox Game Bar (Win + Alt + R), 1080p. Rekam beberapa kali, lalu sunting singkat (CapCut/Shotcut/Clipchamp). Narasi bisa direkam suara atau berupa teks di layar.
+**Alat:** OBS Studio, Xbox Game Bar (Win + Alt + R), atau di Mac **Cmd + Shift + 5**, dengan resolusi 1080p. Rekam beberapa kali lalu sunting singkat (CapCut/iMovie/Clipchamp). Pastikan suara sistem ikut terekam karena dialog game diucapkan.
 
 | Waktu | Visual / rekaman | Narasi / teks layar | Audio |
 |---|---|---|---|
-| 0:00–0:08 | Menu utama: kamera mengorbit Wae Rebo, judul "CACI" | "Caci: Jejak Anak Wae Rebo, game 3D berbasis budaya Manggarai, Flores, NTT." | Musik kampung |
-| 0:08–0:22 | Tekan Mulai → Nggohak berjalan di kampung, kamera melewati Mbaru Niang & compang | "Pemain berperan sebagai Nggohak yang pulang ke kampung adat menjelang Penti. Tujuh Mbaru Niang melingkari compang, seperti di Wae Rebo." | Musik kampung, langkah |
-| 0:22–0:35 | Bicara dengan Tu'a Golo (dialog), lompat di batu pijakan, lalu masuk Mbaru Niang yang pintunya bercahaya dan dapat kartu | "Kontrol: berjalan, melompat, berinteraksi. Kartu budaya tersimpan di dalam Mbaru Niang, misalnya kartu tentang lima tingkat Mbaru Niang." | SFX lompat, ambil kartu |
-| 0:35–0:45 | Buka menu jeda → koleksi kartu → tutup | "Semua kartu dapat dibaca ulang di menu jeda." | Klik |
-| 0:45–1:05 | Masuk arena (Hingha). Fase TA'ANG: lawan ancang-ancang "!", Nggohak menangkis → "Tertangkis! +1"; sekali terkena → layar bergetar | "Mekanik pertama: TA'ANG. Baca ancang-ancang lawan, lalu tangkis dengan nggiling tepat waktu. Setiap tangkisan memakai stamina." | Gong, musik caci, perisai, cambuk |
-| 1:05–1:22 | Fase PAKI: bilah timing → "Kena! +2" lalu "Ditangkis lawan" | "Mekanik kedua: PAKI. Cambuk dengan larik saat penanda di zona kuning. Peran bergantian setiap ronde, seperti caci sesungguhnya." | Cambuk, terkena |
-| 1:22–1:32 | Jeda kopi: Ende Lono & Marngem mengantar kopi ke kedua pemain (suara dialog terdengar); lalu potongan duel Ema Agus: "Tipuan!" | "Saat jeda, warga mengantar kopi untuk kedua pemain. Lawan berikutnya lebih cepat dan bisa menipu." | Suara dialog, musik caci |
-| 1:32–1:45 | Menang → dialog saling menghormati → ending Penti, warga menari | "Caci bukan untuk melukai, melainkan tentang sportivitas dan persaudaraan. Setelah tiga lawan, Penti pun dimulai." | Gong, berhasil |
-| 1:45–1:50 | Layar penutup: judul, nama, NIM, "Dibuat dengan Godot 4" | Teks saja | Gong penutup |
+| 0:00–0:08 | Menu utama: kamera mengorbit Wae Rebo, judul "JEJAK PENTI" | "Jejak Penti di Wae Rebo, game 3D jelajah budaya Manggarai, Flores, NTT." | Musik kampung |
+| 0:08–0:20 | Mulai → Nggohak berjalan di kampung, melewati Mbaru Niang & compang, melompat di batu pijakan | "Menjelang Penti, Nggohak pulang ke kampung adat. Tujuh Mbaru Niang melingkari compang, seperti di Wae Rebo." | Langkah, lompat |
+| 0:20–0:38 | Bicara dengan Tu'a Golo (suara dialog terdengar) → teka-teki pertama → jawab → kartu Compang dibacakan → petunjuk muncul di HUD | "Delapan warga menyimpan kartu budaya yang harus dikumpulkan berurutan. Setiap warga memberi teka-teki dan petunjuk ke warga berikutnya." | Suara dialog TTS |
+| 0:38–0:55 | Ine Wela: mini-game menenun songke sampai "Kain songke selesai" | "Mekanik kedua: menenun songke. Samakan kain dengan contoh motif." | Klik, berhasil |
+| 0:55–1:12 | Fransi: mini-game tabuh gong-gendang, "Tepat!" | "Mekanik ketiga: menabuh gong dan gendang mengikuti irama Penti." | Gong & gendang |
+| 1:12–1:25 | Teka-teki Hingha / Marngem di arena (perempuan membawa nampan kopi); salah sekali → saran membuka koleksi kartu (Esc) | "Jawaban teka-teki ada di kartu yang sudah dikumpulkan. Semua kartu bisa dibaca ulang di menu jeda." | Suara dialog |
+| 1:25–1:45 | Kembali ke Tu'a Golo → ending Penti: penari melingkar + dua penampil caci bergantian menyerang/menangkis | "Setelah sembilan kartu terkumpul, Penti dimulai. Warga menari dan caci ditampilkan, tarian-tarung yang menjunjung sportivitas dan persaudaraan." | Gong, musik Penti, perisai |
+| 1:45–1:55 | Layar penutup: judul, nama, NIM, "Dibuat dengan Godot 4" | Teks saja | Gong penutup |
 
-**Tips:** latih duel melawan Hingha dulu supaya rekaman lancar. Untuk menampilkan Ema Agus tanpa memainkan semuanya, rekam setelah benar-benar sampai ke lawan ketiga.
+**Tips:** urutan jawaban teka-teki ada di `docs/gdd/GDD.md` §4.4 supaya rekaman lancar.

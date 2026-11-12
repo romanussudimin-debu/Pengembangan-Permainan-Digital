@@ -17,6 +17,7 @@ const SFX: Dictionary = {
 	"gagal": preload("res://assets/audio/gagal.wav"),
 	"klik": preload("res://assets/audio/klik.wav"),
 	"gong": preload("res://assets/audio/gong.wav"),
+	"gendang": preload("res://assets/audio/gendang.wav"),
 }
 
 const JUMLAH_KANAL_SFX: int = 8
@@ -64,6 +65,11 @@ func putar_musik(nama: String) -> void:
 	_musik.play()
 	var tw := create_tween()
 	tw.tween_property(_musik, "volume_db", VOLUME_MUSIK_DB, 1.2).set_ease(Tween.EASE_OUT)
+
+
+## Menghentikan sementara / melanjutkan musik latar (dipakai saat mini-game ritme).
+func jeda_musik(jeda: bool) -> void:
+	_musik.stream_paused = jeda
 
 
 func putar_sfx(nama: String, variasi_pitch: float = 0.0) -> void:

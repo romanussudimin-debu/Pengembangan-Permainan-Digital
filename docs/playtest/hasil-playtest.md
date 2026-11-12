@@ -3,11 +3,11 @@
 > **Isi dengan data nyata** dari sesi playtest Anda (jangan dikarang). Tabel di bawah adalah template.
 
 ## Ringkasan penguji
-| Penguji | Usia | Pengalaman game | Kalah (R/F/E) | Kartu ditemukan | Skor rata-rata Q1–Q7 |
+| Penguji | Usia | Pengalaman game | Jawaban salah | Waktu selesai | Skor rata-rata Q1–Q7 |
 |---|---|---|---|---|---|
-| P1 | | | | /9 | |
-| P2 | | | | /9 | |
-| P3 | | | | /9 | |
+| P1 | | | | | |
+| P2 | | | | | |
+| P3 | | | | | |
 
 ## Temuan
 | # | Temuan | Jumlah penguji | Keparahan | Rekomendasi |
@@ -19,4 +19,4 @@
 |---|---|---|---|---|
 | 1 | | | | |
 
-Contoh iterasi yang mudah dilakukan bila penguji merasa duel terlalu sulit: perbesar `jendela` dan `zona` milik Fransi di `KONFIG_LAWAN` (`src/scripts/minigame/duel_caci.gd`). Bila terlalu mudah, kecilkan nilainya. Semua parameter dikumpulkan di satu tempat supaya mudah di-*tuning*.
+Contoh iterasi yang mudah dilakukan: bila petunjuk dirasa sulit, perjelas teks `petunjuk` di `src/data/rantai_teka_teki.json`. Bila tabuh gong terlalu sulit, perbesar `JENDELA_TEPAT` atau kecilkan `PERSEN_LULUS` di `src/scripts/minigame/tabuh_gong.gd`. Semua konten dan parameter dikumpulkan di satu tempat supaya mudah di-*tuning*.

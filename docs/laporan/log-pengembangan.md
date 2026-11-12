@@ -15,6 +15,8 @@
 | 12 Nov 2026 | Uji coba pertama di Godot 4.7 berhasil (kampung tampil) | — | — |
 | 12 Nov 2026 | Iterasi dari masukan pengembang: kabut dihapus agar warna jernih; kartu budaya dipindah dari atas batu ke dalam 4 Mbaru Niang (pintu bercahaya sebagai penanda); sapaan tokoh pemain diganti "Kraeng" | Tanpa kabut, tepi tanah dan pintu rumah yang terhalang batu menjadi terlihat | Tanah diperluas menjadi 220 m; batu pijakan dipindah menjadi tangga di barat daya; jarak pintu dicek dengan skrip |
 | 12 Nov 2026 | Fitur baru dari masukan pengembang: perempuan kampung pembawa kopi (model perempuan bersanggul + nampan kopi) di kampung dan jeda kopi antarronde di arena (stamina pulih); dialog **diucapkan** dengan Text-to-Speech bahasa Indonesia, nada suara berbeda per tokoh, teks hanya sebagai cadangan/aksesibilitas | Tidak semua komputer punya suara bahasa Indonesia | Deteksi suara saat mulai; bila tidak ada, teks dialog otomatis ditampilkan |
+| 12 Nov 2026 | Ganti nama tokoh (Nggohak, Hingha, Ende Lono, Marngem) | — | — |
+| 12 Nov 2026 | **Revisi konsep**: duel caci diganti jelajah budaya. Kartu dipegang 8 warga dan dikumpulkan berurutan lewat rantai teka-teki (berbasis JSON) dengan petunjuk ke warga berikutnya; mini-game Menenun Songke & Tabuh Gong-Gendang; teka-teki pilihan ganda bersuara; caci menjadi pertunjukan di ending Penti (FSM dipakai ulang) | Duel caci terlalu sulit bagi pemain umum | Mekanik diganti teka-teki, pola, dan ritme yang lebih mudah; kode duel dihapus, FSM caci dipakai ulang untuk pertunjukan |
 | _(isi)_ | Uji coba lanjutan & perbaikan error | | |
 | _(isi)_ | Playtest dengan 3+ penguji & iterasi | | |
 | _(isi)_ | Ekspor .exe / web, rekam video demo | | |

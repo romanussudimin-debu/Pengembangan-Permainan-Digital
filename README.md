@@ -1,17 +1,20 @@
-# Caci: Jejak Anak Wae Rebo
+# Jejak Penti di Wae Rebo
 
-Prototipe **game 3D berbasis budaya Manggarai** (Flores, NTT) untuk tugas *Pengembangan Permainan Digital: Rencana Tugas 1*. Engine: **Godot 4.3+**.
+Prototipe **game 3D jelajah budaya Manggarai** (Flores, NTT) untuk tugas *Pengembangan Permainan Digital: Rencana Tugas 1*. Engine: **Godot 4.3+**.
 
-Pemain berperan sebagai Nggohak yang pulang ke kampung adat bergaya Wae Rebo menjelang **Penti**. Nggohak menjelajahi Mbaru Niang dan compang, mengumpulkan 9 kartu budaya, lalu berlatih **caci** melawan 3 pemain kampung:
-- **Ta'ang (menangkis):** baca ancang-ancang lawan, lalu tangkis tepat waktu dengan nggiling (memakai stamina).
-- **Paki (mencambuk):** tekan cambuk saat penanda berada di zona kuning bilah timing.
+Game 3D **jelajah budaya**. Menjelang **Penti**, Nggohak pulang ke kampung adat bergaya Wae Rebo. Delapan warga masing-masing menyimpan kartu budaya yang harus dikumpulkan **berurutan**. Setiap warga memberi tantangan dan petunjuk ke warga berikutnya. Tantangannya:
+- **Teka-teki budaya** (pilihan ganda bersuara, jawabannya ada di kartu sebelumnya)
+- **Menenun songke**: samakan kain dengan contoh motif
+- **Tabuh gong-gendang**: ikuti irama (J = gong, K = gendang)
+
+Setelah 9 kartu terkumpul, Penti dimulai: warga menari dan caci ditampilkan sebagai pertunjukan. Dialog diucapkan dengan suara bahasa Indonesia (Text-to-Speech).
 
 ## Mulai cepat
 1. Unduh Godot 4.3 Standard: https://godotengine.org/download
 2. Import `src/project.godot`, lalu tekan **F5**.
 3. Panduan lengkap (ekspor .exe/web, merekam video): [`docs/PANDUAN-MENJALANKAN-DAN-EKSPOR.md`](docs/PANDUAN-MENJALANKAN-DAN-EKSPOR.md)
 
-**Kontrol:** WASD/panah jalan · Spasi lompat · E interaksi · J/Z cambuk · K/X tangkis · Esc jeda
+**Kontrol:** WASD/panah jalan · Spasi lompat · E bicara/lanjut · 1/2/3 jawab teka-teki · J gong · K gendang · Esc jeda & koleksi kartu
 
 ## Isi repositori
 | Folder | Isi |

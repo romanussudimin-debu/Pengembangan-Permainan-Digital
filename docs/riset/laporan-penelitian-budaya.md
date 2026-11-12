@@ -1,5 +1,5 @@
 # Laporan Penelitian Budaya
-## Budaya Manggarai sebagai Fondasi Game 3D *Caci: Jejak Anak Wae Rebo*
+## Budaya Manggarai sebagai Fondasi Game 3D *Jejak Penti di Wae Rebo*
 
 **Nama:** [NAMA]
 **NIM:** [NIM]
@@ -10,9 +10,9 @@
 
 ## 1. Pendahuluan
 
-Game berbasis budaya lokal menuntut lebih dari sekadar tempelan ornamen; unsur budaya perlu dipahami makna dan praktiknya agar dapat diterjemahkan menjadi visual, audio, narasi, dan terutama mekanik permainan. Laporan ini menyajikan hasil studi literatur tentang budaya Manggarai di Pulau Flores, Nusa Tenggara Timur, sebagai fondasi pengembangan game 3D *Caci: Jejak Anak Wae Rebo* (engine Godot 4).
+Game berbasis budaya lokal menuntut lebih dari sekadar tempelan ornamen; unsur budaya perlu dipahami makna dan praktiknya agar dapat diterjemahkan menjadi visual, audio, narasi, dan terutama mekanik permainan. Laporan ini menyajikan hasil studi literatur tentang budaya Manggarai di Pulau Flores, Nusa Tenggara Timur, sebagai fondasi pengembangan game 3D jelajah budaya *Jejak Penti di Wae Rebo* (engine Godot 4).
 
-Dalam game, pemain berperan sebagai **Nggohak**, anak muda Manggarai yang pulang ke kampung adat menjelang upacara **Penti**. Pemain menjelajahi kampung 3D yang terinspirasi Wae Rebo, dengan tujuh **Mbaru Niang** yang melingkari **Compang**. Ia berbincang dengan tetua dan warga, mengumpulkan kartu pengetahuan budaya, lalu berlatih **Caci** melawan tiga pemain kampung. Caci menjadi unsur budaya inti dan melahirkan dua mekanik utama: (1) peran **ta'ang**, yaitu menangkis tepat waktu dengan membaca isyarat ancang-ancang lawan, dan (2) peran **paki**, yaitu mencambuk tepat waktu memakai bilah timing. Kedua peran bergantian setiap ronde, seperti dalam caci yang sesungguhnya.
+Dalam game, pemain berperan sebagai **Nggohak**, anak muda Manggarai yang pulang ke kampung adat menjelang upacara **Penti**. Pemain menjelajahi kampung 3D yang terinspirasi Wae Rebo, dengan tujuh **Mbaru Niang** yang melingkari **Compang**. Delapan warga masing-masing menyimpan satu kartu pengetahuan budaya, dan kartu-kartu itu harus dikumpulkan **berurutan**. Setiap warga memberi tantangan berupa teka-teki tentang budaya, **menenun motif songke**, atau **menabuh gong-gendang**. Setelah berhasil, warga memberi kartu beserta petunjuk menuju warga berikutnya. Pada puncak Penti, **caci** ditampilkan sebagai pertunjukan.
 
 Tujuan penelitian: (a) memilih unsur budaya fokus dan pendukung; (b) menghimpun fakta bersumber tentang sejarah, makna, dan praktiknya; (c) menganalisis potensi adaptasinya ke game; dan (d) merumuskan pertimbangan etis. Metode yang digunakan adalah studi literatur daring terhadap jurnal ilmiah Indonesia, situs pemerintah (Kementerian Pariwisata/Indonesia.travel, Jadesta, Badan Bahasa), dokumentasi penghargaan UNESCO, dan media kredibel, diakses 12 November 2026. Keterbatasan: sebagian sumber hanya dapat dibaca pada tingkat abstrak/cuplikan, sehingga data bibliografis yang belum lengkap ditandai **[PERLU VERIFIKASI]**. Catatan lengkap terdapat pada `catatan-riset.md`.
 
@@ -26,7 +26,7 @@ Nilai musyawarah tampak dalam praktik *lonto leok*, yaitu duduk melingkar untuk 
 
 ## 3. Unsur Budaya Terpilih
 
-Berdasarkan kesesuaian dengan konsep game, **Caci** dipilih sebagai unsur fokus yang menjadi sumber kedua mekanik utama. **Mbaru Niang**, **Compang/Penti**, dan **Songke** menjadi unsur pendukung untuk latar, narasi, dan visual, ditambah musik gong-gendang dan nyanyian adat. **Lingko** dikaji sebagai konteks penting tata ruang dan kehidupan adat Manggarai (*gendang one, lingko pe'ang*), sekaligus kandidat mekanik untuk pengembangan lanjutan.
+Konsep game berupa jelajah budaya, sehingga beberapa unsur diangkat secara seimbang. **Songke** dan **gong-gendang** menjadi dasar dua mini-game. **Mbaru Niang**, **Compang**, dan **Penti** menjadi latar dan bingkai cerita. **Caci** menjadi materi teka-teki dan pertunjukan puncak Penti. **Lingko** dikaji sebagai konteks penting tata ruang dan kehidupan adat Manggarai (*gendang one, lingko pe'ang*), sekaligus kandidat mekanik untuk pengembangan lanjutan.
 
 ### 3.1 Caci
 
@@ -64,22 +64,20 @@ Tiga bentuk vokal adat utama adalah *sanda* (berdiri melingkar, tanpa alat musik
 
 ## 4. Analisis Potensi Adaptasi ke Game
 
-**Mekanik 1 — Ta'ang (menangkis).** Peran penangkis diterjemahkan menjadi tantangan membaca gerak lawan:
-- **Isyarat budaya sebagai isyarat permainan:** sebelum memukul, paki lawan menarik **larik** ke belakang (ancang-ancang). Pemain harus mengangkat **nggiling** tepat sebelum pukulan mendarat. Jendela waktunya makin sempit pada lawan yang lebih kuat.
-- **Stamina:** setiap tangkisan memakai stamina, sehingga pemain tidak bisa menangkis sembarangan. Lawan tingkat lanjut sesekali melakukan *tipuan* (ancang-ancang tanpa memukul). Stamina dan tipuan adalah unsur desain, bukan fakta budaya, dan dicatat demikian di GDD.
+**Mekanik 1 — Rantai teka-teki (jelajah).** Kartu pengetahuan dipegang oleh delapan warga dan harus dikumpulkan berurutan. Setiap warga menunjukkan warga berikutnya lewat petunjuk deskriptif, misalnya *"perempuan yang menenun kain berdasar hitam di sisi barat kampung"*. Teka-teki pilihan ganda menguji isi kartu yang baru didapat, misalnya warna dasar songke, nama tingkat teratas Mbaru Niang (*hekang kode*), nyanyian *sanda*, peran *ta'ang*, dan perisai *nggiling*. Dengan cara ini pengetahuan budaya menjadi kunci kemajuan permainan, bukan sekadar hiasan. Bentuk ini juga mencerminkan cara pengetahuan adat diwariskan: dari orang ke orang di dalam komunitas.
 
-**Mekanik 2 — Paki (mencambuk).** Peran pencambuk diterjemahkan menjadi bilah timing. Pemain menekan tombol cambuk saat penanda berada di zona tepat. Pukulan tepat memberi poin "kena", pukulan yang kurang tepat ditangkis lawan, dan pukulan yang meleset tidak bernilai.
+**Mekanik 2 — Menenun songke.** Pemain menyamakan kain 5×5 dengan contoh motif belah ketupat berdasar hitam. Mekanik ini menyederhanakan proses tenun menjadi teka-teki pola, sehingga pemain mengalami bahwa songke disusun dari pola berulang yang teliti. Motif dalam game adalah **penyederhanaan kreatif**, bukan reproduksi motif adat tertentu.
 
-**Struktur duel.** Peran paki dan ta'ang **bergantian setiap ronde** (3 ronde per lawan), mengikuti struktur caci. Kemenangan ditentukan oleh poin (tangkis +1, kena +2), bukan dengan menghabisi lawan. Duel dibuka dengan isyarat gong dan ditutup dengan dialog saling menghormati, sehingga nilai sportivitas dan persaudaraan menjadi bagian dari alur. Sasaran pukulan digambarkan di tubuh atas, sesuai aturan bahwa serangan hanya sah di atas pinggang. Tiga lawan (Hingha, Fransi, Ema Agus) memberi tingkat kesulitan bertahap.
+**Mekanik 3 — Tabuh gong-gendang.** Pemain menabuh gong dan gendang mengikuti irama untuk mengiringi Penti. Musik yang biasanya menjadi latar dijadikan mekanik permainan. Pola iramanya adalah **ciptaan pengembang**, bukan pola adat tertentu [PERLU VERIFIKASI].
 
-**Audio dan visual caci.** Kostum pemain caci menampilkan **panggal**, **larik**, **nggiling**, dan **songke**. Arena dikelilingi penonton dari kampung dan diiringi pola gong-gendang yang lebih cepat daripada musik kampung.
+**Caci sebagai pertunjukan.** Duel caci tidak dijadikan pertarungan yang dimainkan. Caci ditampilkan pada ending Penti: dua penampil bergantian berperan sebagai paki dan ta'ang, dengan ancang-ancang, pukulan, dan tangkisan nggiling. Pilihan ini menjaga caci tetap tampil dengan hormat dan menekankan nilai sportivitas, sementara pengetahuan tentang caci disampaikan lewat kartu dan teka-teki.
 
 **Unsur pendukung.**
 - **Mbaru Niang:** menjadi hub 3D berupa tujuh rumah kerucut (satu mbaru gendang lebih besar) yang mengelilingi natas. Kelima tingkatnya ditandai pada atap dan dijelaskan lewat kartu.
 - **Compang:** menjadi landmark di tengah kampung yang dapat *dilihat* dan dijelaskan, tetapi tidak dijadikan tempat bermain karena bersifat sakral.
-- **Penti:** menjadi bingkai cerita dan klimaks; duel caci adalah puncak perayaan.
+- **Penti:** menjadi bingkai cerita dan klimaks; pertunjukan caci dan tarian warga menjadi puncak perayaan.
 - **Songke:** mewarnai pakaian NPC, panel UI (motif *su'i* sebagai border), dan latar kartu pengetahuan.
-- **Musik:** nuansa *mbata* yang lembut untuk area kampung dan gong-gendang yang lebih cepat untuk arena caci.
+- **Musik:** nuansa gong-gendang yang lembut untuk area kampung dan pola yang lebih cepat untuk perayaan Penti.
 - **Kartu pengetahuan:** 9 kartu dalam prototipe: Mbaru Niang (lima tingkat), Kampung Wae Rebo (UNESCO 2012), Compang, Songke, Penti, Gong–Gendang & Nyanyian, Caci (paki & ta'ang), Perlengkapan Caci, dan Nilai Sportivitas Caci. Setiap kartu memuat fakta dari riset ini, sehingga game sekaligus menjadi media edukasi.
 
 **Bahasa dalam dialog.** Gunakan istilah yang terverifikasi: *ité* (sapaan hormat), *ema* (ayah), *neka rabo* (maaf), *Mori Kraeng* (Tuhan), dan nama benda/tempat adat. Salam seperti *tabe* atau *di'a* belum terverifikasi sehingga ditunda pemakaiannya.
@@ -95,7 +93,7 @@ Tiga bentuk vokal adat utama adalah *sanda* (berdiri melingkar, tanpa alat musik
 
 ## 6. Kesimpulan
 
-Budaya Manggarai menyediakan bahan yang sangat kaya dan secara struktural cocok untuk game. Struktur **caci** (paki dan ta'ang yang bergantian, larik dan nggiling, aturan sasaran di atas pinggang, serta nilai sportivitas) dapat diterjemahkan langsung menjadi dua mekanik timing: menangkis dan mencambuk. **Mbaru Niang**, **Compang/Penti**, **Songke**, serta musik gong-gendang memperkuat konsistensi visual, audio, dan narasi dalam kampung 3D. **Lingko** dengan pola jaring laba-labanya tetap menjadi konteks penting dan kandidat mekanik untuk pengembangan lanjutan. Dengan pembedaan yang jelas antara fakta bersumber dan tafsir kreatif, serta perlakuan hormat terhadap ruang dan ritus sakral, *Caci: Jejak Anak Wae Rebo* berpotensi menjadi game yang menghibur sekaligus edukatif. Langkah lanjutan adalah memverifikasi butir bertanda [PERLU VERIFIKASI], terutama status WBTb caci, salam berbahasa Manggarai, dan data bibliografis jurnal.
+Budaya Manggarai menyediakan bahan yang sangat kaya untuk game jelajah budaya. Pengetahuan tentang **Mbaru Niang**, **compang**, **Penti**, **songke**, **gong-gendang**, dan **caci** dapat dijalin menjadi rantai teka-teki yang mengajak pemain belajar dari satu warga ke warga lain. **Songke** dan **gong-gendang** dapat diterjemahkan menjadi mekanik pola dan ritme yang mudah dimainkan. **Caci** tampil dengan hormat sebagai pertunjukan puncak Penti yang menonjolkan nilai sportivitas dan persaudaraan. **Lingko** tetap menjadi konteks penting dan kandidat mekanik untuk pengembangan lanjutan. Dengan pembedaan yang jelas antara fakta bersumber dan tafsir kreatif, serta perlakuan hormat terhadap ruang dan ritus sakral, *Jejak Penti di Wae Rebo* berpotensi menjadi game yang menghibur sekaligus edukatif. Langkah lanjutan adalah memverifikasi butir bertanda [PERLU VERIFIKASI], terutama status WBTb caci, salam berbahasa Manggarai, dan data bibliografis jurnal.
 
 ## 7. Daftar Pustaka
 *(Seluruhnya diakses 12 November 2026; data yang belum lengkap ditandai [PERLU VERIFIKASI].)*

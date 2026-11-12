@@ -61,6 +61,7 @@ simpan("berhasil.wav", np.concatenate([lonceng(523, .15), lonceng(659, .15), lon
 simpan("gagal.wav", np.concatenate([lonceng(330, .2), lonceng(262, .5)]), .6)
 simpan("klik.wav", lonceng(1000, .07), .4)
 simpan("gong.wav", gong(98, 3.0))
+simpan("gendang.wav", gendang(95, .35))
 
 # --- Musik: pola gong-gendang berulang (loop) ---
 def musik(bpm, pola_gendang, pola_gong, nada, bar=8, ketuk=8):

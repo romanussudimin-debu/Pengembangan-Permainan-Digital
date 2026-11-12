@@ -1,5 +1,5 @@
 extends Node
-## State game global (finite state machine tingkat game) + progres pemain.
+## State game global (finite state machine tingkat game) + progres rantai teka-teki.
 
 enum State { MENU, BERMAIN, DIALOG, JEDA, MINIGAME, SELESAI }
 
@@ -17,17 +17,14 @@ const TRANSISI_SAH: Dictionary = {
 }
 
 const DATA_KARTU: JSON = preload("res://data/kartu_budaya.json")
+## Urutan warga pemegang kartu, tantangan, dan petunjuk ke warga berikutnya.
+const DATA_RANTAI: JSON = preload("res://data/rantai_teka_teki.json")
 
 var state: int = State.MENU
 
-# --- Progres misi ---
-var sudah_bertemu_tua: bool = false
-var sudah_bertemu_ine: bool = false
-var lawan_dikalahkan: int = 0  ## jumlah lawan caci yang sudah dikalahkan (0..3)
-var lawan_aktif: int = 0  ## indeks lawan yang sedang/akan dilawan di arena
-var tutorial_caci_dilihat: bool = false
+# --- Progres ---
+var langkah_rantai: int = 0  ## indeks tantangan berikutnya di DATA_RANTAI
 var kartu_terkumpul: Array[String] = []
-var titik_muncul: String = "awal"
 
 
 func ubah_state(baru: int) -> bool:
@@ -48,20 +45,12 @@ func sedang(s: int) -> bool:
 
 
 func reset_progres() -> void:
-	sudah_bertemu_tua = false
-	sudah_bertemu_ine = false
-	lawan_dikalahkan = 0
-	lawan_aktif = 0
-	tutorial_caci_dilihat = false
+	langkah_rantai = 0
 	kartu_terkumpul.clear()
-	titik_muncul = "awal"
 	progres_berubah.emit()
 
 
-func tandai(nama_flag: String) -> void:
-	set(nama_flag, true)
-	progres_berubah.emit()
-
+# ------------------------------------------------------------- kartu
 
 ## Mengembalikan true jika kartu baru (belum pernah didapat).
 func kumpulkan_kartu(id: String) -> bool:
@@ -87,22 +76,47 @@ func jumlah_kartu_total() -> int:
 	return semua_kartu().size()
 
 
-const JUMLAH_LAWAN: int = 3
+# ------------------------------------------------------------- rantai teka-teki
+
+func rantai() -> Array:
+	return DATA_RANTAI.data["rantai"]
 
 
-func semua_misi_selesai() -> bool:
-	return lawan_dikalahkan >= JUMLAH_LAWAN
+func rantai_selesai() -> bool:
+	return langkah_rantai >= rantai().size()
 
 
-func catat_kemenangan(indeks_lawan: int) -> void:
-	lawan_dikalahkan = maxi(lawan_dikalahkan, indeks_lawan + 1)
+## Data tantangan yang sedang aktif (kosong bila rantai selesai).
+func tantangan_aktif() -> Dictionary:
+	if rantai_selesai():
+		return {}
+	return rantai()[langkah_rantai]
+
+
+## True bila warga `nama` sudah menyelesaikan seluruh tantangannya.
+func sudah_memberi(nama: String) -> bool:
+	for i in mini(langkah_rantai, rantai().size()):
+		var t: Dictionary = rantai()[i]
+		if t["pemegang"] == nama and not _masih_punya_giliran(nama, i):
+			return true
+	return false
+
+
+func _masih_punya_giliran(nama: String, setelah: int) -> bool:
+	for j in range(setelah + 1, rantai().size()):
+		var t: Dictionary = rantai()[j]
+		if t["pemegang"] == nama and j >= langkah_rantai:
+			return true
+	return false
+
+
+func maju_rantai() -> void:
+	langkah_rantai += 1
 	progres_berubah.emit()
 
 
 func teks_tujuan() -> String:
-	if not sudah_bertemu_tua:
+	if langkah_rantai == 0:
 		return "Temui Tu'a Golo di dekat compang (tengah kampung)"
-	if lawan_dikalahkan < JUMLAH_LAWAN:
-		var nama: Array[String] = ["Hingha", "Fransi", "Ema Agus"]
-		return "Berlatih caci dengan %s (%d/%d) di arena timur" % [nama[lawan_dikalahkan], lawan_dikalahkan, JUMLAH_LAWAN]
-	return "Kembali ke Tu'a Golo untuk memulai Penti"
+	var sebelumnya: Dictionary = rantai()[mini(langkah_rantai, rantai().size()) - 1]
+	return str(sebelumnya["petunjuk"])

@@ -8,8 +8,8 @@ const PETA_INPUT: Dictionary = {
 	"mundur": [KEY_S, KEY_DOWN],
 	"lompat": [KEY_SPACE],
 	"interaksi": [KEY_E, KEY_ENTER],
-	"serang": [KEY_J, KEY_Z],
-	"tangkis": [KEY_K, KEY_X],
+	"tabuh_gong": [KEY_J, KEY_Z],
+	"tabuh_gendang": [KEY_K, KEY_X],
 	"ulang": [KEY_R],
 	"jeda": [KEY_ESCAPE, KEY_P],
 }

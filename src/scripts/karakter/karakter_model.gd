@@ -321,7 +321,7 @@ func serang(durasi_ancang: float = 0.35) -> float:
 	return durasi_ancang + 0.09
 
 
-## Pose ancang-ancang ditahan (dipakai lawan untuk memberi isyarat serangan).
+## Pose ancang-ancang ditahan (isyarat sebelum memukul, dipakai penampil caci).
 func ancang(durasi: float) -> void:
 	var tw := _mulai_aksi()
 	tw.tween_property(_lengan_kanan, "rotation:x", -2.6, durasi).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
@@ -362,7 +362,7 @@ func terkena() -> void:
 	squash(Vector3(1.15, 0.85, 1.15), 0.3)
 
 
-## Membatalkan aksi (misalnya tipuan lawan): lengan kembali ke kuda-kuda.
+## Membatalkan aksi (misalnya tipuan): lengan kembali ke kuda-kuda.
 func batal_aksi() -> void:
 	var tw := _mulai_aksi()
 	tw.tween_property(_lengan_kanan, "rotation:x", -0.4, 0.25).set_ease(Tween.EASE_IN_OUT)

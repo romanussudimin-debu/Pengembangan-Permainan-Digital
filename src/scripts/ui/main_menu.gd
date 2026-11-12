@@ -51,10 +51,10 @@ func _process(delta: float) -> void:
 func _bangun_ui() -> void:
 	var ui := CanvasLayer.new()
 	add_child(ui)
-	var judul := Gaya.label("CACI", 40, Gaya.KUNING)
+	var judul := Gaya.label("JEJAK PENTI", 34, Gaya.KUNING)
 	judul.position = Vector2(40, 40)
 	ui.add_child(judul)
-	var sub := Gaya.label("Jejak Anak Wae Rebo", 16, Gaya.PUTIH)
+	var sub := Gaya.label("di Wae Rebo", 16, Gaya.PUTIH)
 	sub.position = Vector2(42, 92)
 	ui.add_child(sub)
 	var tag := Gaya.label("Prototipe game 3D berbasis budaya Manggarai, Flores, NTT", 9, Gaya.PUTIH)
@@ -79,16 +79,16 @@ func _bangun_ui() -> void:
 		keluar.pressed.connect(func() -> void: get_tree().quit())
 		kolom.add_child(keluar)
 
-	_panel_info = Gaya.panel_songke(Vector2(230, 40), Vector2(380, 280))
+	_panel_info = Gaya.panel_songke(Vector2(222, 16), Vector2(400, 328))
 	_panel_info.visible = false
 	ui.add_child(_panel_info)
 	_label_info = Gaya.label("", 9, Gaya.PUTIH)
 	_label_info.position = Vector2(16, 14)
-	_label_info.size = Vector2(348, 230)
+	_label_info.size = Vector2(368, 270)
 	_label_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_panel_info.add_child(_label_info)
 	var tutup := Gaya.tombol("Tutup")
-	tutup.position = Vector2(110, 244)
+	tutup.position = Vector2(120, 292)
 	tutup.pressed.connect(func() -> void: _panel_info.visible = false)
 	_panel_info.add_child(tutup)
 	_tombol_mulai.grab_focus()
@@ -107,24 +107,24 @@ func _tampilkan_info(teks: String) -> void:
 func _teks_cara_bermain() -> String:
 	return """CARA BERMAIN
 
-Di kampung:
 • WASD / panah: berjalan   • Spasi: melompat
-• E: bicara / melihat / lanjut dialog   • Esc: jeda
+• E: bicara / lanjut dialog   • Esc: jeda & koleksi kartu
 
-Di arena caci (peran bergantian tiap ronde):
-• TA'ANG: saat lawan menarik larik (tanda \"!\"), tekan K / X tepat sebelum pukulan. Menangkis memakai stamina.
-• PAKI: tekan J / Z ketika penanda berada di zona kuning.
+Delapan warga kampung masing-masing menyimpan kartu budaya. Kumpulkan kartu BERURUTAN: mulailah dari Tu'a Golo di dekat compang. Setiap warga memberi tantangan, lalu petunjuk menuju warga berikutnya (lihat "Petunjuk" di kiri atas).
 
-Dialog diucapkan dengan suara (E: lewati). Teks dialog bisa dinyalakan di menu jeda.
+Tantangan:
+• Teka-teki: jawab dengan klik, panah + Enter, atau tombol 1/2/3. Jawabannya ada di kartu yang sudah kamu kumpulkan.
+• Menenun songke: samakan kain dengan contoh motif (E/klik ganti warna benang).
+• Tabuh gong-gendang: tekan J (gong) atau K (gendang) saat ketukan tiba di garis.
 
-Kalahkan Hingha, Fransi, dan Ema Agus, kumpulkan kartu budaya di dalam Mbaru Niang yang pintunya bercahaya, lalu kembali ke Tu'a Golo untuk merayakan Penti."""
+Dialog diucapkan dengan suara; teks dialog bisa dinyalakan di menu jeda."""
 
 
 func _teks_tentang() -> String:
 	return """TENTANG GAME
 
-Caci: Jejak Anak Wae Rebo adalah prototipe game 3D yang mengangkat caci, tarian-tarung cambuk masyarakat Manggarai, Flores, NTT. Caci dimainkan oleh paki (pencambuk) dan ta'ang (penangkis) dengan nilai sportivitas dan persaudaraan.
+Jejak Penti di Wae Rebo adalah prototipe game 3D jelajah budaya Manggarai, Flores, NTT. Menjelang Penti (tahun baru adat), Nggohak menemui warga kampung, menjawab teka-teki, menenun songke, dan menabuh gong-gendang untuk mengumpulkan sembilan kartu pengetahuan budaya.
 
-Latar kampung terinspirasi Wae Rebo: Mbaru Niang yang melingkari compang. Semua model, tekstur songke, dan musik gong-gendang dibuat sendiri secara prosedural.
+Latar kampung terinspirasi Wae Rebo: tujuh Mbaru Niang yang melingkari compang. Caci ditampilkan sebagai pertunjukan saat Penti. Semua model, tekstur songke, dan musik gong-gendang dibuat sendiri secara prosedural.
 
 Dibuat dengan Godot Engine 4 untuk tugas mata kuliah Pengembangan Permainan Digital."""

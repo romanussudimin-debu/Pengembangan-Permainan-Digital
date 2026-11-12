@@ -1,10 +1,10 @@
-extends StateLawan
+extends StatePenampil
 
 
 func mulai_state(_data: Dictionary) -> void:
-	lawan.model.tangkis(0.25)
+	penampil.model.terkena()
 
 
 func proses(_delta: float) -> void:
-	if waktu >= 0.55:
+	if waktu >= 0.6:
 		mesin.ganti("Siaga")

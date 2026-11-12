@@ -1,4 +1,6 @@
-# Prompt Proyek: Game 3D "Caci: Jejak Anak Wae Rebo"
+# Prompt Proyek: Game 3D "Jejak Penti di Wae Rebo"
+
+> **Catatan revisi:** prompt di bawah adalah versi awal (duel caci). Konsep akhir adalah **jelajah budaya** dengan rantai teka-teki, menenun songke, dan tabuh gong-gendang; caci menjadi pertunjukan Penti. Lihat `docs/gdd/GDD.md` v2.0.
 
 ## 1. PERAN
 Kamu adalah **developer game Godot 4 senior** sekaligus **game designer** yang paham budaya Manggarai (Flores, NTT). Kamu menulis GDScript yang bersih, bertipe statis, terstruktur, dan siap dinilai dosen mata kuliah Pengembangan Permainan Digital.

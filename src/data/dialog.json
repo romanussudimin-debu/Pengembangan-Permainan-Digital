@@ -1,154 +1,32 @@
 {
-	"tua_awal": [
-	 {
-	  "nama": "Tu'a Golo",
-	  "teks": "Ité sudah pulang, Kraeng! Kampung Wae Rebo menyambutmu. Sebentar lagi Penti, tahun baru adat kita."
-	 },
-	 {
-	  "nama": "Tu'a Golo",
-	  "teks": "Saat Penti, para pemuda akan menampilkan caci. Kamu ingin ikut bermain, bukan?"
-	 },
-	 {
-	  "nama": "Nggohak",
-	  "teks": "Iya, Tu'a. Saya ingin belajar menjadi paki dan ta'ang."
-	 },
-	 {
-	  "nama": "Tu'a Golo",
-	  "teks": "Bagus. Berlatihlah dengan tiga pemain caci kampung kita: Hingha, Fransi, lalu Ema Agus, juara kampung."
-	 },
-	 {
-	  "nama": "Tu'a Golo",
-	  "teks": "Ingat: caci bukan untuk melukai. Ini tentang sportivitas dan persaudaraan. Masuklah juga ke Mbaru Niang yang pintunya bercahaya; banyak pengetahuan tersimpan di sana."
-	 }
+	"salah": [
+		{
+			"nama": "Pemegang",
+			"teks": "Belum tepat, Kraeng. Ingat lagi isi kartu budayamu; koleksinya bisa dibuka dengan Esc. Lalu datanglah lagi kepadaku."
+		}
 	],
-	"tua_belum": [
-	 {
-	  "nama": "Tu'a Golo",
-	  "teks": "Teruslah berlatih caci. Kalahkan ketiga pemain dengan sportif, lalu kembali kepadaku."
-	 }
+	"belum_giliran": [
+		{
+			"nama": "Pemegang",
+			"teks": "Halo, Kraeng! Kartuku belum bisa kuberikan sekarang. Ikuti dulu petunjukmu."
+		}
 	],
-	"tua_akhir": [
-	 {
-	  "nama": "Tu'a Golo",
-	  "teks": "Ketiga pemain sudah mengakuimu. Kamu bertanding dengan hormat dan berani."
-	 },
-	 {
-	  "nama": "Tu'a Golo",
-	  "teks": "Mari kita mulai Penti! Tabuh gong dan gendang. Kita bersyukur kepada Mori Kraeng dan mengenang para empo."
-	 }
+	"sudah_diberikan": [
+		{
+			"nama": "Pemegang",
+			"teks": "Terima kasih, Kraeng. Lanjutkan perjalananmu!"
+		}
 	],
-	"ine_awal": [
-	 {
-	  "nama": "Ine Wela",
-	  "teks": "Kraeng, lihat kain songke yang sedang kutenun ini. Pakailah songke saat bermain caci nanti."
-	 },
-	 {
-	  "nama": "Ine Wela",
-	  "teks": "Setiap motif punya makna. Simpan kartu ini supaya kamu ingat."
-	 }
+	"tenun_gagal": [
+		{
+			"nama": "Ine Wela",
+			"teks": "Tidak apa-apa, Kraeng. Datanglah lagi kalau ingin mencoba menenun."
+		}
 	],
-	"ine_lagi": [
-	 {
-	  "nama": "Ine Wela",
-	  "teks": "Para pemain caci memakai songke dan panggal. Kamu pasti gagah di arena!"
-	 }
-	],
-	"lawan_belum": [
-	 {
-	  "nama": "Pemain Caci",
-	  "teks": "Temui Tu'a Golo dulu di dekat compang sebelum berlatih caci."
-	 }
-	],
-	"lawan_terkunci": [
-	 {
-	  "nama": "Pemain Caci",
-	  "teks": "Kalahkan dulu pemain sebelumnya. Aku menunggumu di arena."
-	 }
-	],
-	"rangga_ajak": [
-	 {
-	  "nama": "Hingha",
-	  "teks": "Kraeng! Mau berlatih caci? Aku akan pelan-pelan saja, ini latihan pertamamu."
-	 }
-	],
-	"fransi_ajak": [
-	 {
-	  "nama": "Fransi",
-	  "teks": "Kudengar kamu mengalahkan Hingha. Sekarang coba hadapi aku. Ayunanku lebih cepat!"
-	 }
-	],
-	"agus_ajak": [
-	 {
-	  "nama": "Ema Agus",
-	  "teks": "Ité sudah berlatih dengan baik. Aku juara kampung ini. Tunjukkan keberanian dan sportivitasmu."
-	 }
-	],
-	"lawan_sudah": [
-	 {
-	  "nama": "Pemain Caci",
-	  "teks": "Pertandingan yang hebat! Sampai jumpa di arena saat Penti."
-	 }
-	],
-	"caci_tutorial": [
-	 {
-	  "nama": "Tu'a Golo",
-	  "teks": "Dalam caci ada dua peran: paki yang mencambuk dan ta'ang yang menangkis. Peran itu bergantian setiap ronde."
-	 },
-	 {
-	  "nama": "Tu'a Golo",
-	  "teks": "Saat menjadi TA'ANG, perhatikan lawan menarik larik ke belakang. Tekan K atau X tepat sebelum cambuk mengenai, untuk menangkis dengan nggiling."
-	 },
-	 {
-	  "nama": "Tu'a Golo",
-	  "teks": "Jangan asal menangkis! Setiap tangkisan menghabiskan stamina."
-	 },
-	 {
-	  "nama": "Tu'a Golo",
-	  "teks": "Saat menjadi PAKI, tekan J atau Z ketika penanda berada di zona kuning. Pukulan yang tepat mendapat poin."
-	 }
-	],
-	"caci_menang": [
-	 {
-	  "nama": "Lawan",
-	  "teks": "Kamu menang. Aku mengakuinya dengan hormat. Mari tetap bersaudara!"
-	 }
-	],
-	"caci_kalah": [
-	 {
-	  "nama": "Lawan",
-	  "teks": "Kali ini aku menang. Jangan berkecil hati; berlatihlah lagi dan coba kembali."
-	 }
-	],
-	"papan_arena": [
-	 {
-	  "nama": "Papan",
-	  "teks": "Arena caci: ajak bicara para pemain caci di dekat sini untuk berlatih."
-	 }
-	],
-	"pembawa_kopi": [
-	 {
-	  "nama": "Perempuan",
-	  "teks": "Kami menyiapkan kopi untuk para pemain caci. Saat jeda ronde nanti, kami akan mengantarkannya ke arena."
-	 },
-	 {
-	  "nama": "Perempuan",
-	  "teks": "Bertandinglah dengan sportif, Kraeng!"
-	 }
-	],
-	"kopi_caci_1": [
-	 {
-	  "nama": "Ende Lono",
-	  "teks": "Kraeng, minum kopi dulu supaya tenagamu pulih."
-	 },
-	 {
-	  "nama": "Marngem",
-	  "teks": "Lawanmu juga kami bawakan kopi. Di arena kalian bertanding, di luar arena kalian bersaudara."
-	 }
-	],
-	"kopi_caci_2": [
-	 {
-	  "nama": "Ende Lono",
-	  "teks": "Satu ronde lagi! Kopi ini untuk menguatkanmu, Kraeng."
-	 }
+	"gong_gagal": [
+		{
+			"nama": "Fransi",
+			"teks": "Iramanya belum pas. Ayo coba lagi, Kraeng!"
+		}
 	]
 }

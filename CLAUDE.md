@@ -32,12 +32,14 @@ Semua dokumen, komentar kode penting, dan komunikasi ditulis dalam **Bahasa Indo
 ## Luaran wajib
 a) File executable (`.exe` / `.apk` / web build) · b) Source code · c) GDD + asset references · d) Laporan penelitian budaya (3–5 hlm) · e) Video demo gameplay (1–2 menit)
 
-## Konsep yang sudah ditetapkan (lihat `docs/prompt-proyek.md` & `docs/gdd/GDD.md`)
-**Judul:** *Caci: Jejak Anak Wae Rebo* — game 3D orang ketiga (kamera tetap).
-- Jelajah kampung 3D bergaya Wae Rebo (7 Mbaru Niang melingkari compang), NPC Tu'a Golo & Ine Wela, 9 kartu budaya.
-- Inti budaya **Caci**: mekanik 1 **TA'ANG** (menangkis tepat waktu + stamina + tipuan), mekanik 2 **PAKI** (bilah timing). Peran bergantian, 3 ronde, 3 lawan (Hingha, Fransi, Ema Agus).
-- Bingkai cerita **Penti**; ending warga menari di natas.
-- Bahasa Indonesia + istilah Manggarai terverifikasi (`docs/riset/glosarium.md`). Compang tidak dijadikan arena bermain (sakral).
+## Konsep yang sudah ditetapkan (lihat `docs/gdd/GDD.md` v2.0)
+**Judul:** *Jejak Penti di Wae Rebo*, game 3D jelajah budaya orang ketiga (kamera tetap).
+- Kampung 3D bergaya Wae Rebo (7 Mbaru Niang melingkari compang). Tokoh pemain: **Nggohak** (disapa "Kraeng").
+- **Rantai teka-teki**: 9 kartu budaya dipegang 8 warga (Tu'a Golo, Ine Wela, Ema Agus, Ende Lono, Fransi, Hingha, Marngem, Ema Yakobus) dan dikumpulkan BERURUTAN; setiap warga memberi tantangan + petunjuk ke warga berikutnya. Data: `src/data/rantai_teka_teki.json`.
+- Mini-game: **Menenun Songke** (pola 5×5) dan **Tabuh Gong-Gendang** (ritme).
+- Dialog diucapkan dengan TTS bahasa Indonesia; teks hanya cadangan/aksesibilitas.
+- Caci **tidak dimainkan**; tampil sebagai pertunjukan di ending Penti (FSM penampil caci).
+- Bahasa Indonesia + istilah Manggarai terverifikasi (`docs/riset/glosarium.md`). Compang hanya dilihat (sakral).
 - Semua aset dibuat sendiri (`tools/generate_textures.py`, `tools/generate_audio.py`).
 
 ## Struktur folder

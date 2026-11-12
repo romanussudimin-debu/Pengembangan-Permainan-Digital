@@ -8,25 +8,25 @@ Anda adalah **developer game Godot 4 (GDScript)**. Tahap ini bernilai **50%** da
 
 ## S## Struktur project (`src/`) — sudah ada, lanjutkan & perbaiki
 ```
-scenes/    main_menu, kampung, duel_caci, ending, pemain, lawan_caci
+scenes/    main_menu, kampung, ending, pemain, penampil_caci
 scripts/
   autoload/       Kontrol (input map), GameState (FSM game), AudioManager, Transisi, DialogManager, MenuJeda
   state_machine/  StateMachine + StateDasar (FSM berbasis node, dipakai ulang)
   karakter/       KarakterModel (model low-poly prosedural + animasi Tween)
   pemain/         Pemain (CharacterBody3D) + states Idle/Jalan/Lompat/Jatuh/Interaksi
-  lawan/          LawanCaci + states Siaga/Ancang/Serang/Tangkis/Terkena
-  dunia/          Dunia (builder mesh), kampung, Interaktif, NpcKampung, KameraIkut
-  minigame/       duel_caci (TA'ANG & PAKI), BilahTiming
+  caci/           PenampilCaci (pertunjukan ending) + states Siaga/Ancang/Serang/Tangkis/Terkena
+  dunia/          Dunia (builder mesh), kampung (rantai teka-teki), Interaktif, NpcKampung, KameraIkut
+  minigame/       TenunSongke, TabuhGong
   ui/             hud, main_menu, ending
   util/           Gaya (palet songke & komponen UI)
-data/      dialog.json, kartu_budaya.json
+data/      rantai_teka_teki.json, kartu_budaya.json, dialog.json
 assets/    textures/, audio/ (dibuat oleh ../tools/*.py)
 ```
 
 ## Prioritas kerja
 1. Perbaiki error yang dilaporkan pengguna dari panel Output Godot (sertakan file:baris).
 2. Jaga stabilitas: tidak ada crash/error merah dari menu sampai ending.
-3. Tuning kesulitan lewat `KONFIG_LAWAN` berdasarkan hasil playtest.
+3. Tuning lewat `data/rantai_teka_teki.json` dan konstanta mini-game berdasarkan hasil playtest.
 4. Ekspor preset Windows & Web; dokumentasikan perubahan di `docs/laporan/log-pengembangan.md`.
 
 tandar kode

@@ -1,12 +1,12 @@
 # Laporan Proses Pengembangan
-## Prototipe Game 3D Berbasis Budaya Lokal: *Caci: Jejak Anak Wae Rebo*
+## Prototipe Game 3D Berbasis Budaya Lokal: *Jejak Penti di Wae Rebo*
 
 **Nama:** [NAMA] · **NIM:** [NIM] · **Mata kuliah:** Pengembangan Permainan Digital
 
 ---
 
 ## 1. Pendahuluan
-Tugas ini bertujuan menerapkan teknik pengembangan game digital sambil mengintegrasikan unsur budaya lokal. Budaya yang diangkat adalah budaya **Manggarai** (Flores, NTT), dengan **caci**, tarian-tarung cambuk antara *paki* (pencambuk) dan *ta'ang* (penangkis), sebagai inti mekanik. Hasilnya adalah prototipe game 3D yang dapat dimainkan dari menu sampai ending dalam waktu ±10 menit.
+Tugas ini bertujuan menerapkan teknik pengembangan game digital sambil mengintegrasikan unsur budaya lokal. Budaya yang diangkat adalah budaya **Manggarai** (Flores, NTT) dalam bentuk game 3D **jelajah budaya**. Pemain menemui warga kampung bergaya Wae Rebo secara berurutan lewat rantai teka-teki, menenun songke, dan menabuh gong-gendang untuk mengumpulkan 9 kartu pengetahuan, lalu menyaksikan caci pada perayaan Penti. Prototipe dapat dimainkan dari menu sampai ending dalam ±10–15 menit.
 
 ## 2. Ringkasan Penelitian Budaya
 Studi literatur (lihat `docs/riset/laporan-penelitian-budaya.md`) menghasilkan fakta kunci berikut:
@@ -16,9 +16,9 @@ Studi literatur (lihat `docs/riset/laporan-penelitian-budaya.md`) menghasilkan f
 Fakta tersebut diterjemahkan ke mekanik, visual, audio, narasi, dan 9 kartu pengetahuan.
 
 ## 3. Konsep & Desain
-Konsep dan desain lengkap ada di `docs/gdd/GDD.md`. Core loop: jelajah kampung → bicara/kumpulkan kartu → duel caci (ta'ang ⇄ paki) → lawan berikutnya → Penti.
+Konsep dan desain lengkap ada di `docs/gdd/GDD.md`. Core loop: temui warga yang ditunjuk petunjuk → tantangan (teka-teki / tenun / tabuh) → kartu budaya → petunjuk ke warga berikutnya → Penti.
 
-**Perubahan konsep.** Konsep awal berupa game 2D dengan dua mekanik (teka-teki lingko + duel caci). Setelah ditinjau, konsep diubah menjadi **3D dengan caci sebagai inti** agar pengalaman lebih imersif dan fokus. Lingko tetap dibahas dalam riset sebagai konteks dan kandidat pengembangan lanjutan.
+**Perubahan konsep.** (1) Konsep awal: game 2D dengan teka-teki lingko + duel caci. (2) Diubah menjadi 3D dengan duel caci sebagai inti (ta'ang & paki, 3 lawan). (3) Setelah dicoba, duel caci dinilai terlalu sulit bagi pemain umum, sehingga konsep akhir menjadi **jelajah budaya**: rantai teka-teki berurutan, mini-game menenun songke dan tabuh gong-gendang, dan caci ditampilkan sebagai pertunjukan Penti. Kode duel dihapus, sedangkan FSM karakter caci dipakai ulang untuk pertunjukan.
 
 ## 4. Proses Implementasi
 | Tahap | Hasil |
@@ -30,17 +30,19 @@ Konsep dan desain lengkap ada di `docs/gdd/GDD.md`. Core loop: jelajah kampung �
 | Karakter | KarakterModel dari mesh primitif dengan sendi pivot dan animasi prosedural (Tween + sinus) |
 | Dunia | Builder `Dunia`: Mbaru Niang, compang, gong-gendang, arena, pohon, bukit, langit |
 | Interaksi | Area3D `Interaktif` (memilih objek terdekat), NPC, kartu budaya di dalam Mbaru Niang, dialog berbasis JSON |
-| Duel | Dua mekanik, FSM lawan 5 state, 3 tingkat kesulitan, tutorial, kondisi menang/kalah |
+| Rantai teka-teki | 9 langkah berbasis data JSON: pemegang kartu, jenis tantangan, pertanyaan/pilihan/jawaban, petunjuk ke warga berikutnya; teka-teki pilihan ganda bersuara |
+| Mini-game | Menenun Songke (teka-teki pola 5×5, keyboard & mouse) dan Tabuh Gong-Gendang (ritme 2 jalur, jendela ±0,2 dtk) |
+| Pertunjukan caci | Dua penampil dengan FSM 5 state bergantian menjadi paki & ta'ang di ending |
 | UI | Menu utama 3D, HUD, menu jeda, transisi fade, ending Penti |
 | Suara dialog | Text-to-Speech bahasa Indonesia (`DisplayServer.tts_speak`) dengan nada berbeda per tokoh; teks sebagai cadangan |
 | Warga | Model perempuan + nampan kopi; jeda kopi antarronde yang memulihkan stamina |
 
 Detail kronologis ada di `docs/laporan/log-pengembangan.md`.
 
-`[SCREENSHOT: menu utama]` `[SCREENSHOT: kampung & Mbaru Niang]` `[SCREENSHOT: duel — fase TA'ANG dengan tanda "!"]` `[SCREENSHOT: duel — bilah timing PAKI]` `[SCREENSHOT: ending Penti]`
+`[SCREENSHOT: menu utama]` `[SCREENSHOT: kampung & Mbaru Niang]` `[SCREENSHOT: teka-teki Tu'a Golo]` `[SCREENSHOT: menenun songke]` `[SCREENSHOT: tabuh gong-gendang]` `[SCREENSHOT: ending Penti]`
 
 ## 5. Arsitektur Teknis
-- **State management tiga lapis:** (1) `GameState` dengan transisi tervalidasi; (2) FSM pemain (Idle, Jalan, Lompat, Jatuh, Interaksi); (3) FSM lawan (Siaga, Ancang, Serang, Tangkis, Terkena) ditambah fase duel.
+- **State management tiga lapis:** (1) `GameState` dengan transisi tervalidasi dan progres `langkah_rantai`; (2) FSM pemain (Idle, Jalan, Lompat, Jatuh, Interaksi); (3) FSM penampil caci (Siaga, Ancang, Serang, Tangkis, Terkena) pada pertunjukan Penti.
 - **Pemisahan data dan kode:** dialog dan kartu disimpan di `data/*.json`; parameter kesulitan dikumpulkan di `KONFIG_LAWAN`.
 - **Komunikasi lewat sinyal** sehingga antarskrip tidak saling bergantung langsung.
 - **Kode yang dapat dipakai ulang:** `StateMachine`, `KarakterModel`, `Dunia`, dan `Gaya` dipakai di banyak scene.
@@ -51,7 +53,7 @@ Detail kronologis ada di `docs/laporan/log-pengembangan.md`.
 - **Playtest:** _[isi ringkasan dari `docs/playtest/hasil-playtest.md`: jumlah penguji, temuan utama, iterasi yang dilakukan]_
 
 ## 7. Hasil Akhir & Keterbatasan
-**Hasil:** game 3D yang dapat dimainkan dari awal sampai akhir, dengan 2 mekanik caci, 3 lawan, 9 kartu budaya, musik dan SFX bernuansa gong-gendang, serta animasi yang menerapkan prinsip animasi dasar.
+**Hasil:** game 3D jelajah budaya yang dapat dimainkan dari awal sampai akhir, dengan rantai teka-teki 9 langkah, 2 mini-game (tenun & tabuh), dialog bersuara, 9 kartu budaya, pertunjukan caci, musik dan SFX gong-gendang, serta animasi yang menerapkan prinsip animasi dasar.
 
 **Keterbatasan:**
 - Model low-poly sederhana tanpa rig.
@@ -61,7 +63,7 @@ Detail kronologis ada di `docs/laporan/log-pengembangan.md`.
 - Sebagian sumber riset baru diverifikasi dari abstrak.
 
 ## 8. Kesimpulan & Pengembangan Lanjutan
-Struktur caci (peran bergantian, isyarat ancang-ancang, nilai sportivitas) terbukti dapat diterjemahkan langsung menjadi mekanik timing yang menantang sekaligus mengedukasi. Pengembangan lanjutan:
+Budaya Manggarai dapat dijalin menjadi permainan jelajah yang mendidik: pengetahuan dari satu warga menjadi kunci untuk menemui warga berikutnya, sementara songke dan gong-gendang menjadi mekanik pola dan ritme yang mudah dimainkan. Pengembangan lanjutan:
 - Mekanik teka-teki **lingko lodok**.
 - Rekaman gong-gendang asli dengan izin komunitas.
 - Model 3D yang lebih detail.

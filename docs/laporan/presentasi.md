@@ -2,15 +2,13 @@
 
 | # | Judul slide | Isi | Catatan pembicara |
 |---|---|---|---|
-| 1 | **Caci: Jejak Anak Wae Rebo** | Judul, nama, NIM, screenshot menu | "Saya membuat game 3D yang mengangkat caci dari Manggarai." |
-| 2 | Latar Budaya Manggarai | Peta Flores, foto/ilustrasi caci & Mbaru Niang (cantumkan sumber) | Caci adalah tarian-tarung antara paki & ta'ang; Wae Rebo meraih UNESCO 2012 |
-| 3 | Metode Riset | Studi literatur, glosarium ±70 istilah, status verifikasi aman/hati-hati | Tekankan pembedaan fakta vs tafsir kreatif |
-| 4 | Konsep & Core Loop | Diagram core loop dari GDD | Jelajah → kartu → duel → Penti |
-| 5 | Mekanik 1: TA'ANG | Screenshot tanda "!", stamina, tipuan | Ancang-ancang adalah unsur budaya sekaligus prinsip animasi *anticipation* |
-| 6 | Mekanik 2: PAKI | Screenshot bilah timing, tabel kesulitan 3 lawan | Peran bergantian sesuai aturan caci |
-| 7 | Integrasi Budaya | Tabel visual/audio/narasi/mekanik (GDD §7) | Compang hanya dilihat karena sakral; musik sintetis sebagai penghormatan |
-| 8 | Arsitektur Teknis | Diagram folder, 3 lapis state management, sinyal | FSM berbasis node yang dipakai ulang; data JSON |
+| 1 | **Jejak Penti di Wae Rebo** | Judul, nama, NIM, screenshot menu | "Game 3D jelajah budaya Manggarai." |
+| 2 | Latar Budaya Manggarai | Mbaru Niang & Wae Rebo (UNESCO 2012), Penti, songke, gong-gendang, caci (cantumkan sumber) | Tunjukkan keberagaman unsur yang diangkat |
+| 3 | Metode Riset | Studi literatur, glosarium ±70 istilah, status verifikasi | Bedakan fakta bersumber dan tafsir kreatif |
+| 4 | Revisi Konsep | Dari duel caci → jelajah budaya (tabel di GDD §1) | Alasan: duel terlalu sulit; caci tetap dihormati sebagai pertunjukan |
+| 5 | Core Loop & Rantai Teka-teki | Diagram core loop + tabel 9 langkah | Pengetahuan kartu menjadi kunci kemajuan |
+| 6 | Mini-game: Menenun Songke & Tabuh Gong-Gendang | Screenshot keduanya | Mekanik pola & ritme yang mudah dimainkan |
+| 7 | Integrasi Budaya | Tabel visual/audio/narasi/mekanik (GDD §7) | Compang hanya dilihat (sakral); dialog bersuara |
+| 8 | Arsitektur Teknis | Struktur folder, GameState, FSM pemain & penampil caci, data JSON | Konten terpisah dari kode |
 | 9 | Playtest & Iterasi | Hasil kuesioner, sebelum → sesudah | _(isi dari hasil playtest)_ |
-| 10 | Kesimpulan & Pengembangan Lanjutan | Hasil, keterbatasan, rencana (lingko, rekaman asli) | Tutup dengan demo singkat atau tautan video |
-
-Siapkan juga demo langsung (buka build .exe) bila waktu memungkinkan.
+| 10 | Kesimpulan & Pengembangan Lanjutan | Keterbatasan & rencana (lingko, motif lain, rekaman asli) | Tutup dengan video demo |

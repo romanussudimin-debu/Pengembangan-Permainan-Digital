@@ -1,17 +1,17 @@
 [gd_scene load_steps=10 format=3]
 
-[ext_resource type="Script" path="res://scripts/lawan/lawan_caci.gd" id="1_lawan"]
+[ext_resource type="Script" path="res://scripts/caci/penampil_caci.gd" id="1_penampil"]
 [ext_resource type="Script" path="res://scripts/karakter/karakter_model.gd" id="2_model"]
 [ext_resource type="Script" path="res://scripts/state_machine/state_machine.gd" id="3_fsm"]
-[ext_resource type="Script" path="res://scripts/lawan/states/siaga.gd" id="4_siaga"]
-[ext_resource type="Script" path="res://scripts/lawan/states/ancang.gd" id="5_ancang"]
-[ext_resource type="Script" path="res://scripts/lawan/states/serang.gd" id="6_serang"]
-[ext_resource type="Script" path="res://scripts/lawan/states/tangkis.gd" id="7_tangkis"]
-[ext_resource type="Script" path="res://scripts/lawan/states/terkena.gd" id="8_terkena"]
+[ext_resource type="Script" path="res://scripts/caci/states/siaga.gd" id="4_siaga"]
+[ext_resource type="Script" path="res://scripts/caci/states/ancang.gd" id="5_ancang"]
+[ext_resource type="Script" path="res://scripts/caci/states/serang.gd" id="6_serang"]
+[ext_resource type="Script" path="res://scripts/caci/states/tangkis.gd" id="7_tangkis"]
+[ext_resource type="Script" path="res://scripts/caci/states/terkena.gd" id="8_terkena"]
 [ext_resource type="Texture2D" path="res://assets/textures/songke_biru.png" id="9_songke"]
 
-[node name="LawanCaci" type="Node3D"]
-script = ExtResource("1_lawan")
+[node name="PenampilCaci" type="Node3D"]
+script = ExtResource("1_penampil")
 
 [node name="Model" type="Node3D" parent="."]
 script = ExtResource("2_model")

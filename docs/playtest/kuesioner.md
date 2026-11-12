@@ -10,9 +10,9 @@ Pengamat mencatat: di mana penguji bingung, berapa kali kalah per lawan, dan ber
 |---|---|---|
 | 1 | Seberapa mudah mengendalikan Nggohak? (1 = sulit … 5 = mudah) | |
 | 2 | Apakah tujuan permainan jelas? (1–5) | |
-| 3 | Seberapa seru mekanik **menangkis (ta'ang)**? (1–5) | |
-| 4 | Seberapa seru mekanik **mencambuk (paki)**? (1–5) | |
-| 5 | Apakah kesulitan 3 lawan terasa naik dengan adil? (1–5) | |
+| 3 | Seberapa seru **rantai teka-teki** (mencari warga dari petunjuk)? (1–5) | |
+| 4 | Seberapa seru mini-game **menenun songke** dan **tabuh gong-gendang**? (1–5) | |
+| 5 | Apakah petunjuk & teka-teki cukup jelas? Apakah dialog bersuara mudah dipahami? (1–5) | |
 | 6 | Sebutkan 3 hal tentang budaya Manggarai yang Anda pelajari | |
 | 7 | Apakah tampilan & musik terasa sesuai tema budaya? (1–5) | |
 | 8 | Bagian mana yang paling membingungkan/mengganggu? | |

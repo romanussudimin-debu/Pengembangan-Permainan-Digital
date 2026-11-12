@@ -1,4 +1,4 @@
-# Catatan Riset — Budaya Manggarai untuk *Caci: Jejak Anak Wae Rebo*
+# Catatan Riset — Budaya Manggarai untuk *Jejak Penti di Wae Rebo*
 
 **Peneliti:** agent `peneliti-budaya-manggarai` (untuk [NAMA], [NIM])
 **Tanggal riset & akses sumber:** 12 November 2026

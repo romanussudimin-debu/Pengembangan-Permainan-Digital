@@ -1,12 +1,12 @@
-class_name StateLawan
+class_name StatePenampil
 extends StateDasar
-## Dasar state lawan caci dengan pewaktu internal (ikut berhenti saat game dijeda).
+## Dasar state penampil caci dengan pewaktu internal (ikut berhenti saat game dijeda).
 
 var waktu: float = 0.0
 
-var lawan: LawanCaci:
+var penampil: PenampilCaci:
 	get:
-		return pemilik as LawanCaci
+		return pemilik as PenampilCaci
 
 
 func update(delta: float) -> void:

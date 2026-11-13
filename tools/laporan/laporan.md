@@ -142,7 +142,7 @@ Mekanisme pengerjaan mengikuti ketentuan tugas, yaitu:
 3. Durasi pengerjaan empat minggu dengan konsultasi berkala kepada dosen.
 4. Hasil dipresentasikan pada akhir periode.
 
-Pengembangan dilakukan dalam lima tahapan beserta bobotnya sebagaimana ditunjukkan pada Tabel 1.1. Setiap tahapan dibahas dalam satu bab tersendiri pada laporan ini.
+Pengembangan dilakukan dalam lima tahapan beserta bobotnya sebagaimana ditunjukkan pada Tabel 1.1. Tahapan pertama sampai keempat masing-masing dibahas dalam satu bab (BAB II–V), sedangkan tahapan dokumentasi berupa video demo dan presentasi dikumpulkan terpisah.
 
 : Tabel 1.1 Tahapan Pelaksanaan dan Bab Pembahasan
 
@@ -152,7 +152,7 @@ Pengembangan dilakukan dalam lima tahapan beserta bobotnya sebagaimana ditunjukk
 | 2 | Adaptasi Konsep | 20% | Menyusun GDD, core loop dan mekanik, integrasi budaya ke visual, audio, dan narasi | BAB III |
 | 3 | Implementasi Teknis | 50% | Setup engine, kontrol dasar, state management, 2+ mekanik, aset visual dan audio, prinsip animasi | BAB IV |
 | 4 | Testing dan Polish | 10% | Playtesting dengan user, iterasi berdasarkan feedback, penyempurnaan | BAB V |
-| 5 | Dokumentasi | 10% | Laporan proses development, video demo, presentasi | BAB VI |
+| 5 | Dokumentasi | 10% | Laporan proses development, video demo, presentasi | Dikumpulkan terpisah |
 
 ## 1.5 Timeline Pelaksanaan
 
@@ -179,7 +179,7 @@ Keluaran yang diharapkan dan wujudnya dalam proyek ini dirangkum pada Tabel 1.3.
 | b | Source code project | Repositori GitHub: github.com/romanussudimin-debu/Pengembangan-Permainan-Digital (folder `src/`) |
 | c | Dokumentasi desain (GDD + asset references) | BAB III dan Lampiran B laporan ini |
 | d | Laporan penelitian budaya | BAB II laporan ini |
-| e | Video demo gameplay (1–2 menit) | Direkam berdasarkan naskah pada subbab 6.2 |
+| e | Video demo gameplay (1–2 menit) | Dikumpulkan terpisah bersama dokumentasi |
 
 ## 1.7 Sistematika Penulisan
 
@@ -190,8 +190,7 @@ Laporan ini disusun dengan sistematika sebagai berikut:
 3. **BAB III Adaptasi Konsep** berisi Game Design Document (GDD), core loop dan mekanik, serta integrasi budaya ke visual, audio, dan narasi.
 4. **BAB IV Implementasi Teknis** berisi setup proyek, kontrol dasar, state management, implementasi mekanik, integrasi aset, prinsip animasi, build, dan tampilan program.
 5. **BAB V Testing dan Polish** berisi pengujian fungsional, playtesting dengan pengguna, iterasi, dan penyempurnaan.
-6. **BAB VI Dokumentasi** berisi laporan proses development, video demo, presentasi, dan kesesuaian dengan kriteria penilaian.
-7. **BAB VII Penutup** berisi kesimpulan dan saran.
+6. **BAB VI Penutup** berisi kesimpulan dan saran.
 
 # BAB II PENELITIAN BUDAYA
 
@@ -683,62 +682,9 @@ Selain iterasi di atas, penyempurnaan visual dan gameplay yang dilakukan meliput
 4. Teka-teki dibuat empat pilihan dengan pengecoh yang mirip.
 5. Palet benang pada mini-game tenun diperbesar dan dipindah agar mudah diketuk, serta ditambah tombol Berhenti.
 
-# BAB VI DOKUMENTASI
+# BAB VI PENUTUP
 
-## 6.1 Laporan Proses Development
-
-Proses pengembangan dicatat dalam log pengembangan. Ringkasan kronologinya ditunjukkan pada Tabel 6.1.
-
-: Tabel 6.1 Ringkasan Proses Development
-
-| No | Kegiatan | Kendala | Solusi |
-|:--:|------------------------------|------------------------------|------------------------------|
-| 1 | Riset budaya: catatan, glosarium, tabel adaptasi, laporan | Banyak jurnal tidak dapat dibuka penuh | Fakta diambil dari abstrak; data belum pasti ditandai |
-| 2 | Pembuatan aset: 12 tekstur dan 15 audio | Tidak ada aset 3D berlisensi bebas bernuansa Manggarai | Semua aset dibuat dengan skrip Python |
-| 3 | Fondasi teknis: input, GameState, FSM, pemain 3D | — | — |
-| 4 | Karakter prosedural dan animasi | Tidak memakai rig tulang | Sendi berupa pivot dianimasikan dengan Tween dan sinus |
-| 5 | Kampung 3D dan interaksi | Batu pijakan bertabrakan dengan rumah | Jarak antarobjek dicek dengan skrip lalu posisi digeser |
-| 6 | Revisi konsep menjadi jelajah budaya | Duel caci terlalu sulit | Rantai teka-teki dan dua mini-game |
-| 7 | Rumah dapat dimasuki, warga bergerak | Kamera dan atap menghalangi | Atap disembunyikan saat pemain di dalam rumah |
-| 8 | Kontrol sentuh dan versi web otomatis | Browser memuat suara TTS terlambat | Suara dicari ulang setiap dialog dimulai |
-| 9 | Playtest 3 penguji | — | Hasil dicatat untuk iterasi |
-
-## 6.2 Video Demo Gameplay
-
-Video demo berdurasi 1–2 menit direkam dengan perekam layar (misalnya Cmd + Shift + 5 di macOS) pada resolusi 1080p, dengan suara sistem ikut terekam karena dialog game diucapkan. Naskah video ditunjukkan pada Tabel 6.2.
-
-: Tabel 6.2 Naskah Video Demo
-
-| Waktu | Visual | Narasi |
-|:--------:|------------------------------------|------------------------------------|
-| 0:00–0:08 | Menu utama, kamera mengorbit kampung | Pengenalan game jelajah budaya Manggarai |
-| 0:08–0:20 | Nggohak berjalan dan melompat di kampung | Tujuh Mbaru Niang melingkari compang |
-| 0:20–0:38 | Dialog Tu'a Golo, teka-teki, kartu dibacakan, masuk mbaru gendang | Rantai teka-teki dan petunjuk |
-| 0:38–0:55 | Mini-game menenun songke | Mekanik menenun |
-| 0:55–1:12 | Mini-game tabuh gong-gendang | Mekanik ritme |
-| 1:12–1:25 | Teka-teki di arena, membuka koleksi kartu | Jawaban ada di kartu budaya |
-| 1:25–1:55 | Ending Penti: penari dan pertunjukan caci | Pesan sportivitas dan persaudaraan |
-
-## 6.3 Presentasi Hasil
-
-Presentasi hasil disusun dalam 10 slide dengan susunan: (1) judul dan identitas; (2) latar budaya Manggarai; (3) metode riset; (4) revisi konsep; (5) core loop dan rantai teka-teki; (6) mini-game menenun dan menabuh; (7) integrasi budaya; (8) arsitektur teknis; (9) uji coba dan iterasi; serta (10) kesimpulan dan tautan game. Presentasi ditutup dengan penayangan video demo.
-
-## 6.4 Kesesuaian dengan Kriteria Penilaian
-
-Pemetaan hasil proyek terhadap kriteria penilaian tugas ditunjukkan pada Tabel 6.3.
-
-: Tabel 6.3 Kesesuaian Hasil dengan Kriteria Penilaian
-
-| Kriteria (bobot) | Indikator | Bukti dalam proyek |
-|---------------------|------------------------------|------------------------------------------|
-| Implementasi Teknis (40%) | Fitur teknis, kualitas kode, state management, stabilitas | Subbab 4.2–4.4; FSM tiga lapis; data terpisah dari kode; uji fungsional berhasil |
-| Integrasi Budaya (30%) | Kedalaman riset, kreativitas adaptasi, konsistensi | BAB II (36 sumber, ±70 istilah); rantai teka-teki dan mini-game; budaya di semua aspek |
-| Aset dan Visual (15%) | Keserasian visual, prinsip animasi, audio | Subbab 4.5–4.6; visual bertema Manggarai; 6 prinsip animasi; audio gong-gendang |
-| Dokumentasi dan Presentasi (15%) | Kelengkapan dokumen, video demo, presentasi | Laporan ini, video demo, dan 10 slide presentasi |
-
-# BAB VII PENUTUP
-
-## 7.1 Kesimpulan
+## 6.1 Kesimpulan
 
 Berdasarkan seluruh tahapan yang telah dilaksanakan, dapat disimpulkan bahwa:
 
@@ -748,7 +694,7 @@ Berdasarkan seluruh tahapan yang telah dilaksanakan, dapat disimpulkan bahwa:
 4. Aset visual dan audio dibuat sendiri dan menerapkan prinsip animasi dasar seperti anticipation, follow-through, serta squash and stretch.
 5. Game dapat dimainkan dari awal sampai akhir di laptop dan HP melalui browser. Playtest dengan 3 penguji menghasilkan rata-rata skor 4 dari 5.
 
-## 7.2 Saran
+## 6.2 Saran
 
 Untuk pengembangan selanjutnya, penulis menyarankan:
 

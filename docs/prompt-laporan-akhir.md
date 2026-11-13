@@ -40,8 +40,7 @@ Susun satu laporan penuh bergaya bab yang menggabungkan semua dokumen proyek:
    - **BAB III Adaptasi Konsep (20%):** GDD sederhana, core loop dan mekanik, integrasi budaya ke visual, audio, dan narasi.
    - **BAB IV Implementasi Teknis (50%):** setup engine, kontrol dasar, state management, minimal 2 mekanik, aset visual dan audio, prinsip animasi, dengan 3–5 potongan kode GDScript.
    - **BAB V Testing dan Polish (10%):** playtesting dengan user, iterasi berdasarkan feedback, penyempurnaan.
-   - **BAB VI Dokumentasi (10%):** laporan proses development, video demo, presentasi, kesesuaian dengan kriteria penilaian.
-   - **BAB VII Penutup:** kesimpulan dan saran.
+   - **BAB VI Penutup:** kesimpulan dan saran. (Tahap Dokumentasi tidak dijadikan bab; video demo dan presentasi dikumpulkan terpisah.)
 5. **Daftar Pustaka**, diambil dari riset budaya dan ditambah referensi teknis.
 6. **Lampiran:** kuesioner, link game dan GitHub, tabel glosarium singkat.
 

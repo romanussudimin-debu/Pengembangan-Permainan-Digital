@@ -69,7 +69,7 @@ Pengetahuan dari setiap kartu menjadi bekal untuk menjawab teka-teki berikutnya,
 |---|---|
 | Tujuan | Menabuh mengikuti irama untuk mengiringi Penti |
 | Kontrol | **J** = gong, **K** = gendang, atau ketuk tombol GONG/GENDANG |
-| Aturan | 18 ketukan bergerak dari kanan ke garis tabuh (tempo 76 BPM). Tepat bila ditekan ±0,2 detik dari ketukan. Lulus bila ≥ 60% tepat; bila gagal, coba lagi. |
+| Aturan | 15 ketukan bergerak dari kanan ke garis tabuh (tempo 76 BPM). Tepat bila ditekan ±0,2 detik dari ketukan. Lulus bila ≥ 60% tepat; bila gagal, coba lagi. |
 | Umpan balik | Suara gong/gendang setiap tabuhan, teks "Tepat!/Luput" yang meletup, skor berjalan; musik latar dijeda selama mini-game |
 
 ### 4.4 Urutan rantai (data: `src/data/rantai_teka_teki.json`)
@@ -141,7 +141,7 @@ Kontrol sentuh (`KontrolSentuh`) hanya muncul di perangkat layar sentuh dan hany
 - **Menu utama:** diorama 3D, judul "JEJAK PENTI di Wae Rebo", tombol Mulai, Cara Bermain, Tentang, Keluar.
 - **HUD:** "Petunjuk: ..." (petunjuk aktif) dan jumlah kartu x/9.
 - **Dialog bersuara:** panel kecil berisi nama pembicara; kalimat diucapkan lewat TTS; lanjut otomatis; E untuk melewati. Teks tampil bila suara tidak tersedia atau dinyalakan di menu jeda.
-- **Teka-teki:** panel pertanyaan + 3 tombol jawaban.
+- **Teka-teki:** panel pertanyaan + 4 tombol jawaban.
 - **Mini-game:** overlay bermotif songke (tenun, tabuh).
 - **Menu jeda:** volume musik/SFX/suara dialog, tampilkan teks dialog, koleksi kartu, kembali ke menu.
 

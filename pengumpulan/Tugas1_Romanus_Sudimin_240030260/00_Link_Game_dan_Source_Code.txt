@@ -18,3 +18,4 @@ Isi folder:
 04 Naskah Video Demo (.docx/.pdf)
 05 Panduan Menjalankan Game (.docx/.pdf)
 06 Slide Presentasi (.pptx/.pdf)
+07 Laporan Proyek Lengkap - gabungan semua dokumen dalam format bab (.docx/.pdf)

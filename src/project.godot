@@ -8,6 +8,7 @@ config/name="Jejak Penti di Wae Rebo"
 config/description="Prototipe game 3D jelajah budaya Manggarai (Flores, NTT)."
 run/main_scene="res://scenes/opening.tscn"
 config/features=PackedStringArray("4.3", "GL Compatibility")
+config/icon="res://assets/ikon/ikon_512.png"
 
 [audio]
 

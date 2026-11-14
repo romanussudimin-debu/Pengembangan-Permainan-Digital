@@ -159,7 +159,7 @@ func _tombol_menu(teks: String, kolom: VBoxContainer) -> Button:
 
 func _ganti_layar() -> void:
 	Layar.layar_penuh(not Layar.sedang_penuh())
-	await get_tree().process_frame
+	await get_tree().create_timer(0.4).timeout
 	_tombol_layar.text = _teks_layar()
 
 

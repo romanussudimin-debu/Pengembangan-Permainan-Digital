@@ -93,10 +93,20 @@ func _cari_suara() -> bool:
 		return true
 	if not DisplayServer.has_feature(DisplayServer.FEATURE_TEXT_TO_SPEECH):
 		return false
-	var suara: PackedStringArray = DisplayServer.tts_get_voices_for_language(BAHASA_SUARA)
-	if not suara.is_empty():
-		_suara_id = suara[0]
-	return _suara_id != ""
+	# Android menulis bahasa Indonesia dengan kode lama "in" (mis. "in_ID"), browser dengan "id-ID".
+	for kode: String in [BAHASA_SUARA, "in"]:
+		var suara: PackedStringArray = DisplayServer.tts_get_voices_for_language(kode)
+		if not suara.is_empty():
+			_suara_id = suara[0]
+			return true
+	for v: Dictionary in DisplayServer.tts_get_voices():
+		var bahasa: String = str(v.get("language", "")).to_lower().replace("-", "_")
+		var nama: String = str(v.get("name", "")).to_lower()
+		if bahasa == "id" or bahasa == "in" or bahasa == "ind" or bahasa.begins_with("id_") or bahasa.begins_with("in_") \
+				or nama.contains("indonesia"):
+			_suara_id = str(v.get("id", ""))
+			return _suara_id != ""
+	return false
 
 
 ## True bila dialog diucapkan (ada suara bahasa Indonesia).

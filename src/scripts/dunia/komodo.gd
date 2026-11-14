@@ -9,6 +9,7 @@ enum Perilaku { DIAM, JALAN }
 @export var titik_a: Vector3
 @export var titik_b: Vector3
 @export var kecepatan: float = 1.0
+@export var selalu_bergerak: bool = false  ## untuk opening/menu: tetap berjalan di luar state BERMAIN
 
 const WARNA_KULIT := Color("4a4232")
 
@@ -109,7 +110,7 @@ func _bangun() -> void:
 
 func _process(delta: float) -> void:
 	_waktu += delta
-	var bergerak: bool = GameState.sedang(GameState.State.BERMAIN) or GameState.sedang(GameState.State.MINIGAME)
+	var bergerak: bool = selalu_bergerak or GameState.sedang(GameState.State.BERMAIN) or GameState.sedang(GameState.State.MINIGAME)
 	if bergerak:
 		match _perilaku:
 			Perilaku.DIAM:

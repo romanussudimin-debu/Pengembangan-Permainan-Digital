@@ -1,119 +1,170 @@
 extends Node3D
-## Menu utama dengan diorama 3D Wae Rebo dan kamera yang berputar perlahan.
+## Menu utama berlatar panorama Manggarai (Wae Rebo, Penti & caci, lingko, komodo, Labuan Bajo).
+## Kamera berpindah perlahan antar-tema (bidikan Panorama.SHOT) dengan peralihan pudar.
+## Tombol dibuat besar agar mudah diketuk di HP/tablet landscape.
 
 const ADEGAN_KAMPUNG: String = "res://scenes/kampung.tscn"
+const DURASI_SHOT_MENU: float = 9.0
 
 var _kamera: Camera3D
-var _sudut: float = 0.0
+var _kapal: Array[Node3D] = []
+var _waktu: float = 0.0
+var _indeks_shot: int = 1
+var _waktu_shot: float = 0.0
+var _pudar: ColorRect
+var _label_tema: Label
 var _panel_info: NinePatchRect
-var _label_info: Label
+var _label_info: RichTextLabel
 var _tombol_mulai: Button
 var _tombol_mode: Button
+var _tombol_layar: Button
 
 
 func _ready() -> void:
 	get_tree().paused = false
 	GameState.ubah_state(GameState.State.MENU)
-	_bangun_diorama()
+	_kapal = Panorama.bangun(self)
+	_kamera = Camera3D.new()
+	_kamera.fov = 55.0
+	add_child(_kamera)
+	_kamera.current = true
 	_bangun_ui()
+	_ganti_shot(_indeks_shot)
 	AudioManager.putar_musik("kampung")
 
 
-func _bangun_diorama() -> void:
-	Dunia.lingkungan(self)
-	Dunia.tanah(self, 220.0)
-	Dunia.compang(self, Vector3.ZERO)
-	for i in 7:
-		var a: float = TAU * i / 7.0
-		Dunia.mbaru_niang(self, Vector3(cos(a), 0, sin(a)) * 13.0, Vector3.ZERO, 1.25 if i == 0 else 1.0)
-	for i in 12:
-		var a: float = TAU * i / 12.0
-		Dunia.bukit(self, Vector3(cos(a) * 55, -4, sin(a) * 55), 18, 16)
-	var tari := [Vector3(4, 0, 4), Vector3(-4, 0, 4), Vector3(0, 0, 6)]
-	for i in tari.size():
-		var m := KarakterModel.new()
-		m.position = tari[i]
-		m.telanjang_dada = true
-		m.pakai_panggal = true
-		m.bawa_senjata = true
-		add_child(m)
-		m.mode = "siaga"
-	for i in 4:
-		var ayam := Hewan.new()
-		ayam.jenis = "ayam"
-		ayam.position = Vector3(-3.0 + i * 0.7, 0, 7.5)
-		ayam.warna_utama = [Color("f1ede4"), Color("9a4a22"), Color("1e1a1a"), Color("b8622a")][i]
-		ayam.jari_jelajah = 1.5
-		add_child(ayam)
-	var anjing := Hewan.new()
-	anjing.jenis = "anjing"
-	anjing.position = Vector3(6, 0, 6)
-	anjing.warna_utama = Color("a0703c")
-	anjing.jari_jelajah = 1.5
-	add_child(anjing)
-	_kamera = Camera3D.new()
-	add_child(_kamera)
-	_kamera.current = true
-
-
 func _process(delta: float) -> void:
-	_sudut += delta * 0.08
-	_kamera.position = Vector3(cos(_sudut) * 24.0, 9.0, sin(_sudut) * 24.0)
-	_kamera.look_at(Vector3(0, 2, 0), Vector3.UP)
+	_waktu += delta
+	_waktu_shot += delta
+	Panorama.animasi_kapal(_kapal, _waktu)
+	var shot: Dictionary = Panorama.SHOT[_indeks_shot]
+	var p: Array = Panorama.pose(shot, _waktu_shot / DURASI_SHOT_MENU)
+	_kamera.position = p[0]
+	_kamera.look_at(p[1], Vector3.UP)
+	if _waktu_shot >= DURASI_SHOT_MENU - 0.6 and _pudar.modulate.a == 0.0:
+		var tw := create_tween()
+		tw.tween_property(_pudar, "modulate:a", 1.0, 0.6)
+		tw.tween_callback(_ganti_shot.bind((_indeks_shot + 1) % Panorama.SHOT.size()))
+		tw.tween_property(_pudar, "modulate:a", 0.0, 0.8)
+
+
+func _ganti_shot(i: int) -> void:
+	_indeks_shot = i
+	_waktu_shot = 0.0
+	var shot: Dictionary = Panorama.SHOT[i]
+	_label_tema.text = "%s  ·  %s" % [shot["judul"], shot["ket"]]
 
 
 func _bangun_ui() -> void:
 	var ui := CanvasLayer.new()
 	add_child(ui)
-	var judul := Gaya.label("JEJAK PENTI", 34, Gaya.KUNING)
-	judul.position = Vector2(40, 40)
+	_pudar = ColorRect.new()
+	_pudar.color = Color(0.05, 0.04, 0.04)
+	_pudar.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_pudar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_pudar.modulate.a = 0.0
+	ui.add_child(_pudar)
+	# Bayangan gelap di sisi kiri agar judul dan tombol mudah dibaca di atas panorama
+	var bayang := TextureRect.new()
+	var gradasi := GradientTexture2D.new()
+	gradasi.gradient = Gradient.new()
+	gradasi.gradient.set_color(0, Color(0.05, 0.04, 0.04, 0.85))
+	gradasi.gradient.set_color(1, Color(0.05, 0.04, 0.04, 0.0))
+	gradasi.width = 64
+	gradasi.height = 4
+	bayang.texture = gradasi
+	bayang.stretch_mode = TextureRect.STRETCH_SCALE
+	bayang.position = Vector2.ZERO
+	bayang.size = Vector2(330, 360)
+	bayang.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	ui.add_child(bayang)
+	var judul := Gaya.label("JEJAK PENTI", 36, Gaya.KUNING)
+	judul.position = Vector2(26, 10)
+	judul.add_theme_constant_override("outline_size", 6)
 	ui.add_child(judul)
-	var sub := Gaya.label("di Wae Rebo", 16, Gaya.PUTIH)
-	sub.position = Vector2(42, 92)
+	var sub := Gaya.label("Petualangan Budaya Manggarai", 13, Gaya.PUTIH)
+	sub.position = Vector2(28, 58)
 	ui.add_child(sub)
-	var tag := Gaya.label("Prototipe game 3D berbasis budaya Manggarai, Flores, NTT", 9, Gaya.PUTIH)
-	tag.position = Vector2(42, 116)
-	ui.add_child(tag)
+	var garis := ColorRect.new()
+	garis.color = Gaya.MERAH
+	garis.position = Vector2(28, 79)
+	garis.size = Vector2(200, 2)
+	ui.add_child(garis)
+	var tema := Gaya.label("Wae Rebo  ·  Lingko  ·  Labuan Bajo", 9, Color("c9c2b0"))
+	tema.position = Vector2(28, 83)
+	ui.add_child(tema)
 
 	var kolom := VBoxContainer.new()
-	kolom.position = Vector2(42, 150)
-	kolom.add_theme_constant_override("separation", 8)
+	kolom.position = Vector2(28, 104)
+	kolom.add_theme_constant_override("separation", 5)
 	ui.add_child(kolom)
-	_tombol_mulai = Gaya.tombol("Mulai Permainan")
+	_tombol_mulai = _tombol_menu("Mulai Permainan", kolom)
 	_tombol_mulai.pressed.connect(_mulai)
-	kolom.add_child(_tombol_mulai)
 	if GameState.ada_simpanan():
 		var lv: int = clampi(GameState.level_tertinggi, 1, GameState.ADEGAN_LEVEL.size())
-		var lanjut := Gaya.tombol("Lanjutkan (Level %d)" % lv)
+		var lanjut := _tombol_menu("Lanjutkan (Level %d)" % lv, kolom)
 		lanjut.pressed.connect(func() -> void: GameState.lanjutkan())
-		kolom.add_child(lanjut)
-	_tombol_mode = Gaya.tombol(_teks_mode())
+	_tombol_mode = _tombol_menu(_teks_mode(), kolom)
 	_tombol_mode.pressed.connect(_ganti_mode)
-	kolom.add_child(_tombol_mode)
-	var cara := Gaya.tombol("Cara Bermain")
+	var cara := _tombol_menu("Cara Bermain", kolom)
 	cara.pressed.connect(_tampilkan_info.bind(_teks_cara_bermain()))
-	kolom.add_child(cara)
-	var tentang := Gaya.tombol("Tentang Game")
+	var tentang := _tombol_menu("Tentang Game", kolom)
 	tentang.pressed.connect(_tampilkan_info.bind(_teks_tentang()))
-	kolom.add_child(tentang)
+	_tombol_layar = _tombol_menu(_teks_layar(), kolom)
+	_tombol_layar.pressed.connect(_ganti_layar)
 	if not OS.has_feature("web"):
-		var keluar := Gaya.tombol("Keluar")
+		var keluar := _tombol_menu("Keluar", kolom)
 		keluar.pressed.connect(func() -> void: get_tree().quit())
-		kolom.add_child(keluar)
+
+	# Sapaan dan nama tema yang sedang tampil (kanan bawah)
+	var pita := Gaya.panel_songke(Vector2(338, 300), Vector2(294, 50))
+	ui.add_child(pita)
+	var sapa := Gaya.label("Selamat datang di Manggarai!", 11, Gaya.KUNING)
+	sapa.position = Vector2(12, 6)
+	pita.add_child(sapa)
+	var ajak := Gaya.label("Mari belajar budaya sambil bermain.", 9, Gaya.PUTIH)
+	ajak.position = Vector2(12, 26)
+	pita.add_child(ajak)
+	_label_tema = Gaya.label("", 8, Gaya.PUTIH)
+	_label_tema.position = Vector2(338, 284)
+	_label_tema.size = Vector2(294, 14)
+	_label_tema.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	ui.add_child(_label_tema)
 
 	_panel_info = Gaya.panel_songke(Vector2(222, 16), Vector2(400, 328))
 	_panel_info.visible = false
 	ui.add_child(_panel_info)
-	_label_info = Gaya.label("", 9, Gaya.PUTIH)
+	_label_info = RichTextLabel.new()  # bisa digulir (roda mouse / geser jari)
 	_label_info.position = Vector2(16, 14)
 	_label_info.size = Vector2(368, 270)
-	_label_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_label_info.scroll_active = true
+	_label_info.add_theme_font_size_override("normal_font_size", 9)
+	_label_info.add_theme_color_override("default_color", Gaya.PUTIH)
 	_panel_info.add_child(_label_info)
 	var tutup := Gaya.tombol("Tutup")
 	tutup.position = Vector2(120, 292)
 	tutup.pressed.connect(func() -> void: _panel_info.visible = false)
 	_panel_info.add_child(tutup)
 	_tombol_mulai.grab_focus()
+
+
+## Tombol menu berukuran besar (mudah diketuk di layar sentuh).
+func _tombol_menu(teks: String, kolom: VBoxContainer) -> Button:
+	var b := Gaya.tombol(teks)
+	b.custom_minimum_size = Vector2(196, 27)
+	b.add_theme_font_size_override("font_size", 12)
+	kolom.add_child(b)
+	return b
+
+
+func _ganti_layar() -> void:
+	Layar.layar_penuh(not Layar.sedang_penuh())
+	await get_tree().process_frame
+	_tombol_layar.text = _teks_layar()
+
+
+func _teks_layar() -> String:
+	return "Keluar Layar Penuh" if Layar.sedang_penuh() else "Layar Penuh"
 
 
 func _mulai() -> void:
@@ -132,6 +183,7 @@ func _teks_mode() -> String:
 
 func _tampilkan_info(teks: String) -> void:
 	_label_info.text = teks
+	_label_info.scroll_to_line(0)
 	_panel_info.visible = true
 
 

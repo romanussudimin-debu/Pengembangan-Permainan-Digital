@@ -28,6 +28,7 @@ const VOLUME_MUSIK_DB: float = -8.0
 var _musik: AudioStreamPlayer
 var _kanal_sfx: Array[AudioStreamPlayer] = []
 var _musik_aktif: String = ""
+var _audio_terbuka: bool = not OS.has_feature("web")  ## di web, suara terkunci sampai interaksi pertama
 
 
 func _ready() -> void:
@@ -38,6 +39,8 @@ func _ready() -> void:
 	_musik.bus = "Musik"
 	add_child(_musik)
 	_musik.finished.connect(_ulang_musik)
+	for nama: String in MUSIK:
+		_jadikan_loop(MUSIK[nama])
 	for i in JUMLAH_KANAL_SFX:
 		var p := AudioStreamPlayer.new()
 		p.bus = "SFX"
@@ -58,11 +61,45 @@ func _ulang_musik() -> void:
 	_musik.play()
 
 
+## Musik diulang langsung dari data WAV (loop_mode), bukan lewat sinyal `finished`,
+## karena pemutaran "sampel" di browser HP tidak selalu memancarkan sinyal itu.
+func _jadikan_loop(stream: AudioStream) -> void:
+	var wav := stream as AudioStreamWAV
+	if wav == null or wav.get_length() <= 0.0:
+		return
+	wav.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	wav.loop_begin = 0
+	wav.loop_end = int(wav.get_length() * wav.mix_rate) - 1  # berlaku juga untuk WAV terkompresi (QOA)
+
+
+## Browser (terutama di HP) baru mengizinkan suara setelah sentuhan/klik pertama.
+## Dipanggil pada interaksi pertama: musik yang sedang aktif dimulai ulang agar terdengar.
+func buka_kunci_audio() -> void:
+	if _audio_terbuka:
+		return
+	_audio_terbuka = true
+	if _musik_aktif != "":
+		_musik.stop()
+		_musik.volume_db = VOLUME_MUSIK_DB
+		_musik.play()
+
+
+func _input(event: InputEvent) -> void:
+	var sentuh: bool = event is InputEventScreenTouch or event is InputEventMouseButton or event is InputEventKey
+	if not _audio_terbuka and sentuh and event.is_pressed():
+		buka_kunci_audio()
+
+
 func putar_musik(nama: String) -> void:
 	if nama == _musik_aktif or not MUSIK.has(nama):
 		return
 	_musik_aktif = nama
 	_musik.stream = MUSIK[nama]
+	if OS.has_feature("web"):
+		# Di web volume diatur langsung: fade volume_db tidak selalu berlaku pada pemutaran sampel
+		_musik.volume_db = VOLUME_MUSIK_DB
+		_musik.play()
+		return
 	_musik.volume_db = -40.0
 	_musik.play()
 	var tw := create_tween()

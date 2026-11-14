@@ -1,5 +1,5 @@
 extends CanvasLayer
-## HUD kampung: tujuan saat ini, jumlah kartu budaya, dan petunjuk kontrol.
+## HUD level: tujuan saat ini, jumlah kartu budaya, dan petunjuk kontrol.
 
 var _label_tujuan: Label
 var _label_kartu: Label
@@ -28,4 +28,5 @@ func _ready() -> void:
 
 func _perbarui() -> void:
 	_label_tujuan.text = "Petunjuk: " + GameState.teks_tujuan()
-	_label_kartu.text = "Kartu Budaya: %d/%d" % [GameState.kartu_terkumpul.size(), GameState.jumlah_kartu_total()]
+	var lv: int = GameState.level
+	_label_kartu.text = "Level %d · Kartu Budaya: %d/%d" % [lv, GameState.jumlah_terkumpul_level(lv), GameState.kartu_level(lv).size()]

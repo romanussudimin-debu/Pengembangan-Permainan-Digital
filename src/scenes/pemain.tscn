@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://scripts/pemain/states/lompat.gd" id="6_lompat"]
 [ext_resource type="Script" path="res://scripts/pemain/states/jatuh.gd" id="7_jatuh"]
 [ext_resource type="Script" path="res://scripts/pemain/states/interaksi.gd" id="8_interaksi"]
-[ext_resource type="Texture2D" path="res://assets/textures/songke_merah.png" id="9_songke"]
+[ext_resource type="Texture2D" path="res://assets/textures/songke_nggohak.png" id="9_songke"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_badan"]
 radius = 0.36
@@ -27,6 +27,12 @@ shape = SubResource("CapsuleShape3D_badan")
 [node name="Model" type="Node3D" parent="."]
 script = ExtResource("2_model")
 tekstur_songke = ExtResource("9_songke")
+warna_ikat = Color(0.69, 0.165, 0.165, 1)
+telanjang_dada = true
+sarung_panjang = true
+ikat_songke = true
+rambut_gimbal = true
+berotot = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("state_awal")]
 script = ExtResource("3_fsm")

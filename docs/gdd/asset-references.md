@@ -8,6 +8,7 @@ Semua aset dalam prototipe **dibuat sendiri** secara prosedural oleh pembuat pro
 | Karakter (Nggohak, warga, penampil caci, penari) | Model bergaya anime 3D dari mesh primitif (kepala besar, mata berkilau, rambut bergelombang) + animasi prosedural | Godot (CapsuleMesh, BoxMesh, SphereMesh, CylinderMesh, TorusMesh) | `src/scripts/karakter/karakter_model.gd` | Milik pembuat |
 | Mbaru Niang, compang, gong & gendang, pohon, bukit, batu, arena, papan | Model low-poly | Godot (mesh primitif) | `src/scripts/dunia/dunia.gd` | Milik pembuat |
 | Anjing, ayam | Model low-poly + animasi prosedural | Godot (mesh primitif) | `src/scripts/dunia/hewan.gd` | Milik pembuat |
+| Lingko (pematang, lodok, haju teno, juring sawah, pondok, wae teku, saluran) | Model low-poly + mesh juring (SurfaceTool) | Godot (mesh primitif, SurfaceTool) | `src/scripts/dunia/dunia_lingko.gd` | Milik pembuat |
 
 ## Tekstur (`src/assets/textures/`, 64×64 px kecuali disebut lain)
 | File | Isi | Dibuat dengan | Dipakai di |
@@ -17,6 +18,7 @@ Semua aset dalam prototipe **dibuat sendiri** secara prosedural oleh pembuat pro
 | rumput.png, tanah.png, batu.png, kayu.png | Material lingkungan | idem | Tanah, arena, compang, tiang |
 | kulit_kerbau.png | Kulit perisai | idem | Nggiling, kulit gendang |
 | bingkai_songke.png (48×48) | Bingkai UI 9-patch | idem | Panel, dialog |
+| songke_nggohak.png | Motif songke Nggohak (dasar biru tua, belah ketupat besar merah-kuning-biru) | Dibuat pengembang; kode pembuatnya belum ada di `tools/generate_textures.py` [PERLU VERIFIKASI: tambahkan kode generator] | Sarung & ikat kepala Nggohak |
 
 ## Audio (`src/assets/audio/`, WAV 22.050 Hz mono)
 | File | Isi | Dibuat dengan |

@@ -17,6 +17,11 @@ signal momen_pukul  ## dipancarkan saat cambuk mencapai titik pukul
 @export var skala_tubuh: float = 1.25
 @export var perempuan: bool = false  ## rambut ombak panjang terurai, sarung songke panjang
 @export var bawa_nampan: bool = false  ## membawa nampan berisi cangkir kopi
+@export_group("Gaya Nggohak")
+@export var sarung_panjang: bool = false  ## sarung songke lelaki hingga mata kaki + ikat pinggang
+@export var ikat_songke: bool = false  ## ikat kepala bermotif songke dengan ujung kain menjuntai
+@export var rambut_gimbal: bool = false  ## rambut gimbal diikat ke atas
+@export var berotot: bool = false  ## bahu lebar, dada & perut berotot (tubuh atletis)
 
 const KULIT := Color("8a5432")  ## cokelat hangat
 const RAMBUT := Color("1e1512")
@@ -37,6 +42,7 @@ var _kaki_kanan: Node3D
 var _larik: Node3D
 var _nggiling: Node3D
 var _nampan: Node3D
+var _ekor_ikat: Node3D
 var _fase: float = 0.0
 var _waktu: float = 0.0
 var _aksi_aktif: bool = false
@@ -103,14 +109,29 @@ func _bangun() -> void:
 	# Sarung songke (kerucut terpotong); perempuan memakai sarung panjang hingga mata kaki
 	var sarung := CylinderMesh.new()
 	sarung.top_radius = 0.2
-	sarung.bottom_radius = 0.3 if perempuan else 0.26
-	sarung.height = 0.85 if perempuan else 0.55
+	var panjang: bool = perempuan or sarung_panjang
+	sarung.bottom_radius = 0.3 if panjang else 0.26
+	sarung.height = 0.85 if panjang else 0.55
 	sarung.radial_segments = 10
-	_bagian(_badan, sarung, Vector3(0, -0.27 if perempuan else -0.12, 0), m_songke)
-	# Tubuh (ramping, gaya anime)
+	_bagian(_badan, sarung, Vector3(0, -0.27 if panjang else -0.12, 0), m_songke)
+	if sarung_panjang:
+		# Lipatan sarung di pinggang (ikat pinggang bermotif) dan lajur kain di depan
+		var lipatan := CylinderMesh.new()
+		lipatan.top_radius = 0.215
+		lipatan.bottom_radius = 0.215
+		lipatan.height = 0.08
+		lipatan.radial_segments = 10
+		_bagian(_badan, lipatan, Vector3(0, 0.14, 0), _mat(Color("e2b034")))
+		var lajur := BoxMesh.new()
+		lajur.size = Vector3(0.1, 0.8, 0.02)
+		var mi_lajur := _bagian(_badan, lajur, Vector3(0, -0.27, -0.265), m_songke)
+		mi_lajur.rotation.x = -0.11
+	# Tubuh (ramping gaya anime, atau atletis bila berotot)
 	var tubuh := BoxMesh.new()
-	tubuh.size = Vector3(0.36, 0.46, 0.22)
+	tubuh.size = Vector3(0.42, 0.46, 0.24) if berotot else Vector3(0.36, 0.46, 0.22)
 	_bagian(_badan, tubuh, Vector3(0, 0.38, 0), m_baju)
+	if berotot and telanjang_dada:
+		_bangun_otot()
 	if telanjang_dada:
 		var selempang := BoxMesh.new()
 		selempang.size = Vector3(0.38, 0.06, 0.24)
@@ -122,7 +143,11 @@ func _bangun() -> void:
 	_bagian(_badan, leher, Vector3(0, 0.66, 0), m_kulit)
 	_bangun_kepala(m_kulit)
 	_bangun_rambut()
-	if not perempuan and not pakai_panggal:
+	if rambut_gimbal:
+		_bangun_gimbal()
+	if ikat_songke and not pakai_panggal:
+		_bangun_ikat_songke(m_songke)
+	elif not perempuan and not pakai_panggal:
 		# Ikat kepala songke
 		var ikat := TorusMesh.new()
 		ikat.inner_radius = JARI_KEPALA + 0.01
@@ -136,8 +161,11 @@ func _bangun() -> void:
 	# Lengan (pivot di bahu)
 	_lengan_kiri = _pivot(_badan, Vector3(-0.27, 0.58, 0))
 	_lengan_kanan = _pivot(_badan, Vector3(0.27, 0.58, 0))
+	if berotot:
+		_lengan_kiri.position.x = -0.3
+		_lengan_kanan.position.x = 0.3
 	for l: Node3D in [_lengan_kiri, _lengan_kanan]:
-		_bagian(l, _kapsul(0.06, 0.58), Vector3(0, -0.28, 0), m_kulit)
+		_bagian(l, _kapsul(0.072 if berotot else 0.06, 0.58), Vector3(0, -0.28, 0), m_kulit)
 		var tangan := SphereMesh.new()
 		tangan.radius = 0.06
 		tangan.height = 0.12
@@ -146,6 +174,58 @@ func _bangun() -> void:
 	_bangun_senjata()
 	if bawa_nampan:
 		_bangun_nampan()
+
+
+## Otot dada dan perut (kotak-kotak kecil sedikit lebih gelap dari kulit) untuk tubuh atletis.
+func _bangun_otot() -> void:
+	var m_bayang := _mat(KULIT.darkened(0.12))
+	for sisi: float in [-1.0, 1.0]:
+		var dada := BoxMesh.new()
+		dada.size = Vector3(0.17, 0.12, 0.03)
+		_bagian(_badan, dada, Vector3(0.095 * sisi, 0.52, -0.125), m_bayang)
+		for baris in 3:
+			var perut := BoxMesh.new()
+			perut.size = Vector3(0.07, 0.055, 0.02)
+			_bagian(_badan, perut, Vector3(0.042 * sisi, 0.38 - baris * 0.07, -0.122), m_bayang)
+		var bahu := _bagian(_badan, _bola(0.085), Vector3(0.25 * sisi, 0.57, 0), _mat(KULIT))
+		bahu.scale = Vector3(1.0, 0.8, 1.0)
+
+
+## Rambut gimbal diikat ke atas: beberapa untai kapsul mencuat dari puncak kepala.
+func _bangun_gimbal() -> void:
+	var m_rambut := _mat(RAMBUT)
+	var puncak := Vector3(0, TINGGI_KEPALA + JARI_KEPALA + 0.02, 0.02)
+	for i in 9:
+		var sudut: float = TAU * i / 9.0
+		var untai := _bagian(_badan, _kapsul(0.03, 0.17), puncak + Vector3(cos(sudut) * 0.06, 0.02, sin(sudut) * 0.06), m_rambut)
+		untai.rotation = Vector3(sin(sudut) * 0.7, 0, -cos(sudut) * 0.7)
+	_bagian(_badan, _bola(0.06), puncak, m_rambut)
+
+
+## Ikat kepala bermotif songke (lebar) dengan ujung kain menjuntai di sisi kanan;
+## ujungnya berayun (secondary action) di _process.
+func _bangun_ikat_songke(m_songke: Material) -> void:
+	var pita := CylinderMesh.new()
+	pita.top_radius = JARI_KEPALA + 0.025
+	pita.bottom_radius = JARI_KEPALA + 0.03
+	pita.height = 0.085
+	pita.radial_segments = 16
+	_bagian(_badan, pita, Vector3(0, TINGGI_KEPALA + 0.07, 0), m_songke)
+	var m_tepi := _mat(Color("b02a2a"))
+	for y: float in [0.03, 0.11]:
+		var tepi := TorusMesh.new()
+		tepi.inner_radius = JARI_KEPALA + 0.02
+		tepi.outer_radius = JARI_KEPALA + 0.04
+		tepi.rings = 16
+		tepi.ring_segments = 4
+		_bagian(_badan, tepi, Vector3(0, TINGGI_KEPALA + y, 0), m_tepi)
+	_ekor_ikat = _pivot(_badan, Vector3(JARI_KEPALA * 0.8, TINGGI_KEPALA + 0.06, 0.08))
+	var kain := BoxMesh.new()
+	kain.size = Vector3(0.02, 0.32, 0.07)
+	_bagian(_ekor_ikat, kain, Vector3(0.012, -0.16, 0), m_songke)
+	var rumbai := BoxMesh.new()
+	rumbai.size = Vector3(0.025, 0.05, 0.075)
+	_bagian(_ekor_ikat, rumbai, Vector3(0.012, -0.34, 0), m_tepi)
 
 
 ## Nampan kayu berisi cangkir kopi, dipegang dengan dua tangan di depan badan.
@@ -338,6 +418,11 @@ func _process(delta: float) -> void:
 		_lengan_kanan.rotation.z = lerpf(_lengan_kanan.rotation.z, 0.0, delta * 10.0)
 	if mode != "menari":
 		_badan.rotation.z = lerpf(_badan.rotation.z, 0.0, delta * 10.0)
+	if _ekor_ikat:
+		# Ujung ikat kepala berayun lebih kuat saat berjalan/melompat (follow-through)
+		var kuat: float = 0.35 if mode == "jalan" or mode == "udara" else 0.1
+		_ekor_ikat.rotation.x = lerpf(_ekor_ikat.rotation.x, 0.25 + sin(_waktu * 5.0) * kuat, delta * 8.0)
+		_ekor_ikat.rotation.z = sin(_waktu * 3.1) * kuat * 0.4
 	if bawa_nampan:
 		# Kedua lengan menahan nampan di depan badan (menimpa ayunan lengan)
 		_lengan_kiri.rotation.x = lerpf(_lengan_kiri.rotation.x, 1.15, delta * 10.0)

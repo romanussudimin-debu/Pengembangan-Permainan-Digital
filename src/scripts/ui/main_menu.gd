@@ -8,6 +8,7 @@ var _sudut: float = 0.0
 var _panel_info: NinePatchRect
 var _label_info: Label
 var _tombol_mulai: Button
+var _tombol_mode: Button
 
 
 func _ready() -> void:
@@ -81,6 +82,14 @@ func _bangun_ui() -> void:
 	_tombol_mulai = Gaya.tombol("Mulai Permainan")
 	_tombol_mulai.pressed.connect(_mulai)
 	kolom.add_child(_tombol_mulai)
+	if GameState.ada_simpanan():
+		var lv: int = clampi(GameState.level_tertinggi, 1, GameState.ADEGAN_LEVEL.size())
+		var lanjut := Gaya.tombol("Lanjutkan (Level %d)" % lv)
+		lanjut.pressed.connect(func() -> void: GameState.lanjutkan())
+		kolom.add_child(lanjut)
+	_tombol_mode = Gaya.tombol(_teks_mode())
+	_tombol_mode.pressed.connect(_ganti_mode)
+	kolom.add_child(_tombol_mode)
 	var cara := Gaya.tombol("Cara Bermain")
 	cara.pressed.connect(_tampilkan_info.bind(_teks_cara_bermain()))
 	kolom.add_child(cara)
@@ -112,6 +121,15 @@ func _mulai() -> void:
 	Transisi.pindah_scene(ADEGAN_KAMPUNG)
 
 
+func _ganti_mode() -> void:
+	GameState.atur_mode_sulit(not GameState.mode_sulit)
+	_tombol_mode.text = _teks_mode()
+
+
+func _teks_mode() -> String:
+	return "Mode: Sulit" if GameState.mode_sulit else "Mode: Normal"
+
+
 func _tampilkan_info(teks: String) -> void:
 	_label_info.text = teks
 	_panel_info.visible = true
@@ -131,13 +149,18 @@ Tantangan:
 • Menenun songke: samakan kain dengan contoh motif (E/klik ganti warna benang).
 • Tabuh gong-gendang: tekan J/K atau ketuk tombol GONG/GENDANG saat ketukan tiba di garis.
 
+LEVEL 2 – LINGKO LODOK
+Undang lima kepala keluarga berdasarkan ciri-cirinya, susuri pematang yang sempit (jatuh = kembali ke titik aman), alirkan air dari wae teku, lalu bagi lingko dengan garis moso sesuai musyawarah.
+
+MODE SULIT: ada batas waktu "sebelum senja", jatuh dan salah orang mengurangi waktu, kesempatan salah lebih sedikit, dan ukuran bagian tidak ditampilkan.
+
 Dialog diucapkan dengan suara; teks dialog bisa dinyalakan di menu jeda."""
 
 
 func _teks_tentang() -> String:
 	return """TENTANG GAME
 
-Jejak Penti di Wae Rebo adalah prototipe game 3D jelajah budaya Manggarai, Flores, NTT. Menjelang Penti (tahun baru adat), Nggohak menemui warga kampung, menjawab teka-teki, menenun songke, dan menabuh gong-gendang untuk mengumpulkan sembilan kartu pengetahuan budaya.
+Jejak Penti di Wae Rebo adalah prototipe game 3D jelajah budaya Manggarai, Flores, NTT. Menjelang Penti (tahun baru adat), Nggohak menemui warga kampung, menjawab teka-teki, menenun songke, dan menabuh gong-gendang untuk mengumpulkan kartu pengetahuan budaya. Di Level 2, ia membantu Tu'a Teno membagi lingko, lahan adat berbentuk jaring laba-laba.
 
 Latar kampung terinspirasi Wae Rebo: tujuh Mbaru Niang yang melingkari compang. Caci ditampilkan sebagai pertunjukan saat Penti. Semua model, tekstur songke, dan musik gong-gendang dibuat sendiri secara prosedural.
 

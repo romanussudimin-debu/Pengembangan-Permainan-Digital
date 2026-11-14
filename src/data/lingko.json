@@ -1,0 +1,164 @@
+{
+	"keluarga": [
+		{
+			"nama": "Ema Petrus",
+			"ciri": "Lelaki bersongke merah di persimpangan pematang lingkar tengah, tepat di seberang jalan masuk.",
+			"undang": "Reke lodok? Baik, Kraeng. Aku segera ke lodok."
+		},
+		{
+			"nama": "Ine Maria",
+			"ciri": "Perempuan bersongke hijau yang menjaga wae teku, mata air di utara lingko.",
+			"undang": "Terima kasih sudah datang jauh-jauh ke mata air, Kraeng. Aku akan hadir di reke lodok."
+		},
+		{
+			"nama": "Ema Bonis",
+			"ciri": "Lelaki bersongke kuning di lingkar paling dalam, di sisi matahari terbit.",
+			"undang": "Akhirnya ada yang menyeberangi pematang sampai ke sini. Aku datang, Kraeng."
+		},
+		{
+			"nama": "Ine Sisi",
+			"ciri": "Perempuan bersongke biru yang berteduh di pondok, di sisi matahari terbenam.",
+			"undang": "Aku hanya berteduh sebentar. Tentu, aku ikut bermusyawarah."
+		},
+		{
+			"nama": "Ema Gabriel",
+			"ciri": "Lelaki bersongke biru yang tak pernah berhenti berjalan menyusuri pematang terluar.",
+			"undang": "Oh, kamu mengejarku dari tadi? Neka rabo, Kraeng. Aku akan ke lodok."
+		}
+	],
+	"pengecoh": [
+		{
+			"nama": "Ema Lukas",
+			"petunjuk": "Bukan aku yang kamu cari, Kraeng. Lelaki bersongke merah yang kamu maksud berdiri di seberang jalan masuk, bukan di sini."
+		},
+		{
+			"nama": "Ine Rosa",
+			"petunjuk": "Aku tidak menerima bagian musim ini. Coba cari perempuan yang menjaga mata air di utara."
+		},
+		{
+			"nama": "Ema Edu",
+			"petunjuk": "Aku di lingkar luar, Kraeng. Yang kamu cari ada di lingkar paling dalam."
+		}
+	],
+	"pengecoh_sulit": "Bukan aku yang kamu cari, Kraeng. Perhatikan lagi ciri-cirinya.",
+	"sudah_diundang": "Aku akan datang ke lodok, Kraeng.",
+	"dialog": {
+		"pembuka": [
+			"Itu lingko, lahan adat kampung kita. Tu'a Teno menunggu di lodok, titik pusatnya.",
+			"Pematangnya sempit. Kalau ada yang putus, aku harus melompat."
+		],
+		"sambutan": [
+			"Ité sudah datang, Kraeng. Aku Tu'a Teno, tetua yang dipercaya membagi tanah lingko ini.",
+			"Kata orang tua kita: gendang one, lingko pe'ang. Rumah gendang di dalam kampung, lingko di luar sebagai sumber kehidupan.",
+			"Musim kerja baru tiba. Sebelum lingko dibagi, kita mengadakan reke lodok, rapat bersama keluarga yang berhak menerima bagian.",
+			"Undanglah lima kepala keluarga. Aku tidak hafal nama mereka semua, tetapi aku ingat ciri-cirinya. Lihat daftar di kanan atas.",
+			"Hati-hati di pematang. Jalannya sempit dan ada yang putus, jadi kamu harus melompat. Kalau terpeleset ke lumpur, kamu kembali ke tempat aman terakhir.",
+			"Setelah semuanya diundang, temui aku di lodok, titik pusat lingko."
+		],
+		"sambutan_sulit": "Matahari tidak menunggu siapa pun. Selesaikan semuanya sebelum senja!",
+		"ajak": "Selamat siang. Tu'a Teno mengundang Ité ke reke lodok di tengah lingko.",
+		"belum_waktunya": "Selamat siang, Kraeng. Tu'a Teno sudah menunggumu di lodok.",
+		"sapa_warga": "Selamat siang, Kraeng. Semoga panen musim ini berlimpah.",
+		"tua_golo": [
+			"Aku datang dari kampung untuk ikut reke lodok, Kraeng.",
+			"Bantulah Tu'a Teno. Pembagian lingko adalah urusan bersama seluruh kampung."
+		],
+		"menunggu_undangan": [
+			"Masih ada kepala keluarga yang belum diundang. Perhatikan lagi ciri-cirinya, Kraeng."
+		],
+		"semua_diundang": "Kelima kepala keluarga sudah diundang. Saatnya kembali ke lodok di tengah lingko.",
+		"reke_lodok": [
+			"Terima kasih, Kraeng. Mari kita duduk melingkar dan bermusyawarah, seperti lonto leok.",
+			"Di lingko, adil tidak selalu berarti sama luas. Pembagian dihitung menurut moso, garis dari lodok ke tepi, dan disesuaikan dengan jumlah penerima serta tanggungannya.",
+			"Tu'a teno dan tu'a golo menerima bagian lebih besar, sesuai kesepakatan adat. Keluarga dengan tanggungan banyak juga bisa mendapat lebih.",
+			"Tetapi sebelum moso ditarik, petak-petak ini butuh air. Pergilah ke wae teku di utara dan alirkan airnya ke lingko."
+		],
+		"menunggu_air": [
+			"Air dari wae teku belum mengalir, Kraeng. Mata airnya ada di utara lingko."
+		],
+		"buka_saluran": "Saluran dari wae teku berbelok-belok dan tersumbat. Aku harus menyusunnya agar air sampai ke kedua petak.",
+		"air_berhasil": "Air mengalir ke lingko! Sekarang kembali ke Tu'a Teno untuk membagi lingko.",
+		"air_gagal": "Airnya belum sampai ke petak. Aku harus mencoba lagi.",
+		"wae_teku_selesai": "Air dari wae teku sudah mengalir deras ke lingko.",
+		"mulai_bagi": [
+			"Air sudah mengalir. Sekarang kita tarik garis moso dari lodok.",
+			"Ada tiga lingko yang harus dibagi. Dengarkan aturan musyawarah setiap lingko, lalu tancapkan moso di tempat yang tepat. Garis pertama sudah kutancapkan di utara.",
+			"Bagian dibagikan searah jarum jam, mulai dari garis pertama. Pada lingko terakhir, keluargamu yang baru pulang juga menerima bagian."
+		],
+		"bagi_berhasil": "Semua lingko terbagi adil sesuai musyawarah. Naiklah ke bukit batu di barat daya dan lihat hasilnya dari atas, Kraeng.",
+		"bagi_gagal": "Tidak apa-apa. Kita ulangi musyawarahnya kapan pun kamu siap.",
+		"menunggu_bukit": [
+			"Naiklah ke bukit batu di barat daya, Kraeng. Dari atas sana, lingko tampak utuh."
+		],
+		"bukit_belum": "Pemandangannya indah, tetapi pekerjaanku di lingko belum selesai.",
+		"pandang": [
+			"Dari atas sini, lingko benar-benar tampak seperti jaring laba-laba.",
+			"Garis-garis moso memancar dari lodok tempat kayu teno ditanam. Setiap keluarga mendapat bagiannya lewat musyawarah.",
+			"Sekarang semuanya siap untuk musim kerja baru. Saatnya pulang ke kampung."
+		],
+		"waktu_habis": "Matahari sudah terbenam. Pekerjaan di lingko harus diulang dari awal besok pagi.",
+		"lihat_wae_teku": "Inilah wae teku, mata air kampung. Airnya jernih dan dingin."
+	},
+	"ronde": [
+		{
+			"bagian": 12,
+			"penerima": [
+				"Tu'a Teno",
+				"Tu'a Golo",
+				"Ema Petrus",
+				"Ine Maria"
+			],
+			"target": [
+				4,
+				4,
+				2,
+				2
+			],
+			"aturan": "Tu'a teno dan tu'a golo masing-masing mendapat dua kali bagian keluarga biasa."
+		},
+		{
+			"bagian": 18,
+			"penerima": [
+				"Tu'a Teno",
+				"Tu'a Golo",
+				"Ema Petrus",
+				"Ine Maria",
+				"Ema Bonis",
+				"Ine Sisi"
+			],
+			"target": [
+				6,
+				4,
+				2,
+				2,
+				2,
+				2
+			],
+			"aturan": "Tu'a teno mendapat tiga kali bagian keluarga biasa, tu'a golo dua kali."
+		},
+		{
+			"bagian": 24,
+			"penerima": [
+				"Tu'a Teno",
+				"Tu'a Golo",
+				"Ema Petrus",
+				"Ine Maria",
+				"Ema Bonis",
+				"Ine Sisi",
+				"Ema Gabriel",
+				"Keluarga Nggohak"
+			],
+			"target": [
+				6,
+				4,
+				3,
+				3,
+				2,
+				2,
+				2,
+				2
+			],
+			"aturan": "Tu'a teno tiga kali dan tu'a golo dua kali bagian keluarga biasa. Ema Petrus dan Ine Maria menanggung keluarga besar, jadi masing-masing mendapat satu setengah kali bagian keluarga biasa."
+		}
+	]
+}

@@ -102,7 +102,10 @@ func _bangun_ui() -> void:
 	isi.position = Vector2(18, 44)
 	isi.size = Vector2(324, 80)
 	isi.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	isi.text = "Nggohak telah menemui seluruh warga, menjawab teka-teki mereka, dan mengumpulkan pengetahuan budaya Manggarai. Kini ia bergabung dalam perayaan tahun baru adat sambil menyaksikan caci.\n\nKartu budaya terkumpul: %d dari %d" % [
+	var cerita: String = "Nggohak telah menemui seluruh warga, menjawab teka-teki mereka, dan mengumpulkan pengetahuan budaya Manggarai."
+	if GameState.level >= 2:
+		cerita = "Nggohak telah membantu warga kampung, lalu menolong Tu'a Teno membagi lingko lewat musyawarah."
+	isi.text = cerita + " Kini ia bergabung dalam perayaan tahun baru adat sambil menyaksikan caci.\n\nKartu budaya terkumpul: %d dari %d" % [
 		GameState.kartu_terkumpul.size(), GameState.jumlah_kartu_total()]
 	panel.add_child(isi)
 	var tombol := Gaya.tombol("Kembali ke Menu Utama")

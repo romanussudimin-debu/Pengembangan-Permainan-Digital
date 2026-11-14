@@ -29,6 +29,7 @@
 | 0.x | 2D: teka-teki lingko + duel caci | — |
 | 1.x | 3D: jelajah kampung + duel caci (ta'ang/paki, 3 lawan) | Lebih imersif |
 | **2.0** | **3D: jelajah budaya dengan rantai teka-teki, menenun songke, tabuh gong-gendang; caci sebagai pertunjukan Penti** | Duel caci dinilai terlalu sulit untuk pemain umum. Jelajah budaya mengenalkan lebih banyak unsur budaya. Caci tetap tampil dengan hormat sebagai pertunjukan. |
+| 2.1 | + **Level 2 Lingko Lodok** (undangan reke lodok, saluran wae teku, pembagian moso, pandangan dari bukit), Mode Sulit, simpan & lanjutkan | Mengangkat lingko, yang sudah diriset sebagai kandidat mekanik, menjadi level kedua |
 
 ## 2. Latar & Cerita
 Nggohak, pemuda Manggarai, pulang ke kampung adat bergaya Wae Rebo menjelang **Penti** (tahun baru adat, syukur pergantian musim kerja). Menurut **Tu'a Golo** (tetua kampung), setiap warga menyimpan satu **kartu pengetahuan budaya**. Kartu harus dikumpulkan **berurutan**. Setiap warga memberi tantangan, dan setelah berhasil, ia menunjukkan siapa yang harus ditemui berikutnya. Setelah semua kartu terkumpul, Penti dimulai: warga menari dan dua pemuda menampilkan **caci**.
@@ -83,7 +84,25 @@ Pengetahuan dari setiap kartu menjadi bekal untuk menjawab teka-teki berikutnya,
 | 6 | Hingha (**bertukar tempat** di arena) | Nyanyian sambil duduk diiringi gong → **Mbata** | Caci: Paki & Ta'ang | "Hitam, pahit, menghangatkan", dibawa di atas nampan |
 | 7 | Marngem (**bertukar tempat** dengan Hingha) | Sasaran sah pukulan → **Di atas pinggang** | Perlengkapan Caci | Pemain tertua beristirahat; kayu bakar di depan pintu |
 | 8 | Ema Yakobus (**di dalam** rumah berkayu bakar, barat daya) | Hiasan ekor di pinggang → **Ndeki** | Nilai Sportivitas Caci | Dia yang pertama menyambut, di samping batu yang tak boleh dipijak |
-| 9 | Tu'a Golo | Tahun penghargaan UNESCO Wae Rebo → **2012** | Penti | → Ending Penti |
+| 9 | Tu'a Golo | Tahun penghargaan UNESCO Wae Rebo → **2012** | Penti | → Level 2: Lingko Lodok (Tu'a Teno menunggu) |
+
+### 4.5 Level 2 — Lingko Lodok (data: `src/data/lingko.json`)
+Latar di luar kampung, mewujudkan ungkapan *gendang one, lingko pe'ang*: lingko melingkar dengan **lodok** dan **haju teno** di pusat, tiga pematang melingkar (dalam/tengah/luar) dan pematang menjari. Sebagian pematang **putus** sehingga pemain harus melompat; jatuh ke lumpur = kembali ke titik aman terakhir.
+
+| Tahap | Tujuan pemain | Mekanik | Kartu |
+|---|---|---|---|
+| 1. Sambut | Temui Tu'a Teno di lodok | Platforming di pematang | Lingko |
+| 2. Undang | Undang 5 kepala keluarga berdasarkan **ciri** (daftar di kanan atas); 3 warga pengecoh memberi petunjuk koreksi | Deduksi ciri + jelajah (Ema Gabriel terus berjalan di pematang terluar) | — |
+| 3. Reke lodok | Musyawarah duduk melingkar (*lonto leok*) di lodok | Cerita | Reke Lodok & Tu'a Teno |
+| 4. Wae teku | Alirkan air mata air ke dua petak | Mini-game **Mengalirkan Air** (putar potongan saluran) | Wae Teku |
+| 5. Moso | Bagi 3 lingko (12, 18, 24 bagian) sesuai aturan musyawarah | Mini-game **Membagi Lingko** (tancapkan garis moso dari lodok; urut searah jarum jam dari moso utara) | Moso |
+| 6. Bukit batu | Naik bukit batu di barat daya, pandang lingko dari atas | Lompat batu bertingkat + kamera pandang | Lingko Lodok |
+
+**Pesan budaya utama:** adil dalam lingko **tidak selalu berarti sama luas**. Tu'a teno dan tu'a golo mendapat bagian lebih besar, dan keluarga bertanggungan banyak bisa mendapat lebih, sesuai kesepakatan musyawarah (catatan riset §4). Jawaban "sama rata" sengaja ditolak.
+
+**Mode Sulit** (dipilih di menu utama): batas waktu "sebelum senja" (7 menit, matahari makin rendah dan langit makin jingga), jatuh −10 detik, salah orang −15 detik (sekali per pengecoh), pengecoh hanya memberi petunjuk umum, ukuran bagian lingko tidak ditampilkan, kesempatan salah membagi 2 (Normal 3), dan putaran saluran air dibatasi. Waktu habis → level diulang.
+
+**Progres:** setelah Level 1 tamat, progres tersimpan (`user://simpanan.cfg`), sehingga tombol **Lanjutkan (Level 2)** muncul di menu utama. Level 2 tamat → ending Penti.
 
 ## 5. Kontrol
 | Aksi | Keyboard / mouse | Layar sentuh (HP/tablet) |

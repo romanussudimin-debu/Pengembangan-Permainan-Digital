@@ -25,6 +25,16 @@ const NADA_TOKOH: Dictionary = {
 	"Ende Lono": 1.3,
 	"Marngem": 1.15,
 	"Ema Yakobus": 0.78,
+	# Level 2 (Lingko Lodok)
+	"Tu'a Teno": 0.7,
+	"Ema Petrus": 0.85,
+	"Ine Maria": 1.25,
+	"Ema Bonis": 0.9,
+	"Ine Sisi": 1.3,
+	"Ema Gabriel": 0.95,
+	"Ema Lukas": 0.82,
+	"Ine Rosa": 1.18,
+	"Ema Edu": 0.88,
 }
 
 var aktif: bool = false

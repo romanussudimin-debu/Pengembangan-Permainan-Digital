@@ -1,13 +1,184 @@
 {
 	"kartu": [
-		{"id": "mbaru_niang", "judul": "Mbaru Niang", "isi": ["Mbaru Niang adalah rumah adat berbentuk kerucut di Kampung Wae Rebo, beratap ijuk yang menjuntai hampir sampai tanah.", "Rumah ini terdiri atas 5 tingkat: lutur (tempat tinggal), lobo (bahan makanan), lentar (benih), lempa rae (cadangan pangan), dan hekang kode (paling sakral, untuk persembahan leluhur)."]},
-		{"id": "wae_rebo", "judul": "Kampung Wae Rebo", "isi": ["Wae Rebo memiliki 7 Mbaru Niang yang melingkari halaman tengah: 1 mbaru gendang (rumah utama penyimpan pusaka) dan 6 mbaru gena (rumah pendamping).", "Pelestarian rumah adat Wae Rebo meraih UNESCO Asia-Pacific Award for Cultural Heritage Conservation (Award of Excellence) tahun 2012."]},
-		{"id": "compang", "judul": "Compang", "isi": ["Compang adalah altar batu berundak di tengah kampung (natas). Compang menjadi pusat kehidupan adat dan tempat persembahan kepada Mori Kraeng (Tuhan) dan empo (leluhur).", "Karena bermakna sakral, di dalam game compang hanya ditampilkan dan dijelaskan, tidak dijadikan arena bermain."]},
-		{"id": "songke", "judul": "Kain Songke", "isi": ["Songke adalah kain tenun khas Manggarai berwarna dasar hitam dengan motif berwarna cerah.", "Motifnya bermakna, misalnya ranggong (laba-laba) melambangkan kejujuran dan kerja keras, serta mata manuk melambangkan Tuhan Yang Maha Melihat. Pemain caci memakai songke sebagai bagian busananya."]},
-		{"id": "penti", "judul": "Penti", "isi": ["Penti adalah perayaan tahun baru adat Manggarai sekaligus syukur atas pergantian musim kerja dan hasil panen. Biasanya dirayakan antara September dan Desember.", "Penti dimeriahkan dengan tabuhan gong-gendang, nyanyian, dan sering juga pertunjukan caci."]},
-		{"id": "gong_gendang", "judul": "Gong, Gendang & Nyanyian", "isi": ["Gong dan gendang mengiringi upacara adat dan caci. Nyanyian Manggarai antara lain sanda (dinyanyikan berdiri melingkar tanpa alat musik), mbata (duduk, diiringi gong dan gendang), dan danding (kelompok bergerak melingkar).", "Musik dalam game ini disintesis dengan pola gong dan gendang sebagai penghormatan, bukan rekaman asli."]},
-		{"id": "caci", "judul": "Caci: Paki dan Ta'ang", "isi": ["Caci adalah tarian-tarung antara dua pria. Paki adalah pemain yang mencambuk, sedangkan ta'ang adalah pemain yang menangkis. Peran keduanya bergantian.", "Pukulan hanya sah di bagian tubuh atas pinggang. Pemain yang terkena di mata dianggap kalah."]},
-		{"id": "perlengkapan_caci", "judul": "Perlengkapan Caci", "isi": ["Paki memegang larik, cambuk dari kulit kerbau. Ta'ang melindungi diri dengan nggiling, perisai bundar dari kulit kerbau, dan busur penangkis dari rotan/bambu (agang atau tereng).", "Pemain mengenakan panggal, penutup kepala yang menyerupai tanduk kerbau, dan ndeki, hiasan menyerupai ekor di pinggang belakang."]},
-		{"id": "nilai_caci", "judul": "Nilai Sportivitas Caci", "isi": ["Caci bukan untuk saling melukai. Caci adalah ungkapan sportivitas, keberanian, dan persaudaraan antarkampung.", "Setelah bertanding, para pemain saling menghormati. Luka dalam caci diterima dengan lapang dada tanpa dendam."]}
+		{
+			"id": "mbaru_niang",
+			"judul": "Mbaru Niang",
+			"isi": [
+				"Mbaru Niang adalah rumah adat berbentuk kerucut di Kampung Wae Rebo, beratap ijuk yang menjuntai hampir sampai tanah.",
+				"Rumah ini terdiri atas 5 tingkat: lutur (tempat tinggal), lobo (bahan makanan), lentar (benih), lempa rae (cadangan pangan), dan hekang kode (paling sakral, untuk persembahan leluhur)."
+			]
+		},
+		{
+			"id": "wae_rebo",
+			"judul": "Kampung Wae Rebo",
+			"isi": [
+				"Wae Rebo memiliki 7 Mbaru Niang yang melingkari halaman tengah: 1 mbaru gendang (rumah utama penyimpan pusaka) dan 6 mbaru gena (rumah pendamping).",
+				"Pelestarian rumah adat Wae Rebo meraih UNESCO Asia-Pacific Award for Cultural Heritage Conservation (Award of Excellence) tahun 2012."
+			]
+		},
+		{
+			"id": "compang",
+			"judul": "Compang",
+			"isi": [
+				"Compang adalah altar batu berundak di tengah kampung (natas). Compang menjadi pusat kehidupan adat dan tempat persembahan kepada Mori Kraeng (Tuhan) dan empo (leluhur).",
+				"Karena bermakna sakral, di dalam game compang hanya ditampilkan dan dijelaskan, tidak dijadikan arena bermain."
+			]
+		},
+		{
+			"id": "songke",
+			"judul": "Kain Songke",
+			"isi": [
+				"Songke adalah kain tenun khas Manggarai berwarna dasar hitam dengan motif berwarna cerah.",
+				"Motifnya bermakna, misalnya ranggong (laba-laba) melambangkan kejujuran dan kerja keras, serta mata manuk melambangkan Tuhan Yang Maha Melihat. Pemain caci memakai songke sebagai bagian busananya."
+			]
+		},
+		{
+			"id": "penti",
+			"judul": "Penti",
+			"isi": [
+				"Penti adalah perayaan tahun baru adat Manggarai sekaligus syukur atas pergantian musim kerja dan hasil panen. Biasanya dirayakan antara September dan Desember.",
+				"Penti dimeriahkan dengan tabuhan gong-gendang, nyanyian, dan sering juga pertunjukan caci."
+			]
+		},
+		{
+			"id": "gong_gendang",
+			"judul": "Gong, Gendang & Nyanyian",
+			"isi": [
+				"Gong dan gendang mengiringi upacara adat dan caci. Nyanyian Manggarai antara lain sanda (dinyanyikan berdiri melingkar tanpa alat musik), mbata (duduk, diiringi gong dan gendang), dan danding (kelompok bergerak melingkar).",
+				"Musik dalam game ini disintesis dengan pola gong dan gendang sebagai penghormatan, bukan rekaman asli."
+			]
+		},
+		{
+			"id": "caci",
+			"judul": "Caci: Paki dan Ta'ang",
+			"isi": [
+				"Caci adalah tarian-tarung antara dua pria. Paki adalah pemain yang mencambuk, sedangkan ta'ang adalah pemain yang menangkis. Peran keduanya bergantian.",
+				"Pukulan hanya sah di bagian tubuh atas pinggang. Pemain yang terkena di mata dianggap kalah."
+			]
+		},
+		{
+			"id": "perlengkapan_caci",
+			"judul": "Perlengkapan Caci",
+			"isi": [
+				"Paki memegang larik, cambuk dari kulit kerbau. Ta'ang melindungi diri dengan nggiling, perisai bundar dari kulit kerbau, dan busur penangkis dari rotan/bambu (agang atau tereng).",
+				"Pemain mengenakan panggal, penutup kepala yang menyerupai tanduk kerbau, dan ndeki, hiasan menyerupai ekor di pinggang belakang."
+			]
+		},
+		{
+			"id": "nilai_caci",
+			"judul": "Nilai Sportivitas Caci",
+			"isi": [
+				"Caci bukan untuk saling melukai. Caci adalah ungkapan sportivitas, keberanian, dan persaudaraan antarkampung.",
+				"Setelah bertanding, para pemain saling menghormati. Luka dalam caci diterima dengan lapang dada tanpa dendam."
+			]
+		},
+		{
+			"id": "lingko",
+			"judul": "Lingko",
+			"level": 2,
+			"isi": [
+				"Lingko adalah tanah ulayat atau lahan komunal masyarakat adat Manggarai. Lahan ini diolah bersama dan melambangkan solidaritas serta kerja sama.",
+				"Ungkapan \"gendang one, lingko pe'ang\" berarti rumah gendang di dalam kampung sebagai pusat kehidupan, dan lingko di luar kampung sebagai sumber kehidupan. Kampung dan tanah dipandang sebagai satu kesatuan."
+			]
+		},
+		{
+			"id": "reke_lodok",
+			"judul": "Reke Lodok dan Tu'a Teno",
+			"level": 2,
+			"isi": [
+				"Sebelum lingko dibagi, diadakan reke lodok, yaitu rapat awal untuk menentukan waktu pembagian dan siapa saja yang berhak menerima bagian.",
+				"Pembagian dipimpin tu'a teno, tetua adat yang berwenang membagi tanah, bersama tu'a golo (tua kampung). Keputusan diambil lewat musyawarah. Adil tidak selalu berarti sama luas: tu'a teno dan tu'a golo umumnya mendapat bagian lebih besar."
+			]
+		},
+		{
+			"id": "wae_teku",
+			"judul": "Wae Teku",
+			"level": 2,
+			"isi": [
+				"Wae teku adalah mata air kampung. Bersama natas (halaman kampung), compang, dan lingko, wae teku menjadi bagian penting ruang hidup orang Manggarai.",
+				"Di sebagian kampung, rangkaian Penti mencakup ritus penghormatan bagi mata air (barong wae teku) sebagai tanda syukur atas sumber kehidupan."
+			]
+		},
+		{
+			"id": "moso",
+			"judul": "Moso",
+			"level": 2,
+			"isi": [
+				"Moso adalah garis pembatas berbentuk jari-jari yang ditarik dari titik pusat lingko ke tepi. Garis ini memisahkan hak garapan setiap keluarga.",
+				"Pembagian dihitung menurut moso, yang dikaitkan dengan jari tangan, dan disesuaikan dengan jumlah penerima serta keturunannya. Karena itu, lebar bagian setiap keluarga bisa berbeda."
+			]
+		},
+		{
+			"id": "lingko_lodok",
+			"judul": "Lingko Lodok",
+			"level": 2,
+			"isi": [
+				"Lodok adalah titik pusat pembagian lingko. Di sana ditanam kayu teno (haju teno). Dari lodok, garis-garis moso memancar ke tepi sehingga sawah tampak seperti jaring laba-laba.",
+				"Sawah lodok yang terkenal dapat dilihat di Desa Cancar dan Meler, Kecamatan Ruteng. Dari Bukit Weol tampak beberapa hamparan sawah lodok milik kampung-kampung di sekitarnya."
+			]
+		},
+		{
+			"id": "songke_ekonomi",
+			"judul": "Songke sebagai Ekonomi Kreatif",
+			"level": 3,
+			"isi": [
+				"Bagi banyak keluarga di Manggarai, menenun songke bukan hanya melestarikan budaya, tetapi juga sumber penghasilan. Penelitian di desa-desa penenun menunjukkan tenun membantu memenuhi kebutuhan ekonomi keluarga.",
+				"Selembar songke ditenun dengan tangan dalam waktu lama. Menghargai karya penenun berarti menceritakan maknanya dengan jujur dan membayar dengan harga yang adil."
+			]
+		},
+		{
+			"id": "labuan_bajo",
+			"judul": "Labuan Bajo",
+			"level": 3,
+			"isi": [
+				"Labuan Bajo adalah kota pelabuhan di Kabupaten Manggarai Barat, di ujung barat Pulau Flores. Kota ini menjadi pintu gerbang menuju Taman Nasional Komodo.",
+				"Taman Nasional Komodo didirikan pada 1980 dan ditetapkan UNESCO sebagai Situs Warisan Dunia pada 1991. Wisatawan menjelajahinya dengan kapal wisata."
+			]
+		},
+		{
+			"id": "padar",
+			"judul": "Pulau Padar",
+			"level": 3,
+			"isi": [
+				"Pulau Padar terletak di antara Pulau Komodo dan Pulau Rinca. Jalur pendakiannya berupa ratusan anak tangga menuju puncak bukit.",
+				"Dari puncak tampak tiga teluk dengan warna pantai berbeda: putih, hitam (dari batuan vulkanik), dan merah muda. Jalurnya panas dan tanpa penjual, jadi pendaki perlu membawa air minum sendiri."
+			]
+		},
+		{
+			"id": "pink_beach",
+			"judul": "Pink Beach",
+			"level": 3,
+			"isi": [
+				"Pink Beach (Pantai Merah) di Taman Nasional Komodo berpasir merah muda.",
+				"Warnanya berasal dari serpihan cangkang foraminifera merah (organisme laut bersel satu) dan pecahan karang merah yang bercampur dengan pasir putih. Karang adalah makhluk hidup, jadi jangan diinjak, dipatahkan, atau dibawa pulang."
+			]
+		},
+		{
+			"id": "komodo",
+			"judul": "Komodo",
+			"level": 3,
+			"isi": [
+				"Komodo (Varanus komodoensis) adalah kadal terbesar yang masih hidup dan satwa yang dilindungi. Di alam liar, komodo hanya ditemukan di kawasan Taman Nasional Komodo dan sebagian Flores.",
+				"Setiap kunjungan wajib didampingi ranger. Tidak ada komodo yang jinak: tetap di jalur, jangan memberi makan, dan jaga jarak."
+			]
+		},
+		{
+			"id": "taka_makassar",
+			"judul": "Taka Makassar",
+			"level": 3,
+			"isi": [
+				"Taka Makassar adalah gosong pasir kecil berbentuk sabit yang tidak berpenghuni. Pulau pasir ini muncul saat air surut dan sebagian tertutup saat air pasang.",
+				"Letaknya dekat Manta Point (Karang Makassar), tempat pari manta datang untuk dibersihkan ikan-ikan kecil. Kemunculan manta tidak selalu terjamin."
+			]
+		},
+		{
+			"id": "manjarite",
+			"judul": "Teluk Manjarite",
+			"level": 3,
+			"isi": [
+				"Teluk Manjarite dikenal sebagai salah satu titik snorkeling di kawasan Taman Nasional Komodo. [PERLU VERIFIKASI: detail lokasi dan kondisi teluk]",
+				"Saat snorkeling, jangan menginjak atau menyentuh karang, ikuti arahan pemandu karena arus bisa berubah, dan bawa kembali semua sampahmu."
+			]
+		}
 	]
 }

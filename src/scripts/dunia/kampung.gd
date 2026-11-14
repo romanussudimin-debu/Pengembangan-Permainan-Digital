@@ -5,7 +5,6 @@ extends Node3D
 ## setiap warga memberi tantangan, lalu petunjuk menuju warga berikutnya.
 
 const ADEGAN_PEMAIN: PackedScene = preload("res://scenes/pemain.tscn")
-const ADEGAN_ENDING: String = "res://scenes/ending.tscn"
 const TENUN: Script = preload("res://scripts/minigame/tenun_songke.gd")
 const TABUH: Script = preload("res://scripts/minigame/tabuh_gong.gd")
 
@@ -225,9 +224,10 @@ func _sampaikan_petunjuk(tantangan: Dictionary) -> void:
 		DialogManager.mulai_baris("petunjuk", baris)
 
 
+## Level 1 tamat: lanjut ke Level 2 (Lingko Lodok). Penti kini menjadi penutup level terakhir.
 func _mulai_penti() -> void:
 	AudioManager.putar_sfx("gong")
-	Transisi.pindah_scene(ADEGAN_ENDING)
+	GameState.selesaikan_level(1)
 
 
 ## Baris dialog dari daftar teks, semuanya diucapkan oleh `nama`.

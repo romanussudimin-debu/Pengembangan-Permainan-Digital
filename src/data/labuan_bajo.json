@@ -1,0 +1,1418 @@
+{
+	"barang": [
+		{
+			"id": "kain_merah",
+			"nama": "Songke merah",
+			"jenis": "kain",
+			"tekstur": "songke_merah"
+		},
+		{
+			"id": "kain_biru",
+			"nama": "Songke biru",
+			"jenis": "kain",
+			"tekstur": "songke_biru"
+		},
+		{
+			"id": "kain_hijau",
+			"nama": "Songke hijau",
+			"jenis": "kain",
+			"tekstur": "songke_hijau"
+		},
+		{
+			"id": "kain_kuning",
+			"nama": "Songke kuning",
+			"jenis": "kain",
+			"tekstur": "songke_kuning"
+		},
+		{
+			"id": "kain_emas",
+			"nama": "Songke biru tua motif emas",
+			"jenis": "kain",
+			"tekstur": "songke_nggohak"
+		},
+		{
+			"id": "foto_mbaru_niang",
+			"nama": "Foto Mbaru Niang",
+			"jenis": "foto",
+			"kartu": "mbaru_niang",
+			"gambar": "mbaru_niang"
+		},
+		{
+			"id": "foto_compang",
+			"nama": "Foto compang (dari luar)",
+			"jenis": "foto",
+			"kartu": "compang",
+			"gambar": "compang"
+		},
+		{
+			"id": "foto_lingko",
+			"nama": "Foto lingko lodok",
+			"jenis": "foto",
+			"kartu": "lingko_lodok",
+			"gambar": "lingko"
+		},
+		{
+			"id": "foto_wae_teku",
+			"nama": "Foto wae teku",
+			"jenis": "foto",
+			"kartu": "wae_teku",
+			"gambar": "wae_teku"
+		},
+		{
+			"id": "foto_caci",
+			"nama": "Foto pertunjukan caci",
+			"jenis": "foto",
+			"kartu": "caci",
+			"gambar": "caci"
+		}
+	],
+	"dialog": {
+		"pembuka_peta": [
+			{
+				"nama": "Tu'a Golo",
+				"teks": "Kraeng, lingko sudah terbagi. Sekarang ada satu titipan lagi sebelum Penti dirayakan."
+			},
+			{
+				"nama": "Ine Wela",
+				"teks": "Ini kain songke tenunan para penenun kampung. Bawalah ke Labuan Bajo dan tawarkan kepada wisatawan."
+			},
+			{
+				"nama": "Ine Wela",
+				"teks": "Ceritakan makna setiap kain dengan jujur. Hargai karya penenun dengan harga yang adil."
+			},
+			{
+				"nama": "Tu'a Golo",
+				"teks": "Bawa juga foto-foto dari perjalananmu di kampung dan di lingko. Hasil penjualannya akan membantu perayaan Penti dan para penenun."
+			},
+			{
+				"nama": "Nggohak",
+				"teks": "Aku akan ikut kapal wisata resmi sebagai pemandu budaya. Di setiap destinasi aku harus menemukan tiga pembeli."
+			}
+		],
+		"peta_petunjuk": "Pilih destinasi berikutnya. Destinasi terbuka berurutan, makin jauh makin sulit.",
+		"pulang": [
+			{
+				"nama": "Nggohak",
+				"teks": "Semua destinasi sudah kukunjungi. Saatnya pulang ke Wae Rebo membawa hasil penjualan."
+			}
+		],
+		"salah_barang": "Hmm, bukan itu yang kucari.",
+		"ragu": "Hmm, aku masih ragu. Bisa jelaskan sekali lagi?",
+		"pergi": "Maaf, sepertinya aku belum yakin. Aku lihat-lihat yang lain dulu.",
+		"sudah_beli": "Terima kasih! Aku akan menjaga barang ini baik-baik.",
+		"sudah_pergi": "Aku sudah memutuskan untuk tidak membeli. Maaf ya.",
+		"sisa_pembeli": "Satu pembeli lagi... Aku masih bisa mencari wisatawan lain di pulau ini.",
+		"gagal_pulau": "Pembeli yang tersisa tidak cukup untuk menjual tiga barang. Aku harus mengulang kunjungan ke pulau ini.",
+		"waktu_habis": "Kapal harus segera berangkat. Waktuku di pulau ini habis, aku harus mengulang kunjungan.",
+		"tenggelam": "Air pasang sudah menenggelamkan pulau pasir. Semua harus kembali ke kapal. Aku harus mengulang kunjungan ini.",
+		"jatuh_laut": "Byur! Aku harus kembali ke daratan.",
+		"karang": "Aduh, jangan menginjak karang! Karang itu makhluk hidup dan mudah patah.",
+		"komodo_dekat": "Ranger: Mundur, Kraeng! Terlalu dekat dengan komodo. Jaga jarak dan tetap di jalur.",
+		"haus": "Panas sekali... Aku haus dan langkahku melambat. Aku harus minum di pos.",
+		"minum": "Segarnya! Tenagaku pulih lagi.",
+		"pos_kosong": "Botol di pos ini sudah kuminum. Di jalur pendakian tidak ada penjual, jadi aku harus hemat tenaga.",
+		"sampah": "Ada sampah plastik. Aku bawa pulang ke kapal supaya pantai tetap bersih.",
+		"tanya_pulang": "Kembali ke kapal dan ke peta perjalanan? Barang yang belum terjual di pulau ini harus ditawarkan lagi lain kali.",
+		"arus": "Arusnya kuat! Aku harus berenang melawan arus."
+	},
+	"pulau": [
+		{
+			"id": "pelabuhan",
+			"nama": "Pelabuhan Labuan Bajo",
+			"jenis": "pelabuhan",
+			"kartu": "labuan_bajo",
+			"batas_waktu": 300,
+			"peta": [
+				556,
+				186
+			],
+			"pembuka": [
+				{
+					"nama": "Nggohak",
+					"teks": "Inilah Labuan Bajo, pintu gerbang Taman Nasional Komodo. Banyak wisatawan menunggu kapal di pelabuhan."
+				},
+				{
+					"nama": "Nggohak",
+					"teks": "Cara menjual: ajak bicara wisatawan, dengarkan keinginannya, pilih kain atau foto yang cocok, lalu ceritakan maknanya."
+				},
+				{
+					"nama": "Nggohak",
+					"teks": "Jawaban ceritanya ada di kartu budaya yang sudah kukumpulkan. Kalau lupa, buka koleksinya dengan Esc."
+				}
+			],
+			"info": [
+				{
+					"nama": "Papan Informasi",
+					"teks": "Selamat datang di Labuan Bajo, Kabupaten Manggarai Barat. Kota pelabuhan ini adalah pintu gerbang menuju Taman Nasional Komodo."
+				}
+			],
+			"selesai": "Tiga barang terjual di pelabuhan! Kapal wisata siap berangkat ke Pulau Padar.",
+			"wisatawan": [
+				{
+					"nama": "Sarah",
+					"asal": "Australia",
+					"pos": [
+						-6,
+						0,
+						1
+					],
+					"baju": "e07b39",
+					"celana": "3b4a6b",
+					"topi": "e8dcb8",
+					"perempuan": true,
+					"pembeli": true,
+					"keinginan": "Hello! Aku mencari kain berwarna merah untuk ibuku.",
+					"cocok": [
+						"kain_merah"
+					],
+					"tanya": "Lovely! Kain ini namanya apa, dan berasal dari mana?",
+					"pilihan": [
+						"Songke, kain tenun khas Manggarai",
+						"Ulos, kain tenun dari Sumatra Utara",
+						"Batik tulis dari Jawa"
+					],
+					"benar": 0,
+					"terima": "Songke dari Manggarai. Ibuku pasti suka!"
+				},
+				{
+					"nama": "Budi",
+					"asal": "Jakarta",
+					"pos": [
+						6,
+						0,
+						-2
+					],
+					"baju": "e8e2d2",
+					"celana": "4a4a4a",
+					"topi": "4a4a4a",
+					"pembeli": true,
+					"keinginan": "Aku ingin foto rumah adat yang atapnya berbentuk kerucut.",
+					"cocok": [
+						"foto_mbaru_niang"
+					],
+					"tanya": "Rumah ini terdiri atas berapa tingkat?",
+					"pilihan": [
+						"Tiga tingkat",
+						"Lima tingkat",
+						"Tujuh tingkat"
+					],
+					"benar": 1,
+					"terima": "Lima tingkat, dari lutur sampai hekang kode. Keren!"
+				},
+				{
+					"nama": "Kenji",
+					"asal": "Jepang",
+					"pos": [
+						-12,
+						0,
+						-8
+					],
+					"baju": "2e7d46",
+					"celana": "c8b48a",
+					"topi": "f1ede4",
+					"pembeli": true,
+					"keinginan": "Konnichiwa. Aku suka kain bermotif biru.",
+					"cocok": [
+						"kain_biru"
+					],
+					"tanya": "Motif ranggong, laba-laba, pada songke melambangkan apa?",
+					"pilihan": [
+						"Kejujuran dan kerja keras",
+						"Kekayaan pemiliknya",
+						"Datangnya musim hujan"
+					],
+					"benar": 0,
+					"terima": "Kejujuran dan kerja keras. Arigato!"
+				},
+				{
+					"nama": "Maria",
+					"asal": "Spanyol",
+					"pos": [
+						11,
+						0,
+						-9
+					],
+					"baju": "b02a2a",
+					"celana": "e8e2d2",
+					"topi": "e8b430",
+					"perempuan": true,
+					"pembeli": true,
+					"keinginan": "Hola! Adakah sesuatu tentang tarian dengan cambuk dan perisai?",
+					"cocok": [
+						"foto_caci"
+					],
+					"tanya": "Dalam caci, apa sebutan pemain yang menangkis?",
+					"pilihan": [
+						"Paki",
+						"Ta'ang",
+						"Panggal"
+					],
+					"benar": 1,
+					"terima": "Ta'ang yang menangkis, paki yang mencambuk. Gracias!"
+				},
+				{
+					"nama": "Tom",
+					"asal": "Inggris",
+					"pos": [
+						0,
+						0,
+						-14
+					],
+					"baju": "7a4a8a",
+					"celana": "c8b48a",
+					"topi": "e8dcb8",
+					"pembeli": false,
+					"info": [
+						"Just looking, thanks! Aku hanya menunggu kapal.",
+						"Katanya di Taman Nasional Komodo kita harus selalu bersama ranger."
+					]
+				},
+				{
+					"nama": "Petugas Pelabuhan",
+					"asal": "Labuan Bajo",
+					"pos": [
+						13,
+						0,
+						3
+					],
+					"baju": "e8e2d2",
+					"celana": "1b1818",
+					"topi": "1b1818",
+					"pembeli": false,
+					"info": [
+						"Selamat datang, Kraeng. Kapal wisata resmi berlabuh di ujung dermaga.",
+						"Kalau urusanmu di sini sudah selesai, naiklah ke kapal untuk berangkat."
+					]
+				}
+			]
+		},
+		{
+			"id": "padar",
+			"nama": "Pulau Padar",
+			"jenis": "padar",
+			"kartu": "padar",
+			"batas_waktu": 300,
+			"peta": [
+				392,
+				252
+			],
+			"pembuka": [
+				{
+					"nama": "Nggohak",
+					"teks": "Pulau Padar. Wisatawan tersebar di tiga pos jalur pendakian sampai ke puncak."
+				},
+				{
+					"nama": "Nggohak",
+					"teks": "Udaranya panas dan di jalur tidak ada penjual. Tenagaku berkurang saat berjalan, jadi aku harus minum di setiap pos."
+				}
+			],
+			"info": [
+				{
+					"nama": "Papan Informasi",
+					"teks": "Puncak Pulau Padar. Di bawah tampak tiga teluk dengan warna pantai berbeda: putih, hitam, dan merah muda."
+				}
+			],
+			"selesai": "Tiga barang terjual di Padar! Berikutnya, kapal menuju Pink Beach.",
+			"pos_air": [
+				[
+					7.5,
+					2.2,
+					5.5
+				],
+				[
+					-2.5,
+					4.4,
+					-2.0
+				],
+				[
+					6.5,
+					6.6,
+					-20.5
+				]
+			],
+			"wisatawan": [
+				{
+					"nama": "Emma",
+					"asal": "Jerman",
+					"pos": [
+						4.5,
+						2.2,
+						6.5
+					],
+					"baju": "e8b430",
+					"celana": "3b4a6b",
+					"topi": "e8dcb8",
+					"perempuan": true,
+					"pembeli": true,
+					"keinginan": "Guten Tag! Aku mencari kain berwarna hijau.",
+					"cocok": [
+						"kain_hijau"
+					],
+					"tanya": "Kain ini sering dipakai saat Penti. Penti itu perayaan apa?",
+					"pilihan": [
+						"Tahun baru adat dan syukur atas panen",
+						"Upacara pernikahan",
+						"Lomba perahu"
+					],
+					"benar": 0,
+					"terima": "Tahun baru adat! Danke!"
+				},
+				{
+					"nama": "Ahmad",
+					"asal": "Malaysia",
+					"pos": [
+						8.5,
+						2.2,
+						9.5
+					],
+					"baju": "2c5c96",
+					"celana": "1b1818",
+					"topi": "e8e2d2",
+					"pembeli": false,
+					"info": [
+						"Fuh, panas sekali! Bawalah air yang cukup, Kraeng.",
+						"Di jalur ini tidak ada yang berjualan. Lapak suvenir warga hanya ada di dekat pos tiket."
+					]
+				},
+				{
+					"nama": "Liam",
+					"asal": "Irlandia",
+					"pos": [
+						-5.5,
+						4.4,
+						-2.5
+					],
+					"baju": "2e7d46",
+					"celana": "c8b48a",
+					"topi": "e8dcb8",
+					"pembeli": true,
+					"keinginan": "Aku ingin foto sawah yang tampak seperti jaring laba-laba.",
+					"cocok": [
+						"foto_lingko"
+					],
+					"tanya": "Titik pusat lingko, tempat kayu teno ditanam, disebut apa?",
+					"pilihan": [
+						"Moso",
+						"Lodok",
+						"Natas"
+					],
+					"benar": 1,
+					"terima": "Lodok! Garis-garisnya memancar dari sana. Brilliant!"
+				},
+				{
+					"nama": "Siti",
+					"asal": "Makassar",
+					"pos": [
+						-2.0,
+						4.4,
+						-6.5
+					],
+					"baju": "e07b39",
+					"celana": "1b1818",
+					"topi": "b02a2a",
+					"perempuan": true,
+					"pembeli": true,
+					"keinginan": "Aku butuh kain untuk hadiah. Warna apa saja boleh, asal tenunan asli.",
+					"cocok": [
+						"kain_merah",
+						"kain_biru",
+						"kain_hijau",
+						"kain_kuning",
+						"kain_emas"
+					],
+					"tanya": "Warna dasar kain songke biasanya apa?",
+					"pilihan": [
+						"Putih",
+						"Hitam",
+						"Merah muda"
+					],
+					"benar": 1,
+					"terima": "Hitam dengan motif berwarna cerah. Cantik sekali!"
+				},
+				{
+					"nama": "Lucas",
+					"asal": "Brasil",
+					"pos": [
+						4.0,
+						6.6,
+						-19.5
+					],
+					"baju": "e8e2d2",
+					"celana": "2c5c96",
+					"topi": "e8b430",
+					"pembeli": true,
+					"keinginan": "Olá! Aku ingin foto mata air.",
+					"cocok": [
+						"foto_wae_teku"
+					],
+					"tanya": "Wae teku itu apa?",
+					"pilihan": [
+						"Mata air kampung",
+						"Rumah gendang",
+						"Alat musik"
+					],
+					"benar": 0,
+					"terima": "Mata air kampung, sumber kehidupan. Obrigado!"
+				},
+				{
+					"nama": "Olivia",
+					"asal": "Kanada",
+					"pos": [
+						8.5,
+						6.6,
+						-16.5
+					],
+					"baju": "b02a2a",
+					"celana": "c8b48a",
+					"topi": "f1ede4",
+					"perempuan": true,
+					"pembeli": false,
+					"info": [
+						"Wow, lihat ke bawah! Tiga teluk dengan pantai putih, hitam, dan merah muda.",
+						"Pasir hitamnya berasal dari batuan vulkanik di sekitar pulau."
+					]
+				}
+			]
+		},
+		{
+			"id": "pink",
+			"nama": "Pink Beach",
+			"jenis": "pink",
+			"kartu": "pink_beach",
+			"batas_waktu": 300,
+			"peta": [
+				266,
+				246
+			],
+			"pembuka": [
+				{
+					"nama": "Nggohak",
+					"teks": "Pink Beach! Wisatawan ada di pantai dan di air dangkal."
+				},
+				{
+					"nama": "Nggohak",
+					"teks": "Di air dangkal ada karang. Aku tidak boleh menginjaknya."
+				}
+			],
+			"info": [
+				{
+					"nama": "Papan Informasi",
+					"teks": "Pasir Pink Beach berwarna merah muda karena serpihan cangkang foraminifera merah dan pecahan karang merah bercampur dengan pasir putih."
+				},
+				{
+					"nama": "Papan Informasi",
+					"teks": "Jangan menginjak atau mengambil karang. Bawa kembali sampahmu."
+				}
+			],
+			"selesai": "Tiga barang terjual di Pink Beach! Berikutnya Pulau Komodo. Di sana aku harus selalu bersama ranger.",
+			"karang": [
+				[
+					-6,
+					-0.55,
+					11
+				],
+				[
+					6.5,
+					-0.55,
+					5
+				],
+				[
+					-11,
+					-0.55,
+					1
+				],
+				[
+					11,
+					-0.55,
+					13
+				],
+				[
+					3,
+					-0.55,
+					14
+				],
+				[
+					15,
+					-0.55,
+					3
+				]
+			],
+			"sampah": [
+				[
+					6,
+					0.15,
+					-5
+				],
+				[
+					-8,
+					0.15,
+					-11
+				],
+				[
+					3,
+					0.15,
+					-18
+				]
+			],
+			"wisatawan": [
+				{
+					"nama": "Chloe",
+					"asal": "Prancis",
+					"pos": [
+						-5,
+						0.15,
+						-6
+					],
+					"baju": "f1ede4",
+					"celana": "2c5c96",
+					"topi": "e8b430",
+					"perempuan": true,
+					"pembeli": true,
+					"keinginan": "Bonjour! Aku mencari kain dengan motif emas.",
+					"cocok": [
+						"kain_emas"
+					],
+					"tanya": "Motif mata manuk pada songke melambangkan apa?",
+					"pilihan": [
+						"Tuhan Yang Maha Melihat",
+						"Burung peliharaan",
+						"Musim kemarau"
+					],
+					"benar": 0,
+					"terima": "Tuhan Yang Maha Melihat. Magnifique!"
+				},
+				{
+					"nama": "Noah",
+					"asal": "Belanda",
+					"pos": [
+						4,
+						0.15,
+						-9
+					],
+					"baju": "e07b39",
+					"celana": "c8b48a",
+					"topi": "e8dcb8",
+					"pembeli": true,
+					"keinginan": "Aku ingin foto tempat suci di tengah kampung.",
+					"cocok": [
+						"foto_compang"
+					],
+					"tanya": "Mengapa compang hanya boleh dilihat dan tidak dipakai bermain?",
+					"pilihan": [
+						"Karena sakral, tempat persembahan kepada Mori Kraeng dan leluhur",
+						"Karena sedang diperbaiki",
+						"Karena milik wisatawan"
+					],
+					"benar": 0,
+					"terima": "Aku mengerti. Aku akan menghormatinya. Dank je!"
+				},
+				{
+					"nama": "Ayu",
+					"asal": "Bali",
+					"pos": [
+						-9,
+						-0.55,
+						6
+					],
+					"baju": "e8b430",
+					"celana": "b02a2a",
+					"topi": "f1ede4",
+					"perempuan": true,
+					"pembeli": true,
+					"keinginan": "Aku mau kain merah, semerah pasir pantai ini.",
+					"cocok": [
+						"kain_merah"
+					],
+					"tanya": "Ngomong-ngomong, kenapa pasir pantai ini merah muda?",
+					"pilihan": [
+						"Serpihan foraminifera dan karang merah bercampur pasir putih",
+						"Dicat oleh warga",
+						"Pantulan cahaya matahari terbenam"
+					],
+					"benar": 0,
+					"terima": "Ternyata dari makhluk laut kecil! Suksma!"
+				},
+				{
+					"nama": "Jack",
+					"asal": "Amerika Serikat",
+					"pos": [
+						9,
+						-0.55,
+						9
+					],
+					"baju": "2c5c96",
+					"celana": "e8e2d2",
+					"topi": "b02a2a",
+					"pembeli": true,
+					"keinginan": "Hey! Ada foto pertunjukan saat Penti?",
+					"cocok": [
+						"foto_caci"
+					],
+					"tanya": "Dalam caci, di bagian tubuh mana pukulan dianggap sah?",
+					"pilihan": [
+						"Di atas pinggang",
+						"Di kaki",
+						"Di mana saja"
+					],
+					"benar": 0,
+					"terima": "Hanya di atas pinggang. Sportif sekali!"
+				},
+				{
+					"nama": "Mia",
+					"asal": "Swiss",
+					"pos": [
+						12,
+						-0.55,
+						-2
+					],
+					"baju": "2e7d46",
+					"celana": "1b1818",
+					"topi": "e8dcb8",
+					"perempuan": true,
+					"pembeli": false,
+					"info": [
+						"Airnya jernih sekali! Hati-hati, jangan menginjak karang ya.",
+						"Karang tumbuh sangat lambat dan mudah patah."
+					]
+				},
+				{
+					"nama": "Daeng Rahman",
+					"asal": "Awak Kapal",
+					"pos": [
+						-1.6,
+						0.1,
+						9
+					],
+					"baju": "e8e2d2",
+					"celana": "3b4a6b",
+					"topi": "1b1818",
+					"pembeli": false,
+					"info": [
+						"Pasir merah muda itu jangan dibawa pulang, Kraeng. Biarkan tetap di pantai.",
+						"Sampah plastik, itu yang harus dibawa pulang ke kapal."
+					]
+				}
+			]
+		},
+		{
+			"id": "komodo",
+			"nama": "Pulau Komodo",
+			"jenis": "komodo",
+			"kartu": "komodo",
+			"batas_waktu": 300,
+			"peta": [
+				196,
+				178
+			],
+			"pembuka": [
+				{
+					"nama": "Ranger Yosef",
+					"teks": "Selamat datang di Pulau Komodo. Ikuti jalur, jangan keluar jalur, dan jaga jarak dari komodo."
+				},
+				{
+					"nama": "Nggohak",
+					"teks": "Wisatawan hanya ada di sepanjang jalur. Aku harus berhati-hati melewati komodo yang berpatroli."
+				}
+			],
+			"info": [
+				{
+					"nama": "Papan Informasi",
+					"teks": "Komodo adalah kadal terbesar yang masih hidup. Setiap pengunjung wajib didampingi ranger. Jangan memberi makan dan jangan mendekati komodo."
+				}
+			],
+			"selesai": "Tiga barang terjual di Pulau Komodo! Berikutnya Taka Makassar. Aku harus cepat sebelum air pasang.",
+			"jalur": [
+				[
+					0,
+					0,
+					24
+				],
+				[
+					0,
+					0,
+					18
+				],
+				[
+					-8,
+					0,
+					11
+				],
+				[
+					-10,
+					0,
+					1
+				],
+				[
+					-4,
+					0,
+					-8
+				],
+				[
+					6,
+					0,
+					-12
+				],
+				[
+					12,
+					0,
+					-3
+				],
+				[
+					10,
+					0,
+					7
+				],
+				[
+					4,
+					0,
+					13
+				],
+				[
+					0,
+					0,
+					18
+				]
+			],
+			"komodo": [
+				{
+					"a": [
+						-3,
+						0,
+						15
+					],
+					"b": [
+						-13,
+						0,
+						7
+					]
+				},
+				{
+					"a": [
+						-15,
+						0,
+						-4
+					],
+					"b": [
+						-3,
+						0,
+						-2
+					]
+				},
+				{
+					"a": [
+						2,
+						0,
+						-17
+					],
+					"b": [
+						9,
+						0,
+						-7
+					]
+				},
+				{
+					"a": [
+						17,
+						0,
+						1
+					],
+					"b": [
+						7,
+						0,
+						2
+					],
+					"sulit": true
+				},
+				{
+					"a": [
+						2,
+						0,
+						6
+					],
+					"b": [
+						-6,
+						0,
+						-1
+					],
+					"sulit": true
+				}
+			],
+			"wisatawan": [
+				{
+					"nama": "Ethan",
+					"asal": "Inggris",
+					"pos": [
+						-7.2,
+						0,
+						10.2
+					],
+					"baju": "e8e2d2",
+					"celana": "3b4a6b",
+					"topi": "e8dcb8",
+					"pembeli": true,
+					"keinginan": "Aku mencari kain biru untuk istriku.",
+					"cocok": [
+						"kain_biru"
+					],
+					"tanya": "Siapa yang wajib mendampingi pengunjung di Pulau Komodo?",
+					"pilihan": [
+						"Ranger",
+						"Nelayan",
+						"Tidak perlu siapa-siapa"
+					],
+					"benar": 0,
+					"terima": "Ranger, tentu saja. Cheers!"
+				},
+				{
+					"nama": "Hana",
+					"asal": "Korea Selatan",
+					"pos": [
+						-10.8,
+						0,
+						2
+					],
+					"baju": "e07b39",
+					"celana": "f1ede4",
+					"topi": "f1ede4",
+					"perempuan": true,
+					"pembeli": true,
+					"keinginan": "Annyeong! Aku ingin foto rumah adat.",
+					"cocok": [
+						"foto_mbaru_niang"
+					],
+					"tanya": "Pelestarian rumah adat Wae Rebo meraih penghargaan UNESCO pada tahun berapa?",
+					"pilihan": [
+						"2002",
+						"2012",
+						"2022"
+					],
+					"benar": 1,
+					"terima": "Tahun 2012! Kamsahamnida!"
+				},
+				{
+					"nama": "Dewi",
+					"asal": "Surabaya",
+					"pos": [
+						-3.2,
+						0,
+						-9
+					],
+					"baju": "2e7d46",
+					"celana": "1b1818",
+					"topi": "e8b430",
+					"perempuan": true,
+					"pembeli": true,
+					"keinginan": "Aku suka kain kuning.",
+					"cocok": [
+						"kain_kuning"
+					],
+					"tanya": "Rapat sebelum lingko dibagi disebut apa?",
+					"pilihan": [
+						"Reke lodok",
+						"Lonto leok",
+						"Penti"
+					],
+					"benar": 0,
+					"terima": "Reke lodok. Aku baru tahu!"
+				},
+				{
+					"nama": "Oscar",
+					"asal": "Swedia",
+					"pos": [
+						7,
+						0,
+						-12.8
+					],
+					"baju": "2c5c96",
+					"celana": "c8b48a",
+					"topi": "e8dcb8",
+					"pembeli": true,
+					"keinginan": "Aku ingin foto sawah jaring laba-laba.",
+					"cocok": [
+						"foto_lingko"
+					],
+					"tanya": "Di mana sawah lodok yang terkenal bisa dilihat?",
+					"pilihan": [
+						"Cancar dan Meler, Ruteng",
+						"Pulau Padar",
+						"Kota Labuan Bajo"
+					],
+					"benar": 0,
+					"terima": "Cancar dan Meler. Tack!"
+				},
+				{
+					"nama": "Ella",
+					"asal": "Australia",
+					"pos": [
+						12.8,
+						0,
+						-2
+					],
+					"baju": "b02a2a",
+					"celana": "c8b48a",
+					"topi": "e8dcb8",
+					"perempuan": true,
+					"pembeli": false,
+					"info": [
+						"Komodo itu besar sekali! Ranger bilang tidak ada komodo yang jinak.",
+						"Aku tetap di jalur dan menjaga jarak."
+					]
+				},
+				{
+					"nama": "Ranger Yosef",
+					"asal": "Ranger",
+					"pos": [
+						9.2,
+						0,
+						7.6
+					],
+					"baju": "4a6a3a",
+					"celana": "4a5a3a",
+					"topi": "6a7a4a",
+					"pembeli": false,
+					"info": [
+						"Tetap di jalur, Kraeng. Jangan memberi makan komodo.",
+						"Kalau komodo mendekat, mundur pelan-pelan dan ikuti arahan ranger."
+					]
+				}
+			]
+		},
+		{
+			"id": "taka",
+			"nama": "Taka Makassar",
+			"jenis": "taka",
+			"kartu": "taka_makassar",
+			"batas_waktu": 240,
+			"batas_waktu_sulit": 170,
+			"peta": [
+				306,
+				118
+			],
+			"pembuka": [
+				{
+					"nama": "Nggohak",
+					"teks": "Taka Makassar, pulau pasir berbentuk sabit. Air mulai pasang!"
+				},
+				{
+					"nama": "Nggohak",
+					"teks": "Pasirnya akan makin menyempit. Aku harus menemukan tiga pembeli sebelum pulau pasir ini tenggelam."
+				}
+			],
+			"info": [
+				{
+					"nama": "Awak Kapal",
+					"teks": "Taka Makassar muncul saat air surut. Di dekat sini ada Manta Point, tempat pari manta datang untuk dibersihkan ikan-ikan kecil."
+				}
+			],
+			"selesai": "Tiga barang terjual sebelum air pasang! Destinasi terakhir: Teluk Manjarite.",
+			"wisatawan": [
+				{
+					"nama": "Sofia",
+					"asal": "Italia",
+					"pos": [
+						-3.8,
+						0.15,
+						-4.3
+					],
+					"baju": "f1ede4",
+					"celana": "b02a2a",
+					"topi": "e8b430",
+					"perempuan": true,
+					"pembeli": true,
+					"keinginan": "Ciao! Aku mencari kain untuk hadiah.",
+					"cocok": [
+						"kain_merah",
+						"kain_biru",
+						"kain_hijau",
+						"kain_kuning",
+						"kain_emas"
+					],
+					"tanya": "Apa arti ungkapan 'gendang one, lingko pe'ang'?",
+					"pilihan": [
+						"Rumah gendang di dalam kampung, lingko di luar sebagai sumber kehidupan",
+						"Gendang dimainkan di sawah",
+						"Lingko dijual kepada pendatang"
+					],
+					"benar": 0,
+					"terima": "Kampung dan tanah satu kesatuan. Bellissimo!"
+				},
+				{
+					"nama": "Rizky",
+					"asal": "Bandung",
+					"pos": [
+						-1.9,
+						0.15,
+						-4.9
+					],
+					"baju": "2c5c96",
+					"celana": "1b1818",
+					"topi": "e8dcb8",
+					"pembeli": true,
+					"keinginan": "Aku mau foto mata air.",
+					"cocok": [
+						"foto_wae_teku"
+					],
+					"tanya": "Garis pembatas yang ditarik dari pusat lingko ke tepi disebut apa?",
+					"pilihan": [
+						"Moso",
+						"Lodok",
+						"Teno"
+					],
+					"benar": 0,
+					"terima": "Moso! Hatur nuhun!"
+				},
+				{
+					"nama": "Aiko",
+					"asal": "Jepang",
+					"pos": [
+						1.9,
+						0.15,
+						-4.9
+					],
+					"baju": "e8b430",
+					"celana": "3b4a6b",
+					"topi": "f1ede4",
+					"perempuan": true,
+					"pembeli": true,
+					"keinginan": "Aku mencari kain merah.",
+					"cocok": [
+						"kain_merah"
+					],
+					"tanya": "Pari manta datang ke Manta Point untuk apa?",
+					"pilihan": [
+						"Dibersihkan ikan-ikan kecil",
+						"Bertelur di pasir",
+						"Mencari komodo"
+					],
+					"benar": 0,
+					"terima": "Seperti salon untuk manta! Arigato!"
+				},
+				{
+					"nama": "Ben",
+					"asal": "Selandia Baru",
+					"pos": [
+						3.8,
+						0.15,
+						-4.3
+					],
+					"baju": "2e7d46",
+					"celana": "c8b48a",
+					"topi": "e8dcb8",
+					"pembeli": true,
+					"keinginan": "Kia ora! Ada foto tarian cambuk?",
+					"cocok": [
+						"foto_caci"
+					],
+					"tanya": "Apa nilai utama dalam caci?",
+					"pilihan": [
+						"Sportivitas, keberanian, dan persaudaraan",
+						"Mencari musuh",
+						"Menunjukkan kekayaan"
+					],
+					"benar": 0,
+					"terima": "Persaudaraan. Sweet as!"
+				},
+				{
+					"nama": "Lena",
+					"asal": "Austria",
+					"pos": [
+						-0.8,
+						0.15,
+						-5.6
+					],
+					"baju": "7a4a8a",
+					"celana": "c8b48a",
+					"topi": "f1ede4",
+					"perempuan": true,
+					"pembeli": false,
+					"info": [
+						"Lihat, air makin naik! Pulau pasir ini akan tenggelam sebagian.",
+						"Aku segera kembali ke kapal."
+					]
+				},
+				{
+					"nama": "Pak Sam",
+					"asal": "Awak Kapal",
+					"pos": [
+						0.9,
+						0.15,
+						-4.0
+					],
+					"baju": "e8e2d2",
+					"celana": "3b4a6b",
+					"topi": "1b1818",
+					"pembeli": false,
+					"info": [
+						"Cepat, Kraeng! Pasirnya makin sempit.",
+						"Kalau sudah selesai, kembali ke kapal lewat dermaga apung."
+					]
+				}
+			]
+		},
+		{
+			"id": "manjarite",
+			"nama": "Teluk Manjarite",
+			"jenis": "manjarite",
+			"kartu": "manjarite",
+			"batas_waktu": 300,
+			"peta": [
+				176,
+				96
+			],
+			"pembuka": [
+				{
+					"nama": "Nggohak",
+					"teks": "Teluk Manjarite. Wisatawan ada di kapal-kapal yang berlabuh dan sedang snorkeling."
+				},
+				{
+					"nama": "Nggohak",
+					"teks": "Aku harus berenang ke kapal-kapal itu. Hati-hati dengan arus dan jangan menginjak karang."
+				}
+			],
+			"info": [
+				{
+					"nama": "Awak Kapal",
+					"teks": "Teluk ini tenang dan sering dipakai untuk snorkeling. Ikuti arahan pemandu, karena arus di perairan Komodo bisa berubah."
+				}
+			],
+			"selesai": "Tiga barang terjual di Teluk Manjarite! Semua destinasi sudah tuntas.",
+			"karang": [
+				[
+					-4,
+					-1.4,
+					9
+				],
+				[
+					7,
+					-1.4,
+					-7
+				],
+				[
+					-10,
+					-1.4,
+					-6
+				],
+				[
+					3,
+					-1.4,
+					3
+				],
+				[
+					-2,
+					-1.4,
+					-12
+				],
+				[
+					16,
+					-1.4,
+					-9
+				]
+			],
+			"arus": [
+				{
+					"min": [
+						-9,
+						5
+					],
+					"max": [
+						9,
+						11
+					],
+					"dorong": [
+						2.2,
+						0
+					]
+				},
+				{
+					"min": [
+						-22,
+						-10
+					],
+					"max": [
+						-9,
+						0
+					],
+					"dorong": [
+						0,
+						2.0
+					]
+				},
+				{
+					"min": [
+						4,
+						-14
+					],
+					"max": [
+						22,
+						-9
+					],
+					"dorong": [
+						-2.0,
+						0
+					]
+				}
+			],
+			"kapal_berlabuh": [
+				[
+					-14,
+					4,
+					0.0
+				],
+				[
+					13,
+					0,
+					0.0
+				],
+				[
+					-7,
+					-15,
+					1.57
+				],
+				[
+					12,
+					-17,
+					1.57
+				]
+			],
+			"wisatawan": [
+				{
+					"nama": "Grace",
+					"asal": "Amerika Serikat",
+					"pos": [
+						-14,
+						0.7,
+						1.8
+					],
+					"baju": "b02a2a",
+					"celana": "f1ede4",
+					"topi": "e8b430",
+					"perempuan": true,
+					"pembeli": true,
+					"keinginan": "Aku mencari kain bermotif emas.",
+					"cocok": [
+						"kain_emas"
+					],
+					"tanya": "Mengapa adil dalam pembagian lingko tidak selalu berarti sama luas?",
+					"pilihan": [
+						"Pembagian disepakati lewat musyawarah sesuai adat dan tanggungan keluarga",
+						"Karena tanahnya diundi",
+						"Karena tanahnya dijual"
+					],
+					"benar": 0,
+					"terima": "Adil menurut kesepakatan bersama. Beautiful!"
+				},
+				{
+					"nama": "Pedro",
+					"asal": "Portugal",
+					"pos": [
+						13,
+						0.7,
+						-2.2
+					],
+					"baju": "2c5c96",
+					"celana": "c8b48a",
+					"topi": "e8dcb8",
+					"pembeli": true,
+					"keinginan": "Ada foto sawah dari Flores?",
+					"cocok": [
+						"foto_lingko"
+					],
+					"tanya": "Kayu yang ditanam di lodok disebut apa?",
+					"pilihan": [
+						"Haju teno",
+						"Larik",
+						"Nggiling"
+					],
+					"benar": 0,
+					"terima": "Haju teno. Obrigado!"
+				},
+				{
+					"nama": "Nadia",
+					"asal": "Medan",
+					"pos": [
+						-9.2,
+						0.7,
+						-15
+					],
+					"baju": "e07b39",
+					"celana": "1b1818",
+					"topi": "f1ede4",
+					"perempuan": true,
+					"pembeli": true,
+					"keinginan": "Aku mau kain hijau.",
+					"cocok": [
+						"kain_hijau"
+					],
+					"tanya": "Dari mana warna merah muda Pink Beach berasal?",
+					"pilihan": [
+						"Serpihan foraminifera dan karang merah",
+						"Pasir dari gunung berapi",
+						"Cat dari warga"
+					],
+					"benar": 0,
+					"terima": "Kamu pemandu yang hebat!"
+				},
+				{
+					"nama": "Felix",
+					"asal": "Jerman",
+					"pos": [
+						2,
+						-1.4,
+						-5.5
+					],
+					"baju": "e8b430",
+					"celana": "2c5c96",
+					"topi": "f1ede4",
+					"pembeli": true,
+					"keinginan": "Hallo! Aku sedang snorkeling, tapi aku mau kain biru.",
+					"cocok": [
+						"kain_biru"
+					],
+					"tanya": "Saat snorkeling, apa yang harus dijaga?",
+					"pilihan": [
+						"Jangan menginjak atau menyentuh karang",
+						"Boleh mengambil karang sebagai oleh-oleh",
+						"Memberi makan ikan dengan roti"
+					],
+					"benar": 0,
+					"terima": "Benar, karang harus dijaga. Danke!"
+				},
+				{
+					"nama": "Isla",
+					"asal": "Skotlandia",
+					"pos": [
+						-17,
+						-1.4,
+						-3
+					],
+					"baju": "2e7d46",
+					"celana": "1b1818",
+					"topi": "e8dcb8",
+					"perempuan": true,
+					"pembeli": false,
+					"info": [
+						"Arus di sebelah sana kuat sekali! Aku hampir terbawa.",
+						"Berenanglah memotong arus, jangan melawannya terus-menerus."
+					]
+				},
+				{
+					"nama": "Mas Andi",
+					"asal": "Awak Kapal",
+					"pos": [
+						10,
+						0.7,
+						-17
+					],
+					"baju": "e8e2d2",
+					"celana": "3b4a6b",
+					"topi": "1b1818",
+					"pembeli": false,
+					"info": [
+						"Sampah dari kapal harus dibawa kembali ke darat, Kraeng.",
+						"Jangan buang apa pun ke laut."
+					]
+				}
+			]
+		}
+	]
+}

@@ -104,6 +104,15 @@
 
 ---
 
+## 9. Labuan Bajo & Taman Nasional Komodo (Level 3, ditambahkan 14 Nov 2026)
+- Labuan Bajo (Kab. Manggarai Barat) adalah pintu gerbang Taman Nasional Komodo. TN Komodo didirikan 1980 dan ditetapkan Situs Warisan Dunia UNESCO 1991. [S41]
+- Pulau Padar: di antara Pulau Komodo dan Rinca; jalur tangga ke puncak; dari puncak tampak tiga pantai berwarna putih, hitam (batuan vulkanik), dan merah muda. [S42]
+- Pink Beach: warna merah muda dari serpihan foraminifera merah (*Homotrema rubrum*) dan pecahan karang merah yang bercampur pasir putih; sebagian sumber menekankan karang pipa organ (*Tubipora musica*). [S43]
+- Komodo: kadal terbesar yang masih hidup; pengunjung wajib didampingi ranger; tercatat kasus gigitan sejak 1974. Angka jarak aman resmi **tidak ditemukan**, jadi jarak di game (3–3,5 m) adalah adaptasi `[PERLU VERIFIKASI]`. [S44]
+- Taka Makassar: gosong pasir sabit tak berpenghuni yang muncul saat surut; dekat Manta Point (Karang Makassar), stasiun pembersihan pari manta. [S45]
+- Teluk Manjarite: hanya ditemukan sebagai salah satu titik snorkeling di kawasan Komodo; detail lokasi/kondisi `[PERLU VERIFIKASI]`. [S45]
+- Songke sebagai ekonomi kreatif: tenun membantu ekonomi keluarga penenun (studi kasus Desa Renda dan Ruis; harga jual berkaitan dengan upah perajin). [S46, S47]
+
 ## Daftar Pustaka (diakses 12 November 2026)
 
 **Mbaru Niang & Wae Rebo**
@@ -164,3 +173,10 @@
 - [S38] The Jakarta Post. (2016, 5 Mei). *Clean-up ritual à la Manggarai people* [foto]. https://newgelora.thejakartapost.com/multimedia/2016/05/05/clean-up-ritual-a-la-manggarai-people
 - [S39] [Penulis PERLU VERIFIKASI]. Manggarai speech community local wisdom in *ireng neka dur ata*: Preliminary study of cultural linguistics. *Journal of a Sustainable Global South*. https://jurnal.harianregional.com/jsgs/id-58904
 - [S40] [Penulis & tahun PERLU VERIFIKASI]. [Kajian go'et Manggarai]. Atlantis Press (prosiding). https://www.atlantis-press.com/article/125967716.pdf
+- [S41] Wikipedia. (t.t.). *Komodo National Park*. Diakses 14 November 2026, dari https://en.wikipedia.org/wiki/Komodo_National_Park ; Antara News Kupang. (t.t.). *Daya tarik komodo dan fenomena penutupan Pulau Komodo*. https://kupang.antaranews.com/berita/21370/artikel--daya-tarik-komodo-dan-fenomena-penutupan-pulau-komodo
+- [S42] Times Indonesia. (t.t.). *Pesona Pulau Padar dan tiga pantai yang memikat hati*. https://timesindonesia.co.id/wisata/163354/pesona-pulau-padar-dan-tiga-pantai-yang-memikat-hati
+- [S43] Good News From Indonesia. (2026, 24 Agustus). *Rahasia pasir pink Pulau Komodo*. https://www.goodnewsfromindonesia.id/2026/08/24/rahasia-pasir-pink-pulau-komodo-keajaiban-kecil-yang-mengubah-pantai ; Samata Liveaboard. (t.t.). *Pink Beach Komodo Island – Why is it pink?* https://samataliveaboard.com/pink-beach-komodo/
+- [S44] Mongabay Indonesia. (2017, 16 Desember). *Antara konservasi dan pengembangan wisata di Komodo*. https://mongabay.co.id/2017/12/16/antara-konservasi-dan-pengembangan-wisata-di-komodo/ ; Ardiantiono dkk. (2018). Effects of human activities on Komodo dragons in Komodo National Park. *Biodiversity and Conservation*. [detail terbitan PERLU VERIFIKASI]
+- [S45] Indonesia Travel (Kemenparekraf). (t.t.). *9 destinasi sailing & snorkeling di Labuan Bajo*. https://www.indonesia.travel/gb-en/travel-ideas/marine/9-destinations-for-sailing--snorkeling-while-enjoying-the-beauty-of-labuan-bajo/ ; Komodo Explorer. (t.t.). *Manta Point*. https://www.komodoexplorer.com/glossary/manta-point
+- [S46] [Penulis PERLU VERIFIKASI]. Peran ibu rumah tangga dalam peningkatan perekonomian keluarga melalui tenun di Desa Renda, Manggarai, NTT. *Solidarity* (UNNES). https://journal.unnes.ac.id/sju/solidarity/article/view/76725
+- [S47] [Penulis & tahun PERLU VERIFIKASI]. [Harga jual kain songke dan upah perajin]. *Jurnal IPTS*. https://journal.ipts.ac.id/index.php/ED/article/download/3545/2380

@@ -8,11 +8,15 @@ const PUSAT_JOYSTICK := Vector2(78, 282)
 const JARI_JOYSTICK: float = 46.0
 const JARI_KENOP: float = 20.0
 const ZONA_MATI: float = 0.18
-## Tombol aksi: nama aksi Input Map -> {pusat, jari-jari, label}.
+## Tombol: id -> {pusat, jari-jari, label, aksi (Input Map) atau fungsi (sakelar)}.
+## Diletakkan agar tidak menutupi panel HUD (kiri atas) dan panel tujuan level (kanan atas).
 const TOMBOL: Dictionary = {
-	"lompat": {"pusat": Vector2(586, 300), "jari": 30.0, "label": "LOMPAT"},
-	"interaksi": {"pusat": Vector2(520, 254), "jari": 30.0, "label": "BICARA"},
-	"jeda": {"pusat": Vector2(612, 24), "jari": 16.0, "label": "II"},
+	"lompat": {"pusat": Vector2(584, 304), "jari": 32.0, "label": "LOMPAT", "aksi": "lompat"},
+	"interaksi": {"pusat": Vector2(510, 280), "jari": 30.0, "label": "BICARA", "aksi": "interaksi"},
+	"kartu": {"pusat": Vector2(612, 240), "jari": 18.0, "label": "KARTU", "aksi": "jeda"},
+	"jeda": {"pusat": Vector2(612, 24), "jari": 16.0, "label": "II", "aksi": "jeda"},
+	"suara": {"pusat": Vector2(24, 108), "jari": 15.0, "label": "SUARA", "fungsi": "suara"},
+	"teks": {"pusat": Vector2(24, 146), "jari": 15.0, "label": "TEKS", "fungsi": "teks"},
 }
 
 var aktif_di_perangkat: bool = false
@@ -62,11 +66,14 @@ func _input(event: InputEvent) -> void:
 
 
 func _mulai_sentuh(indeks: int, pos: Vector2) -> void:
-	for aksi: String in TOMBOL:
-		var t: Dictionary = TOMBOL[aksi]
+	for id: String in TOMBOL:
+		var t: Dictionary = TOMBOL[id]
 		if pos.distance_to(t["pusat"]) <= float(t["jari"]) + 8.0:
-			_jari_tombol[indeks] = aksi
-			_kirim_aksi(aksi, true)
+			_jari_tombol[indeks] = id
+			if t.has("fungsi"):
+				_jalankan_sakelar(str(t["fungsi"]))
+			else:
+				_kirim_aksi(str(t["aksi"]), true)
 			_kanvas.queue_redraw()
 			get_viewport().set_input_as_handled()
 			return
@@ -83,7 +90,9 @@ func _akhiri_sentuh(indeks: int) -> void:
 		_kenop = Vector2.ZERO
 		_terapkan_arah()
 	elif _jari_tombol.has(indeks):
-		_kirim_aksi(_jari_tombol[indeks], false)
+		var t: Dictionary = TOMBOL[_jari_tombol[indeks]]
+		if t.has("aksi"):
+			_kirim_aksi(str(t["aksi"]), false)
 		_jari_tombol.erase(indeks)
 	_kanvas.queue_redraw()
 
@@ -121,9 +130,26 @@ func _kirim_aksi(aksi: String, ditekan: bool) -> void:
 	Input.parse_input_event(ev)
 
 
+## Tombol sakelar: bisukan suara, atau tampilkan/sembunyikan teks dialog.
+func _jalankan_sakelar(fungsi: String) -> void:
+	match fungsi:
+		"suara":
+			AudioServer.set_bus_mute(0, not AudioServer.is_bus_mute(0))
+		"teks":
+			DialogManager.tampilkan_teks = not DialogManager.tampilkan_teks
+
+
+func _label_tombol(id: String) -> String:
+	if id == "suara" and AudioServer.is_bus_mute(0):
+		return "BISU"
+	return str(TOMBOL[id]["label"])
+
+
 func _lepas_semua() -> void:
 	for indeks: int in _jari_tombol:
-		_kirim_aksi(_jari_tombol[indeks], false)
+		var t: Dictionary = TOMBOL[_jari_tombol[indeks]]
+		if t.has("aksi"):
+			_kirim_aksi(str(t["aksi"]), false)
 	_jari_tombol.clear()
 	_jari_joystick = -1
 	_kenop = Vector2.ZERO
@@ -139,14 +165,17 @@ func _gambar() -> void:
 	_kanvas.draw_arc(PUSAT_JOYSTICK, JARI_JOYSTICK, 0.0, TAU, 40, putih, 2.0)
 	_kanvas.draw_circle(PUSAT_JOYSTICK + _kenop, JARI_KENOP, Color(Gaya.KUNING, 0.6))
 	var ditekan: Array = _jari_tombol.values()
-	for aksi: String in TOMBOL:
-		var t: Dictionary = TOMBOL[aksi]
+	for id: String in TOMBOL:
+		var t: Dictionary = TOMBOL[id]
 		var pusat: Vector2 = t["pusat"]
 		var jari: float = t["jari"]
-		var isi := Color(Gaya.MERAH, 0.75) if ditekan.has(aksi) else Color(0, 0, 0, 0.4)
-		_kanvas.draw_circle(pusat, jari, isi)
-		_kanvas.draw_arc(pusat, jari, 0.0, TAU, 32, Color(Gaya.KUNING, 0.8), 2.0)
-		var ukuran: int = 9 if jari > 20.0 else 10
-		var lebar: float = ThemeDB.fallback_font.get_string_size(t["label"], HORIZONTAL_ALIGNMENT_LEFT, -1, ukuran).x
-		_kanvas.draw_string(ThemeDB.fallback_font, pusat + Vector2(-lebar / 2.0, ukuran * 0.35), t["label"],
+		var menyala: bool = ditekan.has(id) or (id == "teks" and DialogManager.tampilkan_teks)
+		_kanvas.draw_circle(pusat, jari, Color(Gaya.MERAH, 0.8) if menyala else Color(0, 0, 0, 0.45))
+		# Cincin bermotif songke: kuning di luar, merah di dalam
+		_kanvas.draw_arc(pusat, jari, 0.0, TAU, 32, Color(Gaya.KUNING, 0.9), 2.0)
+		_kanvas.draw_arc(pusat, jari - 3.0, 0.0, TAU, 32, Color(Gaya.MERAH, 0.7), 1.0)
+		var label: String = _label_tombol(id)
+		var ukuran: int = 9 if jari > 20.0 else 7
+		var lebar: float = ThemeDB.fallback_font.get_string_size(label, HORIZONTAL_ALIGNMENT_LEFT, -1, ukuran).x
+		_kanvas.draw_string(ThemeDB.fallback_font, pusat + Vector2(-lebar / 2.0, ukuran * 0.35), label,
 			HORIZONTAL_ALIGNMENT_LEFT, -1, ukuran, Gaya.PUTIH)

@@ -22,6 +22,11 @@ signal momen_pukul  ## dipancarkan saat cambuk mencapai titik pukul
 @export var ikat_songke: bool = false  ## ikat kepala bermotif songke dengan ujung kain menjuntai
 @export var rambut_gimbal: bool = false  ## rambut gimbal diikat ke atas
 @export var berotot: bool = false  ## bahu lebar, dada & perut berotot (tubuh atletis)
+@export_group("Gaya Wisatawan / Ranger")
+@export var celana_polos: bool = false  ## bawahan polos (celana pendek) menggantikan sarung songke
+@export var warna_celana: Color = Color("c8b48a")
+@export var pakai_topi: bool = false  ## topi lebar (wisatawan, ranger); menggantikan ikat kepala
+@export var warna_topi: Color = Color("e8dcb8")
 
 const KULIT := Color("8a5432")  ## cokelat hangat
 const RAMBUT := Color("1e1512")
@@ -93,6 +98,7 @@ func _kapsul(r: float, h: float) -> CapsuleMesh:
 func _bangun() -> void:
 	var m_kulit := _mat(KULIT)
 	var m_songke := _mat(Color.WHITE, tekstur_songke)
+	var m_bawahan := _mat(warna_celana) if celana_polos else m_songke
 	var m_baju := m_kulit if telanjang_dada else _mat(warna_baju)
 	var m_ikat := _mat(warna_ikat)
 
@@ -113,7 +119,7 @@ func _bangun() -> void:
 	sarung.bottom_radius = 0.3 if panjang else 0.26
 	sarung.height = 0.85 if panjang else 0.55
 	sarung.radial_segments = 10
-	_bagian(_badan, sarung, Vector3(0, -0.27 if panjang else -0.12, 0), m_songke)
+	_bagian(_badan, sarung, Vector3(0, -0.27 if panjang else -0.12, 0), m_bawahan)
 	if sarung_panjang:
 		# Lipatan sarung di pinggang (ikat pinggang bermotif) dan lajur kain di depan
 		var lipatan := CylinderMesh.new()
@@ -145,7 +151,9 @@ func _bangun() -> void:
 	_bangun_rambut()
 	if rambut_gimbal:
 		_bangun_gimbal()
-	if ikat_songke and not pakai_panggal:
+	if pakai_topi:
+		_bangun_topi()
+	elif ikat_songke and not pakai_panggal:
 		_bangun_ikat_songke(m_songke)
 	elif not perempuan and not pakai_panggal:
 		# Ikat kepala songke
@@ -174,6 +182,23 @@ func _bangun() -> void:
 	_bangun_senjata()
 	if bawa_nampan:
 		_bangun_nampan()
+
+
+## Topi lebar sederhana: pinggiran datar + mahkota.
+func _bangun_topi() -> void:
+	var m_topi := _mat(warna_topi)
+	var pinggir := CylinderMesh.new()
+	pinggir.top_radius = JARI_KEPALA + 0.13
+	pinggir.bottom_radius = JARI_KEPALA + 0.13
+	pinggir.height = 0.025
+	pinggir.radial_segments = 14
+	_bagian(_badan, pinggir, Vector3(0, TINGGI_KEPALA + 0.12, 0), m_topi)
+	var mahkota := CylinderMesh.new()
+	mahkota.top_radius = JARI_KEPALA - 0.02
+	mahkota.bottom_radius = JARI_KEPALA + 0.02
+	mahkota.height = 0.15
+	mahkota.radial_segments = 12
+	_bagian(_badan, mahkota, Vector3(0, TINGGI_KEPALA + 0.2, 0), m_topi)
 
 
 ## Otot dada dan perut (kotak-kotak kecil sedikit lebih gelap dari kulit) untuk tubuh atletis.

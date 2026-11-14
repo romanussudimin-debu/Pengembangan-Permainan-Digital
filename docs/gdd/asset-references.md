@@ -8,6 +8,10 @@ Semua aset dalam prototipe **dibuat sendiri** secara prosedural oleh pembuat pro
 | Karakter (Nggohak, warga, penampil caci, penari) | Model bergaya anime 3D dari mesh primitif (kepala besar, mata berkilau, rambut bergelombang) + animasi prosedural | Godot (CapsuleMesh, BoxMesh, SphereMesh, CylinderMesh, TorusMesh) | `src/scripts/karakter/karakter_model.gd` | Milik pembuat |
 | Mbaru Niang, compang, gong & gendang, pohon, bukit, batu, arena, papan | Model low-poly | Godot (mesh primitif) | `src/scripts/dunia/dunia.gd` | Milik pembuat |
 | Anjing, ayam | Model low-poly + animasi prosedural | Godot (mesh primitif) | `src/scripts/dunia/hewan.gd` | Milik pembuat |
+| Pulau TN Komodo (laut, daratan pasir/sabana, dermaga, kapal wisata gaya pinisi, lontar, karang, gedung pelabuhan, sampah) | Model low-poly | Godot (mesh primitif) | `src/scripts/dunia/dunia_pulau.gd` | Milik pembuat |
+| Komodo | Model low-poly + animasi prosedural (ekor meliuk, kaki melangkah, lidah) | Godot (mesh primitif) | `src/scripts/dunia/komodo.gd` | Milik pembuat |
+| Wisatawan & ranger (kaos, celana pendek, topi) | Variasi KarakterModel | Godot (mesh primitif) | `src/scripts/karakter/karakter_model.gd` | Milik pembuat |
+| Peta perjalanan kapal & piktogram foto budaya | Gambar 2D prosedural (`_draw`) | Godot | `src/scripts/ui/peta_kapal.gd`, `src/scripts/minigame/jual_songke.gd` | Milik pembuat |
 | Lingko (pematang, lodok, haju teno, juring sawah, pondok, wae teku, saluran) | Model low-poly + mesh juring (SurfaceTool) | Godot (mesh primitif, SurfaceTool) | `src/scripts/dunia/dunia_lingko.gd` | Milik pembuat |
 
 ## Tekstur (`src/assets/textures/`, 64×64 px kecuali disebut lain)

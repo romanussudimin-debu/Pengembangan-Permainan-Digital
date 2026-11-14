@@ -152,6 +152,9 @@ Tantangan:
 LEVEL 2 – LINGKO LODOK
 Undang lima kepala keluarga berdasarkan ciri-cirinya, susuri pematang yang sempit (jatuh = kembali ke titik aman), alirkan air dari wae teku, lalu bagi lingko dengan garis moso sesuai musyawarah.
 
+LEVEL 3 – SONGKE KE LABUAN BAJO
+Ikut kapal wisata ke 6 destinasi Taman Nasional Komodo. Di tiap destinasi, jual kain songke titipan penenun atau foto budaya kepada 3 wisatawan: pilih barang yang cocok dengan keinginannya, lalu ceritakan maknanya. Tiap destinasi punya tantangan: mendaki Padar (jaga tenaga), karang di Pink Beach, komodo di Pulau Komodo, air pasang di Taka Makassar, dan arus di Teluk Manjarite.
+
 MODE SULIT: ada batas waktu "sebelum senja", jatuh dan salah orang mengurangi waktu, kesempatan salah lebih sedikit, dan ukuran bagian tidak ditampilkan.
 
 Dialog diucapkan dengan suara; teks dialog bisa dinyalakan di menu jeda."""
@@ -160,7 +163,7 @@ Dialog diucapkan dengan suara; teks dialog bisa dinyalakan di menu jeda."""
 func _teks_tentang() -> String:
 	return """TENTANG GAME
 
-Jejak Penti di Wae Rebo adalah prototipe game 3D jelajah budaya Manggarai, Flores, NTT. Menjelang Penti (tahun baru adat), Nggohak menemui warga kampung, menjawab teka-teki, menenun songke, dan menabuh gong-gendang untuk mengumpulkan kartu pengetahuan budaya. Di Level 2, ia membantu Tu'a Teno membagi lingko, lahan adat berbentuk jaring laba-laba.
+Jejak Penti di Wae Rebo adalah prototipe game 3D jelajah budaya Manggarai, Flores, NTT. Menjelang Penti (tahun baru adat), Nggohak menemui warga kampung, menjawab teka-teki, menenun songke, dan menabuh gong-gendang untuk mengumpulkan kartu pengetahuan budaya. Di Level 2, ia membantu Tu'a Teno membagi lingko, lahan adat berbentuk jaring laba-laba. Di Level 3, ia membawa songke tenunan penenun kampung ke Labuan Bajo dan menjualnya kepada wisatawan di Taman Nasional Komodo.
 
 Latar kampung terinspirasi Wae Rebo: tujuh Mbaru Niang yang melingkari compang. Caci ditampilkan sebagai pertunjukan saat Penti. Semua model, tekstur songke, dan musik gong-gendang dibuat sendiri secara prosedural.
 

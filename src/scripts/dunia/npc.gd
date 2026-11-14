@@ -13,6 +13,9 @@ signal diajak_bicara(npc: NpcKampung)
 @export var pemain_caci: bool = false
 @export var perempuan: bool = false
 @export var bawa_nampan: bool = false
+@export var wisatawan: bool = false  ## kaos + celana pendek + topi (Level 3)
+@export var warna_celana: Color = Color("c8b48a")
+@export var warna_topi: Color = Color("e8dcb8")
 @export var titik_patroli: Array[Vector3] = []  ## posisi dunia yang dikunjungi bergantian
 @export var lama_diam_min: float = 4.0
 @export var lama_diam_maks: float = 9.0
@@ -39,8 +42,13 @@ func _ready() -> void:
 	model.bawa_senjata = pemain_caci
 	model.perempuan = perempuan
 	model.bawa_nampan = bawa_nampan
+	if wisatawan:
+		model.celana_polos = true
+		model.warna_celana = warna_celana
+		model.pakai_topi = true
+		model.warna_topi = warna_topi
 	add_child(model)
-	Dunia.label_nama(self, nama, 3.6 if pemain_caci else 3.1)
+	Dunia.label_nama(self, nama, 3.6 if pemain_caci or wisatawan else 3.1)
 	area = Interaktif.new()
 	area.teks_petunjuk = "Bicara"
 	area.tinggi_petunjuk = 3.9

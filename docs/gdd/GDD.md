@@ -29,6 +29,7 @@
 | 0.x | 2D: teka-teki lingko + duel caci | — |
 | 1.x | 3D: jelajah kampung + duel caci (ta'ang/paki, 3 lawan) | Lebih imersif |
 | **2.0** | **3D: jelajah budaya dengan rantai teka-teki, menenun songke, tabuh gong-gendang; caci sebagai pertunjukan Penti** | Duel caci dinilai terlalu sulit untuk pemain umum. Jelajah budaya mengenalkan lebih banyak unsur budaya. Caci tetap tampil dengan hormat sebagai pertunjukan. |
+| 2.2 | + **Level 3 Songke ke Labuan Bajo** (peta kapal, 6 destinasi TN Komodo, mini-game menjual), ending Penti dipindah ke akhir Level 3 | Menghubungkan budaya (songke) dengan ekonomi kreatif & wisata bertanggung jawab; persiapan Proyek UAS (3 level) |
 | 2.1 | + **Level 2 Lingko Lodok** (undangan reke lodok, saluran wae teku, pembagian moso, pandangan dari bukit), Mode Sulit, simpan & lanjutkan | Mengangkat lingko, yang sudah diriset sebagai kandidat mekanik, menjadi level kedua |
 
 ## 2. Latar & Cerita
@@ -101,6 +102,35 @@ Latar di luar kampung, mewujudkan ungkapan *gendang one, lingko pe'ang*: lingko 
 **Pesan budaya utama:** adil dalam lingko **tidak selalu berarti sama luas**. Tu'a teno dan tu'a golo mendapat bagian lebih besar, dan keluarga bertanggungan banyak bisa mendapat lebih, sesuai kesepakatan musyawarah (catatan riset §4). Jawaban "sama rata" sengaja ditolak.
 
 **Mode Sulit** (dipilih di menu utama): batas waktu "sebelum senja" (7 menit, matahari makin rendah dan langit makin jingga), jatuh −10 detik, salah orang −15 detik (sekali per pengecoh), pengecoh hanya memberi petunjuk umum, ukuran bagian lingko tidak ditampilkan, kesempatan salah membagi 2 (Normal 3), dan putaran saluran air dibatasi. Waktu habis → level diulang.
+
+### 4.6 Level 3 — Songke ke Labuan Bajo (data: `src/data/labuan_bajo.json`)
+Setelah lingko terbagi, warga menitipkan **songke tenunan penenun kampung** kepada Nggohak, ditambah **foto budaya** dari Level 1–2. Ia ikut **kapal wisata resmi sebagai pemandu budaya** ke 6 destinasi Taman Nasional Komodo. Hasil penjualan dibawa pulang untuk Penti dan para penenun → **ending Penti + caci** (dengan adegan penyerahan hasil penjualan kepada Tu'a Golo dan penenun).
+
+**Struktur:** peta perjalanan kapal (UI tampak atas, destinasi terbuka berurutan) → scene pulau yang dibangun dari builder yang sama (`DuniaPulau`). Target **3 pembeli per pulau** (4 pembeli + 2 wisatawan pemberi info per pulau, total 18 penjualan). Progres per pulau tersimpan.
+
+**Mekanik menjual (mini-game `JualSongke`):** (1) wisatawan menyebut keinginan → (2) pilih kain/foto yang cocok (salah barang hanya ditolak) → (3) ceritakan maknanya: pilihan ganda yang jawabannya ada di kartu budaya. Salah cerita: Normal boleh sekali lagi, Sulit wisatawan langsung pergi. Bila pembeli tersisa tidak cukup → pulau diulang.
+
+| # | Destinasi | Mekanik khas | Kartu | Fakta / adaptasi |
+|---|---|---|---|---|
+| 1 | Pelabuhan Labuan Bajo | Tutorial menjual | Labuan Bajo | Fakta [S41] |
+| 2 | Pulau Padar | Mendaki 3 pos; **tenaga** berkurang saat berjalan (lebih cepat di tanjakan), minum di pos (sekali per pos); tenaga habis = melambat | Pulau Padar | Fakta (tiga pantai, panas, tanpa penjual) [S42]; sistem tenaga = adaptasi |
+| 3 | Pink Beach | Pantai + air dangkal; **injak karang = kembali**; pungut sampah (opsional) | Pink Beach | Fakta [S43]; wisata bertanggung jawab |
+| 4 | Pulau Komodo | Jalur bersama **ranger**; komodo berpatroli; terlalu dekat = kembali (Sulit: komodo 5, jarak bahaya lebih besar) | Komodo | Fakta [S44]; jarak bahaya = adaptasi `[PERLU VERIFIKASI]` |
+| 5 | Taka Makassar | Pulau pasir sabit **menyempit karena air pasang** (batas waktu alami 4 menit, Sulit ±2,8 menit) | Taka Makassar | *Adaptasi kreatif* (penyusutan dipercepat) [S45] |
+| 6 | Teluk Manjarite | **Berenang** antar-kapal berlabuh; **arus** mendorong pemain; karang | Teluk Manjarite | `[PERLU VERIFIKASI]` detail teluk [S45] |
+
+Kartu tambahan: **Songke sebagai Ekonomi Kreatif** (diberikan di awal Level 3) [S46, S47]. Kartu destinasi didapat dengan membaca papan informasi atau saat pulau tuntas.
+
+**Pesan wisata bertanggung jawab:** jaga jarak dari satwa, jangan menginjak karang, bawa pulang sampah, hargai karya penenun dengan harga yang adil.
+
+**Mode Sulit Level 3:** batas waktu 5 menit per pulau (habis → ulangi pulau), salah cerita = wisatawan pergi, tenaga Padar lebih cepat habis, komodo lebih banyak dan lebih cepat, denda waktu saat jatuh ke laut/menginjak karang (−10 dtk) atau terlalu dekat komodo (−15 dtk).
+
+### 4.7 Kurva kesulitan
+| Level | Kesulitan | Tantangan utama |
+|---|---|---|
+| 1 Kampung Wae Rebo | Mudah | Jelajah, teka-teki, 2 mini-game tanpa tekanan waktu |
+| 2 Lingko Lodok | Sedang | Platforming pematang, deduksi ciri, 2 mini-game logika |
+| 3 Labuan Bajo | Sulit, naik per destinasi | Tutorial → stamina → bahaya lingkungan (karang) → bahaya bergerak (komodo) → batas waktu alami (pasang) → arus + berenang |
 
 **Progres:** setelah Level 1 tamat, progres tersimpan (`user://simpanan.cfg`), sehingga tombol **Lanjutkan (Level 2)** muncul di menu utama. Level 2 tamat → ending Penti.
 

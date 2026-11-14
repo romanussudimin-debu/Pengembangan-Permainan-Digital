@@ -46,6 +46,8 @@ func _ready() -> void:
 	anjing.warna_utama = Color("e8e0d0")
 	anjing.jari_jelajah = 1.5
 	add_child(anjing)
+	if GameState.level >= 3:
+		_bangun_penyerahan()
 	_bangun_pertunjukan_caci()
 	_kamera = Camera3D.new()
 	add_child(_kamera)
@@ -71,6 +73,34 @@ func _bangun_pertunjukan_caci() -> void:
 	t.autostart = true
 	t.timeout.connect(_serangan_berikutnya)
 	add_child(t)
+
+
+## Level 3 tamat: Nggohak menyerahkan hasil penjualan songke kepada Tu'a Golo dan penenun (Ine Wela).
+func _bangun_penyerahan() -> void:
+	var nggohak := KarakterModel.new()
+	nggohak.tekstur_songke = preload("res://assets/textures/songke_nggohak.png")
+	nggohak.telanjang_dada = true
+	nggohak.sarung_panjang = true
+	nggohak.ikat_songke = true
+	nggohak.rambut_gimbal = true
+	nggohak.berotot = true
+	nggohak.position = Vector3(-7.5, 0, 4.5)
+	add_child(nggohak)
+	nggohak.rotation.y = -PI / 2.0  # menghadap ke timur (+X), ke arah tetua
+	var tetua: Array = [["songke_kuning", Color("1b1818"), false, Vector3(-5.6, 0, 4.0)],
+		["songke_hijau", Color("b02a2a"), true, Vector3(-5.6, 0, 5.4)]]
+	for t: Array in tetua:
+		var m := KarakterModel.new()
+		m.tekstur_songke = load("res://assets/textures/%s.png" % t[0])
+		m.warna_baju = t[1]
+		m.perempuan = t[2]
+		m.position = t[3]
+		add_child(m)
+		m.rotation.y = PI / 2.0
+	# Bungkusan hasil penjualan di antara mereka
+	var bungkus := BoxMesh.new()
+	bungkus.size = Vector3(0.5, 0.35, 0.4)
+	Dunia.mesh(self, bungkus, Vector3(-6.6, 0.18, 4.7), Dunia.mat(Color.WHITE, preload("res://assets/textures/songke_merah.png")))
 
 
 ## Peran bergantian seperti caci: paki menyerang, ta'ang menangkis, lalu bertukar.
@@ -103,7 +133,10 @@ func _bangun_ui() -> void:
 	isi.size = Vector2(324, 80)
 	isi.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	var cerita: String = "Nggohak telah menemui seluruh warga, menjawab teka-teki mereka, dan mengumpulkan pengetahuan budaya Manggarai."
-	if GameState.level >= 2:
+	if GameState.level >= 3:
+		cerita = "Nggohak pulang dari Labuan Bajo dan menyerahkan hasil penjualan %d kain dan foto kepada Tu'a Golo dan para penenun." % [
+			GameState.terjual_total]
+	elif GameState.level >= 2:
 		cerita = "Nggohak telah membantu warga kampung, lalu menolong Tu'a Teno membagi lingko lewat musyawarah."
 	isi.text = cerita + " Kini ia bergabung dalam perayaan tahun baru adat sambil menyaksikan caci.\n\nKartu budaya terkumpul: %d dari %d" % [
 		GameState.kartu_terkumpul.size(), GameState.jumlah_kartu_total()]

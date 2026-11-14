@@ -31,6 +31,7 @@ func _ready() -> void:
 	GameState.level = 3
 	GameState.ubah_state(GameState.State.BERMAIN)
 	AudioManager.putar_musik("kampung")
+	_siapkan_uji_langsung()
 	var selesai: int = GameState.pulau_selesai
 	_posisi_kapal = _titik_pulau(clampi(selesai - 1, 0, DataLabuanBajo.jumlah_pulau() - 1))
 	if selesai == 0:
@@ -41,6 +42,18 @@ func _ready() -> void:
 	elif selesai >= DataLabuanBajo.jumlah_pulau():
 		get_tree().create_timer(0.6, false).timeout.connect(
 				func() -> void: DialogManager.mulai_baris("pulang", DataLabuanBajo.dialog()["pulang"]))
+
+
+## Bila scene ini dibuka langsung (F6) tanpa memainkan Level 1-2, kartu Level 1-2 dianggap sudah
+## terkumpul supaya foto budaya tersedia untuk dijual dan Level 3 bisa diuji sendiri.
+func _siapkan_uji_langsung() -> void:
+	if GameState.jumlah_terkumpul_level(1) > 0 or GameState.jumlah_terkumpul_level(2) > 0:
+		return
+	for k: Dictionary in GameState.semua_kartu():
+		if int(k.get("level", 1)) < 3:
+			GameState.kumpulkan_kartu(str(k["id"]))
+	GameState.langkah_rantai = GameState.rantai().size()
+	GameState.kartu_awal_level.assign(GameState.kartu_terkumpul)
 
 
 func _titik_pulau(i: int) -> Vector2:

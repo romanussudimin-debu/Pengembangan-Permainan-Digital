@@ -1,8 +1,23 @@
 # Jejak Penti di Wae Rebo
 
-**▶ Main langsung di browser (HP/laptop):** https://romanussudimin-debu.github.io/Pengembangan-Permainan-Digital/ — putar HP mendatar. Versi web dibangun otomatis oleh GitHub Actions (`.github/workflows/web.yml`) setiap ada perubahan di `src/`.
+## Cara bermain
 
-Prototipe **game 3D jelajah budaya Manggarai** (Flores, NTT) untuk tugas *Pengembangan Permainan Digital: Rencana Tugas 1*. Engine: **Godot 4.3+**.
+| Perangkat | Cara | Link |
+|---|---|---|
+| **HP / tablet (Android)** | Unduh aplikasi (APK) | [JejakPenti.apk](https://github.com/romanussudimin-debu/Pengembangan-Permainan-Digital/releases/download/apk-terbaru/JejakPenti.apk) |
+| **HP / tablet (Android & iPhone)** | Main langsung di browser (putar HP mendatar) | [Main di web](https://romanussudimin-debu.github.io/Pengembangan-Permainan-Digital/) |
+| **Windows 10/11** | Unduh aplikasi (.exe) | [JejakPenti-Windows.zip](https://github.com/romanussudimin-debu/Pengembangan-Permainan-Digital/releases/download/desktop-terbaru/JejakPenti-Windows.zip) |
+| **macOS (Intel & Apple Silicon)** | Unduh aplikasi (.app) | [JejakPenti-macOS.zip](https://github.com/romanussudimin-debu/Pengembangan-Permainan-Digital/releases/download/desktop-terbaru/JejakPenti-macOS.zip) |
+| **Laptop / PC (semua)** | Main langsung di browser | [Main di web](https://romanussudimin-debu.github.io/Pengembangan-Permainan-Digital/) |
+
+- **Android (APK):** buka file yang diunduh → izinkan "Instal aplikasi tidak dikenal" bila diminta → **Instal**. Agar dialog bersuara, pasang suara **Bahasa Indonesia** di Setelan → Aksesibilitas → Output text-to-speech (mesin Google).
+- **Main di web dari HP:** ketuk layar sekali agar layar penuh. Bisa juga dipasang sebagai aplikasi: Chrome **⋮ → Instal aplikasi** (Android) atau Safari **Bagikan → Tambahkan ke Layar Utama** (iPhone).
+- **Windows:** ekstrak ZIP → klik dua kali `JejakPenti.exe` → bila muncul "Windows protected your PC", klik **More info → Run anyway**.
+- **macOS:** ekstrak ZIP → pertama kali, **klik kanan** aplikasi → **Open** → **Open**.
+
+Semua versi dibangun otomatis oleh GitHub Actions (`web.yml`, `android.yml`, `desktop.yml`) setiap ada perubahan di `src/`. Semua rilis ada di [halaman Releases](https://github.com/romanussudimin-debu/Pengembangan-Permainan-Digital/releases).
+
+Game **3D jelajah budaya Manggarai** (Flores, NTT) untuk mata kuliah *Pengembangan Permainan Digital*. Engine: **Godot 4.3+**. Tiga level: **Kampung Wae Rebo** (rantai teka-teki, menenun songke, tabuh gong-gendang), **Lingko Lodok** (undangan reke lodok, saluran wae teku, pembagian moso), dan **Songke ke Labuan Bajo** (menjual songke & foto budaya di 6 destinasi Taman Nasional Komodo), ditutup perayaan Penti dan caci.
 
 Game 3D **jelajah budaya**. Menjelang **Penti**, Nggohak pulang ke kampung adat bergaya Wae Rebo. Delapan warga masing-masing menyimpan kartu budaya yang harus dikumpulkan **berurutan**. Setiap warga memberi tantangan dan petunjuk ke warga berikutnya. Tantangannya:
 - **Teka-teki budaya** (pilihan ganda bersuara, jawabannya ada di kartu sebelumnya)

@@ -29,6 +29,9 @@ const ADEGAN_LEVEL: Dictionary = {
 ## Level 3: setiap destinasi dimainkan di scene pulau yang sama (dibangun dari data/labuan_bajo.json).
 const ADEGAN_PULAU: String = "res://scenes/pulau.tscn"
 const ADEGAN_ENDING: String = "res://scenes/ending.tscn"
+## Layar antar-level: "Level N berhasil" + tombol lanjut + animasi orb level berikutnya.
+const ADEGAN_LEVEL_SELESAI: String = "res://scenes/level_selesai.tscn"
+const DATA_LEVEL: JSON = preload("res://data/level.json")
 const BERKAS_SIMPAN: String = "user://simpanan.cfg"
 const NAMA_LEVEL: Dictionary = {1: "Kampung Wae Rebo", 2: "Lingko Lodok", 3: "Songke ke Labuan Bajo"}
 
@@ -44,6 +47,9 @@ var level_tertinggi: int = 1  ## level terjauh yang sudah terbuka (disimpan)
 var kartu_awal_level: Array[String] = []  ## kartu saat level dimulai (untuk mengulang level)
 var mode_sulit: bool = false  ## Sulit: batas waktu "sebelum senja", kesempatan salah lebih sedikit
 var tujuan_khusus: String = ""  ## teks tujuan yang diatur level aktif (Level 2 dst.)
+var level_baru_selesai: int = 0  ## level yang baru tamat (dibaca layar Level Berhasil)
+var waktu_mulai_level: int = 0  ## Time.get_ticks_msec() saat level dimulai
+var durasi_level_terakhir: float = 0.0  ## detik, untuk ringkasan akhir level
 
 # --- Sub-progres Level 3 (disimpan) ---
 var pulau_selesai: int = 0  ## jumlah destinasi yang sudah tuntas (destinasi terbuka berurutan)
@@ -90,17 +96,33 @@ func reset_progres() -> void:
 
 ## Dipanggil saat level `n` tamat: progres disimpan lalu pindah ke level berikutnya
 ## (atau ke ending bila level berikutnya belum ada).
+## Layar "Level N berhasil" ditampilkan dulu; pemain sendiri yang menekan tombol lanjut.
 func selesaikan_level(n: int) -> void:
 	tujuan_khusus = ""
 	kartu_awal_level.assign(kartu_terkumpul)
+	level_baru_selesai = n
+	durasi_level_terakhir = (Time.get_ticks_msec() - waktu_mulai_level) / 1000.0 if waktu_mulai_level > 0 else 0.0
 	if ADEGAN_LEVEL.has(n + 1):
 		level = n + 1
 		level_tertinggi = maxi(level_tertinggi, level)
-		simpan()
-		Transisi.pindah_scene(ADEGAN_LEVEL[level])
-	else:
-		simpan()
-		Transisi.pindah_scene(ADEGAN_ENDING)
+	simpan()
+	Transisi.pindah_scene(ADEGAN_LEVEL_SELESAI)
+
+
+## Dipanggil saat pemain mulai memainkan level `n` (dari menu atau layar antar-level).
+func mulai_level(n: int) -> void:
+	level = n
+	waktu_mulai_level = Time.get_ticks_msec()
+	Nyawa.isi_penuh()
+	tujuan_khusus = ""
+	Transisi.pindah_scene(ADEGAN_LEVEL[n])
+
+
+func data_level(n: int) -> Dictionary:
+	for d: Dictionary in DATA_LEVEL.data["level"]:
+		if int(d["nomor"]) == n:
+			return d
+	return {}
 
 
 ## Melanjutkan dari level terjauh yang tersimpan (kartu level sebelumnya ikut dipulihkan).
@@ -110,6 +132,8 @@ func lanjutkan() -> void:
 	kartu_terkumpul.assign(kartu_awal_level)
 	langkah_rantai = rantai().size() if level > 1 else 0
 	tujuan_khusus = ""
+	waktu_mulai_level = Time.get_ticks_msec()
+	Nyawa.isi_penuh()
 	progres_berubah.emit()
 	Transisi.pindah_scene(ADEGAN_LEVEL[level])
 
@@ -117,6 +141,7 @@ func lanjutkan() -> void:
 ## Mengulang level aktif dari awal (misalnya karena waktu habis di mode Sulit).
 func ulangi_level() -> void:
 	kartu_terkumpul.assign(kartu_awal_level)
+	Nyawa.isi_penuh()
 	tujuan_khusus = ""
 	progres_berubah.emit()
 	Transisi.pindah_scene(ADEGAN_LEVEL[level])
@@ -129,6 +154,7 @@ func ada_simpanan() -> bool:
 ## Level 3: masuk ke destinasi `i` dari peta kapal.
 func kunjungi_pulau(i: int) -> void:
 	pulau_aktif = i
+	Nyawa.isi_penuh(false)  # tiap destinasi Level 3 dimulai dengan nyawa penuh
 	tujuan_khusus = ""
 	Transisi.pindah_scene(ADEGAN_PULAU)
 
@@ -147,6 +173,7 @@ func selesaikan_pulau(i: int, terjual: int) -> void:
 ## Level 3: mengulang destinasi aktif (waktu habis, pasir tenggelam, atau pembeli tidak cukup).
 func ulangi_pulau() -> void:
 	kartu_terkumpul.assign(kartu_awal_level)
+	Nyawa.isi_penuh(false)
 	tujuan_khusus = ""
 	progres_berubah.emit()
 	Transisi.pindah_scene(ADEGAN_PULAU)

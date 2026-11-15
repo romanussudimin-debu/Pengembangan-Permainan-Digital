@@ -6,6 +6,7 @@ extends CanvasLayer
 ## Mode Sulit: jumlah putaran dibatasi (putaran minimum + 6); melebihi batas = gagal.
 
 signal selesai(berhasil: bool)
+signal salah(penyebab: String)  ## satu kesalahan (pengurang nyawa)
 
 const KOLOM: int = 6
 const BARIS: int = 5
@@ -37,6 +38,7 @@ const WARNA_AIR := Color("5fa8d3")
 const WARNA_KERING := Color("8a6a44")
 const WARNA_PETAK := Color("3d5a32")
 
+var batal: bool = false  ## true bila pemain menekan Berhenti (bukan gagal)
 var _ubin: Dictionary = {}  ## Vector2i -> bit sambungan saat ini
 var _basah: Dictionary = {}
 var _kursor := Vector2i(0, 2)
@@ -152,7 +154,9 @@ func _bangun_ui() -> void:
 	berhenti.custom_minimum_size = Vector2(110, 24)
 	berhenti.position = Vector2(470, 40)
 	berhenti.focus_mode = Control.FOCUS_NONE
-	berhenti.pressed.connect(_akhiri.bind(false))
+	berhenti.pressed.connect(func() -> void:
+		batal = true
+		_akhiri(false))
 	add_child(berhenti)
 	_perbarui_info()
 

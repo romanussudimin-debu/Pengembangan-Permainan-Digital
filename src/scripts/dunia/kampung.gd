@@ -33,9 +33,13 @@ const DATA_WARGA: Array = [
 ## Rumah berciri khusus (dipakai sebagai petunjuk): indeks -> jenis penanda.
 const PENANDA_RUMAH: Dictionary = {5: "jemuran_songke", 3: "kayu_bakar"}
 
+## Penambah nyawa: secangkir kopi Manggarai di sudut-sudut kampung.
+const POS_KOPI: Array[Vector3] = [Vector3(-19, 0, -2), Vector3(10, 0, 21), Vector3(24, 0, 7.5), Vector3(0, 0, -21)]
+
 var pemain: Pemain
 var kamera: KameraIkut
 var _rumah: Array[Node3D] = []
+var _minigame: Node = null
 
 
 func _ready() -> void:
@@ -43,6 +47,11 @@ func _ready() -> void:
 	_bangun_warga()
 	_bangun_compang()
 	_bangun_hewan()
+	for p: Vector3 in POS_KOPI:
+		var kopi := PenambahNyawa.new()
+		kopi.jenis = "kopi"
+		kopi.position = p
+		add_child(kopi)
 	_munculkan_pemain()
 	add_child(preload("res://scripts/ui/hud.gd").new())
 	AudioManager.putar_musik("kampung")
@@ -180,14 +189,20 @@ func _bicara_warga(npc: NpcKampung) -> void:
 
 
 func _mulai_tantangan(tantangan: Dictionary) -> void:
+	# Nyawa habis di tantangan ini = tantangan ini saja yang diulang
+	Nyawa.atur_tantangan(str(tantangan["pemegang"]), _ulangi_tantangan.bind(tantangan))
 	match str(tantangan["jenis"]):
 		"tenun":
 			var tenun: TenunSongke = TENUN.new()
-			tenun.selesai.connect(_hasil_minigame.bind(tantangan, "tenun_gagal"))
+			tenun.selesai.connect(_hasil_minigame.bind(tantangan, "tenun_gagal", tenun))
+			tenun.salah.connect(Nyawa.kurangi)
+			_minigame = tenun
 			add_child(tenun)
 		"gong":
 			var tabuh: TabuhGong = TABUH.new()
-			tabuh.selesai.connect(_hasil_minigame.bind(tantangan, "gong_gagal"))
+			tabuh.selesai.connect(_hasil_minigame.bind(tantangan, "gong_gagal", tabuh))
+			tabuh.salah.connect(Nyawa.kurangi)
+			_minigame = tabuh
 			add_child(tabuh)
 		_:
 			DialogManager.ajukan_teka_teki(tantangan["pemegang"], tantangan["pertanyaan"], tantangan["pilihan"],
@@ -197,15 +212,31 @@ func _mulai_tantangan(tantangan: Dictionary) -> void:
 func _hasil_teka_teki(benar: bool, tantangan: Dictionary) -> void:
 	if benar:
 		_tantangan_berhasil(tantangan)
-	else:
+		return
+	Nyawa.kurangi("salah jawab")
+	if not Nyawa.sedang_habis():
 		DialogManager.mulai_baris("salah", _baris_dialog("salah", tantangan["pemegang"]))
 
 
-func _hasil_minigame(berhasil: bool, tantangan: Dictionary, id_gagal: String) -> void:
+func _hasil_minigame(berhasil: bool, tantangan: Dictionary, id_gagal: String, minigame: Node) -> void:
+	_minigame = null
 	if berhasil:
 		_tantangan_berhasil(tantangan)
-	else:
+		return
+	if minigame.get("batal"):
+		return  # pemain menekan Berhenti: tidak dihitung gagal
+	Nyawa.kurangi("gagal tantangan")
+	if not Nyawa.sedang_habis():
 		DialogManager.mulai(id_gagal)
+
+
+## Nyawa habis: tutup mini-game yang terbuka lalu mulai tantangan yang sama dari awal.
+func _ulangi_tantangan(tantangan: Dictionary) -> void:
+	if is_instance_valid(_minigame):
+		_minigame.queue_free()
+		_minigame = null
+	GameState.ubah_state(GameState.State.BERMAIN)
+	_mulai_tantangan(tantangan)
 
 
 ## Tantangan selesai: kartu diberikan, lalu warga menyebutkan petunjuk ke warga berikutnya.

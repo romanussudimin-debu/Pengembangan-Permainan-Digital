@@ -5,6 +5,7 @@ extends CanvasLayer
 ## minimal PERSEN_LULUS ketukan tepat.
 
 signal selesai(berhasil: bool)
+signal salah(penyebab: String)  ## satu kesalahan (pengurang nyawa)
 
 const TEMPO_BPM: float = 76.0
 const JENDELA_TEPAT: float = 0.2  ## toleransi waktu (detik)
@@ -16,6 +17,7 @@ const JEDA_AWAL: float = 2.5
 ## Pola irama (G = gong, D = gendang, - = diam), satu karakter = setengah ketukan.
 const POLA: String = "G-D-D-G-D-D-G---G-D-D-G-DDG-G---"
 
+var batal: bool = false  ## true bila pemain berhenti (bukan gagal)
 var _ketukan: Array[Dictionary] = []  ## {waktu, jalur, status: 0 menunggu, 1 tepat, 2 luput}
 var _jam: float = 0.0
 var _tepat: int = 0

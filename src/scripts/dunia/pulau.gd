@@ -19,6 +19,11 @@ const DENDA_JATUH: float = 10.0
 const DENDA_KOMODO: float = 15.0
 const KECEPATAN_DARAT: float = 5.0
 const KECEPATAN_AIR: float = 2.8
+## Penambah nyawa (kelapa muda) di 4 destinasi: jenis pulau -> posisi.
+const POS_KELAPA: Dictionary = {
+	"padar": Vector3(3.5, 2.2, 10.0), "pink": Vector3(-7.0, 0.15, -3.0),
+	"komodo": Vector3(14.0, 0.0, 10.0), "manjarite": Vector3(13.0, DuniaPulau.Y_DEK, 1.6),
+}
 
 var data: Dictionary
 var jenis: String
@@ -36,6 +41,7 @@ var _terjual: int = 0
 var _tuntas: bool = false
 var _gagal: bool = false
 var _jeda_kembali: float = 0.0
+var _minigame: Node = null
 
 # Batas waktu Mode Sulit
 var _waktu_berjalan: bool = false
@@ -85,12 +91,18 @@ func _ready() -> void:
 			_bangun_manjarite()
 	_bangun_wisatawan()
 	_bangun_titik_keluar()
+	if POS_KELAPA.has(jenis):
+		var kelapa := PenambahNyawa.new()
+		kelapa.jenis = "kelapa"
+		kelapa.position = POS_KELAPA[jenis]
+		add_child(kelapa)
 	_munculkan_pemain()
 	add_child(preload("res://scripts/ui/hud.gd").new())
 	_bangun_ui()
 	AudioManager.putar_musik("kampung")
 	GameState.ubah_state(GameState.State.BERMAIN)
 	_perbarui_tujuan()
+	_atur_tantangan_jelajah()
 	if jenis == "taka":
 		_batas_waktu = float(data.get("batas_waktu_sulit", 170)) if GameState.mode_sulit else float(data.get("batas_waktu", 240))
 	elif GameState.mode_sulit:
@@ -364,10 +376,21 @@ func _mulai_jual(npc: NpcKampung) -> void:
 	var jual: JualSongke = JUAL.new()
 	jual.siapkan(_data_npc[npc], DataLabuanBajo.barang_dibawa(), GameState.mode_sulit)
 	jual.selesai.connect(_hasil_jual.bind(npc, jual))
+	jual.salah.connect(Nyawa.kurangi)
+	_minigame = jual
+	# Nyawa habis saat menawarkan: tawaran ditutup, wisatawan tetap bisa ditawari lagi
+	Nyawa.atur_tantangan("Menawarkan kepada %s" % npc.nama, func() -> void:
+		if is_instance_valid(_minigame):
+			_minigame.queue_free()
+		_minigame = null
+		GameState.ubah_state(GameState.State.BERMAIN)
+		_atur_tantangan_jelajah())
 	add_child(jual)
 
 
 func _hasil_jual(berhasil: bool, npc: NpcKampung, jual: JualSongke) -> void:
+	_minigame = null
+	_atur_tantangan_jelajah()
 	if berhasil:
 		_status[npc] = "terjual"
 		_terjual += 1
@@ -473,6 +496,15 @@ func _pungut_sampah(_p: Pemain, sampah: Node3D) -> void:
 	sampah.queue_free()
 
 
+## Tantangan jelajah pulau: nyawa habis = kembali ke dermaga (penjualan yang sudah terjadi tetap).
+func _atur_tantangan_jelajah() -> void:
+	Nyawa.atur_tantangan("Menjelajah %s" % data["nama"], func() -> void:
+		pemain.velocity = Vector3.ZERO
+		pemain.global_position = _titik_muncul
+		_titik_aman = _titik_muncul
+		_stamina = 100.0)
+
+
 func _munculkan_pemain() -> void:
 	pemain = ADEGAN_PEMAIN.instantiate()
 	add_child(pemain)
@@ -569,6 +601,7 @@ func _kembali_aman(pesan: String, denda: float) -> void:
 	pemain.velocity = Vector3.ZERO
 	pemain.global_position = tujuan + Vector3(0, 0.15, 0)
 	pemain.model.squash(Vector3(1.2, 0.8, 1.2))
+	Nyawa.kurangi(pesan)
 	if _waktu_berjalan:
 		_sisa_waktu = maxf(_sisa_waktu - denda, 0.0)
 		_toast(pesan + "  (-%d detik)" % int(denda))

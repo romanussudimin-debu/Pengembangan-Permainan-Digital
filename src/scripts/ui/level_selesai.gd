@@ -1,0 +1,202 @@
+extends Control
+## Layar antar-level (dibuka GameState.selesaikan_level):
+##   1. SUKSES : "LEVEL N BERHASIL!" + ringkasan (kartu, waktu, nyawa) + tombol "Lanjutkan ke Level N+1".
+##   2. ORB    : bola atom bersinar dengan cincin orbit bermotif songke dan tulisan "LEVEL N+1",
+##               nama dan tagline level, lalu tombol "Mulai Level N+1".
+## Setelah level terakhir, tombolnya menuju perayaan Penti (ending).
+
+enum Tahap { SUKSES, ORB }
+
+const WARNA_ORBIT: Array[Color] = [Color("e8b430"), Color("b02a2a"), Color("2e7d46")]
+
+var _tahap: int = Tahap.SUKSES
+var _selesai: int = 1
+var _berikut: int = 2
+var _waktu: float = 0.0
+var _waktu_orb: float = 0.0
+var _kanvas: Control
+var _grup_sukses: Control
+var _grup_orb: Control
+var _tombol_mulai: Button
+var _label_nama: Label
+var _label_tagline: Label
+
+
+func _ready() -> void:
+	get_tree().paused = false
+	set_anchors_preset(Control.PRESET_FULL_RECT)
+	_selesai = maxi(GameState.level_baru_selesai, 1)
+	_berikut = _selesai + 1
+	GameState.ubah_state(GameState.State.MENU)  # layar menu: kontrol sentuh & menu jeda tidak tampil
+	AudioManager.putar_musik("kampung")
+	AudioManager.putar_sfx("gong")
+	_kanvas = Control.new()
+	_kanvas.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_kanvas.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_kanvas.draw.connect(_gambar_latar)
+	add_child(_kanvas)
+	_bangun_sukses()
+	_bangun_orb()
+
+
+func _ada_level_berikut() -> bool:
+	return GameState.ADEGAN_LEVEL.has(_berikut)
+
+
+# ------------------------------------------------------------------ tahap SUKSES
+
+func _bangun_sukses() -> void:
+	_grup_sukses = Control.new()
+	_grup_sukses.set_anchors_preset(Control.PRESET_FULL_RECT)
+	add_child(_grup_sukses)
+	var judul := Gaya.label("LEVEL %d BERHASIL!" % _selesai, 30, Gaya.KUNING)
+	judul.add_theme_constant_override("outline_size", 7)
+	judul.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	judul.size = Vector2(640, 44)
+	judul.position = Vector2(0, 40)
+	judul.pivot_offset = Vector2(320, 22)
+	_grup_sukses.add_child(judul)
+	var nama := Gaya.label(str(GameState.data_level(_selesai).get("nama", "")), 13, Gaya.PUTIH)
+	nama.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	nama.size = Vector2(640, 20)
+	nama.position = Vector2(0, 86)
+	_grup_sukses.add_child(nama)
+	# Ringkasan level
+	var panel := Gaya.panel_songke(Vector2(170, 116), Vector2(300, 118))
+	_grup_sukses.add_child(panel)
+	var d: int = int(GameState.durasi_level_terakhir)
+	var baris: Array[String] = [
+		"Kartu budaya: %d / %d" % [GameState.jumlah_terkumpul_level(_selesai), GameState.kartu_level(_selesai).size()],
+		"Waktu bermain: %d:%02d" % [d / 60, d % 60],
+		"Nyawa tersisa: %d / %d" % [Nyawa.sisa, Nyawa.maks()],
+	]
+	for i in baris.size():
+		var l := Gaya.label(baris[i], 11, Gaya.PUTIH)
+		l.position = Vector2(22, 16 + i * 30)
+		panel.add_child(l)
+	var tombol := Gaya.tombol(("Lanjutkan ke Level %d" % _berikut) if _ada_level_berikut() else str(GameState.DATA_LEVEL.data["penutup"]["tombol"]))
+	tombol.custom_minimum_size = Vector2(240, 32)
+	tombol.add_theme_font_size_override("font_size", 13)
+	tombol.position = Vector2(200, 258)
+	tombol.pressed.connect(_lanjut)
+	_grup_sukses.add_child(tombol)
+	tombol.call_deferred("grab_focus")
+	if not _ada_level_berikut():
+		var teks := Gaya.label(str(GameState.DATA_LEVEL.data["penutup"]["teks"]), 10, Color("c9c2b0"))
+		teks.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		teks.size = Vector2(640, 18)
+		teks.position = Vector2(0, 302)
+		_grup_sukses.add_child(teks)
+	# Judul muncul dengan efek "pop" (squash & stretch)
+	judul.scale = Vector2(0.2, 0.2)
+	var tw := create_tween()
+	tw.tween_property(judul, "scale", Vector2(1.12, 1.12), 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_property(judul, "scale", Vector2.ONE, 0.15)
+	panel.modulate.a = 0.0
+	create_tween().tween_property(panel, "modulate:a", 1.0, 0.5).set_delay(0.3)
+
+
+func _lanjut() -> void:
+	if not _ada_level_berikut():
+		Transisi.pindah_scene(GameState.ADEGAN_ENDING)
+		return
+	_tahap = Tahap.ORB
+	_waktu_orb = 0.0
+	AudioManager.putar_sfx("gendang")
+	var tw := create_tween()
+	tw.tween_property(_grup_sukses, "modulate:a", 0.0, 0.35)
+	tw.tween_callback(_grup_sukses.hide)
+	_grup_orb.show()
+	_grup_orb.modulate.a = 0.0
+	create_tween().tween_property(_grup_orb, "modulate:a", 1.0, 0.5).set_delay(0.2)
+	get_tree().create_timer(1.6).timeout.connect(func() -> void:
+		_tombol_mulai.show()
+		_tombol_mulai.grab_focus()
+		AudioManager.putar_sfx("gong"))
+
+
+# ------------------------------------------------------------------ tahap ORB
+
+func _bangun_orb() -> void:
+	_grup_orb = Control.new()
+	_grup_orb.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_grup_orb.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_grup_orb.hide()
+	add_child(_grup_orb)
+	var data: Dictionary = GameState.data_level(_berikut)
+	_label_nama = Gaya.label(str(data.get("nama", "")), 18, Gaya.KUNING)
+	_label_nama.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_label_nama.size = Vector2(640, 26)
+	_label_nama.position = Vector2(0, 252)
+	_grup_orb.add_child(_label_nama)
+	_label_tagline = Gaya.label(str(data.get("tagline", "")), 10, Gaya.PUTIH)
+	_label_tagline.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_label_tagline.size = Vector2(640, 18)
+	_label_tagline.position = Vector2(0, 280)
+	_grup_orb.add_child(_label_tagline)
+	_tombol_mulai = Gaya.tombol("Mulai Level %d" % _berikut)
+	_tombol_mulai.custom_minimum_size = Vector2(200, 30)
+	_tombol_mulai.add_theme_font_size_override("font_size", 13)
+	_tombol_mulai.position = Vector2(220, 312)
+	_tombol_mulai.hide()
+	_tombol_mulai.pressed.connect(func() -> void: GameState.mulai_level(_berikut))
+	add_child(_tombol_mulai)
+
+
+func _process(delta: float) -> void:
+	_waktu += delta
+	_waktu_orb += delta
+	_kanvas.queue_redraw()
+
+
+## Latar: gradasi malam, pola belah ketupat songke yang berputar pelan, kilau melayang,
+## dan (tahap ORB) bola atom LEVEL berikutnya.
+func _gambar_latar() -> void:
+	var c: Control = _kanvas
+	for y in 18:
+		c.draw_rect(Rect2(0, y * 20.0, 640, 20.0), Color("1b1214").lerp(Color("3a1a16"), y / 17.0))
+	var pusat := Vector2(320, 150)
+	for i in 24:
+		var a: float = TAU * i / 24.0 + _waktu * 0.05
+		var p: Vector2 = pusat + Vector2(cos(a), sin(a)) * 250.0
+		_belah_ketupat(c, p, 9.0, Color(WARNA_ORBIT[i % 3], 0.25))
+	for i in 30:
+		var x: float = fmod(i * 97.0, 640.0)
+		var y: float = 360.0 - fmod(_waktu * (12.0 + i % 5 * 4.0) + i * 53.0, 380.0)
+		c.draw_circle(Vector2(x, y), 1.2 + (i % 3) * 0.5, Color(1, 0.9, 0.6, 0.35))
+	if _tahap == Tahap.ORB:
+		_gambar_orb(c, pusat)
+
+
+func _gambar_orb(c: Control, pusat: Vector2) -> void:
+	var muncul: float = ease(clampf(_waktu_orb / 0.8, 0.0, 1.0), -2.0)
+	var jari: float = 58.0 * muncul + sin(_waktu * 2.5) * 2.0
+	# Cahaya bertingkat (glow)
+	for k in 6:
+		c.draw_circle(pusat, jari + 30.0 - k * 5.0, Color(1.0, 0.75, 0.25, 0.05 + k * 0.02))
+	c.draw_circle(pusat, jari, Color("5a1a16"))
+	c.draw_circle(pusat, jari * 0.86, Color("8a2a20"))
+	c.draw_arc(pusat, jari, 0.0, TAU, 48, Gaya.KUNING, 3.0)
+	# Tiga orbit elips miring dengan "elektron" bermotif songke
+	for i in 3:
+		var miring: float = TAU * i / 3.0 + 0.3
+		var titik := PackedVector2Array()
+		for s in 49:
+			var t: float = TAU * s / 48.0
+			titik.append(pusat + Vector2(cos(t) * jari * 1.9, sin(t) * jari * 0.62).rotated(miring))
+		c.draw_polyline(titik, Color(WARNA_ORBIT[i], 0.85 * muncul), 2.0)
+		var t_e: float = _waktu * (1.6 + i * 0.4) + i * 2.0
+		var e: Vector2 = pusat + Vector2(cos(t_e) * jari * 1.9, sin(t_e) * jari * 0.62).rotated(miring)
+		_belah_ketupat(c, e, 7.0 * muncul, WARNA_ORBIT[i])
+		c.draw_circle(e, 2.0 * muncul, Gaya.PUTIH)
+	if muncul > 0.3:
+		var huruf := ThemeDB.fallback_font
+		c.draw_string(huruf, pusat + Vector2(-jari, -14), "LEVEL", HORIZONTAL_ALIGNMENT_CENTER, jari * 2.0, 13, Color(Gaya.PUTIH, muncul))
+		c.draw_string_outline(huruf, pusat + Vector2(-jari, 30), str(_berikut), HORIZONTAL_ALIGNMENT_CENTER, jari * 2.0, 46, 6, Color(Gaya.HITAM, muncul))
+		c.draw_string(huruf, pusat + Vector2(-jari, 30), str(_berikut), HORIZONTAL_ALIGNMENT_CENTER, jari * 2.0, 46, Color(Gaya.KUNING, muncul))
+
+
+func _belah_ketupat(c: Control, p: Vector2, r: float, warna: Color) -> void:
+	if r < 0.5:
+		return
+	c.draw_colored_polygon(PackedVector2Array([p + Vector2(0, -r), p + Vector2(r, 0), p + Vector2(0, r), p + Vector2(-r, 0)]), warna)

@@ -6,6 +6,7 @@ extends CanvasLayer
 ## atau klik kotak dengan mouse. Esc membatalkan.
 
 signal selesai(berhasil: bool)
+signal salah(penyebab: String)  ## satu kesalahan (pengurang nyawa)
 
 const UKURAN: int = 5
 const SISI_KOTAK: float = 30.0
@@ -15,6 +16,7 @@ const NAMA_BENANG: Array[String] = ["hitam", "kuning", "merah", "hijau"]
 const POS_CONTOH := Vector2(90, 120)
 const POS_KAIN := Vector2(400, 120)
 
+var batal: bool = false  ## true bila pemain menekan Berhenti (bukan gagal)
 var _contoh: Array[int] = []
 var _kain: Array[int] = []
 var _kursor := Vector2i(2, 2)
@@ -85,7 +87,9 @@ func _bangun_ui() -> void:
 	berhenti.custom_minimum_size = Vector2(110, 24)
 	berhenti.position = Vector2(470, 40)
 	berhenti.focus_mode = Control.FOCUS_NONE  # Spasi/E tidak boleh menekan tombol ini
-	berhenti.pressed.connect(_akhiri.bind(false))
+	berhenti.pressed.connect(func() -> void:
+		batal = true
+		_akhiri(false))
 	add_child(berhenti)
 	_perbarui_info()
 

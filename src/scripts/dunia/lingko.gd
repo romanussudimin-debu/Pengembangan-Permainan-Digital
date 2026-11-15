@@ -64,6 +64,8 @@ var _area_wae_teku: Interaktif
 var _area_bukit: Interaktif
 
 var _titik_aman: Vector3 = TITIK_MUNCUL
+var _titik_cek: Vector3 = TITIK_MUNCUL  ## tempat mengulang bila nyawa habis saat menyusuri pematang
+var _minigame: Node = null
 var _jeda_jatuh: float = 0.0
 var _sisa_waktu: float = WAKTU_SULIT
 var _waktu_berjalan: bool = false
@@ -140,6 +142,12 @@ func _bangun_dunia() -> void:
 	Dunia.papan(self, POS_WAE_TEKU + Vector3(-3.0, 0, 0.8), "Wae Teku")
 	_bangun_bukit()
 	_bangun_alam()
+	# Penambah nyawa: kendi air di pematang
+	for posisi: Array in [[-120.0, JARI_TENGAH], [60.0, JARI_DALAM], [150.0, JARI_LUAR]]:
+		var kendi := PenambahNyawa.new()
+		kendi.jenis = "kendi"
+		kendi.position = _di_pematang(posisi[0], posisi[1])
+		add_child(kendi)
 
 
 ## Bukit batu di barat daya: batu pijakan bertingkat menuju puncak untuk memandang lingko.
@@ -311,6 +319,9 @@ func _tampilkan_denda(detik: float) -> void:
 
 func _atur_tahap(baru: int) -> void:
 	tahap = baru
+	if pemain:
+		_titik_cek = _titik_aman  # titik cek tahap: tempat pemain berdiri saat tahap dimulai
+	_atur_tantangan_jelajah()
 	match tahap:
 		Tahap.SAMBUT:
 			GameState.atur_tujuan("Temui Tu'a Teno di lodok, titik pusat lingko. Susuri pematang dari jalan masuk.")
@@ -424,10 +435,14 @@ func _bicara_pengecoh(npc: NpcKampung) -> void:
 	var baris: Array = _baris("Nggohak", _dialog()["ajak"])
 	var teks: String = str(DATA.data["pengecoh_sulit"]) if GameState.mode_sulit else str(data["petunjuk"])
 	baris.append_array(_baris(npc.nama, teks))
-	DialogManager.mulai_baris("pengecoh", baris)
-	if GameState.mode_sulit and not npc.has_meta("sudah_ditanya"):
-		_tampilkan_denda(DENDA_SALAH_ORANG)  # denda hanya sekali per pengecoh
+	var pertama: bool = not npc.has_meta("sudah_ditanya")
 	npc.set_meta("sudah_ditanya", true)
+	DialogManager.mulai_baris("pengecoh", baris)
+	if pertama:
+		# Salah orang: -1 nyawa (sekali per pengecoh); Mode Sulit juga mengurangi waktu
+		if GameState.mode_sulit:
+			_tampilkan_denda(DENDA_SALAH_ORANG)
+		Nyawa.kurangi("salah orang (pengecoh)")
 
 
 # ------------------------------------------------------------------ reke lodok
@@ -481,14 +496,22 @@ func _interaksi_wae_teku(_p: Pemain) -> void:
 
 func _mulai_saluran() -> void:
 	var s: SaluranAir = SALURAN.new()
-	s.selesai.connect(_hasil_saluran)
+	s.selesai.connect(_hasil_saluran.bind(s))
+	s.salah.connect(Nyawa.kurangi)
+	_minigame = s
+	Nyawa.atur_tantangan("Mengalirkan air wae teku", _ulangi_minigame.bind(_mulai_saluran))
 	add_child(s)
 
 
-func _hasil_saluran(berhasil: bool) -> void:
+func _hasil_saluran(berhasil: bool, s: SaluranAir) -> void:
+	_minigame = null
+	_atur_tantangan_jelajah()
 	var d: Dictionary = _dialog()
 	if not berhasil:
-		DialogManager.mulai_baris("air_gagal", _baris("Nggohak", d["air_gagal"]))
+		if not s.batal:
+			Nyawa.kurangi("gagal mengalirkan air")
+		if not Nyawa.sedang_habis():
+			DialogManager.mulai_baris("air_gagal", _baris("Nggohak", d["air_gagal"]))
 		return
 	_alirkan_air()
 	DialogManager.mulai_baris("air_berhasil", _baris("Nggohak", d["air_berhasil"]), func() -> void:
@@ -510,10 +533,32 @@ func _mulai_bagi() -> void:
 	var b: BagiLingko = BAGI.new()
 	b.siapkan(DATA.data["ronde"])
 	b.selesai.connect(_hasil_bagi)
+	b.salah.connect(Nyawa.kurangi)
+	_minigame = b
+	Nyawa.atur_tantangan("Membagi lingko", _ulangi_minigame.bind(_mulai_bagi))
 	add_child(b)
 
 
+## Nyawa habis di mini-game: tutup lalu buka lagi dari awal.
+func _ulangi_minigame(pembuka: Callable) -> void:
+	if is_instance_valid(_minigame):
+		_minigame.queue_free()
+	_minigame = null
+	GameState.ubah_state(GameState.State.BERMAIN)
+	pembuka.call()
+
+
+## Tantangan jelajah (menyusuri pematang): nyawa habis = kembali ke titik cek tahap ini.
+func _atur_tantangan_jelajah() -> void:
+	Nyawa.atur_tantangan("Menyusuri pematang", func() -> void:
+		pemain.velocity = Vector3.ZERO
+		pemain.global_position = _titik_cek + Vector3(0, 0.2, 0)
+		_titik_aman = _titik_cek)
+
+
 func _hasil_bagi(berhasil: bool) -> void:
+	_minigame = null
+	_atur_tantangan_jelajah()
 	var d: Dictionary = _dialog()
 	if not berhasil:
 		DialogManager.mulai_baris("bagi_gagal", _baris("Tu'a Teno", d["bagi_gagal"]))
@@ -630,3 +675,4 @@ func _jatuh_ke_lumpur() -> void:
 	pemain.model.squash(Vector3(1.2, 0.8, 1.2))
 	if GameState.mode_sulit:
 		_tampilkan_denda(DENDA_JATUH)
+	Nyawa.kurangi("jatuh ke lumpur")

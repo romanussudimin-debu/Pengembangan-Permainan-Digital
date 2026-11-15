@@ -24,6 +24,7 @@ Semua aset dalam prototipe **dibuat sendiri** secara prosedural oleh pembuat pro
 | kulit_kerbau.png | Kulit perisai | idem | Nggiling, kulit gendang |
 | ikon/ikon_144/180/192/512.png | Ikon aplikasi: Mbaru Niang di atas pita songke | `tools/generate_ikon.py` (Pillow) | Ikon PWA/web, jendela desktop |
 | bingkai_songke.png (48×48) | Bingkai UI 9-patch | idem | Panel, dialog |
+| ui/logo_manggarai.png | Logo "Jelajah Budaya Manggarai" (layar awal & menu) | Ilustrasi diberikan pengembang (dibuat dengan AI generatif) sebagai identitas visual; latar putih dibuat transparan [PERLU VERIFIKASI: catat alat/lisensi pembuatan ilustrasi] | Opening, menu utama |
 | songke_nggohak.png | Motif songke Nggohak (dasar biru tua, belah ketupat besar merah-kuning-biru) | Dibuat pengembang; kode pembuatnya belum ada di `tools/generate_textures.py` [PERLU VERIFIKASI: tambahkan kode generator] | Sarung & ikat kepala Nggohak |
 
 ## Audio (`src/assets/audio/`, WAV 22.050 Hz mono)

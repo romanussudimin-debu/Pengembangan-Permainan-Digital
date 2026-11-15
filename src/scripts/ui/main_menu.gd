@@ -78,20 +78,32 @@ func _bangun_ui() -> void:
 	bayang.size = Vector2(330, 360)
 	bayang.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	ui.add_child(bayang)
-	var judul := Gaya.label("JEJAK PENTI", 36, Gaya.KUNING)
-	judul.position = Vector2(26, 10)
+	# Logo "Jelajah Budaya Manggarai" dengan napas pelan (skala naik-turun)
+	var logo := TextureRect.new()
+	logo.texture = preload("res://assets/ui/logo_manggarai.png")
+	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	logo.position = Vector2(14, 2)
+	logo.size = Vector2(100, 100)
+	logo.pivot_offset = Vector2(50, 50)
+	ui.add_child(logo)
+	var napas := logo.create_tween().set_loops()
+	napas.tween_property(logo, "scale", Vector2(1.04, 1.04), 1.6).set_trans(Tween.TRANS_SINE)
+	napas.tween_property(logo, "scale", Vector2.ONE, 1.6).set_trans(Tween.TRANS_SINE)
+	var judul := Gaya.label("JEJAK PENTI", 26, Gaya.KUNING)
+	judul.position = Vector2(118, 16)
 	judul.add_theme_constant_override("outline_size", 6)
 	ui.add_child(judul)
-	var sub := Gaya.label("Petualangan Budaya Manggarai", 13, Gaya.PUTIH)
-	sub.position = Vector2(28, 58)
+	var sub := Gaya.label("Petualangan Budaya Manggarai", 11, Gaya.PUTIH)
+	sub.position = Vector2(120, 52)
 	ui.add_child(sub)
 	var garis := ColorRect.new()
 	garis.color = Gaya.MERAH
-	garis.position = Vector2(28, 79)
-	garis.size = Vector2(200, 2)
+	garis.position = Vector2(120, 70)
+	garis.size = Vector2(170, 2)
 	ui.add_child(garis)
-	var tema := Gaya.label("Wae Rebo  ·  Lingko  ·  Labuan Bajo", 9, Color("c9c2b0"))
-	tema.position = Vector2(28, 83)
+	var tema := Gaya.label("Wae Rebo  ·  Lingko  ·  Labuan Bajo", 8, Color("c9c2b0"))
+	tema.position = Vector2(120, 74)
 	ui.add_child(tema)
 
 	var kolom := VBoxContainer.new()
@@ -169,7 +181,7 @@ func _teks_layar() -> String:
 
 func _mulai() -> void:
 	GameState.reset_progres()
-	Transisi.pindah_scene(ADEGAN_KAMPUNG)
+	GameState.mulai_level(1)
 
 
 func _ganti_mode() -> void:

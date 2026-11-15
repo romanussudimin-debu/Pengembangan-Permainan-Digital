@@ -346,6 +346,22 @@ func _maju() -> void:
 		_selesai()
 
 
+## Menutup dialog/teka-teki tanpa menjalankan callback (dipakai saat tantangan diulang).
+func tutup_paksa() -> void:
+	if not aktif:
+		return
+	_timer_lanjut.stop()
+	if suara_tersedia():
+		DisplayServer.tts_stop()
+	aktif = false
+	_menjawab = false
+	_panel.visible = false
+	_panel_teka_teki.visible = false
+	_callback = Callable()
+	_callback_jawaban = Callable()
+	GameState.ubah_state(_state_sebelum)
+
+
 func _selesai() -> void:
 	aktif = false
 	_panel.visible = false

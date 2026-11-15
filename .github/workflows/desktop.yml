@@ -1,0 +1,80 @@
+# Membangun versi desktop (Windows .exe dan macOS .app) dengan Godot lalu menerbitkannya
+# di halaman Releases (tag "desktop-terbaru"), supaya bisa langsung diunduh dan dimainkan.
+name: Bangun Versi Windows & macOS
+
+on:
+  push:
+    branches: [main, "claude/**"]
+    paths: ["src/**", ".github/workflows/desktop.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: desktop
+  cancel-in-progress: true
+
+env:
+  GODOT_VERSI: "4.3"
+
+jobs:
+  desktop:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unduh Godot dan template Windows/macOS
+        run: |
+          V="${GODOT_VERSI}-stable"
+          URL="https://github.com/godotengine/godot/releases/download/${V}"
+          wget -q "${URL}/Godot_v${V}_linux.x86_64.zip" -O godot.zip
+          wget -q "${URL}/Godot_v${V}_export_templates.tpz" -O templates.tpz
+          unzip -q godot.zip && sudo mv "Godot_v${V}_linux.x86_64" /usr/local/bin/godot
+          TPL="$HOME/.local/share/godot/export_templates/${GODOT_VERSI}.stable"
+          mkdir -p "$TPL"
+          unzip -q templates.tpz "templates/windows_*_x86_64.exe" "templates/macos.zip" "templates/version.txt" -d tpl
+          mv tpl/templates/* "$TPL/"
+          rm -f templates.tpz godot.zip
+
+      - name: Impor aset
+        working-directory: src
+        run: godot --headless --import || true
+
+      - name: Ekspor Windows dan macOS
+        working-directory: src
+        run: |
+          OUT="$GITHUB_WORKSPACE/rilis"
+          mkdir -p "$OUT/windows" "$OUT/macos"
+          godot --headless --export-release "Windows Desktop" "$OUT/windows/JejakPenti.exe"
+          godot --headless --export-release "macOS" "$OUT/macos/JejakPenti-macOS.zip"
+          test -f "$OUT/windows/JejakPenti.exe"
+          test -f "$OUT/macos/JejakPenti-macOS.zip"
+          (cd "$OUT/windows" && zip -q -9 "$OUT/JejakPenti-Windows.zip" JejakPenti.exe)
+          mv "$OUT/macos/JejakPenti-macOS.zip" "$OUT/JejakPenti-macOS.zip"
+          ls -la "$OUT"
+
+      - name: Terbitkan di Releases (tag desktop-terbaru)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: desktop-terbaru
+          target_commitish: ${{ github.sha }}
+          name: "Jejak Penti - Windows & macOS terbaru"
+          prerelease: true
+          overwrite_files: true
+          files: |
+            rilis/JejakPenti-Windows.zip
+            rilis/JejakPenti-macOS.zip
+          body: |
+            Versi desktop **Jejak Penti di Wae Rebo** (dibangun otomatis dari commit ${{ github.sha }}).
+
+            **Windows (10/11, 64-bit)**
+            1. Unduh **JejakPenti-Windows.zip**, lalu ekstrak.
+            2. Klik dua kali **JejakPenti.exe**.
+            3. Bila muncul "Windows protected your PC", klik **More info** lalu **Run anyway** (game belum ditandatangani sertifikat berbayar).
+
+            **macOS (10.15 ke atas, Intel & Apple Silicon)**
+            1. Unduh **JejakPenti-macOS.zip**, lalu klik dua kali untuk mengekstrak.
+            2. Pindahkan **Jejak Penti di Wae Rebo.app** ke folder Applications (opsional).
+            3. Klik kanan aplikasi lalu pilih **Open**, kemudian **Open** lagi (hanya pertama kali, karena aplikasi belum dinotarisasi Apple).
+               Bila tetap ditolak, buka Terminal dan jalankan: `xattr -cr "/Applications/Jejak Penti di Wae Rebo.app"`

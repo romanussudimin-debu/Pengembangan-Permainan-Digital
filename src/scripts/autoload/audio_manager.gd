@@ -28,6 +28,7 @@ const VOLUME_MUSIK_DB: float = -8.0
 var _musik: AudioStreamPlayer
 var _kanal_sfx: Array[AudioStreamPlayer] = []
 var _musik_aktif: String = ""
+var _mulai_musik_ms: int = 0  ## waktu mulai musik, untuk memutar ulang bila loop tidak berjalan
 var _audio_terbuka: bool = not OS.has_feature("web")  ## di web, suara terkunci sampai interaksi pertama
 
 
@@ -58,7 +59,18 @@ func _siapkan_bus(nama: String) -> void:
 
 
 func _ulang_musik() -> void:
+	_mulai_musik_ms = Time.get_ticks_msec()
 	_musik.play()
+
+
+## Cadangan pengulangan: pada pemutaran "sampel" di browser, loop dan sinyal `finished` tidak
+## selalu berlaku, sehingga musik diputar ulang begitu durasinya habis.
+func _process(_delta: float) -> void:
+	if _musik_aktif == "" or _musik.stream == null or _musik.stream_paused:
+		return
+	var durasi_ms: int = int(_musik.stream.get_length() * 1000.0)
+	if durasi_ms > 0 and not _musik.playing and Time.get_ticks_msec() - _mulai_musik_ms > durasi_ms + 1000:
+		_ulang_musik()
 
 
 ## Musik diulang langsung dari data WAV (loop_mode), bukan lewat sinyal `finished`,
@@ -81,7 +93,7 @@ func buka_kunci_audio() -> void:
 	if _musik_aktif != "":
 		_musik.stop()
 		_musik.volume_db = VOLUME_MUSIK_DB
-		_musik.play()
+		_ulang_musik()
 
 
 func _input(event: InputEvent) -> void:
@@ -98,10 +110,10 @@ func putar_musik(nama: String) -> void:
 	if OS.has_feature("web"):
 		# Di web volume diatur langsung: fade volume_db tidak selalu berlaku pada pemutaran sampel
 		_musik.volume_db = VOLUME_MUSIK_DB
-		_musik.play()
+		_ulang_musik()
 		return
 	_musik.volume_db = -40.0
-	_musik.play()
+	_ulang_musik()
 	var tw := create_tween()
 	tw.tween_property(_musik, "volume_db", VOLUME_MUSIK_DB, 1.2).set_ease(Tween.EASE_OUT)
 

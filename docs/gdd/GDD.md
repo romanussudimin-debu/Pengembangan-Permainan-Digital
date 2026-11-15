@@ -29,6 +29,7 @@
 | 0.x | 2D: teka-teki lingko + duel caci | — |
 | 1.x | 3D: jelajah kampung + duel caci (ta'ang/paki, 3 lawan) | Lebih imersif |
 | **2.0** | **3D: jelajah budaya dengan rantai teka-teki, menenun songke, tabuh gong-gendang; caci sebagai pertunjukan Penti** | Duel caci dinilai terlalu sulit untuk pemain umum. Jelajah budaya mengenalkan lebih banyak unsur budaya. Caci tetap tampil dengan hormat sebagai pertunjukan. |
+| 2.3 | Perbaikan playtest: nyawa, pengecoh, tantangan aksi baru Level 1, dialog ringkas & gelembung, layar antar-level | Masukan "kebanyakan ngobrol, mainnya sedikit" |
 | 2.2 | + **Level 3 Songke ke Labuan Bajo** (peta kapal, 6 destinasi TN Komodo, mini-game menjual), ending Penti dipindah ke akhir Level 3 | Menghubungkan budaya (songke) dengan ekonomi kreatif & wisata bertanggung jawab; persiapan Proyek UAS (3 level) |
 | 2.1 | + **Level 2 Lingko Lodok** (undangan reke lodok, saluran wae teku, pembagian moso, pandangan dari bukit), Mode Sulit, simpan & lanjutkan | Mengangkat lingko, yang sudah diriset sebagai kandidat mekanik, menjadi level kedua |
 
@@ -102,6 +103,32 @@ Latar di luar kampung, mewujudkan ungkapan *gendang one, lingko pe'ang*: lingko 
 **Pesan budaya utama:** adil dalam lingko **tidak selalu berarti sama luas**. Tu'a teno dan tu'a golo mendapat bagian lebih besar, dan keluarga bertanggungan banyak bisa mendapat lebih, sesuai kesepakatan musyawarah (catatan riset §4). Jawaban "sama rata" sengaja ditolak.
 
 **Mode Sulit** (dipilih di menu utama): batas waktu "sebelum senja" (7 menit, matahari makin rendah dan langit makin jingga), jatuh −10 detik, salah orang −15 detik (sekali per pengecoh), pengecoh hanya memberi petunjuk umum, ukuran bagian lingko tidak ditampilkan, kesempatan salah membagi 2 (Normal 3), dan putaran saluran air dibatasi. Waktu habis → level diulang.
+
+### 4.5b Perbaikan playtest v2.3: nyawa, pengecoh, ritme bermain
+Masukan playtest: *"mainnya sedikit, kebanyakan ngobrol"*. Target ritme: ±70% bermain, 30% cerita; obrolan tidak lebih dari 30–60 detik sebelum ada aksi lagi.
+
+**Nyawa (semua level):** 5 (Normal) / 3 (Sulit), diisi penuh saat level atau destinasi Level 3 dimulai. −1 saat salah jawab, memilih pengecoh, jatuh, atau gagal tantangan (suara gagal, layar berkedip merah, kamera bergetar, ikon hati pecah). Nyawa habis = **hanya tantangan yang sedang dimainkan yang diulang** (bagian jelajah: dari titik cek terakhir), bukan level. Penambah nyawa bertema budaya: cangkir kopi (L1), kendi air (L2), kelapa muda (L3).
+
+**Dialog ringkas:** maks. 2 baris pendek per tokoh per kesempatan; obrolan ringan tampil sebagai gelembung teks di atas kepala tokoh (pemain tetap bergerak); kartu budaya tampil sebagai popup judul + 1 kalimat, isi lengkap di Koleksi. Tombol Lewati, tahan tombol = cepat, opsi Teks cepat.
+
+**Level 1 baru (pola: platformer → teka-teki → pola → aksi → antar → ritme → teka-teki → refleks → teka-teki):**
+
+| # | Bagian | Tantangan | Pengecoh (adil, bisa dibedakan bila teliti) | Fakta / adaptasi |
+|---|---|---|---|---|
+| Pembuka | Mendaki ke Wae Rebo | Platformer ngarai: batu pijakan di sungai, akar, titian di atas jurang, tanjakan; 3 titik cek | Batu **retak** (lebih gelap, bergaris retak) tenggelam bila diinjak; **cabang jalan buntu** (jalur utama bertiang bambu berkain merah) | Wae Rebo memang dicapai lewat jalan setapak hutan; detail jalur = adaptasi |
+| 1 | Tu'a Golo | Teka-teki | Jawaban salah = −1 nyawa | Fakta |
+| 2 | Ine Wela | Menenun songke | (tahap berikut: warna mirip merah/merah bata) | Fakta |
+| 3 | Ema Agus | **Menyangrai Kopi**: memilah biji lalu menjaga panas di zona hijau | Kerikil (abu-abu, bulat) & biji busuk (gelap, berbintik) di antara biji bagus | Kopi komoditas utama Wae Rebo [S48, S49]; cara menyangrai = **adaptasi kreatif** |
+| 4 | Ende Lono | **Mengantar Kopi** (3D): nampan miring, kopi tumpah bila berbelok tajam/melompat/menabrak ayam atau anak berlari | Tamu mirip: hanya "berbaju hijau, duduk dekat compang" yang benar | Penyuguhan kopi kepada tamu `[PERLU VERIFIKASI]` |
+| 5 | Fransi | Tabuh gong-gendang | (tahap berikut: ketukan tipuan) | Fakta |
+| 6 | Hingha | Teka-teki | — | Fakta |
+| 7 | Marngem | **Latihan Tangkis Nggiling**: tangkis bola rotan ke kiri/tengah/kanan, makin cepat | Lemparan **tipuan** (ancang-ancang lalu batal); tanda: tangan kosong tanpa bola | Tipuan memang bagian caci; latihan dengan bola rotan = adaptasi, ditampilkan sebagai latihan sportivitas |
+| 8–9 | Ema Yakobus, Tu'a Golo | Teka-teki | — | Fakta |
+| Bonus | Benang Emas | 5 gulungan benang emas tersembunyi (pencapaian "Penjelajah") | Benang kuning biasa tanpa kilau | Adaptasi |
+
+Kartu dari warga yang teka-tekinya diganti tetap didapat setelah tantangan aksinya selesai; kartu bonus baru **Kopi Wae Rebo** (Level 1 kini 10 kartu).
+
+**Antar-level:** layar "Level N berhasil" (kartu, waktu, nyawa) → tombol "Lanjutkan ke Level N+1" → animasi orb atom "LEVEL N+1" + tagline → tombol Mulai.
 
 ### 4.6 Level 3 — Songke ke Labuan Bajo (data: `src/data/labuan_bajo.json`)
 Setelah lingko terbagi, warga menitipkan **songke tenunan penenun kampung** kepada Nggohak, ditambah **foto budaya** dari Level 1–2. Ia ikut **kapal wisata resmi sebagai pemandu budaya** ke 6 destinasi Taman Nasional Komodo. Hasil penjualan dibawa pulang untuk Penti dan para penenun → **ending Penti + caci** (dengan adegan penyerahan hasil penjualan kepada Tu'a Golo dan penenun).

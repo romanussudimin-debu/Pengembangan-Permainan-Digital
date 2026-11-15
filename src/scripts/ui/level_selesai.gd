@@ -74,7 +74,10 @@ func _bangun_sukses() -> void:
 		var l := Gaya.label(baris[i], 11, Gaya.PUTIH)
 		l.position = Vector2(22, 16 + i * 30)
 		panel.add_child(l)
-	var tombol := Gaya.tombol(("Lanjutkan ke Level %d" % _berikut) if _ada_level_berikut() else str(GameState.DATA_LEVEL.data["penutup"]["tombol"]))
+	var teks_tombol: String = str(GameState.DATA_LEVEL.data["penutup"]["tombol"])
+	if _ada_level_berikut():
+		teks_tombol = "Lanjutkan ke Level %d" % _berikut
+	var tombol := Gaya.tombol(teks_tombol)
 	tombol.custom_minimum_size = Vector2(240, 32)
 	tombol.add_theme_font_size_override("font_size", 13)
 	tombol.position = Vector2(200, 258)
@@ -192,7 +195,8 @@ func _gambar_orb(c: Control, pusat: Vector2) -> void:
 	if muncul > 0.3:
 		var huruf := ThemeDB.fallback_font
 		c.draw_string(huruf, pusat + Vector2(-jari, -14), "LEVEL", HORIZONTAL_ALIGNMENT_CENTER, jari * 2.0, 13, Color(Gaya.PUTIH, muncul))
-		c.draw_string_outline(huruf, pusat + Vector2(-jari, 30), str(_berikut), HORIZONTAL_ALIGNMENT_CENTER, jari * 2.0, 46, 6, Color(Gaya.HITAM, muncul))
+		var pos_angka: Vector2 = pusat + Vector2(-jari, 30)
+		c.draw_string_outline(huruf, pos_angka, str(_berikut), HORIZONTAL_ALIGNMENT_CENTER, jari * 2.0, 46, 6, Color(Gaya.HITAM, muncul))
 		c.draw_string(huruf, pusat + Vector2(-jari, 30), str(_berikut), HORIZONTAL_ALIGNMENT_CENTER, jari * 2.0, 46, Color(Gaya.KUNING, muncul))
 
 

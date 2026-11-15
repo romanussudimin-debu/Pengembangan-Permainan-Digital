@@ -276,6 +276,23 @@ func _bangun_nampan() -> void:
 		_bagian(_nampan, isi, Vector3(x, 0.095, 0), m_kopi)
 
 
+## Mulai/berhenti membawa nampan kopi saat permainan berjalan (tantangan Mengantar Kopi).
+func atur_nampan(aktif: bool) -> void:
+	bawa_nampan = aktif
+	if aktif and _nampan == null and _badan != null:
+		_bangun_nampan()
+	if _nampan:
+		_nampan.visible = aktif
+		_nampan.rotation = Vector3.ZERO
+
+
+## Kemiringan nampan (0 = rata, 1 = hampir tumpah) sebagai umpan balik visual.
+func miringkan_nampan(t: float) -> void:
+	if _nampan:
+		_nampan.rotation.z = sin(_waktu * 9.0) * 0.5 * t
+		_nampan.rotation.x = t * 0.25
+
+
 ## Kepala anime: bulat besar, mata besar dengan iris cokelat dan kilau, alis, mulut kecil.
 func _bangun_kepala(m_kulit: Material) -> void:
 	var kepala := SphereMesh.new()

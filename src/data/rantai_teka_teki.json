@@ -5,10 +5,8 @@
 			"kartu": "compang",
 			"jenis": "teka_teki",
 			"pembuka": [
-				"Ité sudah pulang, Kraeng! Sebentar lagi Penti, tahun baru adat kita.",
-				"Setiap warga menyimpan satu kartu pengetahuan budaya, dan kartu itu harus dikumpulkan berurutan.",
-				"Petunjuk dari setiap warga berupa teka-teki. Perhatikan kampung baik-baik: ada yang menunggu di luar, ada yang di dalam rumah, dan ada yang tak pernah diam di satu tempat.",
-				"Tantangan pertamaku: lihatlah sekelilingmu dan hitunglah."
+				"Ité sudah pulang, Kraeng! Penti sebentar lagi.",
+				"Kumpulkan kartu budaya dari warga, berurutan. Pertama, hitunglah rumah kami."
 			],
 			"pertanyaan": "Berapa jumlah Mbaru Niang yang berdiri melingkari kampung ini?",
 			"pilihan": [
@@ -18,68 +16,56 @@
 				"Sembilan"
 			],
 			"benar": 2,
-			"petunjuk": "Jari-jarinya menyusun warna di atas dasar hitam, helai demi helai. Carilah ia di sisi tempat matahari terbenam."
+			"petunjuk": "Jari-jarinya menyusun warna di atas dasar hitam. Carilah ia di sisi matahari terbenam."
 		},
 		{
 			"pemegang": "Ine Wela",
 			"kartu": "songke",
 			"jenis": "tenun",
 			"pembuka": [
-				"Kraeng, bantu aku menyelesaikan kain songke ini.",
-				"Samakan kainmu dengan contoh motif belah ketupat. Pilih kotak, lalu ganti warna benangnya sampai sama persis."
+				"Bantu aku menenun songke, Kraeng.",
+				"Samakan kainmu dengan contoh motif, warna demi warna."
 			],
-			"petunjuk": "Di antara tujuh saudara berkerucut, satu berdiri paling besar dan menyimpan pusaka kampung. Penjaganya tidak di luar; ia duduk di dekat api."
+			"petunjuk": "Rumah paling besar menyimpan pusaka kampung. Penjaganya duduk di dekat api."
 		},
 		{
 			"pemegang": "Ema Agus",
+			"jenis": "sangrai",
 			"kartu": "mbaru_niang",
-			"jenis": "teka_teki",
+			"kartu_bonus": "kopi_wae_rebo",
 			"pembuka": [
-				"Kamu menemukanku di dalam mbaru gendang, Kraeng. Kudengar kamu sudah belajar menenun songke. Mari kita uji."
+				"Kopi dari kebun kita perlu disangrai di tungku ini, Kraeng.",
+				"Buang biji yang buruk, lalu jaga apinya agar tidak gosong."
 			],
-			"pertanyaan": "Motif songke yang terinspirasi hewan penenun jaring, dan melambangkan kejujuran serta kerja keras, disebut apa?",
-			"pilihan": [
-				"Mata manuk",
-				"Ranggong",
-				"Belah ketupat",
-				"Su'i"
-			],
-			"benar": 1,
-			"petunjuk": "Di depan sebuah rumah, sehelai kain berdasar hitam dijemur menunggu kering. Pemilik kain itu tidak berada di luar."
+			"petunjuk": "Di depan sebuah rumah, kain berdasar hitam dijemur. Pemiliknya menunggu tamu di dalam."
 		},
 		{
 			"pemegang": "Ende Lono",
+			"jenis": "antar_kopi",
 			"kartu": "wae_rebo",
-			"jenis": "teka_teki",
 			"pembuka": [
-				"Kamu menemukan rumahku dari kain yang kujemur, Kraeng. Pintar! Sekarang ingat-ingat kartu Mbaru Niang."
+				"Kopi sangraimu sudah kuseduh. Ada tamu yang datang ke kampung.",
+				"Antarkan ke tamu berbaju hijau yang duduk dekat compang. Jangan sampai tumpah!"
 			],
-			"pertanyaan": "Di tingkat manakah dalam Mbaru Niang benih untuk musim tanam berikutnya disimpan?",
-			"pilihan": [
-				"Lobo",
-				"Lentar",
-				"Lempa rae",
-				"Hekang kode"
-			],
-			"benar": 1,
-			"petunjuk": "Aku bulat dan bersuara dalam, saudaraku berkulit kerbau. Pemuda yang menabuh kami tak pernah lama diam di satu tempat."
+			"pesanan": "Tamu berbaju hijau, duduk dekat compang",
+			"petunjuk": "Aku bulat dan bersuara dalam. Penabuhku tak pernah lama diam di satu tempat."
 		},
 		{
 			"pemegang": "Fransi",
 			"kartu": "gong_gendang",
 			"jenis": "gong",
 			"pembuka": [
-				"Akhirnya kamu menemukanku, Kraeng! Bantu aku menabuh gong dan gendang untuk Penti.",
-				"Tekan J saat lingkaran gong tiba di garis, dan tekan K untuk gendang. Ikuti iramanya."
+				"Bantu aku menabuh gong dan gendang untuk Penti, Kraeng!",
+				"J untuk gong, K untuk gendang. Ikuti iramanya."
 			],
-			"petunjuk": "Ke arah matahari terbit, di lingkaran tanah, larik dan nggiling akan bertemu saat Penti. Carilah pemakai panggal yang masih muda. Ia sering bertukar tempat dengan seseorang."
+			"petunjuk": "Ke arah matahari terbit, di lingkaran tanah, carilah pemakai panggal yang muda."
 		},
 		{
 			"pemegang": "Hingha",
 			"kartu": "caci",
 			"jenis": "teka_teki",
 			"pembuka": [
-				"Kraeng! Saat Penti nanti aku akan tampil caci. Tapi jawab dulu pertanyaanku tentang nyanyian adat."
+				"Saat Penti aku tampil caci, Kraeng. Jawab dulu soal nyanyian adat."
 			],
 			"pertanyaan": "Nyanyian yang dibawakan sambil DUDUK dan diiringi gong-gendang disebut apa?",
 			"pilihan": [
@@ -89,31 +75,24 @@
 				"Dere caci"
 			],
 			"benar": 2,
-			"petunjuk": "Hitam, pahit, tetapi menghangatkan. Ia dibawa di atas nampan oleh seorang perempuan yang tak bisa diam."
+			"petunjuk": "Hitam, pahit, menghangatkan. Pembawanya juga melatih pemuda menangkis."
 		},
 		{
 			"pemegang": "Marngem",
+			"jenis": "tangkis",
 			"kartu": "perlengkapan_caci",
-			"jenis": "teka_teki",
 			"pembuka": [
-				"Kopi ini untuk para pemain caci, Kraeng. Sebelum kuberikan kartuku, jawab pertanyaan ini."
+				"Latihan menangkis dengan nggiling dulu, Kraeng. Ini latihan sportivitas, bukan untuk melukai.",
+				"Tangkis bola rotan tepat waktu. Awas, kadang aku hanya pura-pura melempar!"
 			],
-			"pertanyaan": "Menurut aturan caci, ke bagian tubuh mana pukulan larik dianggap sah?",
-			"pilihan": [
-				"Seluruh tubuh",
-				"Hanya kaki",
-				"Bagian tubuh di atas pinggang",
-				"Hanya perisai"
-			],
-			"benar": 2,
-			"petunjuk": "Pemain caci tertua sedang beristirahat di dalam rumah. Rumahnya mudah dikenali: kayu untuk tungku bertumpuk di depan pintunya."
+			"petunjuk": "Pemain caci tertua beristirahat di rumah yang kayu bakarnya bertumpuk di depan pintu."
 		},
 		{
 			"pemegang": "Ema Yakobus",
 			"kartu": "nilai_caci",
 			"jenis": "teka_teki",
 			"pembuka": [
-				"Kamu menemukanku di dekat tungku, Kraeng. Pertanyaan terakhir tentang caci dariku."
+				"Kamu menemukanku di dekat tungku. Satu pertanyaan tentang caci, Kraeng."
 			],
 			"pertanyaan": "Hiasan menyerupai ekor yang dipakai di pinggang belakang pemain caci disebut apa?",
 			"pilihan": [
@@ -123,14 +102,14 @@
 				"Ndeki"
 			],
 			"benar": 3,
-			"petunjuk": "Kembalilah kepada dia yang pertama menyambutmu. Ia berdiri di samping batu yang tak boleh dipijak."
+			"petunjuk": "Kembalilah kepada dia yang pertama menyambutmu, di samping batu yang tak boleh dipijak."
 		},
 		{
 			"pemegang": "Tu'a Golo",
 			"kartu": "penti",
 			"jenis": "teka_teki",
 			"pembuka": [
-				"Kamu kembali, Kraeng. Semua warga sudah memberimu kartu pengetahuan. Satu pertanyaan terakhir, dari kartu yang mungkin sudah lama kamu dapat."
+				"Semua kartu sudah terkumpul, Kraeng. Satu pertanyaan terakhir."
 			],
 			"pertanyaan": "Pada tahun berapa pelestarian Mbaru Niang Wae Rebo meraih penghargaan UNESCO?",
 			"pilihan": [
@@ -140,7 +119,26 @@
 				"2016"
 			],
 			"benar": 2,
-			"petunjuk": "Sebelum Penti dirayakan, masih ada pekerjaan di luar kampung. Pergilah ke lingko, lahan adat kita. Tu'a Teno menunggumu di sana."
+			"petunjuk": "Sebelum Penti, ada pekerjaan di lingko. Tu'a Teno menunggumu di sana."
 		}
-	]
+	],
+	"pendakian": {
+		"pembuka": "Jalan ke Wae Rebo melewati hutan dan sungai. Hati-hati, ada batu yang retak!",
+		"titian": "Titian sempit di atas jurang. Pelan-pelan, Kraeng.",
+		"buntu": "Jalan buntu. Sebaiknya kembali ke jalur utama.",
+		"retak": "Batu retak! Perhatikan garis retakannya.",
+		"tiba": "Itu dia, Kampung Wae Rebo!",
+		"tujuan": "Daki jalan hutan menuju Kampung Wae Rebo. Batu bergaris retak akan tenggelam."
+	},
+	"benang": {
+		"asli": "Benang emas berkilau! Ine Wela pasti senang.",
+		"palsu": "Ini hanya benang kuning biasa, tidak berkilau.",
+		"lengkap": "Kelima benang emas terkumpul untuk Ine Wela!"
+	},
+	"antar": {
+		"tumpah": "Aduh, kopinya tumpah! Kembali ke Ende Lono untuk secangkir lagi.",
+		"salah_tamu": "Bukan pesananku, Kraeng.",
+		"terima": "Terima kasih, kopinya harum sekali!",
+		"tamu_lain": "Selamat datang di Wae Rebo, Kraeng."
+	}
 }

@@ -10,6 +10,8 @@ Semua aset dalam prototipe **dibuat sendiri** secara prosedural oleh pembuat pro
 | Anjing, ayam | Model low-poly + animasi prosedural | Godot (mesh primitif) | `src/scripts/dunia/hewan.gd` | Milik pembuat |
 | Panorama opening & menu (kampung, lingko, pantai, komodo, laut, kapal, pulau) | Komposisi model low-poly yang ada + kamera sinematik | Godot | `src/scripts/dunia/panorama.gd`, `src/scripts/ui/opening.gd` | Milik pembuat |
 | Pulau TN Komodo (laut, daratan pasir/sabana, dermaga, kapal wisata gaya pinisi, lontar, karang, gedung pelabuhan, sampah) | Model low-poly | Godot (mesh primitif) | `src/scripts/dunia/dunia_pulau.gd` | Milik pembuat |
+| Penambah nyawa (cangkir kopi, kendi, kelapa muda), benang emas, tamu, jalur pendakian (ngarai, batu retak, titian, gerbang) | Model low-poly | Godot (mesh primitif) | `src/scripts/dunia/penambah_nyawa.gd`, `src/scripts/dunia/pendakian.gd`, `src/scripts/dunia/kampung.gd` | Milik pembuat |
+| Ikon hati (nyawa), orb level, tombol bergaya songke, mini-game sangrai & tangkis | Gambar 2D prosedural (`_draw`) | Godot | `src/scripts/util/gambar_hati.gd`, `src/scripts/ui/level_selesai.gd`, `src/scripts/util/gaya.gd`, `src/scripts/minigame/` | Milik pembuat |
 | Komodo | Model low-poly + animasi prosedural (ekor meliuk, kaki melangkah, lidah) | Godot (mesh primitif) | `src/scripts/dunia/komodo.gd` | Milik pembuat |
 | Wisatawan & ranger (kaos, celana pendek, topi) | Variasi KarakterModel | Godot (mesh primitif) | `src/scripts/karakter/karakter_model.gd` | Milik pembuat |
 | Peta perjalanan kapal & piktogram foto budaya | Gambar 2D prosedural (`_draw`) | Godot | `src/scripts/ui/peta_kapal.gd`, `src/scripts/minigame/jual_songke.gd` | Milik pembuat |

@@ -22,7 +22,7 @@ const DATA_RANTAI: JSON = preload("res://data/rantai_teka_teki.json")
 
 ## Scene tiap level. Level yang belum dibuat diarahkan ke ending.
 const ADEGAN_LEVEL: Dictionary = {
-	1: "res://scenes/kampung.tscn",
+	1: "res://scenes/pendakian.tscn",  # Level 1 dimulai dengan mendaki ke Wae Rebo, lalu kampung
 	2: "res://scenes/lingko.tscn",
 	3: "res://scenes/peta_kapal.tscn",
 }
@@ -57,6 +57,7 @@ var pulau_selesai: int = 0  ## jumlah destinasi yang sudah tuntas (destinasi ter
 var pulau_aktif: int = 0  ## indeks destinasi yang sedang dikunjungi
 var terjual_total: int = 0  ## kain/foto yang terjual di destinasi yang sudah tuntas
 var pembuka_l3_dilihat: bool = false
+var benang_emas: int = 0  ## benang emas terkumpul di Level 1 (pencapaian "Penjelajah")
 
 
 func _ready() -> void:

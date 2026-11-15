@@ -70,26 +70,18 @@
 		"pembuka_peta": [
 			{
 				"nama": "Tu'a Golo",
-				"teks": "Kraeng, lingko sudah terbagi. Sekarang ada satu titipan lagi sebelum Penti dirayakan."
+				"teks": "Bawa songke tenunan penenun kampung ke Labuan Bajo, Kraeng."
 			},
 			{
 				"nama": "Ine Wela",
-				"teks": "Ini kain songke tenunan para penenun kampung. Bawalah ke Labuan Bajo dan tawarkan kepada wisatawan."
-			},
-			{
-				"nama": "Ine Wela",
-				"teks": "Ceritakan makna setiap kain dengan jujur. Hargai karya penenun dengan harga yang adil."
-			},
-			{
-				"nama": "Tu'a Golo",
-				"teks": "Bawa juga foto-foto dari perjalananmu di kampung dan di lingko. Hasil penjualannya akan membantu perayaan Penti dan para penenun."
+				"teks": "Ceritakan maknanya dengan jujur, dan jual dengan harga yang adil."
 			},
 			{
 				"nama": "Nggohak",
-				"teks": "Aku akan ikut kapal wisata resmi sebagai pemandu budaya. Di setiap destinasi aku harus menemukan tiga pembeli."
+				"teks": "Di setiap destinasi, aku harus menemukan tiga pembeli."
 			}
 		],
-		"peta_petunjuk": "Pilih destinasi berikutnya. Destinasi terbuka berurutan, makin jauh makin sulit.",
+		"peta_petunjuk": "Pilih destinasi berikutnya. Makin jauh, makin sulit.",
 		"pulang": [
 			{
 				"nama": "Nggohak",
@@ -102,17 +94,17 @@
 		"sudah_beli": "Terima kasih! Aku akan menjaga barang ini baik-baik.",
 		"sudah_pergi": "Aku sudah memutuskan untuk tidak membeli. Maaf ya.",
 		"sisa_pembeli": "Satu pembeli lagi... Aku masih bisa mencari wisatawan lain di pulau ini.",
-		"gagal_pulau": "Pembeli yang tersisa tidak cukup untuk menjual tiga barang. Aku harus mengulang kunjungan ke pulau ini.",
-		"waktu_habis": "Kapal harus segera berangkat. Waktuku di pulau ini habis, aku harus mengulang kunjungan.",
-		"tenggelam": "Air pasang sudah menenggelamkan pulau pasir. Semua harus kembali ke kapal. Aku harus mengulang kunjungan ini.",
+		"gagal_pulau": "Pembeli yang tersisa tidak cukup. Aku harus mengulang pulau ini.",
+		"waktu_habis": "Kapal harus berangkat. Aku harus mengulang kunjungan ini.",
+		"tenggelam": "Air pasang menenggelamkan pulau pasir. Aku harus mengulang.",
 		"jatuh_laut": "Byur! Aku harus kembali ke daratan.",
-		"karang": "Aduh, jangan menginjak karang! Karang itu makhluk hidup dan mudah patah.",
-		"komodo_dekat": "Ranger: Mundur, Kraeng! Terlalu dekat dengan komodo. Jaga jarak dan tetap di jalur.",
-		"haus": "Panas sekali... Aku haus dan langkahku melambat. Aku harus minum di pos.",
+		"karang": "Jangan injak karang! Karang itu makhluk hidup.",
+		"komodo_dekat": "Ranger: Mundur! Jaga jarak dari komodo.",
+		"haus": "Panas sekali... aku harus minum di pos.",
 		"minum": "Segarnya! Tenagaku pulih lagi.",
-		"pos_kosong": "Botol di pos ini sudah kuminum. Di jalur pendakian tidak ada penjual, jadi aku harus hemat tenaga.",
-		"sampah": "Ada sampah plastik. Aku bawa pulang ke kapal supaya pantai tetap bersih.",
-		"tanya_pulang": "Kembali ke kapal dan ke peta perjalanan? Barang yang belum terjual di pulau ini harus ditawarkan lagi lain kali.",
+		"pos_kosong": "Botol di pos ini sudah habis. Hemat tenaga!",
+		"sampah": "Sampah plastik kubawa pulang ke kapal.",
+		"tanya_pulang": "Kembali ke kapal dan ke peta perjalanan?",
 		"arus": "Arusnya kuat! Aku harus berenang melawan arus."
 	},
 	"pulau": [
@@ -129,15 +121,11 @@
 			"pembuka": [
 				{
 					"nama": "Nggohak",
-					"teks": "Inilah Labuan Bajo, pintu gerbang Taman Nasional Komodo. Banyak wisatawan menunggu kapal di pelabuhan."
+					"teks": "Labuan Bajo, gerbang Taman Nasional Komodo!"
 				},
 				{
 					"nama": "Nggohak",
-					"teks": "Cara menjual: ajak bicara wisatawan, dengarkan keinginannya, pilih kain atau foto yang cocok, lalu ceritakan maknanya."
-				},
-				{
-					"nama": "Nggohak",
-					"teks": "Jawaban ceritanya ada di kartu budaya yang sudah kukumpulkan. Kalau lupa, buka koleksinya dengan Esc."
+					"teks": "Dengarkan keinginan wisatawan, pilih barang, lalu ceritakan maknanya."
 				}
 			],
 			"info": [
@@ -263,8 +251,7 @@
 					"topi": "e8dcb8",
 					"pembeli": false,
 					"info": [
-						"Just looking, thanks! Aku hanya menunggu kapal.",
-						"Katanya di Taman Nasional Komodo kita harus selalu bersama ranger."
+						"Just looking, thanks! Aku hanya menunggu kapal."
 					]
 				},
 				{
@@ -280,8 +267,7 @@
 					"topi": "1b1818",
 					"pembeli": false,
 					"info": [
-						"Selamat datang, Kraeng. Kapal wisata resmi berlabuh di ujung dermaga.",
-						"Kalau urusanmu di sini sudah selesai, naiklah ke kapal untuk berangkat."
+						"Selamat datang, Kraeng. Kapal wisata resmi berlabuh di ujung dermaga."
 					]
 				}
 			]
@@ -299,11 +285,11 @@
 			"pembuka": [
 				{
 					"nama": "Nggohak",
-					"teks": "Pulau Padar. Wisatawan tersebar di tiga pos jalur pendakian sampai ke puncak."
+					"teks": "Pulau Padar: pembeli ada di tiga pos pendakian."
 				},
 				{
 					"nama": "Nggohak",
-					"teks": "Udaranya panas dan di jalur tidak ada penjual. Tenagaku berkurang saat berjalan, jadi aku harus minum di setiap pos."
+					"teks": "Panas! Minum di setiap pos agar tenagaku tidak habis."
 				}
 			],
 			"info": [
@@ -370,8 +356,7 @@
 					"topi": "e8e2d2",
 					"pembeli": false,
 					"info": [
-						"Fuh, panas sekali! Bawalah air yang cukup, Kraeng.",
-						"Di jalur ini tidak ada yang berjualan. Lapak suvenir warga hanya ada di dekat pos tiket."
+						"Fuh, panas sekali! Bawalah air yang cukup, Kraeng."
 					]
 				},
 				{
@@ -468,8 +453,7 @@
 					"perempuan": true,
 					"pembeli": false,
 					"info": [
-						"Wow, lihat ke bawah! Tiga teluk dengan pantai putih, hitam, dan merah muda.",
-						"Pasir hitamnya berasal dari batuan vulkanik di sekitar pulau."
+						"Wow, lihat ke bawah! Tiga teluk dengan pantai putih, hitam, dan merah muda."
 					]
 				}
 			]
@@ -487,21 +471,17 @@
 			"pembuka": [
 				{
 					"nama": "Nggohak",
-					"teks": "Pink Beach! Wisatawan ada di pantai dan di air dangkal."
+					"teks": "Pink Beach! Pembeli ada di pantai dan di air dangkal."
 				},
 				{
 					"nama": "Nggohak",
-					"teks": "Di air dangkal ada karang. Aku tidak boleh menginjaknya."
+					"teks": "Jangan menginjak karang."
 				}
 			],
 			"info": [
 				{
 					"nama": "Papan Informasi",
 					"teks": "Pasir Pink Beach berwarna merah muda karena serpihan cangkang foraminifera merah dan pecahan karang merah bercampur dengan pasir putih."
-				},
-				{
-					"nama": "Papan Informasi",
-					"teks": "Jangan menginjak atau mengambil karang. Bawa kembali sampahmu."
 				}
 			],
 			"selesai": "Tiga barang terjual di Pink Beach! Berikutnya Pulau Komodo. Di sana aku harus selalu bersama ranger.",
@@ -671,8 +651,7 @@
 					"perempuan": true,
 					"pembeli": false,
 					"info": [
-						"Airnya jernih sekali! Hati-hati, jangan menginjak karang ya.",
-						"Karang tumbuh sangat lambat dan mudah patah."
+						"Airnya jernih sekali! Hati-hati, jangan menginjak karang ya."
 					]
 				},
 				{
@@ -688,8 +667,7 @@
 					"topi": "1b1818",
 					"pembeli": false,
 					"info": [
-						"Pasir merah muda itu jangan dibawa pulang, Kraeng. Biarkan tetap di pantai.",
-						"Sampah plastik, itu yang harus dibawa pulang ke kapal."
+						"Pasir merah muda itu jangan dibawa pulang, Kraeng. Biarkan tetap di pantai."
 					]
 				}
 			]
@@ -706,12 +684,12 @@
 			],
 			"pembuka": [
 				{
-					"nama": "Ranger Yosef",
-					"teks": "Selamat datang di Pulau Komodo. Ikuti jalur, jangan keluar jalur, dan jaga jarak dari komodo."
+					"nama": "Nggohak",
+					"teks": "Pulau Komodo: tetap di jalur bersama ranger."
 				},
 				{
 					"nama": "Nggohak",
-					"teks": "Wisatawan hanya ada di sepanjang jalur. Aku harus berhati-hati melewati komodo yang berpatroli."
+					"teks": "Jangan terlalu dekat dengan komodo!"
 				}
 			],
 			"info": [
@@ -954,8 +932,7 @@
 					"perempuan": true,
 					"pembeli": false,
 					"info": [
-						"Komodo itu besar sekali! Ranger bilang tidak ada komodo yang jinak.",
-						"Aku tetap di jalur dan menjaga jarak."
+						"Komodo itu besar sekali! Ranger bilang tidak ada komodo yang jinak."
 					]
 				},
 				{
@@ -971,8 +948,7 @@
 					"topi": "6a7a4a",
 					"pembeli": false,
 					"info": [
-						"Tetap di jalur, Kraeng. Jangan memberi makan komodo.",
-						"Kalau komodo mendekat, mundur pelan-pelan dan ikuti arahan ranger."
+						"Tetap di jalur, Kraeng. Jangan memberi makan komodo."
 					]
 				}
 			]
@@ -991,11 +967,11 @@
 			"pembuka": [
 				{
 					"nama": "Nggohak",
-					"teks": "Taka Makassar, pulau pasir berbentuk sabit. Air mulai pasang!"
+					"teks": "Taka Makassar! Air mulai pasang."
 				},
 				{
 					"nama": "Nggohak",
-					"teks": "Pasirnya akan makin menyempit. Aku harus menemukan tiga pembeli sebelum pulau pasir ini tenggelam."
+					"teks": "Jual tiga barang sebelum pulau pasir tenggelam."
 				}
 			],
 			"info": [
@@ -1126,8 +1102,7 @@
 					"perempuan": true,
 					"pembeli": false,
 					"info": [
-						"Lihat, air makin naik! Pulau pasir ini akan tenggelam sebagian.",
-						"Aku segera kembali ke kapal."
+						"Lihat, air makin naik! Pulau pasir ini akan tenggelam sebagian."
 					]
 				},
 				{
@@ -1143,8 +1118,7 @@
 					"topi": "1b1818",
 					"pembeli": false,
 					"info": [
-						"Cepat, Kraeng! Pasirnya makin sempit.",
-						"Kalau sudah selesai, kembali ke kapal lewat dermaga apung."
+						"Cepat, Kraeng! Pasirnya makin sempit."
 					]
 				}
 			]
@@ -1162,11 +1136,11 @@
 			"pembuka": [
 				{
 					"nama": "Nggohak",
-					"teks": "Teluk Manjarite. Wisatawan ada di kapal-kapal yang berlabuh dan sedang snorkeling."
+					"teks": "Teluk Manjarite: berenanglah ke kapal-kapal wisatawan."
 				},
 				{
 					"nama": "Nggohak",
-					"teks": "Aku harus berenang ke kapal-kapal itu. Hati-hati dengan arus dan jangan menginjak karang."
+					"teks": "Awas arus dan karang."
 				}
 			],
 			"info": [
@@ -1391,8 +1365,7 @@
 					"perempuan": true,
 					"pembeli": false,
 					"info": [
-						"Arus di sebelah sana kuat sekali! Aku hampir terbawa.",
-						"Berenanglah memotong arus, jangan melawannya terus-menerus."
+						"Arus di sebelah sana kuat sekali! Aku hampir terbawa."
 					]
 				},
 				{
@@ -1408,8 +1381,7 @@
 					"topi": "1b1818",
 					"pembeli": false,
 					"info": [
-						"Sampah dari kapal harus dibawa kembali ke darat, Kraeng.",
-						"Jangan buang apa pun ke laut."
+						"Sampah dari kapal harus dibawa kembali ke darat, Kraeng."
 					]
 				}
 			]

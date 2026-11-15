@@ -343,7 +343,7 @@ func _atur_tahap(baru: int) -> void:
 
 func _pembuka() -> void:
 	if tahap == Tahap.SAMBUT and GameState.sedang(GameState.State.BERMAIN):
-		DialogManager.mulai_baris("lingko_pembuka", _baris("Nggohak", _dialog()["pembuka"]))
+		_obrol(pemain, "Nggohak", _dialog()["pembuka"])
 
 
 ## Baris dialog dari daftar teks (atau satu teks), semuanya diucapkan oleh `nama`.
@@ -353,6 +353,12 @@ func _baris(nama: String, isi: Variant) -> Array:
 	for teks: String in daftar:
 		baris.append({"nama": nama, "teks": teks})
 	return baris
+
+
+## Obrolan ringan sebagai gelembung teks di atas tokoh (pemain tetap bisa bergerak).
+func _obrol(target: Node3D, nama: String, isi: Variant) -> void:
+	var daftar: Array = isi if isi is Array else [isi]
+	DialogManager.gelembung(target, daftar, nama, 3.6 if target == pemain else 3.9)
 
 
 func _beri_kartu(id: String, lanjut: Callable) -> void:
@@ -366,7 +372,7 @@ func _bicara(npc: NpcKampung) -> void:
 	if npc == _tu_a_teno:
 		_bicara_tu_a_teno()
 	elif npc == _tu_a_golo:
-		DialogManager.mulai_baris("tua_golo", _baris("Tu'a Golo", _dialog()["tua_golo"]))
+		_obrol(_tu_a_golo, "Tu'a Golo", _dialog()["tua_golo"])
 	elif npc.has_meta("pengecoh"):
 		_bicara_pengecoh(npc)
 	else:
@@ -382,17 +388,17 @@ func _bicara_tu_a_teno() -> void:
 				baris.append_array(_baris("Tu'a Teno", d["sambutan_sulit"]))
 			DialogManager.mulai_baris("sambutan", baris, _setelah_sambutan)
 		Tahap.UNDANG:
-			DialogManager.mulai_baris("menunggu_undangan", _baris("Tu'a Teno", d["menunggu_undangan"]))
+			_obrol(_tu_a_teno, "Tu'a Teno", d["menunggu_undangan"])
 		Tahap.REKE:
 			_mulai_reke_lodok()
 		Tahap.AIR:
-			DialogManager.mulai_baris("menunggu_air", _baris("Tu'a Teno", d["menunggu_air"]))
+			_obrol(_tu_a_teno, "Tu'a Teno", d["menunggu_air"])
 		Tahap.BAGI:
 			DialogManager.mulai_baris("mulai_bagi", _baris("Tu'a Teno", d["mulai_bagi"]), _mulai_bagi)
 		Tahap.BUKIT:
-			DialogManager.mulai_baris("menunggu_bukit", _baris("Tu'a Teno", d["menunggu_bukit"]))
+			_obrol(_tu_a_teno, "Tu'a Teno", d["menunggu_bukit"])
 		_:
-			DialogManager.mulai_baris("tua_teno_selesai", _baris("Tu'a Teno", d["menunggu_bukit"]))
+			_obrol(_tu_a_teno, "Tu'a Teno", d["menunggu_bukit"])
 
 
 func _setelah_sambutan() -> void:
@@ -408,14 +414,15 @@ func _bicara_keluarga(i: int) -> void:
 		return
 	var data: Dictionary = DATA.data["keluarga"][i]
 	var nama: String = str(data["nama"])
+	var npc: NpcKampung = _keluarga[i]
 	if tahap == Tahap.SAMBUT:
-		DialogManager.mulai_baris("belum", _baris(nama, _dialog()["belum_waktunya"]))
+		_obrol(npc, nama, _dialog()["belum_waktunya"])
 	elif _diundang[i]:
-		DialogManager.mulai_baris("sudah_diundang", _baris(nama, DATA.data["sudah_diundang"]))
+		_obrol(npc, nama, DATA.data["sudah_diundang"])
 	elif tahap == Tahap.UNDANG:
-		var baris: Array = _baris("Nggohak", _dialog()["ajak"])
-		baris.append_array(_baris(nama, data["undang"]))
-		DialogManager.mulai_baris("undang", baris, _setelah_undang.bind(i))
+		# Undangan diterima lewat gelembung: pemain langsung bisa lanjut mencari yang lain
+		_obrol(npc, nama, data["undang"])
+		_setelah_undang(i)
 
 
 func _setelah_undang(i: int) -> void:
@@ -424,20 +431,18 @@ func _setelah_undang(i: int) -> void:
 	_perbarui_undangan()
 	if not _diundang.has(false):
 		_atur_tahap(Tahap.REKE)
-		DialogManager.mulai_baris("semua_diundang", _baris("Nggohak", _dialog()["semua_diundang"]))
+		_obrol(pemain, "Nggohak", _dialog()["semua_diundang"])
 
 
 func _bicara_pengecoh(npc: NpcKampung) -> void:
 	var data: Dictionary = DATA.data["pengecoh"][int(npc.get_meta("pengecoh"))]
 	if tahap != Tahap.UNDANG:
-		DialogManager.mulai_baris("pengecoh_sapa", _baris(npc.nama, _dialog()["sapa_warga"]))
+		_obrol(npc, npc.nama, _dialog()["sapa_warga"])
 		return
-	var baris: Array = _baris("Nggohak", _dialog()["ajak"])
 	var teks: String = str(DATA.data["pengecoh_sulit"]) if GameState.mode_sulit else str(data["petunjuk"])
-	baris.append_array(_baris(npc.nama, teks))
 	var pertama: bool = not npc.has_meta("sudah_ditanya")
 	npc.set_meta("sudah_ditanya", true)
-	DialogManager.mulai_baris("pengecoh", baris)
+	_obrol(npc, npc.nama, teks)
 	if pertama:
 		# Salah orang: -1 nyawa (sekali per pengecoh); Mode Sulit juga mengurangi waktu
 		if GameState.mode_sulit:
@@ -489,9 +494,9 @@ func _interaksi_wae_teku(_p: Pemain) -> void:
 	if tahap == Tahap.AIR:
 		DialogManager.mulai_baris("buka_saluran", _baris("Nggohak", d["buka_saluran"]), _mulai_saluran)
 	elif tahap > Tahap.AIR:
-		DialogManager.mulai_baris("wae_teku_selesai", _baris("Nggohak", d["wae_teku_selesai"]))
+		_obrol(pemain, "Nggohak", d["wae_teku_selesai"])
 	else:
-		DialogManager.mulai_baris("lihat_wae_teku", _baris("Nggohak", d["lihat_wae_teku"]))
+		_obrol(pemain, "Nggohak", d["lihat_wae_teku"])
 
 
 func _mulai_saluran() -> void:
@@ -511,11 +516,11 @@ func _hasil_saluran(berhasil: bool, s: SaluranAir) -> void:
 		if not s.batal:
 			Nyawa.kurangi("gagal mengalirkan air")
 		if not Nyawa.sedang_habis():
-			DialogManager.mulai_baris("air_gagal", _baris("Nggohak", d["air_gagal"]))
+			_obrol(pemain, "Nggohak", d["air_gagal"])
 		return
 	_alirkan_air()
-	DialogManager.mulai_baris("air_berhasil", _baris("Nggohak", d["air_berhasil"]), func() -> void:
-		_beri_kartu("wae_teku", _atur_tahap.bind(Tahap.BAGI)))
+	_obrol(pemain, "Nggohak", d["air_berhasil"])
+	_beri_kartu("wae_teku", _atur_tahap.bind(Tahap.BAGI))
 
 
 ## Visual: saluran dan petak sawah berubah dari kering menjadi berair.
@@ -561,11 +566,11 @@ func _hasil_bagi(berhasil: bool) -> void:
 	_atur_tantangan_jelajah()
 	var d: Dictionary = _dialog()
 	if not berhasil:
-		DialogManager.mulai_baris("bagi_gagal", _baris("Tu'a Teno", d["bagi_gagal"]))
+		_obrol(_tu_a_teno, "Tu'a Teno", d["bagi_gagal"])
 		return
 	_tampilkan_juring_terbagi()
-	DialogManager.mulai_baris("bagi_berhasil", _baris("Tu'a Teno", d["bagi_berhasil"]), func() -> void:
-		_beri_kartu("moso", _atur_tahap.bind(Tahap.BUKIT)))
+	_obrol(_tu_a_teno, "Tu'a Teno", d["bagi_berhasil"])
+	_beri_kartu("moso", _atur_tahap.bind(Tahap.BUKIT))
 
 
 ## Garis moso hasil pembagian lingko terakhir ditancapkan di sawah: petak tampak seperti jaring laba-laba.
@@ -586,7 +591,7 @@ func _tampilkan_juring_terbagi() -> void:
 
 func _interaksi_bukit(_p: Pemain) -> void:
 	if tahap != Tahap.BUKIT:
-		DialogManager.mulai_baris("bukit_belum", _baris("Nggohak", _dialog()["bukit_belum"]))
+		_obrol(pemain, "Nggohak", _dialog()["bukit_belum"])
 		return
 	_atur_tahap(Tahap.SELESAI)
 	_waktu_berjalan = false

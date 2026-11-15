@@ -3,6 +3,7 @@
 		{
 			"id": "mbaru_niang",
 			"judul": "Mbaru Niang",
+			"ringkas": "Rumah adat kerucut Wae Rebo beratap ijuk, terdiri atas lima tingkat.",
 			"isi": [
 				"Mbaru Niang adalah rumah adat berbentuk kerucut di Kampung Wae Rebo, beratap ijuk yang menjuntai hampir sampai tanah.",
 				"Rumah ini terdiri atas 5 tingkat: lutur (tempat tinggal), lobo (bahan makanan), lentar (benih), lempa rae (cadangan pangan), dan hekang kode (paling sakral, untuk persembahan leluhur)."
@@ -11,6 +12,7 @@
 		{
 			"id": "wae_rebo",
 			"judul": "Kampung Wae Rebo",
+			"ringkas": "Tujuh Mbaru Niang melingkari halaman; meraih penghargaan UNESCO tahun 2012.",
 			"isi": [
 				"Wae Rebo memiliki 7 Mbaru Niang yang melingkari halaman tengah: 1 mbaru gendang (rumah utama penyimpan pusaka) dan 6 mbaru gena (rumah pendamping).",
 				"Pelestarian rumah adat Wae Rebo meraih UNESCO Asia-Pacific Award for Cultural Heritage Conservation (Award of Excellence) tahun 2012."
@@ -19,6 +21,7 @@
 		{
 			"id": "compang",
 			"judul": "Compang",
+			"ringkas": "Altar batu berundak di tengah kampung, tempat sakral yang hanya dilihat.",
 			"isi": [
 				"Compang adalah altar batu berundak di tengah kampung (natas). Compang menjadi pusat kehidupan adat dan tempat persembahan kepada Mori Kraeng (Tuhan) dan empo (leluhur).",
 				"Karena bermakna sakral, di dalam game compang hanya ditampilkan dan dijelaskan, tidak dijadikan arena bermain."
@@ -27,6 +30,7 @@
 		{
 			"id": "songke",
 			"judul": "Kain Songke",
+			"ringkas": "Kain tenun Manggarai berdasar hitam; motif ranggong berarti kejujuran dan kerja keras.",
 			"isi": [
 				"Songke adalah kain tenun khas Manggarai berwarna dasar hitam dengan motif berwarna cerah.",
 				"Motifnya bermakna, misalnya ranggong (laba-laba) melambangkan kejujuran dan kerja keras, serta mata manuk melambangkan Tuhan Yang Maha Melihat. Pemain caci memakai songke sebagai bagian busananya."
@@ -35,6 +39,7 @@
 		{
 			"id": "penti",
 			"judul": "Penti",
+			"ringkas": "Tahun baru adat Manggarai, syukur atas panen dan musim kerja baru.",
 			"isi": [
 				"Penti adalah perayaan tahun baru adat Manggarai sekaligus syukur atas pergantian musim kerja dan hasil panen. Biasanya dirayakan antara September dan Desember.",
 				"Penti dimeriahkan dengan tabuhan gong-gendang, nyanyian, dan sering juga pertunjukan caci."
@@ -43,6 +48,7 @@
 		{
 			"id": "gong_gendang",
 			"judul": "Gong, Gendang & Nyanyian",
+			"ringkas": "Gong dan gendang mengiringi upacara; nyanyian adat antara lain sanda, mbata, danding.",
 			"isi": [
 				"Gong dan gendang mengiringi upacara adat dan caci. Nyanyian Manggarai antara lain sanda (dinyanyikan berdiri melingkar tanpa alat musik), mbata (duduk, diiringi gong dan gendang), dan danding (kelompok bergerak melingkar).",
 				"Musik dalam game ini disintesis dengan pola gong dan gendang sebagai penghormatan, bukan rekaman asli."
@@ -51,6 +57,7 @@
 		{
 			"id": "caci",
 			"judul": "Caci: Paki dan Ta'ang",
+			"ringkas": "Tarian-tarung dua pria: paki mencambuk, ta'ang menangkis, bergantian.",
 			"isi": [
 				"Caci adalah tarian-tarung antara dua pria. Paki adalah pemain yang mencambuk, sedangkan ta'ang adalah pemain yang menangkis. Peran keduanya bergantian.",
 				"Pukulan hanya sah di bagian tubuh atas pinggang. Pemain yang terkena di mata dianggap kalah."
@@ -59,6 +66,7 @@
 		{
 			"id": "perlengkapan_caci",
 			"judul": "Perlengkapan Caci",
+			"ringkas": "Larik (cambuk), nggiling (perisai), panggal (penutup kepala), dan ndeki (hiasan ekor).",
 			"isi": [
 				"Paki memegang larik, cambuk dari kulit kerbau. Ta'ang melindungi diri dengan nggiling, perisai bundar dari kulit kerbau, dan busur penangkis dari rotan/bambu (agang atau tereng).",
 				"Pemain mengenakan panggal, penutup kepala yang menyerupai tanduk kerbau, dan ndeki, hiasan menyerupai ekor di pinggang belakang."
@@ -67,6 +75,7 @@
 		{
 			"id": "nilai_caci",
 			"judul": "Nilai Sportivitas Caci",
+			"ringkas": "Caci adalah ungkapan sportivitas, keberanian, dan persaudaraan, bukan untuk melukai.",
 			"isi": [
 				"Caci bukan untuk saling melukai. Caci adalah ungkapan sportivitas, keberanian, dan persaudaraan antarkampung.",
 				"Setelah bertanding, para pemain saling menghormati. Luka dalam caci diterima dengan lapang dada tanpa dendam."
@@ -75,6 +84,7 @@
 		{
 			"id": "lingko",
 			"judul": "Lingko",
+			"ringkas": "Tanah ulayat yang diolah bersama: gendang one, lingko pe'ang.",
 			"level": 2,
 			"isi": [
 				"Lingko adalah tanah ulayat atau lahan komunal masyarakat adat Manggarai. Lahan ini diolah bersama dan melambangkan solidaritas serta kerja sama.",
@@ -84,6 +94,7 @@
 		{
 			"id": "reke_lodok",
 			"judul": "Reke Lodok dan Tu'a Teno",
+			"ringkas": "Rapat sebelum lingko dibagi, dipimpin tu'a teno lewat musyawarah.",
 			"level": 2,
 			"isi": [
 				"Sebelum lingko dibagi, diadakan reke lodok, yaitu rapat awal untuk menentukan waktu pembagian dan siapa saja yang berhak menerima bagian.",
@@ -93,6 +104,7 @@
 		{
 			"id": "wae_teku",
 			"judul": "Wae Teku",
+			"ringkas": "Mata air kampung, bagian penting ruang hidup orang Manggarai.",
 			"level": 2,
 			"isi": [
 				"Wae teku adalah mata air kampung. Bersama natas (halaman kampung), compang, dan lingko, wae teku menjadi bagian penting ruang hidup orang Manggarai.",
@@ -102,6 +114,7 @@
 		{
 			"id": "moso",
 			"judul": "Moso",
+			"ringkas": "Garis pembatas dari pusat lingko ke tepi; lebar bagian tiap keluarga bisa berbeda.",
 			"level": 2,
 			"isi": [
 				"Moso adalah garis pembatas berbentuk jari-jari yang ditarik dari titik pusat lingko ke tepi. Garis ini memisahkan hak garapan setiap keluarga.",
@@ -111,6 +124,7 @@
 		{
 			"id": "lingko_lodok",
 			"judul": "Lingko Lodok",
+			"ringkas": "Dari lodok berkayu teno, garis moso memancar seperti jaring laba-laba.",
 			"level": 2,
 			"isi": [
 				"Lodok adalah titik pusat pembagian lingko. Di sana ditanam kayu teno (haju teno). Dari lodok, garis-garis moso memancar ke tepi sehingga sawah tampak seperti jaring laba-laba.",
@@ -120,6 +134,7 @@
 		{
 			"id": "songke_ekonomi",
 			"judul": "Songke sebagai Ekonomi Kreatif",
+			"ringkas": "Menenun songke juga sumber penghasilan; hargai penenun dengan harga yang adil.",
 			"level": 3,
 			"isi": [
 				"Bagi banyak keluarga di Manggarai, menenun songke bukan hanya melestarikan budaya, tetapi juga sumber penghasilan. Penelitian di desa-desa penenun menunjukkan tenun membantu memenuhi kebutuhan ekonomi keluarga.",
@@ -129,6 +144,7 @@
 		{
 			"id": "labuan_bajo",
 			"judul": "Labuan Bajo",
+			"ringkas": "Kota pelabuhan di Manggarai Barat, pintu gerbang Taman Nasional Komodo.",
 			"level": 3,
 			"isi": [
 				"Labuan Bajo adalah kota pelabuhan di Kabupaten Manggarai Barat, di ujung barat Pulau Flores. Kota ini menjadi pintu gerbang menuju Taman Nasional Komodo.",
@@ -138,6 +154,7 @@
 		{
 			"id": "padar",
 			"judul": "Pulau Padar",
+			"ringkas": "Dari puncaknya tampak tiga pantai: putih, hitam, dan merah muda.",
 			"level": 3,
 			"isi": [
 				"Pulau Padar terletak di antara Pulau Komodo dan Pulau Rinca. Jalur pendakiannya berupa ratusan anak tangga menuju puncak bukit.",
@@ -147,6 +164,7 @@
 		{
 			"id": "pink_beach",
 			"judul": "Pink Beach",
+			"ringkas": "Pasirnya merah muda karena serpihan foraminifera dan karang merah.",
 			"level": 3,
 			"isi": [
 				"Pink Beach (Pantai Merah) di Taman Nasional Komodo berpasir merah muda.",
@@ -156,6 +174,7 @@
 		{
 			"id": "komodo",
 			"judul": "Komodo",
+			"ringkas": "Kadal terbesar yang masih hidup; kunjungan wajib didampingi ranger.",
 			"level": 3,
 			"isi": [
 				"Komodo (Varanus komodoensis) adalah kadal terbesar yang masih hidup dan satwa yang dilindungi. Di alam liar, komodo hanya ditemukan di kawasan Taman Nasional Komodo dan sebagian Flores.",
@@ -165,6 +184,7 @@
 		{
 			"id": "taka_makassar",
 			"judul": "Taka Makassar",
+			"ringkas": "Pulau pasir sabit yang muncul saat surut, dekat Manta Point.",
 			"level": 3,
 			"isi": [
 				"Taka Makassar adalah gosong pasir kecil berbentuk sabit yang tidak berpenghuni. Pulau pasir ini muncul saat air surut dan sebagian tertutup saat air pasang.",
@@ -174,6 +194,7 @@
 		{
 			"id": "manjarite",
 			"judul": "Teluk Manjarite",
+			"ringkas": "Titik snorkeling: jangan menginjak karang dan bawa kembali sampahmu.",
 			"level": 3,
 			"isi": [
 				"Teluk Manjarite dikenal sebagai salah satu titik snorkeling di kawasan Taman Nasional Komodo. [PERLU VERIFIKASI: detail lokasi dan kondisi teluk]",

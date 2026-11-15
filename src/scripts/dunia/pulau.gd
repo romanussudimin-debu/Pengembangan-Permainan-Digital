@@ -110,7 +110,7 @@ func _ready() -> void:
 		_sisa_waktu = _batas_waktu
 		_waktu_berjalan = true
 	get_tree().create_timer(0.8, false).timeout.connect(
-			func() -> void: DialogManager.mulai_baris("pembuka_pulau", data["pembuka"]))
+			func() -> void: _obrol(pemain, "Nggohak", data["pembuka"].map(func(b: Dictionary) -> String: return str(b["teks"]))))
 
 
 # ================================================================== pembangun pulau
@@ -359,17 +359,19 @@ func _bangun_wisatawan() -> void:
 func _bicara(npc: NpcKampung) -> void:
 	var w: Dictionary = _data_npc[npc]
 	if not w.get("pembeli", false):
-		DialogManager.mulai_baris("info_wisatawan", _baris(npc.nama, w["info"]))
+		_obrol(npc, npc.nama, w["info"])
 		return
 	match str(_status[npc]):
 		"terjual":
-			DialogManager.mulai_baris("sudah_beli", _baris(npc.nama, DataLabuanBajo.teks("sudah_beli")))
+			_obrol(npc, npc.nama, DataLabuanBajo.teks("sudah_beli"))
 		"pergi":
-			DialogManager.mulai_baris("sudah_pergi", _baris(npc.nama, DataLabuanBajo.teks("sudah_pergi")))
+			_obrol(npc, npc.nama, DataLabuanBajo.teks("sudah_pergi"))
 		_:
 			if _tuntas or _gagal:
 				return
-			DialogManager.mulai_baris("minta", _baris(npc.nama, w["keinginan"]), _mulai_jual.bind(npc))
+			# Keinginan wisatawan langsung tampil di layar tawaran (tanpa panel dialog terpisah)
+			_obrol(npc, npc.nama, w["keinginan"])
+			_mulai_jual(npc)
 
 
 func _mulai_jual(npc: NpcKampung) -> void:
@@ -423,6 +425,12 @@ func _calon_pembeli() -> int:
 	return n
 
 
+## Obrolan ringan sebagai gelembung teks di atas tokoh (pemain tetap bisa bergerak).
+func _obrol(target: Node3D, nama: String, isi: Variant) -> void:
+	var daftar: Array = isi if isi is Array else [isi]
+	DialogManager.gelembung(target, daftar, nama, 3.6 if target == pemain else 4.1)
+
+
 func _baris(nama: String, isi: Variant) -> Array:
 	var daftar: Array = isi if isi is Array else [isi]
 	var baris: Array = []
@@ -438,9 +446,9 @@ func _perbarui_tujuan() -> void:
 
 func _baca_info(_p: Pemain) -> void:
 	var id: String = str(data["kartu"])
-	DialogManager.mulai_baris("info_pulau", data["info"], func() -> void:
-		if GameState.kumpulkan_kartu(id):
-			DialogManager.tampilkan_kartu(id))
+	_obrol(pemain, "Nggohak", data["info"].map(func(b: Dictionary) -> String: return str(b["teks"])))
+	if GameState.kumpulkan_kartu(id):
+		DialogManager.tampilkan_kartu(id)
 
 
 func _pulau_tuntas() -> void:

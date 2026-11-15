@@ -45,6 +45,7 @@ var kartu_terkumpul: Array[String] = []
 var level: int = 1  ## level yang sedang dimainkan
 var level_tertinggi: int = 1  ## level terjauh yang sudah terbuka (disimpan)
 var kartu_awal_level: Array[String] = []  ## kartu saat level dimulai (untuk mengulang level)
+var teks_cepat: bool = false  ## pengaturan: teks dialog langsung tampil utuh (disimpan)
 var mode_sulit: bool = false  ## Sulit: batas waktu "sebelum senja", kesempatan salah lebih sedikit
 var tujuan_khusus: String = ""  ## teks tujuan yang diatur level aktif (Level 2 dst.)
 var level_baru_selesai: int = 0  ## level yang baru tamat (dibaca layar Level Berhasil)
@@ -192,6 +193,7 @@ func simpan() -> void:
 	cfg.set_value("progres", "terjual_total", terjual_total)
 	cfg.set_value("progres", "pembuka_l3_dilihat", pembuka_l3_dilihat)
 	cfg.set_value("pengaturan", "mode_sulit", mode_sulit)
+	cfg.set_value("pengaturan", "teks_cepat", teks_cepat)
 	var hasil: Error = cfg.save(BERKAS_SIMPAN)
 	if hasil != OK:
 		push_warning("Gagal menyimpan progres (kode %d)" % hasil)
@@ -208,6 +210,7 @@ func muat() -> void:
 	terjual_total = int(cfg.get_value("progres", "terjual_total", 0))
 	pembuka_l3_dilihat = bool(cfg.get_value("progres", "pembuka_l3_dilihat", false))
 	mode_sulit = bool(cfg.get_value("pengaturan", "mode_sulit", false))
+	teks_cepat = bool(cfg.get_value("pengaturan", "teks_cepat", false))
 
 
 # ------------------------------------------------------------- kartu

@@ -162,7 +162,7 @@ func _bangun_compang() -> void:
 
 func _lihat_compang(_p: Pemain) -> void:
 	var baris: Array = [{"nama": "Nggohak", "teks": "Inilah compang, altar batu berundak di tengah kampung. Tempat ini sakral, jadi aku hanya melihatnya dengan hormat."}]
-	DialogManager.mulai_baris("lihat_compang", baris)
+	DialogManager.gelembung(pemain, [baris[0]["teks"]], "Nggohak", 3.6)
 
 
 func _munculkan_pemain() -> void:
@@ -183,9 +183,9 @@ func _bicara_warga(npc: NpcKampung) -> void:
 	if not tantangan.is_empty() and tantangan["pemegang"] == npc.nama:
 		DialogManager.mulai_baris("pembuka", _baris_dari(npc.nama, tantangan["pembuka"]), _mulai_tantangan.bind(tantangan))
 	elif GameState.sudah_memberi(npc.nama):
-		DialogManager.mulai_baris("sudah_diberikan", _baris_dialog("sudah_diberikan", npc.nama))
+		DialogManager.gelembung(npc, [_baris_dialog("sudah_diberikan", npc.nama)[0]["teks"]], npc.nama, 3.9)
 	else:
-		DialogManager.mulai_baris("belum_giliran", _baris_dialog("belum_giliran", npc.nama))
+		DialogManager.gelembung(npc, [_baris_dialog("belum_giliran", npc.nama)[0]["teks"]], npc.nama, 3.9)
 
 
 func _mulai_tantangan(tantangan: Dictionary) -> void:
@@ -227,7 +227,8 @@ func _hasil_minigame(berhasil: bool, tantangan: Dictionary, id_gagal: String, mi
 		return  # pemain menekan Berhenti: tidak dihitung gagal
 	Nyawa.kurangi("gagal tantangan")
 	if not Nyawa.sedang_habis():
-		DialogManager.mulai(id_gagal)
+		var b: Dictionary = DialogManager.DATA_DIALOG.data[id_gagal][0]
+		DialogManager.gelembung(pemain, [b["teks"]], str(b["nama"]), 3.6)
 
 
 ## Nyawa habis: tutup mini-game yang terbuka lalu mulai tantangan yang sama dari awal.

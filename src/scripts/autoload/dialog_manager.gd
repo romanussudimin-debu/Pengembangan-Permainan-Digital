@@ -65,6 +65,16 @@ var _indeks_benar: int = 0
 var _callback_jawaban: Callable = Callable()
 var _menjawab: bool = false
 
+# Lewati / percepat dialog dan popup kartu ringkas
+var _tombol_lewati: Button
+var _tahan: float = 0.0
+var _jeda_maju_otomatis: float = 0.0
+var _panel_kartu: NinePatchRect
+var _label_kartu_judul: Label
+var _label_kartu_isi: Label
+var _antrean_kartu: Array[Dictionary] = []
+var _kartu_tampil: bool = false
+
 
 func _ready() -> void:
 	layer = 50
@@ -76,6 +86,7 @@ func _ready() -> void:
 	add_child(_timer_lanjut)
 	_siapkan_suara()
 	_bangun_ui_teka_teki()
+	_bangun_popup_kartu()
 
 
 func _siapkan_suara() -> void:
@@ -135,6 +146,14 @@ func _bangun_ui() -> void:
 
 	_label_lanjut = Gaya.label("[E] lanjut", 8, Gaya.ABU)
 	_panel.add_child(_label_lanjut)
+	# Lewati = langsung ke akhir dialog (juga tombol Tab); tahan E/Spasi/layar = cepat
+	_tombol_lewati = Gaya.tombol("Lewati >>")
+	_tombol_lewati.custom_minimum_size = Vector2(84, 20)
+	_tombol_lewati.add_theme_font_size_override("font_size", 8)
+	_tombol_lewati.focus_mode = Control.FOCUS_NONE
+	_tombol_lewati.pressed.connect(lewati)
+	add_child(_tombol_lewati)
+	_tombol_lewati.visible = false
 
 
 func _bangun_ui_teka_teki() -> void:
@@ -221,14 +240,17 @@ func _atur_tata_letak(dengan_teks: bool) -> void:
 	if dengan_teks:
 		_panel.position = Vector2(24, 258)
 		_panel.size = Vector2(592, 92)
-		_label_lanjut.text = "[E] lanjut"
-		_label_lanjut.position = Vector2(530, 76)
+		_label_lanjut.text = "[E] lanjut · tahan = cepat"
+		_label_lanjut.position = Vector2(470, 76)
+		_tombol_lewati.position = Vector2(526, 236)
 	else:
 		_panel.position = Vector2(170, 300)
 		_panel.size = Vector2(300, 46)
-		_label_lanjut.text = "berbicara...  [E] lewati"
+		_label_lanjut.text = "berbicara...  [E] lanjut · tahan = cepat"
 		_label_lanjut.position = Vector2(14, 27)
+		_tombol_lewati.position = Vector2(380, 278)
 	_label_teks.visible = dengan_teks
+	_tombol_lewati.visible = true
 
 
 ## Mulai dialog berdasarkan id di dialog.json.
@@ -260,20 +282,93 @@ func mulai_baris(id: String, baris: Array, callback: Callable = Callable()) -> v
 
 
 ## Tampilkan (dan ucapkan) kartu pengetahuan budaya.
+## Kartu budaya baru tampil sebagai popup ringkas (judul + 1 kalimat) yang tidak menghentikan
+## permainan; isi lengkapnya dibaca kapan saja di menu jeda (Koleksi Kartu Budaya).
 func tampilkan_kartu(id_kartu: String, callback: Callable = Callable()) -> void:
 	var k: Dictionary = GameState.data_kartu(id_kartu)
-	if k.is_empty():
-		if callback.is_valid():
-			callback.call()
+	if not k.is_empty():
+		AudioManager.putar_sfx("ambil")
+		_antrean_kartu.append(k)
+		if not _kartu_tampil:
+			_kartu_berikutnya()
+	if callback.is_valid():
+		callback.call_deferred()
+
+
+static func ringkasan_kartu(k: Dictionary) -> String:
+	if k.has("ringkas"):
+		return str(k["ringkas"])
+	var isi: Array = k["isi"]
+	var kalimat: String = str(isi[0])
+	var titik: int = kalimat.find(". ")
+	return kalimat.substr(0, titik + 1) if titik > 0 else kalimat
+
+
+func _bangun_popup_kartu() -> void:
+	_panel_kartu = Gaya.panel_songke(Vector2(150, -80), Vector2(340, 64))
+	_panel_kartu.visible = false
+	_panel_kartu.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_panel_kartu)
+	var ikon := Control.new()
+	ikon.position = Vector2(10, 10)
+	ikon.size = Vector2(30, 40)
+	ikon.draw.connect(func() -> void:
+		ikon.draw_rect(Rect2(0, 0, 30, 40), Color("f4ecd8"))
+		ikon.draw_rect(Rect2(3, 3, 24, 34), Gaya.MERAH, false, 2.0)
+		ikon.draw_colored_polygon(PackedVector2Array([Vector2(15, 10), Vector2(23, 20), Vector2(15, 30), Vector2(7, 20)]), Gaya.KUNING))
+	_panel_kartu.add_child(ikon)
+	_label_kartu_judul = Gaya.label("", 10, Gaya.KUNING)
+	_label_kartu_judul.position = Vector2(48, 7)
+	_panel_kartu.add_child(_label_kartu_judul)
+	_label_kartu_isi = Gaya.label("", 8, Gaya.PUTIH)
+	_label_kartu_isi.position = Vector2(48, 22)
+	_label_kartu_isi.size = Vector2(282, 26)
+	_label_kartu_isi.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_panel_kartu.add_child(_label_kartu_isi)
+	var cat := Gaya.label("Isi lengkap: Esc > Koleksi Kartu Budaya", 7, Gaya.ABU)
+	cat.position = Vector2(48, 48)
+	_panel_kartu.add_child(cat)
+
+
+func _kartu_berikutnya() -> void:
+	if _antrean_kartu.is_empty():
+		_kartu_tampil = false
+		_panel_kartu.visible = false
 		return
-	AudioManager.putar_sfx("ambil")
-	var baris: Array = []
-	var halaman: Array = k["isi"]
-	for i in halaman.size():
-		var teks: String = halaman[i]
-		var ucapan: String = ("Kartu budaya, %s. %s" % [k["judul"], teks]) if i == 0 else teks
-		baris.append({"nama": "Kartu Budaya: " + str(k["judul"]), "teks": teks, "ucapan": ucapan})
-	mulai_baris("kartu_" + id_kartu, baris, callback)
+	_kartu_tampil = true
+	var k: Dictionary = _antrean_kartu.pop_front()
+	_label_kartu_judul.text = "KARTU BUDAYA BARU: " + str(k["judul"])
+	_label_kartu_isi.text = ringkasan_kartu(k)
+	_panel_kartu.visible = true
+	_panel_kartu.position.y = -80.0
+	_panel_kartu.modulate.a = 1.0
+	var tw := create_tween()
+	tw.tween_property(_panel_kartu, "position:y", 92.0, 0.35).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	tw.tween_interval(3.2)
+	tw.tween_property(_panel_kartu, "modulate:a", 0.0, 0.4)
+	tw.tween_callback(_kartu_berikutnya)
+	if suara_tersedia() and not aktif:
+		_ucapkan("Kartu budaya baru, %s." % k["judul"], "Nggohak")
+
+
+## Obrolan ringan: gelembung teks di atas `target` (pemain tetap bisa bergerak) dan diucapkan.
+func gelembung(target: Node3D, baris: Array, nama: String = "", tinggi: float = 3.4) -> void:
+	if target == null or baris.is_empty():
+		return
+	Gelembung.pada(target, baris, tinggi)
+	if suara_tersedia() and not aktif:
+		_ucapkan(" ".join(PackedStringArray(baris)), nama)
+
+
+## Lewati: langsung ke akhir dialog (callback tetap dijalankan).
+func lewati() -> void:
+	if not aktif or _menjawab:
+		return
+	_timer_lanjut.stop()
+	if suara_tersedia():
+		DisplayServer.tts_stop()
+	AudioManager.putar_sfx("klik")
+	_selesai()
 
 
 func _tampilkan_baris() -> void:
@@ -282,10 +377,12 @@ func _tampilkan_baris() -> void:
 	_label_nama.text = nama
 	_label_teks.text = str(b.get("teks", ""))
 	var bersuara: bool = suara_tersedia()
-	_atur_tata_letak(tampilkan_teks or not bersuara)
+	_atur_tata_letak(tampilkan_teks or GameState.teks_cepat or not bersuara)
 	if _tween_ketik:
 		_tween_ketik.kill()
-	if _label_teks.visible:
+	if GameState.teks_cepat:
+		_label_teks.visible_ratio = 1.0  # Teks cepat: teks langsung tampil utuh
+	elif _label_teks.visible:
 		_label_teks.visible_ratio = 0.0
 		_tween_ketik = create_tween()
 		var durasi: float = maxf(_label_teks.text.length() / KECEPATAN_KETIK, 0.1)
@@ -313,16 +410,34 @@ func _lanjut_setelah_ucapan(nomor: int) -> void:
 		_timer_lanjut.start(JEDA_SETELAH_UCAPAN)
 
 
-func _process(_delta: float) -> void:
+func _process(delta: float) -> void:
 	if not aktif or _menjawab or Engine.get_process_frames() == _frame_mulai:
+		_tahan = 0.0
 		return
 	if Input.is_action_just_pressed("interaksi") or Input.is_action_just_pressed("lompat"):
+		_maju()
+	# Tahan tombol (atau jari di layar) = dialog dipercepat: baris maju otomatis tiap 0,3 detik
+	var ditahan: bool = Input.is_action_pressed("interaksi") or Input.is_action_pressed("lompat") \
+			or Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT)
+	_tahan = _tahan + delta if ditahan else 0.0
+	_jeda_maju_otomatis = maxf(_jeda_maju_otomatis - delta, 0.0)
+	if _tahan > 0.45 and _jeda_maju_otomatis <= 0.0:
+		_jeda_maju_otomatis = 0.3
+		if _tween_ketik:
+			_tween_ketik.kill()
+		_label_teks.visible_ratio = 1.0
 		_maju()
 
 
 func _input(event: InputEvent) -> void:
 	if not aktif or _menjawab or Engine.get_process_frames() == _frame_mulai:
 		return  # klik/ketukan yang sama dengan yang membuka dialog tidak boleh melewati baris pertama
+	if event is InputEventKey and event.pressed and not event.echo and (event as InputEventKey).keycode == KEY_TAB:
+		get_viewport().set_input_as_handled()
+		lewati()
+		return
+	if event is InputEventMouseButton and _tombol_lewati.visible and _tombol_lewati.get_global_rect().has_point(event.position):
+		return  # klik tombol Lewati ditangani tombolnya sendiri
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_maju()
 
@@ -356,6 +471,7 @@ func tutup_paksa() -> void:
 	aktif = false
 	_menjawab = false
 	_panel.visible = false
+	_tombol_lewati.visible = false
 	_panel_teka_teki.visible = false
 	_callback = Callable()
 	_callback_jawaban = Callable()
@@ -365,6 +481,7 @@ func tutup_paksa() -> void:
 func _selesai() -> void:
 	aktif = false
 	_panel.visible = false
+	_tombol_lewati.visible = false
 	GameState.ubah_state(_state_sebelum)
 	var cb: Callable = _callback
 	_callback = Callable()

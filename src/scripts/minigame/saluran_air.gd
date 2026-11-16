@@ -4,8 +4,11 @@ extends CanvasLayer
 ## (kiri) sampai ke DUA petak sawah (kanan atas dan kanan bawah).
 ## Kontrol: klik/ketuk potongan untuk memutar 90°, atau panah/WASD + E/Spasi. Esc menjeda.
 ## Mode Sulit: jumlah putaran dibatasi (putaran minimum + 6); melebihi batas = gagal.
+## Pengecoh: potongan pipa RETAK (garis retak terlihat jelas). Bila air mengalir ke pipa retak, air bocor
+## (tetesan) = -1 nyawa, dan air tidak diteruskan; potongan itu harus diputar keluar dari jalur.
 
 signal selesai(berhasil: bool)
+signal salah(penyebab: String)  ## satu kesalahan (pengurang nyawa)
 
 const KOLOM: int = 6
 const BARIS: int = 5
@@ -32,11 +35,14 @@ const SOLUSI: Dictionary = {
 	Vector2i(2, 3): 3, Vector2i(3, 3): 12, Vector2i(3, 4): 3, Vector2i(4, 4): 10, Vector2i(5, 4): 10,
 }
 const PENGECOH: Array[int] = [5, 10, 3, 6, 12, 9]
+## Potongan retak: di luar jalur jawaban, tetapi bersebelahan dengannya.
+const RETAK: Array[Vector2i] = [Vector2i(1, 1), Vector2i(3, 2), Vector2i(4, 3)]
 
 const WARNA_AIR := Color("5fa8d3")
 const WARNA_KERING := Color("8a6a44")
 const WARNA_PETAK := Color("3d5a32")
 
+var batal: bool = false  ## true bila pemain menekan Berhenti (bukan gagal)
 var _ubin: Dictionary = {}  ## Vector2i -> bit sambungan saat ini
 var _basah: Dictionary = {}
 var _kursor := Vector2i(0, 2)
@@ -45,6 +51,9 @@ var _batas: int = -1  ## -1 = tanpa batas (mode Normal)
 var _selesai: bool = false
 var _kanvas: Control
 var _label_info: Label
+var kesalahan: int = 0
+var _bocor: Dictionary = {}  ## potongan retak yang sedang dialiri air
+var _waktu: float = 0.0
 
 
 func _ready() -> void:
@@ -52,6 +61,9 @@ func _ready() -> void:
 	_acak()
 	_bangun_ui()
 	_alirkan()
+	for r: Vector2i in RETAK:  # kebocoran sejak papan diacak tidak dihitung sebagai kesalahan
+		if _basah.has(r):
+			_bocor[r] = true
 	GameState.ubah_state(GameState.State.MINIGAME)
 
 
@@ -111,10 +123,14 @@ func _alirkan() -> void:
 				continue
 			if _ubin[n] & LAWAN[bit]:
 				_basah[n] = true
-				antrean.append(n)
+				if not RETAK.has(n):
+					antrean.append(n)  # air bocor di pipa retak dan tidak diteruskan
 
 
 func _semua_petak_terairi() -> bool:
+	for p: Vector2i in RETAK:
+		if _basah.has(p):
+			return false
 	for p: Vector2i in TUJUAN:
 		if not _basah.has(p) or not (_ubin[p] & T):
 			return false
@@ -152,7 +168,9 @@ func _bangun_ui() -> void:
 	berhenti.custom_minimum_size = Vector2(110, 24)
 	berhenti.position = Vector2(470, 40)
 	berhenti.focus_mode = Control.FOCUS_NONE
-	berhenti.pressed.connect(_akhiri.bind(false))
+	berhenti.pressed.connect(func() -> void:
+		batal = true
+		_akhiri(false))
 	add_child(berhenti)
 	_perbarui_info()
 
@@ -178,13 +196,29 @@ func _gambar() -> void:
 		var pusat: Vector2 = r.get_center()
 		var warna: Color = WARNA_AIR if _basah.has(p) else WARNA_KERING
 		var m: int = _ubin[p]
+		if RETAK.has(p):
+			_kanvas.draw_rect(r.grow(-1.0), Color("1e1816"))
 		for bit: int in ARAH:
 			if m & bit:
 				var arah: Vector2 = Vector2(ARAH[bit])
 				_kanvas.draw_line(pusat, pusat + arah * (SISI / 2.0), warna, 9.0)
 		_kanvas.draw_circle(pusat, 5.0, warna)
+		if RETAK.has(p):
+			# Garis retak yang jelas + tetesan air bila bocor
+			_kanvas.draw_polyline(PackedVector2Array([r.position + Vector2(4, 6), pusat + Vector2(-3, -2), pusat + Vector2(4, 3),
+				r.end - Vector2(5, 4)]), Color("e8dcc8"), 2.0)
+			if _basah.has(p):
+				for k in 3:
+					var t: float = fmod(_waktu * 1.6 + k * 0.33, 1.0)
+					_kanvas.draw_circle(pusat + Vector2((k - 1) * 8.0, 6.0 + t * 14.0), 2.5, Color(WARNA_AIR, 1.0 - t))
 	var rk := _rect_sel(_kursor).grow(2.0)
 	_kanvas.draw_rect(rk, Gaya.PUTIH, false, 3.0)
+
+
+func _process(delta: float) -> void:
+	_waktu += delta
+	if not _bocor.is_empty():
+		_kanvas.queue_redraw()
 
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -226,6 +260,17 @@ func _putar_sel(p: Vector2i) -> void:
 	_putaran += 1
 	AudioManager.putar_sfx("klik", 0.2)
 	_alirkan()
+	for r: Vector2i in RETAK:
+		var basah: bool = _basah.has(r)
+		if basah and not _bocor.has(r):
+			kesalahan += 1
+			AudioManager.putar_sfx("gagal")
+			salah.emit("air bocor di pipa retak")
+			_label_info.text = "Pipa retak bocor! Putar potongan yang retak keluar dari jalur air."
+		if basah:
+			_bocor[r] = true
+		else:
+			_bocor.erase(r)
 	_kanvas.queue_redraw()
 	_perbarui_info()
 	if _semua_petak_terairi():

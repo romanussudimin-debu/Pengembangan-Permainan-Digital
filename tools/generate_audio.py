@@ -121,3 +121,18 @@ def musik(bpm, pola_gendang, pola_gong, nada, bar=8, ketuk=8):
 simpan("musik_kampung.wav", musik(84, [1, 0, 2, 0, 1, 1, 2, 0], [1, 0, 0, 0, 0, 0, 0, 0], [98, 110, 131, 147, 165, 131, 110, 98]), .7)
 simpan("musik_caci.wav", musik(120, [1, 2, 1, 2, 1, 1, 2, 2], [1, 0, 0, 0, 1, 0, 0, 0], [98, 98, 110, 131]), .8)
 print("audio selesai ->", os.path.abspath(OUT))
+
+
+# --- SFX umpan balik (tahap 8 perbaikan playtest) ---
+# benar: dua nada naik (seperti ketukan bilah sasando/xilofon bambu) - jelas beda dengan "berhasil" yang panjang
+simpan("benar.wav", np.concatenate([lonceng(784, .09), lonceng(1175, .28)]), .6)
+# salah: dengung rendah turun + tabuhan gendang redam
+tt = t(.35)
+dengung = np.sin(2 * np.pi * np.cumsum(220 - 90 * tt / .35) / SR) * np.exp(-tt * 7)
+simpan("salah.wav", dengung + .5 * gendang(55, .35), .55)
+# kombo: arpeggio naik tiga nada pentatonik + kilau
+simpan("kombo.wav", np.concatenate([lonceng(659, .07), lonceng(784, .07), lonceng(988, .07), lonceng(1319, .3)]), .6)
+# percik: air terpercik (derau tersaring meluruh)
+tt = t(.4)
+percik = np.convolve(rng.standard_normal(len(tt)), np.ones(6) / 6, mode="same") * np.exp(-tt * 9)
+simpan("percik.wav", percik, .5)

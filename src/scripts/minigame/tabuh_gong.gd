@@ -3,8 +3,11 @@ extends CanvasLayer
 ## Mini-game TABUH GONG-GENDANG: ketukan bergerak dari kanan ke garis tabuh.
 ## Tekan J (gong) atau K (gendang) saat ketukan tiba di garis. Berhasil bila
 ## minimal PERSEN_LULUS ketukan tepat.
+## Pengecoh: ketukan TIPUAN (simbol abu-abu bersilang, muncul di paruh kedua) tidak boleh ditabuh.
+## Menabuh tipuan = -1 nyawa; setiap MELESET_PER_NYAWA ketukan asli yang meleset = -1 nyawa.
 
 signal selesai(berhasil: bool)
+signal salah(penyebab: String)  ## satu kesalahan (pengurang nyawa)
 
 const TEMPO_BPM: float = 76.0
 const JENDELA_TEPAT: float = 0.2  ## toleransi waktu (detik)
@@ -13,12 +16,18 @@ const GARIS_X: float = 130.0
 const JALUR_Y: Array[float] = [150.0, 220.0]  ## 0 = gong, 1 = gendang
 const PERSEN_LULUS: float = 0.6
 const JEDA_AWAL: float = 2.5
-## Pola irama (G = gong, D = gendang, - = diam), satu karakter = setengah ketukan.
-const POLA: String = "G-D-D-G-D-D-G---G-D-D-G-DDG-G---"
+## Pola irama (G = gong, D = gendang, X = tipuan di jalur gong, Y = tipuan di jalur gendang,
+## - = diam), satu karakter = setengah ketukan.
+const POLA: String = "G-D-D-G-D-D-G---G-D-X-G-DYG-G-X-D-D-G---"
+const MELESET_PER_NYAWA: int = 4
 
-var _ketukan: Array[Dictionary] = []  ## {waktu, jalur, status: 0 menunggu, 1 tepat, 2 luput}
+var batal: bool = false  ## true bila pemain berhenti (bukan gagal)
+var _ketukan: Array[Dictionary] = []  ## {waktu, jalur, tipuan, status: 0 menunggu, 1 tepat, 2 luput, 3 lewat, 4 tertipu}
+var kesalahan: int = 0
+var _meleset: int = 0
 var _jam: float = 0.0
 var _tepat: int = 0
+var _beruntun: int = 0  ## ketukan tepat berturut-turut (kombo tiap 5)
 var _selesai: bool = false
 var _kanvas: Control
 var _label_info: Label
@@ -37,8 +46,9 @@ func _susun_ketukan() -> void:
 	var setengah: float = 60.0 / TEMPO_BPM / 2.0
 	for i in POLA.length():
 		var c: String = POLA[i]
-		if c == "G" or c == "D":
-			_ketukan.append({"waktu": JEDA_AWAL + i * setengah, "jalur": 0 if c == "G" else 1, "status": 0})
+		if c in ["G", "D", "X", "Y"]:
+			_ketukan.append({"waktu": JEDA_AWAL + i * setengah, "jalur": 0 if c == "G" or c == "X" else 1,
+				"tipuan": c == "X" or c == "Y", "status": 0})
 
 
 func _bangun_ui() -> void:
@@ -85,8 +95,17 @@ func _process(delta: float) -> void:
 	_jam += delta
 	for k in _ketukan:
 		if k["status"] == 0 and _jam > float(k["waktu"]) + JENDELA_TEPAT:
+			if k["tipuan"]:
+				k["status"] = 3  # tipuan dibiarkan lewat: benar
+				_umpan("Tipuan dilewati!", Gaya.HIJAU)
+				continue
 			k["status"] = 2
+			_beruntun = 0
 			_umpan("Luput", Gaya.ABU)
+			_meleset += 1
+			if _meleset % MELESET_PER_NYAWA == 0:
+				kesalahan += 1
+				salah.emit("terlalu banyak meleset")
 	if Input.is_action_just_pressed("tabuh_gong"):
 		_tabuh(0)
 	if Input.is_action_just_pressed("tabuh_gendang"):
@@ -95,8 +114,8 @@ func _process(delta: float) -> void:
 	for k in _ketukan:
 		if k["status"] == 0:
 			sisa += 1
-	_label_info.text = "Tepat: %d / %d   (lulus: %d)%s" % [_tepat, _ketukan.size(), ceili(_ketukan.size() * PERSEN_LULUS),
-		"   Bersiap..." if _jam < JEDA_AWAL - 0.5 else ""]
+	_label_info.text = "Tepat: %d / %d   (lulus: %d)   Abu-abu bersilang = tipuan, jangan ditabuh!%s" % [
+		_tepat, _jumlah_asli(), ceili(_jumlah_asli() * PERSEN_LULUS), "   Bersiap..." if _jam < JEDA_AWAL - 0.5 else ""]
 	_kanvas.queue_redraw()
 	if sisa == 0:
 		_hasil()
@@ -107,13 +126,34 @@ func _tabuh_sentuh(jalur: int) -> void:
 		_tabuh(jalur)
 
 
+func _jumlah_asli() -> int:
+	var n: int = 0
+	for k in _ketukan:
+		if not k["tipuan"]:
+			n += 1
+	return n
+
+
 func _tabuh(jalur: int) -> void:
 	AudioManager.putar_sfx("gong" if jalur == 0 else "gendang", 0.05)
 	for k in _ketukan:
-		if k["status"] == 0 and k["jalur"] == jalur and absf(float(k["waktu"]) - _jam) <= JENDELA_TEPAT:
+		if k["status"] == 0 and not k["tipuan"] and k["jalur"] == jalur and absf(float(k["waktu"]) - _jam) <= JENDELA_TEPAT:
 			k["status"] = 1
 			_tepat += 1
-			_umpan("Tepat!", Gaya.HIJAU)
+			_beruntun += 1
+			if _beruntun % 5 == 0:
+				AudioManager.putar_sfx("kombo")
+				_umpan("Kombo x%d!" % _beruntun, Gaya.KUNING)
+			else:
+				_umpan("Tepat!", Gaya.HIJAU)
+			return
+	for k in _ketukan:
+		if k["status"] == 0 and k["tipuan"] and k["jalur"] == jalur and absf(float(k["waktu"]) - _jam) <= JENDELA_TEPAT:
+			k["status"] = 4
+			_beruntun = 0
+			kesalahan += 1
+			_umpan("Tertipu!", Gaya.MERAH)
+			salah.emit("menabuh ketukan tipuan")
 			return
 
 
@@ -137,6 +177,13 @@ func _gambar() -> void:
 		if x > 590.0:
 			continue
 		var jalur: int = k["jalur"]
+		if k["tipuan"]:
+			# Tipuan: lingkaran abu-abu bersilang (beda bentuk & warna dari gong/gendang asli)
+			var c := Vector2(x, JALUR_Y[jalur])
+			_kanvas.draw_circle(c, 14.0, Color("5a5650"))
+			_kanvas.draw_line(c + Vector2(-8, -8), c + Vector2(8, 8), Color("d8d2c8"), 3.0)
+			_kanvas.draw_line(c + Vector2(-8, 8), c + Vector2(8, -8), Color("d8d2c8"), 3.0)
+			continue
 		if jalur == 0:
 			_kanvas.draw_circle(Vector2(x, JALUR_Y[0]), 16.0, Color("b8892c"))
 			_kanvas.draw_circle(Vector2(x, JALUR_Y[0]), 6.0, Color("d4a640"))
@@ -147,7 +194,7 @@ func _gambar() -> void:
 
 func _hasil() -> void:
 	_selesai = true
-	var lulus: bool = _tepat >= ceili(_ketukan.size() * PERSEN_LULUS)
+	var lulus: bool = _tepat >= ceili(_jumlah_asli() * PERSEN_LULUS)
 	if lulus:
 		AudioManager.putar_sfx("berhasil")
 		_umpan("Irama sempurna untuk Penti!", Gaya.KUNING)

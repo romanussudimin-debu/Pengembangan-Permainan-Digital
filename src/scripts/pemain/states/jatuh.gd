@@ -18,4 +18,6 @@ func physics_update(delta: float) -> void:
 		var kuat: float = clampf(-kecepatan_jatuh / 20.0, 0.05, 0.3)
 		pemain.model.squash(Vector3(1.0 + kuat, 1.0 - kuat, 1.0 + kuat))
 		AudioManager.putar_sfx("langkah")
+		if kecepatan_jatuh < -7.0:
+			Efek.debu(pemain.get_parent(), pemain.global_position + Vector3(0, 0.05, 0))
 		mesin.ganti("Jalan" if arah != Vector3.ZERO else "Idle")

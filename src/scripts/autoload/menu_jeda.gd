@@ -60,6 +60,14 @@ func _bangun_ui() -> void:
 	cek_teks.button_pressed = DialogManager.tampilkan_teks
 	cek_teks.toggled.connect(func(aktif: bool) -> void: DialogManager.tampilkan_teks = aktif)
 	kolom.add_child(cek_teks)
+	var cek_cepat := CheckBox.new()
+	cek_cepat.text = "Teks cepat (langsung utuh)"
+	cek_cepat.add_theme_font_size_override("font_size", 9)
+	cek_cepat.button_pressed = GameState.teks_cepat
+	cek_cepat.toggled.connect(func(aktif: bool) -> void:
+		GameState.teks_cepat = aktif
+		GameState.simpan())
+	kolom.add_child(cek_cepat)
 
 	var ke_menu := Gaya.tombol("Ke Menu Utama")
 	ke_menu.pressed.connect(_ke_menu)
@@ -104,6 +112,7 @@ func buka() -> void:
 	if not GameState.ubah_state(GameState.State.JEDA):
 		return
 	_isi_kartu()
+	Analitik.catat("koleksi_dibuka", {"kartu": GameState.kartu_terkumpul.size()})
 	_akar.visible = true
 	get_tree().paused = true
 	_tombol_lanjut.grab_focus()

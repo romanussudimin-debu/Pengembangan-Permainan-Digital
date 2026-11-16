@@ -1,0 +1,8 @@
+{
+	"level": [
+		{"nomor": 1, "nama": "Kampung Wae Rebo", "tagline": "Daki jalan hutan ke kampung adat, lalu temui delapan warga menjelang Penti."},
+		{"nomor": 2, "nama": "Lingko Lodok", "tagline": "Susuri pematang, undang keluarga, dan bagi lingko lewat musyawarah."},
+		{"nomor": 3, "nama": "Songke ke Labuan Bajo", "tagline": "Bawa songke penenun ke enam destinasi Taman Nasional Komodo."}
+	],
+	"penutup": {"tombol": "Lanjutkan ke Perayaan Penti", "teks": "Semua level tuntas! Saatnya pulang ke Wae Rebo untuk merayakan Penti."}
+}

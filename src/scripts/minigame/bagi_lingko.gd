@@ -6,26 +6,25 @@ extends CanvasLayer
 ## berurutan searah jarum jam, mendapat bagian sesuai aturan musyawarah (data/lingko.json "ronde").
 ## "Adil" di sini berarti sesuai kesepakatan adat, bukan sama luas.
 ## Kontrol: klik/ketuk titik tepi untuk menancapkan/mencabut moso, atau Panah/WASD + E/Spasi;
-## tombol Periksa (atau C) untuk memeriksa. Mode Sulit: ukuran bagian tidak ditampilkan dan
-## kesempatan salah lebih sedikit.
+## tombol Periksa (atau C) untuk memeriksa. Setiap pembagian salah = -1 nyawa (sinyal `salah`).
+## Mode Sulit: ukuran bagian tidak ditampilkan dan garis moso direset setiap kali salah.
 
 signal selesai(berhasil: bool)
+signal salah(penyebab: String)  ## satu kesalahan (pengurang nyawa)
 
 const PUSAT := Vector2(176, 190)
 const JARI: float = 108.0
-const KESEMPATAN_NORMAL: int = 3
-const KESEMPATAN_SULIT: int = 2
 const WARNA_PENERIMA: Array[Color] = [
 	Color("e8b430"), Color("b02a2a"), Color("2e7d46"), Color("2c5c96"),
 	Color("e07b39"), Color("7a4a8a"), Color("a0703c"), Color("3a9a8a"),
 ]
 const WARNA_MOSO := Color("3b2a1c")
 
+var batal: bool = false  ## true bila pemain menekan Berhenti (bukan gagal)
 var _ronde: Array = []
 var _indeks_ronde: int = 0
 var _moso: Array[int] = []  ## posisi titik (0..bagian-1) yang ditancapi moso; 0 selalu ada
 var _kursor: int = 1
-var _sisa_kesempatan: int = KESEMPATAN_NORMAL
 var _salah: Array[int] = []  ## indeks penerima yang bagiannya keliru (ditandai setelah Periksa)
 var _terkunci: bool = false
 var _selesai: bool = false
@@ -63,7 +62,6 @@ func _mulai_ronde(i: int) -> void:
 	_kursor = 1
 	_salah.clear()
 	_terkunci = false
-	_sisa_kesempatan = KESEMPATAN_SULIT if GameState.mode_sulit else KESEMPATAN_NORMAL
 	var d: Dictionary = _data()
 	_label_judul_ronde.text = "Lingko %d dari %d  ·  %d bagian" % [i + 1, _ronde.size(), _jumlah_bagian()]
 	_label_aturan.text = "Aturan musyawarah: " + str(d["aturan"])
@@ -118,7 +116,9 @@ func _bangun_ui() -> void:
 	berhenti.custom_minimum_size = Vector2(110, 24)
 	berhenti.position = Vector2(474, 38)
 	berhenti.focus_mode = Control.FOCUS_NONE
-	berhenti.pressed.connect(_akhiri.bind(false))
+	berhenti.pressed.connect(func() -> void:
+		batal = true
+		_akhiri(false))
 	add_child(berhenti)
 
 
@@ -197,8 +197,8 @@ func _perbarui() -> void:
 
 
 func _teks_bantuan() -> String:
-	return "Tancapkan %d garis moso lagi (sekarang %d). Ketuk titik tepi, atau Panah + E. Kesempatan salah: %d." % [
-		(_data()["penerima"] as Array).size() - 1, _moso.size() - 1, _sisa_kesempatan]
+	return "Tancapkan %d garis moso lagi (sekarang %d). Ketuk titik tepi, atau Panah + E. Salah periksa = -1 nyawa." % [
+		(_data()["penerima"] as Array).size() - 1, _moso.size() - 1]
 
 
 # ------------------------------------------------------------------ input
@@ -270,18 +270,16 @@ func _periksa() -> void:
 	if _salah.is_empty():
 		_ronde_berhasil()
 		return
-	_sisa_kesempatan -= 1
+	salah.emit("pembagian lingko belum sesuai")
 	AudioManager.putar_sfx("gagal")
 	if GameState.mode_sulit:
-		_salah.clear()  # Mode Sulit: bagian yang keliru tidak ditunjukkan
-		_label_info.text = "Belum sesuai musyawarah. Hitung lagi perbandingannya. Sisa kesempatan: %d." % _sisa_kesempatan
+		# Mode Sulit: bagian yang keliru tidak ditunjukkan dan garis moso direset
+		_salah.clear()
+		_moso = [0]
+		_label_info.text = "Belum sesuai musyawarah. Garis moso dicabut; hitung lagi perbandingannya."
 	else:
-		_label_info.text = "Ada %d bagian yang belum sesuai (bertanda merah). Sisa kesempatan: %d." % [_salah.size(), _sisa_kesempatan]
+		_label_info.text = "Ada %d bagian yang belum sesuai (bertanda merah). Perbaiki garis moso-nya." % _salah.size()
 	_perbarui()
-	if _sisa_kesempatan <= 0:
-		_terkunci = true
-		_label_info.text = "Kesempatan habis. Musyawarah perlu diulang."
-		get_tree().create_timer(1.6, false).timeout.connect(_akhiri.bind(false))
 
 
 func _ronde_berhasil() -> void:

@@ -2,31 +2,31 @@
 	"salah": [
 		{
 			"nama": "Pemegang",
-			"teks": "Belum tepat, Kraeng. Ingat lagi isi kartu budayamu; koleksinya bisa dibuka dengan Esc. Lalu datanglah lagi kepadaku."
+			"teks": "Belum tepat, Kraeng. Lihat lagi kartumu (Esc), lalu coba lagi."
 		}
 	],
 	"belum_giliran": [
 		{
 			"nama": "Pemegang",
-			"teks": "Halo, Kraeng! Kartuku belum bisa kuberikan sekarang. Ikuti dulu petunjukmu."
+			"teks": "Kartuku belum waktunya, Kraeng. Ikuti petunjukmu."
 		}
 	],
 	"sudah_diberikan": [
 		{
 			"nama": "Pemegang",
-			"teks": "Terima kasih, Kraeng. Lanjutkan perjalananmu!"
+			"teks": "Terima kasih, Kraeng!"
 		}
 	],
 	"tenun_gagal": [
 		{
 			"nama": "Ine Wela",
-			"teks": "Tidak apa-apa, Kraeng. Datanglah lagi kalau ingin mencoba menenun."
+			"teks": "Coba lagi kapan saja, Kraeng."
 		}
 	],
 	"gong_gagal": [
 		{
 			"nama": "Fransi",
-			"teks": "Iramanya belum pas. Ayo coba lagi, Kraeng!"
+			"teks": "Iramanya belum pas. Coba lagi!"
 		}
 	]
 }

@@ -181,3 +181,41 @@ static func sampah(induk: Node3D, pos: Vector3) -> Node3D:
 	kantong.height = 0.16
 	Dunia.mesh(g, kantong, Vector3(0.3, 0.06, 0.15), Dunia.mat(Color("f4f4f4")))
 	return g
+
+
+## Kerang laut (pengecoh: makhluk/rumah makhluk laut, tidak boleh diambil). Putih-merah muda, berusuk.
+static func kerang(induk: Node3D, pos: Vector3) -> Node3D:
+	var g := Node3D.new()
+	g.position = pos
+	induk.add_child(g)
+	var cangkang := SphereMesh.new()
+	cangkang.radius = 0.16
+	cangkang.height = 0.12
+	cangkang.radial_segments = 10
+	cangkang.rings = 3
+	var mi := Dunia.mesh(g, cangkang, Vector3(0, 0.04, 0), Dunia.mat(Color("f4d8d0")))
+	mi.scale = Vector3(1.0, 1.0, 0.85)
+	for i in 5:
+		var rusuk := BoxMesh.new()
+		rusuk.size = Vector3(0.02, 0.02, 0.28)
+		var r := Dunia.mesh(g, rusuk, Vector3(0, 0.1, 0.0), Dunia.mat(Color("d89a90")))
+		r.rotation.y = (i - 2) * 0.32
+	return g
+
+
+## Bintang laut (pengecoh: satwa hidup, tidak boleh diambil). Lima lengan jingga.
+static func bintang_laut(induk: Node3D, pos: Vector3) -> Node3D:
+	var g := Node3D.new()
+	g.position = pos
+	induk.add_child(g)
+	var m := Dunia.mat(Color("e8642c"))
+	for i in 5:
+		var lengan := BoxMesh.new()
+		lengan.size = Vector3(0.09, 0.05, 0.24)
+		var mi := Dunia.mesh(g, lengan, Vector3.ZERO, m)
+		var a: float = TAU * i / 5.0
+		mi.position = Vector3(sin(a) * 0.12, 0.03, cos(a) * 0.12)
+		mi.rotation.y = a
+	var tengah := Dunia.silinder(0.08, 0.08, 0.06, 6)
+	Dunia.mesh(g, tengah, Vector3(0, 0.03, 0), Dunia.mat(Color("f08a40")))
+	return g

@@ -113,6 +113,24 @@
 - Teluk Manjarite: hanya ditemukan sebagai salah satu titik snorkeling di kawasan Komodo; detail lokasi/kondisi `[PERLU VERIFIKASI]`. [S45]
 - Songke sebagai ekonomi kreatif: tenun membantu ekonomi keluarga penenun (studi kasus Desa Renda dan Ruis; harga jual berkaitan dengan upah perajin). [S46, S47]
 
+## 10. Kopi Wae Rebo (tantangan Menyangrai & Mengantar Kopi, ditambahkan 15 Nov 2026)
+- Kopi adalah komoditas utama Desa Wae Rebo; kopi robusta mulai ditanam sekitar 1960-an; pengolahan dilakukan secara tradisional tanpa mesin, pupuk, atau pestisida. [S48]
+- Sejak 2014 petani Wae Rebo juga memproduksi kopi bubuk dalam kemasan, dikerjakan para perempuan di bawah lembaga pariwisata kampung (LPB Wae Rebo); volumenya masih kecil. [S49]
+- Cara menyangrai yang khas Wae Rebo (alat, durasi) **tidak ditemukan** dalam sumber; di Flores Timur kopi digoreng di tembikar dan ditumbuk di lesung (pembanding, bukan data Wae Rebo). Tantangan menyangrai di game adalah **adaptasi kreatif** `[PERLU VERIFIKASI]`. [S50]
+- Menyuguhkan kopi kepada tamu sebagai bagian penyambutan di Wae Rebo dipakai sebagai latar tantangan Mengantar Kopi `[PERLU VERIFIKASI: sumber tertulis]`.
+
+## 11. Burung di sawah (tantangan Mengusir Burung, Level 2, ditambahkan 16 Nov 2026)
+- Burung pipit/bondol (mis. bondol jawa *Lonchura leucogastroides*) datang berkelompok memakan bulir padi, terutama saat bulir mulai menguning; dianggap hama padi. [S51, S52]
+- Petani mengusir burung secara tradisional dengan orang-orangan sawah, kaleng berisi kerikil, tali berhias plastik, dan menjaga sawah hampir seharian menjelang panen. [S52]
+- Kuntul kerbau (*Bubulcus ibis*) mencari makan di sawah dan padang rumput (serangga, krustasea, moluska, amfibi, reptil kecil), berperan sebagai pengendali hama alami dan termasuk satwa dilindungi. [S53, S54]
+- Praktik menjaga sawah dari burung secara khusus di lingko Manggarai **belum ditemukan sumber tertulisnya**; tantangan Usir Burung adalah **adaptasi kreatif** berbasis praktik pertanian padi umum di Indonesia `[PERLU VERIFIKASI: praktik lokal Manggarai]`. Besaran manfaat kuntul bagi sawah belum terukur dalam sumber (bukti terbatas).
+
+## 12. Wisata bahari bertanggung jawab & perilaku komodo (tantangan Level 3, ditambahkan 16 Nov 2026)
+- Sampah laut (terutama plastik) menjadi tekanan nyata di perairan TN Komodo, termasuk sampah kiriman yang terbawa arus. [S55]
+- Pemandu selam di TN Komodo mengingatkan wisatawan agar tidak mengambil apa pun dan tidak menyentuh karang karena karang tumbuh sangat lambat. Larangan mengambil kerang/bintang laut dan menyentuh penyu di game mengikuti prinsip ini; teks peraturan resmi Balai TN Komodo **belum ditemukan** `[PERLU VERIFIKASI: aturan resmi BTNK]`. [S56]
+- Komodo adalah predator penyergap: diam berjam-jam tersembunyi di vegetasi/rumput tinggi dengan kulit abu-abu kecokelatan sebagai kamuflase, lalu menyerang mangsa yang mendekat dengan cepat. Dasar pengecoh "semak bergoyang" (tanda: jejak kaki, ekor). [S57]
+- Garis pelampung batas berenang dan "terseret arus" di Manjarite adalah **adaptasi** keselamatan berenang umum; arus kuat di perairan Komodo memang dikenal [S45], detail Teluk Manjarite `[PERLU VERIFIKASI]`.
+
 ## Daftar Pustaka (diakses 12 November 2026)
 
 **Mbaru Niang & Wae Rebo**
@@ -180,3 +198,13 @@
 - [S45] Indonesia Travel (Kemenparekraf). (t.t.). *9 destinasi sailing & snorkeling di Labuan Bajo*. https://www.indonesia.travel/gb-en/travel-ideas/marine/9-destinations-for-sailing--snorkeling-while-enjoying-the-beauty-of-labuan-bajo/ ; Komodo Explorer. (t.t.). *Manta Point*. https://www.komodoexplorer.com/glossary/manta-point
 - [S46] [Penulis PERLU VERIFIKASI]. Peran ibu rumah tangga dalam peningkatan perekonomian keluarga melalui tenun di Desa Renda, Manggarai, NTT. *Solidarity* (UNNES). https://journal.unnes.ac.id/sju/solidarity/article/view/76725
 - [S47] [Penulis & tahun PERLU VERIFIKASI]. [Harga jual kain songke dan upah perajin]. *Jurnal IPTS*. https://journal.ipts.ac.id/index.php/ED/article/download/3545/2380
+- [S48] Suara Pemerintah. (t.t.). *Nikmatnya kopi Wae Rebo bikin susah move on*. https://suarapemerintah.id/?p=264113
+- [S49] Kompas. (2018, 2 Juni). *Preserving the heritage of Waerebo coffee*. https://kompas.id/baca/english/2018/06/02/preserving-the-heritage-of-waerebo-coffee/
+- [S50] Mongabay Indonesia. (2021, 4 April). *Leworook, kopi warisan leluhur Flores Timur*. https://mongabay.co.id/2021/04/04/leworook-kopi-warisan-leluhur-flores-timur/
+- [S51] Mongabay Indonesia. (2020, 2 Mei). *Burung bondol jawa, si burung mungil pemakan bulir*. https://mongabay.co.id/2020/05/02/burung-bondol-jawa-si-burung-mungil-pemakan-bulir/
+- [S52] detikJogja. (2024). *7 cara mengusir hama burung di sawah agar padi aman*. https://www.detik.com/jogja/berita/d-7624582/7-cara-mengusir-hama-burung-di-sawah-agar-padi-aman-bisa-pakai-apa
+- [S53] Balai Besar KSDA Jawa Barat (KLHK). (t.t.). *[Buku panduan satwa burung air; judul PERLU VERIFIKASI]* (e-book). https://bbksdajabar.ksdae.menlhk.go.id/uploads/publikasi/e-book/0fb783dd9318b9f97279e45c8443370b.pdf
+- [S54] [Penulis PERLU VERIFIKASI]. [Studi burung kuntul kerbau di persawahan]. *Biofaal Journal* (Universitas Pattimura). https://ojs3.unpatti.ac.id/index.php/biofaal/article/download/8078/5830
+- [S55] Mongabay Indonesia. (2017, 18 Desember). *Mengurai tekanan limbah laut di kawasan Taman Nasional Komodo*. https://www.mongabay.co.id/2017/12/18/mengurai-tekanan-limbah-laut-di-kawasan-taman-nasional-komodo/
+- [S56] Magazine.travel. (t.t.). *Snorkeling and diving in Komodo National Park*. https://magazine.travel/en/urlaub/asien/indonesien/komodo/schnorcheln-und-tauchen-im-komodo-nationalpark/
+- [S57] A-Z Animals. (t.t.). *Komodo dragon*. https://a-z-animals.com/animals/komodo-dragon/

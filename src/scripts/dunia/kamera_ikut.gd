@@ -12,6 +12,7 @@ var _guncang: float = 0.0
 
 
 func _ready() -> void:
+	add_to_group("kamera_ikut")  # Nyawa menggetarkan kamera saat nyawa berkurang
 	fov = 60.0
 	if target:
 		global_position = target.global_position + offset_kamera

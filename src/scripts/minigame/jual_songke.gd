@@ -4,11 +4,12 @@ extends CanvasLayer
 ##   1. PILIH  - pilih kain songke atau foto budaya yang cocok dengan keinginan wisatawan.
 ##   2. CERITA - ceritakan maknanya: jawab pertanyaan wisatawan (pilihan ganda; jawabannya
 ##               ada di kartu budaya yang sudah dikumpulkan).
-## Salah barang hanya membuat wisatawan menolak barang itu. Salah cerita: Normal boleh mencoba
-## sekali lagi, Sulit wisatawan langsung pergi. Kontrol: klik/ketuk, Panah/WASD + E, angka 1-3.
+## Salah barang atau salah cerita = -1 nyawa (sinyal `salah`). Mode Sulit: salah cerita membuat
+## wisatawan langsung pergi. Kontrol: klik/ketuk, Panah/WASD + E, angka 1-3.
 ## Sinyal selesai(true) = terjual; selesai(false) dengan `pergi` = wisatawan pergi, tanpa = batal.
 
 signal selesai(berhasil: bool)
+signal salah(penyebab: String)  ## satu kesalahan (pengurang nyawa)
 
 enum Tahap { PILIH, CERITA, AKHIR }
 
@@ -17,6 +18,7 @@ const UKURAN_UBIN := Vector2(98, 72)
 const ASAL_UBIN := Vector2(56, 104)
 const JARAK: float = 6.0
 
+var batal: bool = false  ## true bila pemain menekan Berhenti (bukan gagal)
 var pergi: bool = false  ## true bila wisatawan pergi karena tidak yakin
 
 var _wisatawan: Dictionary = {}
@@ -91,7 +93,9 @@ func _bangun_ui() -> void:
 	berhenti.custom_minimum_size = Vector2(110, 24)
 	berhenti.position = Vector2(474, 36)
 	berhenti.focus_mode = Control.FOCUS_NONE
-	berhenti.pressed.connect(_akhiri.bind(false))
+	berhenti.pressed.connect(func() -> void:
+		batal = true
+		_akhiri(false))
 	add_child(berhenti)
 	_label_info.text = "Pilih kain atau foto yang cocok: klik/ketuk, atau Panah + E."
 
@@ -204,6 +208,7 @@ func _pilih(i: int) -> void:
 	var b: Dictionary = _barang[i]
 	var cocok: Array = _wisatawan["cocok"]
 	if not cocok.has(b["id"]):
+		salah.emit("salah barang")
 		AudioManager.putar_sfx("gagal")
 		_label_info.text = "%s: \"%s\" Coba barang lain." % [_wisatawan["nama"], DataLabuanBajo.teks("salah_barang")]
 		_kanvas.queue_redraw()
@@ -246,15 +251,16 @@ func _jawab(i: int) -> void:
 		get_tree().create_timer(1.6, false).timeout.connect(_akhiri.bind(true))
 		return
 	_salah_cerita += 1
+	salah.emit("salah cerita")
 	AudioManager.putar_sfx("gagal")
-	if _sulit or _salah_cerita >= 2:
+	if _sulit:
 		_tahap = Tahap.AKHIR
 		pergi = true
 		_kolom_jawab.visible = false
 		_label_info.text = "%s: \"%s\"" % [_wisatawan["nama"], DataLabuanBajo.teks("pergi")]
 		get_tree().create_timer(1.8, false).timeout.connect(_akhiri.bind(false))
 	else:
-		_label_info.text = "%s: \"%s\" (kesempatan terakhir)" % [_wisatawan["nama"], DataLabuanBajo.teks("ragu")]
+		_label_info.text = "%s: \"%s\"" % [_wisatawan["nama"], DataLabuanBajo.teks("ragu")]
 
 
 func _akhiri(berhasil: bool) -> void:

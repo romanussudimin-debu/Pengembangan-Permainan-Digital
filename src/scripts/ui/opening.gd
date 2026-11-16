@@ -97,32 +97,31 @@ func _bangun_layar_ketuk() -> void:
 	gelap.color = Color(0.05, 0.04, 0.04, 0.55)
 	gelap.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_layar_ketuk.add_child(gelap)
-	var pita := Gaya.panel_songke(Vector2(120, 92), Vector2(400, 150))
-	_layar_ketuk.add_child(pita)
-	var judul := Gaya.label("JEJAK PENTI", 38, Gaya.KUNING)
+	var logo := TextureRect.new()
+	logo.texture = preload("res://assets/ui/logo_manggarai.png")
+	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	logo.position = Vector2(215, 22)
+	logo.size = Vector2(210, 210)
+	logo.pivot_offset = Vector2(105, 105)
+	_layar_ketuk.add_child(logo)
+	var napas := logo.create_tween().set_loops()
+	napas.tween_property(logo, "scale", Vector2(1.04, 1.04), 1.5).set_trans(Tween.TRANS_SINE)
+	napas.tween_property(logo, "scale", Vector2.ONE, 1.5).set_trans(Tween.TRANS_SINE)
+	var judul := Gaya.label("JEJAK PENTI", 20, Gaya.KUNING)
 	judul.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	judul.position = Vector2(0, 14)
-	judul.size = Vector2(400, 50)
+	judul.position = Vector2(0, 232)
+	judul.size = Vector2(640, 26)
 	judul.add_theme_constant_override("outline_size", 6)
-	pita.add_child(judul)
-	var sub := Gaya.label("Petualangan Budaya Manggarai", 12, Gaya.PUTIH)
-	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	sub.position = Vector2(0, 66)
-	sub.size = Vector2(400, 20)
-	pita.add_child(sub)
-	var tema := Gaya.label("Wae Rebo  ·  Lingko  ·  Labuan Bajo", 9, Color("c9c2b0"))
-	tema.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	tema.position = Vector2(0, 88)
-	tema.size = Vector2(400, 16)
-	pita.add_child(tema)
+	_layar_ketuk.add_child(judul)
 	_label_ketuk = Gaya.label("Ketuk layar untuk memulai", 12, Gaya.PUTIH)
 	_label_ketuk.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	_label_ketuk.position = Vector2(0, 264)
+	_label_ketuk.position = Vector2(0, 268)
 	_label_ketuk.size = Vector2(640, 20)
 	_layar_ketuk.add_child(_label_ketuk)
 	var cat := Gaya.label("Nyalakan suara untuk pengalaman terbaik", 8, Color("c9c2b0"))
 	cat.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	cat.position = Vector2(0, 288)
+	cat.position = Vector2(0, 292)
 	cat.size = Vector2(640, 14)
 	_layar_ketuk.add_child(cat)
 
@@ -133,17 +132,13 @@ func _bangun_penutup() -> void:
 	_penutup.modulate.a = 0.0
 	_penutup.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_ui.add_child(_penutup)
-	var judul := Gaya.label("JEJAK PENTI", 44, Gaya.KUNING)
-	judul.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	judul.position = Vector2(0, 70)
-	judul.size = Vector2(640, 60)
-	judul.add_theme_constant_override("outline_size", 8)
-	_penutup.add_child(judul)
-	var sub := Gaya.label("Petualangan Budaya Manggarai", 13, Gaya.PUTIH)
-	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	sub.position = Vector2(0, 128)
-	sub.size = Vector2(640, 20)
-	_penutup.add_child(sub)
+	var logo := TextureRect.new()
+	logo.texture = preload("res://assets/ui/logo_manggarai.png")
+	logo.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	logo.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	logo.position = Vector2(245, 30)
+	logo.size = Vector2(150, 150)
+	_penutup.add_child(logo)
 	var pita := Gaya.panel_songke(Vector2(110, 196), Vector2(420, 70))
 	_penutup.add_child(pita)
 	var sapa := Gaya.label(SAPAAN, 18, Gaya.KUNING)

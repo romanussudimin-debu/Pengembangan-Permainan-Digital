@@ -29,6 +29,7 @@
 | 0.x | 2D: teka-teki lingko + duel caci | — |
 | 1.x | 3D: jelajah kampung + duel caci (ta'ang/paki, 3 lawan) | Lebih imersif |
 | **2.0** | **3D: jelajah budaya dengan rantai teka-teki, menenun songke, tabuh gong-gendang; caci sebagai pertunjukan Penti** | Duel caci dinilai terlalu sulit untuk pemain umum. Jelajah budaya mengenalkan lebih banyak unsur budaya. Caci tetap tampil dengan hormat sebagai pertunjukan. |
+| 2.3 | Perbaikan playtest: nyawa, pengecoh di semua tantangan, tantangan aksi baru Level 1–3 (pendakian, sangrai & antar kopi, tangkis nggiling, usir burung, sampah laut, semak komodo), dialog ringkas & gelembung, layar antar-level, bintang & 7 pencapaian, Pilih Level, efek & suara umpan balik, analitik playtest lokal | Masukan "kebanyakan ngobrol, mainnya sedikit" |
 | 2.2 | + **Level 3 Songke ke Labuan Bajo** (peta kapal, 6 destinasi TN Komodo, mini-game menjual), ending Penti dipindah ke akhir Level 3 | Menghubungkan budaya (songke) dengan ekonomi kreatif & wisata bertanggung jawab; persiapan Proyek UAS (3 level) |
 | 2.1 | + **Level 2 Lingko Lodok** (undangan reke lodok, saluran wae teku, pembagian moso, pandangan dari bukit), Mode Sulit, simpan & lanjutkan | Mengangkat lingko, yang sudah diriset sebagai kandidat mekanik, menjadi level kedua |
 
@@ -103,21 +104,72 @@ Latar di luar kampung, mewujudkan ungkapan *gendang one, lingko pe'ang*: lingko 
 
 **Mode Sulit** (dipilih di menu utama): batas waktu "sebelum senja" (7 menit, matahari makin rendah dan langit makin jingga), jatuh −10 detik, salah orang −15 detik (sekali per pengecoh), pengecoh hanya memberi petunjuk umum, ukuran bagian lingko tidak ditampilkan, kesempatan salah membagi 2 (Normal 3), dan putaran saluran air dibatasi. Waktu habis → level diulang.
 
+### 4.5b Perbaikan playtest v2.3: nyawa, pengecoh, ritme bermain
+Masukan playtest: *"mainnya sedikit, kebanyakan ngobrol"*. Target ritme: ±70% bermain, 30% cerita; obrolan tidak lebih dari 30–60 detik sebelum ada aksi lagi.
+
+**Nyawa (semua level):** 5 (Normal) / 3 (Sulit), diisi penuh saat level atau destinasi Level 3 dimulai. −1 saat salah jawab, memilih pengecoh, jatuh, atau gagal tantangan (suara gagal, layar berkedip merah, kamera bergetar, ikon hati pecah). Nyawa habis = **hanya tantangan yang sedang dimainkan yang diulang** (bagian jelajah: dari titik cek terakhir), bukan level. Penambah nyawa bertema budaya: cangkir kopi (L1), kendi air (L2), kelapa muda (L3).
+
+**Dialog ringkas:** maks. 2 baris pendek per tokoh per kesempatan; obrolan ringan tampil sebagai gelembung teks di atas kepala tokoh (pemain tetap bergerak); kartu budaya tampil sebagai popup judul + 1 kalimat, isi lengkap di Koleksi. Tombol Lewati, tahan tombol = cepat, opsi Teks cepat.
+
+**Level 1 baru (pola: platformer → teka-teki → pola → aksi → antar → ritme → teka-teki → refleks → teka-teki):**
+
+| # | Bagian | Tantangan | Pengecoh (adil, bisa dibedakan bila teliti) | Fakta / adaptasi |
+|---|---|---|---|---|
+| Pembuka | Mendaki ke Wae Rebo | Platformer ngarai: batu pijakan di sungai, akar, titian di atas jurang, tanjakan; 3 titik cek | Batu **retak** (lebih gelap, bergaris retak) tenggelam bila diinjak; **cabang jalan buntu** (jalur utama bertiang bambu berkain merah) | Wae Rebo memang dicapai lewat jalan setapak hutan; detail jalur = adaptasi |
+| 1 | Tu'a Golo | Teka-teki | Jawaban salah = −1 nyawa | Fakta |
+| 2 | Ine Wela | Menenun songke | (tahap berikut: warna mirip merah/merah bata) | Fakta |
+| 3 | Ema Agus | **Menyangrai Kopi**: memilah biji lalu menjaga panas di zona hijau | Kerikil (abu-abu, bulat) & biji busuk (gelap, berbintik) di antara biji bagus | Kopi komoditas utama Wae Rebo [S48, S49]; cara menyangrai = **adaptasi kreatif** |
+| 4 | Ende Lono | **Mengantar Kopi** (3D): nampan miring, kopi tumpah bila berbelok tajam/melompat/menabrak ayam atau anak berlari | Tamu mirip: hanya "berbaju hijau, duduk dekat compang" yang benar | Penyuguhan kopi kepada tamu `[PERLU VERIFIKASI]` |
+| 5 | Fransi | Tabuh gong-gendang | (tahap berikut: ketukan tipuan) | Fakta |
+| 6 | Hingha | Teka-teki | — | Fakta |
+| 7 | Marngem | **Latihan Tangkis Nggiling**: tangkis bola rotan ke kiri/tengah/kanan, makin cepat | Lemparan **tipuan** (ancang-ancang lalu batal); tanda: tangan kosong tanpa bola | Tipuan memang bagian caci; latihan dengan bola rotan = adaptasi, ditampilkan sebagai latihan sportivitas |
+| 8–9 | Ema Yakobus, Tu'a Golo | Teka-teki | — | Fakta |
+| Bonus | Benang Emas | 5 gulungan benang emas tersembunyi (pencapaian "Penjelajah") | Benang kuning biasa tanpa kilau | Adaptasi |
+
+Kartu dari warga yang teka-tekinya diganti tetap didapat setelah tantangan aksinya selesai; kartu bonus baru **Kopi Wae Rebo** (Level 1 kini 10 kartu).
+
+**Level 2 (tahap 5):** pola: jelajah pematang → saluran air → **Usir Burung** → membagi lingko → bukit.
+
+| Bagian | Tantangan | Pengecoh | Fakta / adaptasi |
+|---|---|---|---|
+| Pematang | Menyusuri pematang ke lodok | **Pematang rapuh** (gelap, bergaris retak) runtuh setelah 0,8 detik; batu goyah di jalan bukit | Adaptasi |
+| Wae teku | Saluran air (putar pipa) | **Pipa retak** membocorkan air (-1 nyawa) | Pembagian air sawah = fakta; pipa = adaptasi |
+| Usir Burung | 3 gelombang pipit di 4 petak; jaga padi | **Kuntul putih** tidak boleh diusir (pemakan serangga, dilindungi) | Pipit hama padi & kuntul predator hama = fakta [S51–S54]; praktik khas Manggarai `[PERLU VERIFIKASI]` |
+
+**Bintang & pencapaian (v2.3):** setiap tantangan memberi ★1–3 dari nyawa yang hilang (0 salah = ★★★, 1–2 = ★★, 3+ = ★); ringkasan bintang tampil di layar Level Berhasil, bintang terbaik per level di menu **Pilih Level** (hanya level yang sudah terbuka). Tujuh pencapaian tersimpan: *Tanpa Tumpah* (antar kopi tanpa tumpah), *Mata Elang* (tamat satu level tanpa kehilangan nyawa), *Penjelajah* (5 benang emas), *Penangkis Ulung* (tangkis nggiling tanpa salah), *Penjaga Sawah* (tidak mengusir kuntul), *Sahabat Laut* (sampah Pink Beach & Manjarite tanpa mengganggu biota), *Penjual Andal* (satu destinasi tanpa salah barang/cerita).
+
+**Game feel (v2.3):** percikan air/lumpur, debu mendarat, kilau emas saat berhasil, teks melayang ("−1", "+1", "Terjual!"), suara khas untuk benar / salah / kombo (5 ketukan gong atau 3 tangkisan beruntun).
+
+**Analitik playtest (lokal):** kejadian permainan dicatat ke `user://analitik.json` (sesi, mulai/tamat level + durasi, nyawa hilang + penyebab + tantangan, ulangi, dialog dilewati, koleksi dibuka, pencapaian, mode; kejadian terakhir per sesi = titik berhenti/drop-off). Tanpa data pribadi dan tanpa internet. Panel ekspor tersembunyi: ketuk logo menu utama 5× → Salin CSV / Salin JSON / Simpan CSV (web: diunduh).
+
+**Estimasi durasi (permainan pertama, Mode Normal):**
+
+| Bagian | Isi | Perkiraan |
+|---|---|---|
+| Level 1 | Pendakian (3 titik cek) + 9 tantangan rantai + benang emas opsional | 12–15 menit |
+| Level 2 | Pematang, saluran air, Usir Burung (3 gelombang), membagi lingko, bukit | 7–9 menit |
+| Level 3 | 6 destinasi × (3 penjualan + mekanik khas; 2 pulau + 5 sampah) | 15–20 menit |
+| **Total** | termasuk ending Penti | **±35–45 menit** (≥ 15 menit terpenuhi); rasio bermain ±70% karena dialog maks. 2 baris & gelembung |
+
+**Antar-level:** layar "Level N berhasil" (kartu, waktu, nyawa) → tombol "Lanjutkan ke Level N+1" → animasi orb atom "LEVEL N+1" + tagline → tombol Mulai.
+
 ### 4.6 Level 3 — Songke ke Labuan Bajo (data: `src/data/labuan_bajo.json`)
 Setelah lingko terbagi, warga menitipkan **songke tenunan penenun kampung** kepada Nggohak, ditambah **foto budaya** dari Level 1–2. Ia ikut **kapal wisata resmi sebagai pemandu budaya** ke 6 destinasi Taman Nasional Komodo. Hasil penjualan dibawa pulang untuk Penti dan para penenun → **ending Penti + caci** (dengan adegan penyerahan hasil penjualan kepada Tu'a Golo dan penenun).
 
 **Struktur:** peta perjalanan kapal (UI tampak atas, destinasi terbuka berurutan) → scene pulau yang dibangun dari builder yang sama (`DuniaPulau`). Target **3 pembeli per pulau** (4 pembeli + 2 wisatawan pemberi info per pulau, total 18 penjualan). Progres per pulau tersimpan.
+
+**Menemukan pembeli (v2.3):** panel kanan menampilkan **ciri calon pembeli** (warna topi & baju, unik terhadap wisatawan pengecoh). Semua wisatawan bisa diajak ngobrol; memilih "Tawarkan songke" kepada yang bukan pembeli = −1 nyawa. Pink Beach & Manjarite tuntas bila 3 pembeli **dan** 5 sampah plastik terkumpul.
 
 **Mekanik menjual (mini-game `JualSongke`):** (1) wisatawan menyebut keinginan → (2) pilih kain/foto yang cocok (salah barang hanya ditolak) → (3) ceritakan maknanya: pilihan ganda yang jawabannya ada di kartu budaya. Salah cerita: Normal boleh sekali lagi, Sulit wisatawan langsung pergi. Bila pembeli tersisa tidak cukup → pulau diulang.
 
 | # | Destinasi | Mekanik khas | Kartu | Fakta / adaptasi |
 |---|---|---|---|---|
 | 1 | Pelabuhan Labuan Bajo | Tutorial menjual | Labuan Bajo | Fakta [S41] |
-| 2 | Pulau Padar | Mendaki 3 pos; **tenaga** berkurang saat berjalan (lebih cepat di tanjakan), minum di pos (sekali per pos); tenaga habis = melambat | Pulau Padar | Fakta (tiga pantai, panas, tanpa penjual) [S42]; sistem tenaga = adaptasi |
-| 3 | Pink Beach | Pantai + air dangkal; **injak karang = kembali**; pungut sampah (opsional) | Pink Beach | Fakta [S43]; wisata bertanggung jawab |
-| 4 | Pulau Komodo | Jalur bersama **ranger**; komodo berpatroli; terlalu dekat = kembali (Sulit: komodo 5, jarak bahaya lebih besar) | Komodo | Fakta [S44]; jarak bahaya = adaptasi `[PERLU VERIFIKASI]` |
+| 2 | Pulau Padar | Mendaki 3 pos; **tenaga** berkurang saat berjalan (lebih cepat di tanjakan), minum di pos (sekali per pos); tenaga habis = −1 nyawa & kembali ke pos minum terakhir; jalan pintas batu pijakan dengan **batu goyah** (gelap, miring, retak) | Pulau Padar | Fakta (tiga pantai, panas, tanpa penjual) [S42]; sistem tenaga = adaptasi |
+| 3 | Pink Beach | Pantai + air dangkal; **injak karang = kembali**; **wajib pungut 5 sampah**; pengecoh kerang & bintang laut (jangan diambil), penyu (jangan disentuh) | Pink Beach | Fakta [S43, S55]; aturan "jangan ambil/sentuh" `[PERLU VERIFIKASI: aturan resmi BTNK]` [S56] |
+| 4 | Pulau Komodo | Jalur bersama **ranger**; komodo berpatroli; terlalu dekat = kembali (Sulit: komodo 5, jarak bahaya lebih besar); **semak bergoyang**: angin (pelan, seirama) vs komodo bersembunyi (goyang tak teratur + jejak kaki + ekor) | Komodo | Fakta [S44]; komodo predator penyergap [S57]; jarak bahaya = adaptasi `[PERLU VERIFIKASI]` |
 | 5 | Taka Makassar | Pulau pasir sabit **menyempit karena air pasang** (batas waktu alami 4 menit, Sulit ±2,8 menit) | Taka Makassar | *Adaptasi kreatif* (penyusutan dipercepat) [S45] |
-| 6 | Teluk Manjarite | **Berenang** antar-kapal berlabuh; **arus** mendorong pemain; karang | Teluk Manjarite | `[PERLU VERIFIKASI]` detail teluk [S45] |
+| 6 | Teluk Manjarite | **Berenang** antar-kapal berlabuh; **arus** mendorong pemain; karang; **wajib pungut 5 sampah**; penyu & kawanan ikan jangan diganggu; terseret melewati **garis pelampung** = −1 | Teluk Manjarite | `[PERLU VERIFIKASI]` detail teluk [S45] |
 
 Kartu tambahan: **Songke sebagai Ekonomi Kreatif** (diberikan di awal Level 3) [S46, S47]. Kartu destinasi didapat dengan membaca papan informasi atau saat pulau tuntas.
 

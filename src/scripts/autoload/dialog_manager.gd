@@ -63,6 +63,8 @@ var _label_pertanyaan: Label
 var _kolom_pilihan: VBoxContainer
 var _indeks_benar: int = 0
 var _callback_jawaban: Callable = Callable()
+var _mode_pilihan: bool = false  ## true = pilihan netral (callback menerima indeks, tanpa suara benar/salah)
+var _mode_pilihan_berikut: bool = false
 var _menjawab: bool = false
 
 # Lewati / percepat dialog dan popup kartu ringkas
@@ -189,7 +191,9 @@ func ajukan_teka_teki(nama: String, pertanyaan: String, pilihan: Array, indeks_b
 	_menjawab = true
 	_indeks_benar = indeks_benar
 	_callback_jawaban = callback
-	_label_tanya_nama.text = nama + " bertanya:"
+	_label_tanya_nama.text = nama + (":" if _mode_pilihan_berikut else " bertanya:")
+	_mode_pilihan = _mode_pilihan_berikut
+	_mode_pilihan_berikut = false
 	_label_pertanyaan.text = pertanyaan
 	for anak in _kolom_pilihan.get_children():
 		anak.queue_free()
@@ -207,6 +211,13 @@ func ajukan_teka_teki(nama: String, pertanyaan: String, pilihan: Array, indeks_b
 		_ucapkan(ucapan, nama)
 
 
+## Pilihan netral (bukan teka-teki): `callback` dipanggil dengan indeks pilihan (int).
+func ajukan_pilihan(nama: String, pertanyaan: String, pilihan: Array, callback: Callable) -> void:
+	_mode_pilihan_berikut = true
+	ajukan_teka_teki(nama, pertanyaan, pilihan, -1, callback)
+	_mode_pilihan_berikut = false
+
+
 func _jawab(indeks: int) -> void:
 	if not _menjawab:
 		return
@@ -215,11 +226,16 @@ func _jawab(indeks: int) -> void:
 	_panel_teka_teki.visible = false
 	if suara_tersedia():
 		DisplayServer.tts_stop()
-	var benar: bool = indeks == _indeks_benar
-	AudioManager.putar_sfx("berhasil" if benar else "gagal")
 	GameState.ubah_state(_state_sebelum)
 	var cb: Callable = _callback_jawaban
 	_callback_jawaban = Callable()
+	if _mode_pilihan:
+		AudioManager.putar_sfx("klik")
+		if cb.is_valid():
+			cb.call(indeks)
+		return
+	var benar: bool = indeks == _indeks_benar
+	AudioManager.putar_sfx("berhasil" if benar else "gagal")
 	teka_teki_dijawab.emit(benar)
 	if cb.is_valid():
 		cb.call(benar)

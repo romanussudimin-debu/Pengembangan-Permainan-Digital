@@ -143,16 +143,18 @@ Setelah lingko terbagi, warga menitipkan **songke tenunan penenun kampung** kepa
 
 **Struktur:** peta perjalanan kapal (UI tampak atas, destinasi terbuka berurutan) → scene pulau yang dibangun dari builder yang sama (`DuniaPulau`). Target **3 pembeli per pulau** (4 pembeli + 2 wisatawan pemberi info per pulau, total 18 penjualan). Progres per pulau tersimpan.
 
+**Menemukan pembeli (v2.3):** panel kanan menampilkan **ciri calon pembeli** (warna topi & baju, unik terhadap wisatawan pengecoh). Semua wisatawan bisa diajak ngobrol; memilih "Tawarkan songke" kepada yang bukan pembeli = −1 nyawa. Pink Beach & Manjarite tuntas bila 3 pembeli **dan** 5 sampah plastik terkumpul.
+
 **Mekanik menjual (mini-game `JualSongke`):** (1) wisatawan menyebut keinginan → (2) pilih kain/foto yang cocok (salah barang hanya ditolak) → (3) ceritakan maknanya: pilihan ganda yang jawabannya ada di kartu budaya. Salah cerita: Normal boleh sekali lagi, Sulit wisatawan langsung pergi. Bila pembeli tersisa tidak cukup → pulau diulang.
 
 | # | Destinasi | Mekanik khas | Kartu | Fakta / adaptasi |
 |---|---|---|---|---|
 | 1 | Pelabuhan Labuan Bajo | Tutorial menjual | Labuan Bajo | Fakta [S41] |
-| 2 | Pulau Padar | Mendaki 3 pos; **tenaga** berkurang saat berjalan (lebih cepat di tanjakan), minum di pos (sekali per pos); tenaga habis = melambat | Pulau Padar | Fakta (tiga pantai, panas, tanpa penjual) [S42]; sistem tenaga = adaptasi |
-| 3 | Pink Beach | Pantai + air dangkal; **injak karang = kembali**; pungut sampah (opsional) | Pink Beach | Fakta [S43]; wisata bertanggung jawab |
-| 4 | Pulau Komodo | Jalur bersama **ranger**; komodo berpatroli; terlalu dekat = kembali (Sulit: komodo 5, jarak bahaya lebih besar) | Komodo | Fakta [S44]; jarak bahaya = adaptasi `[PERLU VERIFIKASI]` |
+| 2 | Pulau Padar | Mendaki 3 pos; **tenaga** berkurang saat berjalan (lebih cepat di tanjakan), minum di pos (sekali per pos); tenaga habis = −1 nyawa & kembali ke pos minum terakhir; jalan pintas batu pijakan dengan **batu goyah** (gelap, miring, retak) | Pulau Padar | Fakta (tiga pantai, panas, tanpa penjual) [S42]; sistem tenaga = adaptasi |
+| 3 | Pink Beach | Pantai + air dangkal; **injak karang = kembali**; **wajib pungut 5 sampah**; pengecoh kerang & bintang laut (jangan diambil), penyu (jangan disentuh) | Pink Beach | Fakta [S43, S55]; aturan "jangan ambil/sentuh" `[PERLU VERIFIKASI: aturan resmi BTNK]` [S56] |
+| 4 | Pulau Komodo | Jalur bersama **ranger**; komodo berpatroli; terlalu dekat = kembali (Sulit: komodo 5, jarak bahaya lebih besar); **semak bergoyang**: angin (pelan, seirama) vs komodo bersembunyi (goyang tak teratur + jejak kaki + ekor) | Komodo | Fakta [S44]; komodo predator penyergap [S57]; jarak bahaya = adaptasi `[PERLU VERIFIKASI]` |
 | 5 | Taka Makassar | Pulau pasir sabit **menyempit karena air pasang** (batas waktu alami 4 menit, Sulit ±2,8 menit) | Taka Makassar | *Adaptasi kreatif* (penyusutan dipercepat) [S45] |
-| 6 | Teluk Manjarite | **Berenang** antar-kapal berlabuh; **arus** mendorong pemain; karang | Teluk Manjarite | `[PERLU VERIFIKASI]` detail teluk [S45] |
+| 6 | Teluk Manjarite | **Berenang** antar-kapal berlabuh; **arus** mendorong pemain; karang; **wajib pungut 5 sampah**; penyu & kawanan ikan jangan diganggu; terseret melewati **garis pelampung** = −1 | Teluk Manjarite | `[PERLU VERIFIKASI]` detail teluk [S45] |
 
 Kartu tambahan: **Songke sebagai Ekonomi Kreatif** (diberikan di awal Level 3) [S46, S47]. Kartu destinasi didapat dengan membaca papan informasi atau saat pulau tuntas.
 

@@ -103,9 +103,29 @@
 		"haus": "Panas sekali... aku harus minum di pos.",
 		"minum": "Segarnya! Tenagaku pulih lagi.",
 		"pos_kosong": "Botol di pos ini sudah habis. Hemat tenaga!",
-		"sampah": "Sampah plastik kubawa pulang ke kapal.",
+		"sampah": "Sampah plastik kubawa ke kapal.",
 		"tanya_pulang": "Kembali ke kapal dan ke peta perjalanan?",
-		"arus": "Arusnya kuat! Aku harus berenang melawan arus."
+		"arus": "Arusnya kuat! Aku harus berenang melawan arus.",
+		"ciri_judul": "Calon pembeli",
+		"tawar_tanya": "Mau apa dengan %s?",
+		"tawar_pilihan": [
+			"Tawarkan songke",
+			"Ngobrol saja"
+		],
+		"bukan_pembeli": "Terima kasih, aku tidak sedang mencari oleh-oleh.",
+		"bukan_pembeli_nyawa": "Menawarkan kepada yang bukan pembeli",
+		"ngobrol_pembeli": "Aku sedang mencari oleh-oleh. Ada yang cocok?",
+		"sampah_wajib": "Pungut %d sampah plastik di pulau ini.",
+		"kerang": "Kerang itu rumah makhluk laut. Biarkan di tempatnya.",
+		"bintang": "Bintang laut itu hidup! Jangan diambil.",
+		"penyu": "Jangan menyentuh penyu! Beri jarak, ya.",
+		"ikan": "Ikan-ikan kaget. Jangan mengejar atau menyentuh satwa laut.",
+		"terseret": "Terseret arus terlalu jauh! Kembali ke dekat kapal.",
+		"batu_goyah": "Batunya goyah! Pilih batu yang kokoh.",
+		"kehabisan_tenaga": "Tenagaku habis... aku kembali ke pos minum terakhir.",
+		"semak_komodo": "Ranger: Awas! Ada komodo di semak itu.",
+		"semak_tanda": "Semak bergoyang sendiri, ada jejak kaki dan ekor. Hati-hati!",
+		"belum_sampah": "Sampahnya belum terkumpul semua."
 	},
 	"pulau": [
 		{
@@ -146,7 +166,7 @@
 					],
 					"baju": "e07b39",
 					"celana": "3b4a6b",
-					"topi": "e8dcb8",
+					"topi": "c9a45c",
 					"perempuan": true,
 					"pembeli": true,
 					"keinginan": "Hello! Aku mencari kain berwarna merah untuk ibuku.",
@@ -248,7 +268,7 @@
 					],
 					"baju": "7a4a8a",
 					"celana": "c8b48a",
-					"topi": "e8dcb8",
+					"topi": "c9a45c",
 					"pembeli": false,
 					"info": [
 						"Just looking, thanks! Aku hanya menunggu kapal."
@@ -268,7 +288,8 @@
 					"pembeli": false,
 					"info": [
 						"Selamat datang, Kraeng. Kapal wisata resmi berlabuh di ujung dermaga."
-					]
+					],
+					"lokal": true
 				}
 			]
 		},
@@ -327,7 +348,7 @@
 					],
 					"baju": "e8b430",
 					"celana": "3b4a6b",
-					"topi": "e8dcb8",
+					"topi": "c9a45c",
 					"perempuan": true,
 					"pembeli": true,
 					"keinginan": "Guten Tag! Aku mencari kain berwarna hijau.",
@@ -369,7 +390,7 @@
 					],
 					"baju": "2e7d46",
 					"celana": "c8b48a",
-					"topi": "e8dcb8",
+					"topi": "c9a45c",
 					"pembeli": true,
 					"keinginan": "Aku ingin foto sawah yang tampak seperti jaring laba-laba.",
 					"cocok": [
@@ -456,6 +477,40 @@
 						"Wow, lihat ke bawah! Tiga teluk dengan pantai putih, hitam, dan merah muda."
 					]
 				}
+			],
+			"batu_pintas": [
+				{
+					"pos": [
+						1.98,
+						5.0,
+						-6.15
+					],
+					"goyah": false
+				},
+				{
+					"pos": [
+						3.77,
+						5.6,
+						-7.93
+					],
+					"goyah": true
+				},
+				{
+					"pos": [
+						2.13,
+						5.6,
+						-8.67
+					],
+					"goyah": false
+				},
+				{
+					"pos": [
+						3.93,
+						6.2,
+						-10.45
+					],
+					"goyah": false
+				}
 			]
 		},
 		{
@@ -532,6 +587,16 @@
 					3,
 					0.15,
 					-18
+				],
+				[
+					-6,
+					-0.4,
+					4
+				],
+				[
+					7,
+					-0.4,
+					3
 				]
 			],
 			"wisatawan": [
@@ -571,7 +636,7 @@
 					],
 					"baju": "e07b39",
 					"celana": "c8b48a",
-					"topi": "e8dcb8",
+					"topi": "c9a45c",
 					"pembeli": true,
 					"keinginan": "Aku ingin foto tempat suci di tengah kampung.",
 					"cocok": [
@@ -647,7 +712,7 @@
 					],
 					"baju": "2e7d46",
 					"celana": "1b1818",
-					"topi": "e8dcb8",
+					"topi": "c9a45c",
 					"perempuan": true,
 					"pembeli": false,
 					"info": [
@@ -668,9 +733,71 @@
 					"pembeli": false,
 					"info": [
 						"Pasir merah muda itu jangan dibawa pulang, Kraeng. Biarkan tetap di pantai."
+					],
+					"lokal": true
+				}
+			],
+			"laut_pengecoh": [
+				{
+					"jenis": "kerang",
+					"pos": [
+						-3,
+						0.15,
+						-14
+					]
+				},
+				{
+					"jenis": "bintang",
+					"pos": [
+						9,
+						0.15,
+						-12
+					]
+				},
+				{
+					"jenis": "kerang",
+					"pos": [
+						2,
+						-0.5,
+						6
+					]
+				},
+				{
+					"jenis": "bintang",
+					"pos": [
+						-11,
+						-0.5,
+						1
 					]
 				}
-			]
+			],
+			"penyu": [
+				{
+					"a": [
+						-14,
+						-0.5,
+						10
+					],
+					"b": [
+						-4,
+						-0.5,
+						12
+					]
+				},
+				{
+					"a": [
+						8,
+						-0.5,
+						12
+					],
+					"b": [
+						14,
+						-0.5,
+						4
+					]
+				}
+			],
+			"ikan": []
 		},
 		{
 			"id": "komodo",
@@ -826,7 +953,7 @@
 					],
 					"baju": "e8e2d2",
 					"celana": "3b4a6b",
-					"topi": "e8dcb8",
+					"topi": "c9a45c",
 					"pembeli": true,
 					"keinginan": "Aku mencari kain biru untuk istriku.",
 					"cocok": [
@@ -903,7 +1030,7 @@
 					],
 					"baju": "2c5c96",
 					"celana": "c8b48a",
-					"topi": "e8dcb8",
+					"topi": "c9a45c",
 					"pembeli": true,
 					"keinginan": "Aku ingin foto sawah jaring laba-laba.",
 					"cocok": [
@@ -928,7 +1055,7 @@
 					],
 					"baju": "b02a2a",
 					"celana": "c8b48a",
-					"topi": "e8dcb8",
+					"topi": "c9a45c",
 					"perempuan": true,
 					"pembeli": false,
 					"info": [
@@ -949,7 +1076,46 @@
 					"pembeli": false,
 					"info": [
 						"Tetap di jalur, Kraeng. Jangan memberi makan komodo."
-					]
+					],
+					"lokal": true
+				}
+			],
+			"semak": [
+				{
+					"ruas": 1,
+					"t": 0.5,
+					"sisi": -1,
+					"komodo": false
+				},
+				{
+					"ruas": 2,
+					"t": 0.45,
+					"sisi": 1,
+					"komodo": true
+				},
+				{
+					"ruas": 3,
+					"t": 0.6,
+					"sisi": -1,
+					"komodo": false
+				},
+				{
+					"ruas": 4,
+					"t": 0.5,
+					"sisi": 1,
+					"komodo": true
+				},
+				{
+					"ruas": 5,
+					"t": 0.5,
+					"sisi": -1,
+					"komodo": false
+				},
+				{
+					"ruas": 6,
+					"t": 0.4,
+					"sisi": 1,
+					"komodo": true
 				}
 			]
 		},
@@ -1022,7 +1188,7 @@
 					],
 					"baju": "2c5c96",
 					"celana": "1b1818",
-					"topi": "e8dcb8",
+					"topi": "c9a45c",
 					"pembeli": true,
 					"keinginan": "Aku mau foto mata air.",
 					"cocok": [
@@ -1073,7 +1239,7 @@
 					],
 					"baju": "2e7d46",
 					"celana": "c8b48a",
-					"topi": "e8dcb8",
+					"topi": "c9a45c",
 					"pembeli": true,
 					"keinginan": "Kia ora! Ada foto tarian cambuk?",
 					"cocok": [
@@ -1119,7 +1285,8 @@
 					"pembeli": false,
 					"info": [
 						"Cepat, Kraeng! Pasirnya makin sempit."
-					]
+					],
+					"lokal": true
 				}
 			]
 		},
@@ -1285,7 +1452,7 @@
 					],
 					"baju": "2c5c96",
 					"celana": "c8b48a",
-					"topi": "e8dcb8",
+					"topi": "c9a45c",
 					"pembeli": true,
 					"keinginan": "Ada foto sawah dari Flores?",
 					"cocok": [
@@ -1361,7 +1528,7 @@
 					],
 					"baju": "2e7d46",
 					"celana": "1b1818",
-					"topi": "e8dcb8",
+					"topi": "c9a45c",
 					"perempuan": true,
 					"pembeli": false,
 					"info": [
@@ -1382,9 +1549,90 @@
 					"pembeli": false,
 					"info": [
 						"Sampah dari kapal harus dibawa kembali ke darat, Kraeng."
+					],
+					"lokal": true
+				}
+			],
+			"sampah": [
+				[
+					-6,
+					-0.35,
+					6
+				],
+				[
+					9,
+					-0.35,
+					4
+				],
+				[
+					-14,
+					-0.35,
+					-9
+				],
+				[
+					5,
+					-0.35,
+					-12
+				],
+				[
+					-4,
+					-0.35,
+					-17
+				]
+			],
+			"laut_pengecoh": [
+				{
+					"jenis": "kerang",
+					"pos": [
+						1,
+						-1.4,
+						7
+					]
+				},
+				{
+					"jenis": "bintang",
+					"pos": [
+						-12,
+						-1.4,
+						-1
+					]
+				},
+				{
+					"jenis": "bintang",
+					"pos": [
+						12,
+						-1.4,
+						-5
 					]
 				}
-			]
+			],
+			"penyu": [
+				{
+					"a": [
+						-8,
+						-1.2,
+						-3
+					],
+					"b": [
+						0,
+						-1.2,
+						-8
+					]
+				}
+			],
+			"ikan": [
+				[
+					6,
+					-1.0,
+					10
+				],
+				[
+					-16,
+					-1.0,
+					-14
+				]
+			],
+			"batas_arus": 27.0
 		}
 	]
 }

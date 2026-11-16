@@ -125,6 +125,12 @@
 - Kuntul kerbau (*Bubulcus ibis*) mencari makan di sawah dan padang rumput (serangga, krustasea, moluska, amfibi, reptil kecil), berperan sebagai pengendali hama alami dan termasuk satwa dilindungi. [S53, S54]
 - Praktik menjaga sawah dari burung secara khusus di lingko Manggarai **belum ditemukan sumber tertulisnya**; tantangan Usir Burung adalah **adaptasi kreatif** berbasis praktik pertanian padi umum di Indonesia `[PERLU VERIFIKASI: praktik lokal Manggarai]`. Besaran manfaat kuntul bagi sawah belum terukur dalam sumber (bukti terbatas).
 
+## 12. Wisata bahari bertanggung jawab & perilaku komodo (tantangan Level 3, ditambahkan 16 Nov 2026)
+- Sampah laut (terutama plastik) menjadi tekanan nyata di perairan TN Komodo, termasuk sampah kiriman yang terbawa arus. [S55]
+- Pemandu selam di TN Komodo mengingatkan wisatawan agar tidak mengambil apa pun dan tidak menyentuh karang karena karang tumbuh sangat lambat. Larangan mengambil kerang/bintang laut dan menyentuh penyu di game mengikuti prinsip ini; teks peraturan resmi Balai TN Komodo **belum ditemukan** `[PERLU VERIFIKASI: aturan resmi BTNK]`. [S56]
+- Komodo adalah predator penyergap: diam berjam-jam tersembunyi di vegetasi/rumput tinggi dengan kulit abu-abu kecokelatan sebagai kamuflase, lalu menyerang mangsa yang mendekat dengan cepat. Dasar pengecoh "semak bergoyang" (tanda: jejak kaki, ekor). [S57]
+- Garis pelampung batas berenang dan "terseret arus" di Manjarite adalah **adaptasi** keselamatan berenang umum; arus kuat di perairan Komodo memang dikenal [S45], detail Teluk Manjarite `[PERLU VERIFIKASI]`.
+
 ## Daftar Pustaka (diakses 12 November 2026)
 
 **Mbaru Niang & Wae Rebo**
@@ -199,3 +205,6 @@
 - [S52] detikJogja. (2024). *7 cara mengusir hama burung di sawah agar padi aman*. https://www.detik.com/jogja/berita/d-7624582/7-cara-mengusir-hama-burung-di-sawah-agar-padi-aman-bisa-pakai-apa
 - [S53] Balai Besar KSDA Jawa Barat (KLHK). (t.t.). *[Buku panduan satwa burung air; judul PERLU VERIFIKASI]* (e-book). https://bbksdajabar.ksdae.menlhk.go.id/uploads/publikasi/e-book/0fb783dd9318b9f97279e45c8443370b.pdf
 - [S54] [Penulis PERLU VERIFIKASI]. [Studi burung kuntul kerbau di persawahan]. *Biofaal Journal* (Universitas Pattimura). https://ojs3.unpatti.ac.id/index.php/biofaal/article/download/8078/5830
+- [S55] Mongabay Indonesia. (2017, 18 Desember). *Mengurai tekanan limbah laut di kawasan Taman Nasional Komodo*. https://www.mongabay.co.id/2017/12/18/mengurai-tekanan-limbah-laut-di-kawasan-taman-nasional-komodo/
+- [S56] Magazine.travel. (t.t.). *Snorkeling and diving in Komodo National Park*. https://magazine.travel/en/urlaub/asien/indonesien/komodo/schnorcheln-und-tauchen-im-komodo-nationalpark/
+- [S57] A-Z Animals. (t.t.). *Komodo dragon*. https://a-z-animals.com/animals/komodo-dragon/

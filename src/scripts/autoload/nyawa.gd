@@ -8,6 +8,7 @@ extends CanvasLayer
 
 signal berubah(sisa: int, selisih: int)
 signal habis(tantangan: String)
+signal tantangan_berubah(nama: String)  ## didengar Prestasi (bintang per tantangan)
 
 var sisa: int = 5
 var hilang_di_level: int = 0  ## jumlah nyawa yang hilang sejak level dimulai (untuk bintang/analytics)
@@ -47,6 +48,7 @@ func isi_penuh(level_baru: bool = true) -> void:
 func atur_tantangan(nama: String, cara_mengulang: Callable = Callable()) -> void:
 	_tantangan = nama
 	_ulang = cara_mengulang
+	tantangan_berubah.emit(nama)
 
 
 func tantangan_aktif() -> String:

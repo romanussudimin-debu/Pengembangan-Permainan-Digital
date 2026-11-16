@@ -923,6 +923,8 @@ func _selesai_burung() -> void:
 	if is_instance_valid(_kuntul):
 		_kuntul.tujuan_jalan = Vector3.INF
 	AudioManager.putar_sfx("berhasil")
+	if kuntul_diusir == 0:
+		Prestasi.raih("penjaga_sawah")
 	_obrol(_tu_a_teno, "Tu'a Teno", _dialog()["burung_selesai"])
 	_atur_tantangan_jelajah()
 	_beri_kartu("burung_sawah", _atur_tahap.bind(Tahap.BAGI))

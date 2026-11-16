@@ -27,11 +27,6 @@ const KECEPATAN_AIR: float = 2.8
 const TARGET_SAMPAH: int = 5
 const JARAK_SENTUH_PENYU: float = 1.1
 const JARAK_SEMAK: float = 2.3
-const NAMA_WARNA: Dictionary = {
-	"f1ede4": "putih", "e8e2d2": "putih", "e8b430": "kuning", "e07b39": "oranye", "b02a2a": "merah",
-	"2e7d46": "hijau", "2c5c96": "biru", "7a4a8a": "ungu", "4a4a4a": "abu-abu", "1b1818": "hitam",
-	"c9a45c": "cokelat muda",
-}
 ## Penambah nyawa (kelapa muda) di 4 destinasi: jenis pulau -> posisi.
 const POS_KELAPA: Dictionary = {
 	"padar": Vector3(3.5, 2.2, 10.0), "pink": Vector3(-7.0, 0.15, -3.0),
@@ -74,6 +69,7 @@ var _cakram: Array = []  ## [MeshInstance3D, CollisionShape3D, indeks]
 var _pasang: float = 0.0
 var _sampah_wajib: int = 0  ## 0 = pulau tanpa syarat sampah
 var _sampah_dipungut: int = 0
+var _salah_jual: int = 0  ## salah barang/cerita di pulau ini (pencapaian "Penjual Andal")
 var _salah_laut: int = 0  ## mengambil pengecoh, menyentuh satwa, menginjak karang (untuk pencapaian "Sahabat Laut")
 var _penyu: Array[Penyu] = []
 var _ikan: Array[KawananIkan] = []
@@ -89,7 +85,7 @@ var _label_waktu: Label
 var _label_toast: Label
 var _bar: Control
 var _label_bar: Label
-var _panel_ciri: Control
+var _panel_ciri: PanelCiri
 var _pembeli: Array[NpcKampung] = []
 
 
@@ -509,6 +505,7 @@ func _mulai_jual(npc: NpcKampung) -> void:
 	jual.siapkan(_data_npc[npc], DataLabuanBajo.barang_dibawa(), GameState.mode_sulit)
 	jual.selesai.connect(_hasil_jual.bind(npc, jual))
 	jual.salah.connect(Nyawa.kurangi)
+	jual.salah.connect(func(_p: String) -> void: _salah_jual += 1)
 	_minigame = jual
 	# Nyawa habis saat menawarkan: tawaran ditutup, wisatawan tetap bisa ditawari lagi
 	Nyawa.atur_tantangan("Menawarkan kepada %s" % npc.nama, func() -> void:
@@ -594,6 +591,10 @@ func _baca_info(_p: Pemain) -> void:
 
 func _pulau_tuntas() -> void:
 	_tuntas = true
+	if _salah_jual == 0:
+		Prestasi.raih("penjual_andal")
+	if _sampah_wajib > 0 and _salah_laut == 0 and Prestasi.tandai("laut_" + jenis, ["laut_pink", "laut_manjarite"]):
+		Prestasi.raih("sahabat_laut")
 	_waktu_berjalan = false
 	AudioManager.putar_sfx("gong")
 	DialogManager.mulai_baris("pulau_tuntas", _baris("Nggohak", data["selesai"]), func() -> void:
@@ -715,28 +716,7 @@ func _physics_process(delta: float) -> void:
 			_salah_laut += 1
 			_kembali_aman(DataLabuanBajo.teks("karang"), DENDA_JATUH)
 			return
-	for py: Penyu in _penyu:
-		if Vector2(p.x - py.position.x, p.z - py.position.z).length() < JARAK_SENTUH_PENYU and absf(p.y - py.position.y) < 1.2:
-			_salah_laut += 1
-			_obrol(pemain, "Nggohak", DataLabuanBajo.teks("penyu"))
-			_kembali_aman(DataLabuanBajo.teks("penyu"), DENDA_JATUH)
-			return
-	for ik: KawananIkan in _ikan:
-		if _jeda_ikan <= 0.0 and Vector2(p.x - ik.position.x, p.z - ik.position.z).length() < 1.3:
-			_jeda_ikan = 3.0
-			_salah_laut += 1
-			ik.kaget()
-			AudioManager.putar_sfx("terkena", 0.1)
-			_obrol(pemain, "Nggohak", DataLabuanBajo.teks("ikan"))
-			Nyawa.kurangi(DataLabuanBajo.teks("ikan"))
-	for sm: Array in _semak:
-		var semak: Semak = sm[0]
-		if semak.bersembunyi and Vector2(p.x - semak.position.x, p.z - semak.position.z).length() < JARAK_SEMAK:
-			_komodo_menerjang(sm[1], p)
-			_kembali_aman(DataLabuanBajo.teks("semak_komodo"), DENDA_KOMODO)
-			return
-	if _batas_arus > 0.0 and Vector2(p.x, p.z).length() > _batas_arus:
-		_kembali_aman(DataLabuanBajo.teks("terseret"), DENDA_JATUH)
+	if _cek_bahaya_baru(p):
 		return
 	var bahaya: float = 3.5 if GameState.mode_sulit else 3.0
 	for k: Komodo in _komodo:
@@ -829,6 +809,34 @@ func _perbarui_stamina(delta: float) -> void:
 		_sudah_haus = false
 		Nyawa.kurangi(DataLabuanBajo.teks("kehabisan_tenaga"))
 		_toast(DataLabuanBajo.teks("kehabisan_tenaga"))
+
+
+## Pengecoh tahap 6: penyu, kawanan ikan, semak berkomodo, garis pelampung. true = pemain dipindahkan.
+func _cek_bahaya_baru(p: Vector3) -> bool:
+	for py: Penyu in _penyu:
+		if Vector2(p.x - py.position.x, p.z - py.position.z).length() < JARAK_SENTUH_PENYU and absf(p.y - py.position.y) < 1.2:
+			_salah_laut += 1
+			_obrol(pemain, "Nggohak", DataLabuanBajo.teks("penyu"))
+			_kembali_aman(DataLabuanBajo.teks("penyu"), DENDA_JATUH)
+			return true
+	for ik: KawananIkan in _ikan:
+		if _jeda_ikan <= 0.0 and Vector2(p.x - ik.position.x, p.z - ik.position.z).length() < 1.3:
+			_jeda_ikan = 3.0
+			_salah_laut += 1
+			ik.kaget()
+			AudioManager.putar_sfx("terkena", 0.1)
+			_obrol(pemain, "Nggohak", DataLabuanBajo.teks("ikan"))
+			Nyawa.kurangi(DataLabuanBajo.teks("ikan"))
+	for sm: Array in _semak:
+		var semak: Semak = sm[0]
+		if semak.bersembunyi and Vector2(p.x - semak.position.x, p.z - semak.position.z).length() < JARAK_SEMAK:
+			_komodo_menerjang(sm[1], p)
+			_kembali_aman(DataLabuanBajo.teks("semak_komodo"), DENDA_KOMODO)
+			return true
+	if _batas_arus > 0.0 and Vector2(p.x, p.z).length() > _batas_arus:
+		_kembali_aman(DataLabuanBajo.teks("terseret"), DENDA_JATUH)
+		return true
+	return false
 
 
 ## Batu goyah Padar: runtuh 0,35 detik setelah diinjak, pulih 4 detik kemudian.
@@ -940,53 +948,12 @@ func _bangun_ui() -> void:
 		_bar.size = Vector2(150, 10)
 		_bar.draw.connect(_gambar_bar)
 		_ui.add_child(_bar)
-	_panel_ciri = Control.new()
-	_panel_ciri.position = Vector2(456, 80)
-	_panel_ciri.size = Vector2(176, 24 + _pembeli.size() * 14 + (14 if _sampah_wajib > 0 else 0))
-	_panel_ciri.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_panel_ciri.draw.connect(_gambar_ciri)
+	_panel_ciri = PanelCiri.new()
+	_panel_ciri.pulau = self
 	_ui.add_child(_panel_ciri)
 	GameState.state_berubah.connect(func(_l: int, baru: int) -> void:
 		if is_instance_valid(_ui):
 			_ui.visible = baru != GameState.State.DIALOG and baru != GameState.State.MINIGAME)
-
-
-## Ciri calon pembeli dibentuk dari warna topi & baju (data wisatawan), atau field "ciri" bila ada.
-func _ciri(w: Dictionary) -> String:
-	if w.has("ciri"):
-		return str(w["ciri"])
-	var topi: String = str(NAMA_WARNA.get(str(w.get("topi", "c9a45c")), "?"))
-	var baju: String = str(NAMA_WARNA.get(str(w.get("baju", "2c5c96")), "?"))
-	return "Topi %s, baju %s" % [topi, baju]
-
-
-## Panel kanan: daftar ciri calon pembeli; kotak dicentang saat terjual, dicoret bila pergi.
-func _gambar_ciri() -> void:
-	var c: Control = _panel_ciri
-	var huruf: Font = ThemeDB.fallback_font
-	c.draw_rect(Rect2(Vector2.ZERO, c.size), Color(0.08, 0.06, 0.06, 0.78))
-	c.draw_rect(Rect2(Vector2.ZERO, c.size), Gaya.KUNING, false, 1.0)
-	c.draw_string(huruf, Vector2(8, 14), DataLabuanBajo.teks("ciri_judul") + " (pilih 3):", HORIZONTAL_ALIGNMENT_LEFT, -1, 9, Gaya.KUNING)
-	for i in _pembeli.size():
-		var npc: Variant = _pembeli[i]  # bisa sudah dihapus (wisatawan pergi), jadi tidak diberi tipe
-		var y: float = 28.0 + i * 14.0
-		var st: String = str(_status.get(npc, "pergi"))
-		var w: Dictionary = _data_npc.get(npc, {})
-		var warna: Color = Gaya.PUTIH
-		var kotak := Rect2(8, y - 8, 8, 8)
-		c.draw_rect(kotak, Gaya.PUTIH, false, 1.0)
-		if st == "terjual":
-			warna = Color("6ad07a")
-			c.draw_polyline(PackedVector2Array([Vector2(9, y - 4), Vector2(12, y - 1), Vector2(17, y - 10)]), warna, 2.0)
-		elif st == "pergi":
-			warna = Gaya.ABU
-		c.draw_string(huruf, Vector2(22, y), _ciri(w), HORIZONTAL_ALIGNMENT_LEFT, -1, 9, warna)
-		if st == "pergi":
-			c.draw_line(Vector2(22, y - 3), Vector2(168, y - 3), Gaya.ABU, 1.0)
-	if _sampah_wajib > 0:
-		var y2: float = 28.0 + _pembeli.size() * 14.0
-		var warna2: Color = Color("6ad07a") if _sampah_dipungut >= _sampah_wajib else Color("8fd0e8")
-		c.draw_string(huruf, Vector2(8, y2), "Sampah plastik: %d/%d" % [_sampah_dipungut, _sampah_wajib], HORIZONTAL_ALIGNMENT_LEFT, -1, 9, warna2)
 
 
 func _gambar_bar() -> void:

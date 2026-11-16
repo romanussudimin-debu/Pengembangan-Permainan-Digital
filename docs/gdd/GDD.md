@@ -136,6 +136,8 @@ Kartu dari warga yang teka-tekinya diganti tetap didapat setelah tantangan aksin
 | Wae teku | Saluran air (putar pipa) | **Pipa retak** membocorkan air (-1 nyawa) | Pembagian air sawah = fakta; pipa = adaptasi |
 | Usir Burung | 3 gelombang pipit di 4 petak; jaga padi | **Kuntul putih** tidak boleh diusir (pemakan serangga, dilindungi) | Pipit hama padi & kuntul predator hama = fakta [S51–S54]; praktik khas Manggarai `[PERLU VERIFIKASI]` |
 
+**Bintang & pencapaian (v2.3):** setiap tantangan memberi ★1–3 dari nyawa yang hilang (0 salah = ★★★, 1–2 = ★★, 3+ = ★); ringkasan bintang tampil di layar Level Berhasil, bintang terbaik per level di menu **Pilih Level** (hanya level yang sudah terbuka). Tujuh pencapaian tersimpan: *Tanpa Tumpah* (antar kopi tanpa tumpah), *Mata Elang* (tamat satu level tanpa kehilangan nyawa), *Penjelajah* (5 benang emas), *Penangkis Ulung* (tangkis nggiling tanpa salah), *Penjaga Sawah* (tidak mengusir kuntul), *Sahabat Laut* (sampah Pink Beach & Manjarite tanpa mengganggu biota), *Penjual Andal* (satu destinasi tanpa salah barang/cerita).
+
 **Antar-level:** layar "Level N berhasil" (kartu, waktu, nyawa) → tombol "Lanjutkan ke Level N+1" → animasi orb atom "LEVEL N+1" + tagline → tombol Mulai.
 
 ### 4.6 Level 3 — Songke ke Labuan Bajo (data: `src/data/labuan_bajo.json`)

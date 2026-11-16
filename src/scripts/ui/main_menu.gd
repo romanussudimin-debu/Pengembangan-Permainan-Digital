@@ -18,6 +18,8 @@ var _label_info: RichTextLabel
 var _tombol_mulai: Button
 var _tombol_mode: Button
 var _tombol_layar: Button
+var _pita: Control  ## sapaan kanan bawah (disembunyikan saat panel terbuka)
+var _panel_daftar: NinePatchRect  ## panel Pilih Level / Pencapaian (isinya dibangun ulang tiap dibuka)
 
 
 func _ready() -> void:
@@ -116,20 +118,29 @@ func _bangun_ui() -> void:
 		var lv: int = clampi(GameState.level_tertinggi, 1, GameState.ADEGAN_LEVEL.size())
 		var lanjut := _tombol_menu("Lanjutkan (Level %d)" % lv, kolom)
 		lanjut.pressed.connect(func() -> void: GameState.lanjutkan())
+	var baris_prestasi := _baris_menu(kolom)
+	if GameState.level_tertinggi > 1:
+		var pilih := _tombol_kecil(Prestasi.teks("pilih_level"), baris_prestasi)
+		pilih.pressed.connect(_tampilkan_pilih_level)
+	var capai := _tombol_kecil(Prestasi.teks("judul_menu"), baris_prestasi)
+	capai.pressed.connect(_tampilkan_pencapaian)
 	_tombol_mode = _tombol_menu(_teks_mode(), kolom)
 	_tombol_mode.pressed.connect(_ganti_mode)
-	var cara := _tombol_menu("Cara Bermain", kolom)
+	var baris_info := _baris_menu(kolom)
+	var cara := _tombol_kecil("Cara Bermain", baris_info)
 	cara.pressed.connect(_tampilkan_info.bind(_teks_cara_bermain()))
-	var tentang := _tombol_menu("Tentang Game", kolom)
+	var tentang := _tombol_kecil("Tentang", baris_info)
 	tentang.pressed.connect(_tampilkan_info.bind(_teks_tentang()))
-	_tombol_layar = _tombol_menu(_teks_layar(), kolom)
+	var baris_layar := _baris_menu(kolom)
+	_tombol_layar = _tombol_kecil(_teks_layar(), baris_layar)
 	_tombol_layar.pressed.connect(_ganti_layar)
 	if not OS.has_feature("web"):
-		var keluar := _tombol_menu("Keluar", kolom)
+		var keluar := _tombol_kecil("Keluar", baris_layar)
 		keluar.pressed.connect(func() -> void: get_tree().quit())
 
 	# Sapaan dan nama tema yang sedang tampil (kanan bawah)
 	var pita := Gaya.panel_songke(Vector2(338, 300), Vector2(294, 50))
+	_pita = pita
 	ui.add_child(pita)
 	var sapa := Gaya.label("Selamat datang di Manggarai!", 11, Gaya.KUNING)
 	sapa.position = Vector2(12, 6)
@@ -143,20 +154,26 @@ func _bangun_ui() -> void:
 	_label_tema.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	ui.add_child(_label_tema)
 
-	_panel_info = Gaya.panel_songke(Vector2(222, 16), Vector2(400, 328))
+	_panel_info = Gaya.panel_songke(Vector2(244, 14), Vector2(388, 338))
 	_panel_info.visible = false
 	ui.add_child(_panel_info)
 	_label_info = RichTextLabel.new()  # bisa digulir (roda mouse / geser jari)
 	_label_info.position = Vector2(16, 14)
-	_label_info.size = Vector2(368, 270)
+	_label_info.size = Vector2(356, 278)
 	_label_info.scroll_active = true
 	_label_info.add_theme_font_size_override("normal_font_size", 9)
 	_label_info.add_theme_color_override("default_color", Gaya.PUTIH)
 	_panel_info.add_child(_label_info)
 	var tutup := Gaya.tombol("Tutup")
-	tutup.position = Vector2(120, 292)
-	tutup.pressed.connect(func() -> void: _panel_info.visible = false)
+	tutup.position = Vector2(114, 300)
+	tutup.pressed.connect(func() -> void:
+		_panel_info.visible = false
+		_pita.visible = true
+		_label_tema.visible = true)
 	_panel_info.add_child(tutup)
+	_panel_daftar = Gaya.panel_songke(Vector2(244, 14), Vector2(388, 338))
+	_panel_daftar.visible = false
+	ui.add_child(_panel_daftar)
 	_tombol_mulai.grab_focus()
 
 
@@ -167,6 +184,94 @@ func _tombol_menu(teks: String, kolom: VBoxContainer) -> Button:
 	b.add_theme_font_size_override("font_size", 12)
 	kolom.add_child(b)
 	return b
+
+
+func _baris_menu(kolom: VBoxContainer) -> HBoxContainer:
+	var baris := HBoxContainer.new()
+	baris.add_theme_constant_override("separation", 4)
+	kolom.add_child(baris)
+	return baris
+
+
+func _tombol_kecil(teks: String, baris: HBoxContainer) -> Button:
+	var b := Gaya.tombol(teks)
+	b.custom_minimum_size = Vector2(96, 27)
+	b.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	b.add_theme_font_size_override("font_size", 10)
+	b.add_theme_constant_override("h_separation", 0)
+	baris.add_child(b)
+	return b
+
+
+func _kosongkan_daftar(judul: String) -> void:
+	for anak in _panel_daftar.get_children():
+		anak.queue_free()
+	_panel_info.visible = false
+	_panel_daftar.visible = true
+	_pita.visible = false
+	_label_tema.visible = false
+	var l := Gaya.label(judul, 14, Gaya.KUNING)
+	l.position = Vector2(16, 10)
+	_panel_daftar.add_child(l)
+	var tutup := Gaya.tombol(Prestasi.teks("kembali"))
+	tutup.position = Vector2(114, 300)
+	tutup.pressed.connect(func() -> void:
+		_panel_daftar.visible = false
+		_pita.visible = true
+		_label_tema.visible = true)
+	_panel_daftar.add_child(tutup)
+
+
+## Pilih Level: hanya level yang sudah terbuka, dengan bintang terbaik masing-masing.
+func _tampilkan_pilih_level() -> void:
+	_kosongkan_daftar(Prestasi.teks("pilih_level"))
+	var terbuka: int = mini(GameState.level_tertinggi, GameState.ADEGAN_LEVEL.size())
+	for n in range(1, terbuka + 1):
+		var b := Gaya.tombol("Level %d · %s" % [n, GameState.data_level(n).get("nama", "")])
+		b.position = Vector2(20, 48 + (n - 1) * 56)
+		b.custom_minimum_size = Vector2(250, 32)
+		b.add_theme_font_size_override("font_size", 11)
+		b.pressed.connect(GameState.pilih_level.bind(n))
+		_panel_daftar.add_child(b)
+		var bintang := Control.new()
+		bintang.position = Vector2(290, 54 + (n - 1) * 56)
+		bintang.size = Vector2(80, 20)
+		var terbaik: int = int(Prestasi.bintang_terbaik.get(n, 0))
+		bintang.draw.connect(func() -> void:
+			for k in 3:
+				GambarBintang.gambar(bintang, Vector2(10 + k * 24, 10), 9.0, k < terbaik, Gaya.KUNING))
+		_panel_daftar.add_child(bintang)
+		if n == 1:
+			b.call_deferred("grab_focus")
+
+
+## Daftar 7 pencapaian: medali emas bila diraih, abu-abu bila belum.
+func _tampilkan_pencapaian() -> void:
+	_kosongkan_daftar("%s (%d/%d)" % [Prestasi.teks("judul_menu"), Prestasi.jumlah_diraih(), Prestasi.daftar().size()])
+	var daftar: Array = Prestasi.daftar()
+	for i in daftar.size():
+		var p: Dictionary = daftar[i]
+		var ada: bool = Prestasi.sudah(str(p["id"]))
+		var y: float = 38.0 + i * 35.0
+		var ikon := Control.new()
+		ikon.position = Vector2(16, y)
+		ikon.size = Vector2(28, 28)
+		ikon.draw.connect(func() -> void:
+			ikon.draw_circle(Vector2(14, 14), 12.0, Gaya.KUNING if ada else Color("4a4440"))
+			ikon.draw_arc(Vector2(14, 14), 12.0, 0.0, TAU, 24, Color("7a4a10") if ada else Gaya.ABU, 1.5)
+			GambarBintang.gambar(ikon, Vector2(14, 14), 7.0, ada, Gaya.MERAH if ada else Gaya.ABU))
+		_panel_daftar.add_child(ikon)
+		var nama := Gaya.label(str(p["nama"]), 11, Gaya.KUNING if ada else Gaya.ABU)
+		nama.position = Vector2(52, y - 2)
+		_panel_daftar.add_child(nama)
+		if not ada:
+			nama.text += "  (%s)" % Prestasi.teks("terkunci")
+		var syarat := Gaya.label(str(p["syarat"]), 8, Gaya.PUTIH if ada else Color("a8a092"))
+		syarat.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		syarat.position = Vector2(52, y + 12)
+		syarat.size = Vector2(330, 22)
+		syarat.add_theme_constant_override("line_spacing", -3)
+		_panel_daftar.add_child(syarat)
 
 
 func _ganti_layar() -> void:
@@ -194,6 +299,9 @@ func _teks_mode() -> String:
 
 
 func _tampilkan_info(teks: String) -> void:
+	_panel_daftar.visible = false
+	_pita.visible = false
+	_label_tema.visible = false
 	_label_info.text = teks
 	_label_info.scroll_to_line(0)
 	_panel_info.visible = true

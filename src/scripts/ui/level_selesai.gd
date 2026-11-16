@@ -1,6 +1,7 @@
 extends Control
 ## Layar antar-level (dibuka GameState.selesaikan_level):
-##   1. SUKSES : "LEVEL N BERHASIL!" + ringkasan (kartu, waktu, nyawa) + tombol "Lanjutkan ke Level N+1".
+##   1. SUKSES : "LEVEL N BERHASIL!" + ringkasan (kartu, waktu, nyawa) + bintang 1-3 per tantangan
+##               (muncul satu per satu, data Prestasi) + tombol "Lanjutkan ke Level N+1".
 ##   2. ORB    : bola atom bersinar dengan cincin orbit bermotif songke dan tulisan "LEVEL N+1",
 ##               nama dan tagline level, lalu tombol "Mulai Level N+1".
 ## Setelah level terakhir, tombolnya menuju perayaan Penti (ending).
@@ -20,6 +21,9 @@ var _grup_orb: Control
 var _tombol_mulai: Button
 var _label_nama: Label
 var _label_tagline: Label
+var _kanvas_bintang: Control
+var _waktu_bintang: float = -0.6
+var _bintang_berbunyi: int = 0
 
 
 func _ready() -> void:
@@ -62,7 +66,7 @@ func _bangun_sukses() -> void:
 	nama.position = Vector2(0, 86)
 	_grup_sukses.add_child(nama)
 	# Ringkasan level
-	var panel := Gaya.panel_songke(Vector2(170, 116), Vector2(300, 118))
+	var panel := Gaya.panel_songke(Vector2(28, 112), Vector2(250, 118))
 	_grup_sukses.add_child(panel)
 	var d: int = int(GameState.durasi_level_terakhir)
 	var baris: Array[String] = [
@@ -97,6 +101,61 @@ func _bangun_sukses() -> void:
 	tw.tween_property(judul, "scale", Vector2.ONE, 0.15)
 	panel.modulate.a = 0.0
 	create_tween().tween_property(panel, "modulate:a", 1.0, 0.5).set_delay(0.3)
+	_bangun_bintang()
+
+
+## Panel bintang per tantangan (maks. 10 baris); bintang muncul satu per satu dengan efek pop.
+func _bangun_bintang() -> void:
+	var baris: Array = Prestasi.ringkasan_terakhir.slice(0, 10)
+	var panel := Gaya.panel_songke(Vector2(292, 106), Vector2(320, 30 + maxi(baris.size(), 1) * 13))
+	_grup_sukses.add_child(panel)
+	var judul := Gaya.label(Prestasi.teks("bintang_judul"), 10, Gaya.KUNING)
+	judul.position = Vector2(16, 6)
+	panel.add_child(judul)
+	_kanvas_bintang = Control.new()
+	_kanvas_bintang.position = Vector2(16, 24)
+	_kanvas_bintang.size = Vector2(290, baris.size() * 13)
+	_kanvas_bintang.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_kanvas_bintang.draw.connect(_gambar_bintang.bind(baris))
+	panel.add_child(_kanvas_bintang)
+
+
+func _gambar_bintang(baris: Array) -> void:
+	var c: Control = _kanvas_bintang
+	var huruf: Font = ThemeDB.fallback_font
+	var urutan: int = 0
+	for i in baris.size():
+		var y: float = i * 13.0
+		var nama: String = str(baris[i][0])
+		if nama.length() > 30:
+			nama = nama.substr(0, 29) + "..."
+		c.draw_string(huruf, Vector2(0, y + 10), nama, HORIZONTAL_ALIGNMENT_LEFT, 220, 9, Gaya.PUTIH)
+		for k in 3:
+			var t: float = _waktu_bintang - urutan * 0.09
+			urutan += 1
+			var skala: float = clampf(t / 0.18, 0.0, 1.0)
+			skala = 1.0 + sin(skala * PI) * 0.5 if skala < 1.0 else 1.0  # pop: membesar lalu kembali
+			if t <= 0.0:
+				skala = 0.0
+			var pusat := Vector2(236 + k * 16, y + 6)
+			GambarBintang.gambar(c, pusat, 5.5, false, Color(1, 1, 1, 0.18))
+			if k < int(baris[i][1]) and skala > 0.0:
+				GambarBintang.gambar(c, pusat, 5.5 * skala, true, Gaya.KUNING)
+
+
+func _proses_bintang(delta: float) -> void:
+	if _kanvas_bintang == null or _tahap != Tahap.SUKSES:
+		return
+	_waktu_bintang += delta
+	var muncul: int = int(floor(_waktu_bintang / 0.09))
+	var total: int = 0
+	for b: Array in Prestasi.ringkasan_terakhir.slice(0, 10):
+		total += 3
+	if muncul > _bintang_berbunyi and _bintang_berbunyi < total:
+		_bintang_berbunyi = muncul
+		if _bintang_berbunyi % 3 == 0:
+			AudioManager.putar_sfx("klik", 0.1)
+	_kanvas_bintang.queue_redraw()
 
 
 func _lanjut() -> void:
@@ -150,6 +209,7 @@ func _process(delta: float) -> void:
 	_waktu += delta
 	_waktu_orb += delta
 	_kanvas.queue_redraw()
+	_proses_bintang(delta)
 
 
 ## Latar: gradasi malam, pola belah ketupat songke yang berputar pelan, kilau melayang,

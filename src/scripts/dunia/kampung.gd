@@ -74,6 +74,7 @@ var _pos_ambil_kopi := Vector3.ZERO
 
 # Benang emas
 var _benang_terkumpul: int = 0
+var _pernah_tumpah: bool = false  ## untuk pencapaian "Tanpa Tumpah"
 
 
 func _ready() -> void:
@@ -270,6 +271,8 @@ func _hasil_teka_teki(benar: bool, tantangan: Dictionary) -> void:
 func _hasil_minigame(berhasil: bool, tantangan: Dictionary, id_gagal: String, minigame: Node) -> void:
 	_minigame = null
 	if berhasil:
+		if minigame is TangkisNggiling and (minigame as TangkisNggiling).kesalahan == 0:
+			Prestasi.raih("penangkis_ulung")
 		_tantangan_berhasil(tantangan)
 		return
 	if minigame.get("batal"):
@@ -446,6 +449,7 @@ func _physics_process(delta: float) -> void:
 func _kopi_tumpah() -> void:
 	AudioManager.putar_sfx("terkena")
 	DialogManager.gelembung(pemain, [str(DATA_RANTAI.data["antar"]["tumpah"])], "Nggohak", 3.6)
+	_pernah_tumpah = true
 	Nyawa.kurangi("kopi tumpah")
 	if not Nyawa.sedang_habis():
 		_ambil_kopi_baru()
@@ -466,6 +470,8 @@ func _beri_kopi(tamu: NpcKampung) -> void:
 	AudioManager.putar_sfx("berhasil")
 	DialogManager.gelembung(tamu, [str(DATA_RANTAI.data["antar"]["terima"])], "Tamu", 3.9)
 	Nyawa.atur_tantangan("", Callable())
+	if not _pernah_tumpah:
+		Prestasi.raih("tanpa_tumpah")
 	_tantangan_berhasil(_tantangan_antar)
 
 
@@ -520,6 +526,8 @@ func _ambil_benang(_p: Pemain, g: Node3D, asli: bool) -> void:
 		Nyawa.kurangi("mengambil benang palsu")
 		return
 	_benang_terkumpul += 1
+	if _benang_terkumpul >= POS_BENANG_ASLI.size():
+		Prestasi.raih("penjelajah")
 	GameState.benang_emas = maxi(GameState.benang_emas, _benang_terkumpul)
 	AudioManager.putar_sfx("ambil")
 	var pesan: String = str(teks["lengkap"]) if _benang_terkumpul >= POS_BENANG_ASLI.size() else "%s (%d/%d)" % [

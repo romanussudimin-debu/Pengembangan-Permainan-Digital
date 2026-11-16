@@ -103,6 +103,7 @@ func selesaikan_level(n: int) -> void:
 	tujuan_khusus = ""
 	kartu_awal_level.assign(kartu_terkumpul)
 	level_baru_selesai = n
+	Prestasi.selesai_level(n)
 	durasi_level_terakhir = (Time.get_ticks_msec() - waktu_mulai_level) / 1000.0 if waktu_mulai_level > 0 else 0.0
 	if ADEGAN_LEVEL.has(n + 1):
 		level = n + 1
@@ -115,6 +116,7 @@ func selesaikan_level(n: int) -> void:
 func mulai_level(n: int) -> void:
 	level = n
 	waktu_mulai_level = Time.get_ticks_msec()
+	Prestasi.mulai_level()
 	Nyawa.isi_penuh()
 	tujuan_khusus = ""
 	Transisi.pindah_scene(ADEGAN_LEVEL[n])
@@ -135,9 +137,25 @@ func lanjutkan() -> void:
 	langkah_rantai = rantai().size() if level > 1 else 0
 	tujuan_khusus = ""
 	waktu_mulai_level = Time.get_ticks_msec()
+	Prestasi.mulai_level()
 	Nyawa.isi_penuh()
 	progres_berubah.emit()
 	Transisi.pindah_scene(ADEGAN_LEVEL[level])
+
+
+## Menu Pilih Level: memainkan ulang level `n` yang sudah terbuka (kartu yang sudah didapat tetap).
+## Level 3 dimulai lagi dari destinasi pertama.
+func pilih_level(n: int) -> void:
+	muat()
+	n = clampi(n, 1, mini(level_tertinggi, ADEGAN_LEVEL.size()))
+	kartu_terkumpul.assign(kartu_awal_level)
+	level = n
+	langkah_rantai = 0 if n == 1 else rantai().size()
+	if n == 3:
+		pulau_selesai = 0
+		pulau_aktif = 0
+		terjual_total = 0
+	mulai_level(n)
 
 
 ## Mengulang level aktif dari awal (misalnya karena waktu habis di mode Sulit).

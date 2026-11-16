@@ -492,7 +492,6 @@ func _pilih_tawaran(indeks: int, npc: NpcKampung) -> void:
 		return
 	if not pembeli:
 		_obrol(npc, npc.nama, DataLabuanBajo.teks("bukan_pembeli"))
-		AudioManager.putar_sfx("gagal")
 		Nyawa.kurangi(DataLabuanBajo.teks("bukan_pembeli_nyawa"))
 		return
 	# Keinginan wisatawan langsung tampil di layar tawaran (tanpa panel dialog terpisah)
@@ -523,6 +522,8 @@ func _hasil_jual(berhasil: bool, npc: NpcKampung, jual: JualSongke) -> void:
 	if berhasil:
 		_status[npc] = "terjual"
 		_terjual += 1
+		Efek.kilau(self, npc.global_position + Vector3(0, 1.6, 0))
+		Efek.teks(self, npc.global_position + Vector3(0, 3.2, 0), "Terjual!")
 		npc.area.ubah_petunjuk("Terima kasih")
 		_perbarui_tujuan()
 		if not _cek_tuntas():
@@ -645,12 +646,12 @@ func _pungut(_p: Pemain, benda: Node3D, jenis_benda: String) -> void:
 	if jenis_benda != "sampah":
 		# Pengecoh: kerang & bintang laut adalah bagian ekosistem, tidak boleh diambil
 		_salah_laut += 1
-		AudioManager.putar_sfx("gagal")
 		kamera.guncang(0.3)
 		_obrol(pemain, "Nggohak", DataLabuanBajo.teks(jenis_benda))
 		Nyawa.kurangi(DataLabuanBajo.teks(jenis_benda))
 		return
 	AudioManager.putar_sfx("ambil")
+	Efek.kilau(self, benda.global_position + Vector3(0, 0.3, 0))
 	_sampah_dipungut += 1
 	_toast("%s (%d/%d)" % [DataLabuanBajo.teks("sampah"), _sampah_dipungut, _sampah_wajib])
 	benda.queue_free()
@@ -766,6 +767,9 @@ func _tanah_padat(p: Vector3) -> bool:
 
 func _kembali_aman(pesan: String, denda: float) -> void:
 	_jeda_kembali = 0.8
+	var asal: Vector3 = pemain.global_position
+	if asal.y < 0.0:
+		Efek.percikan(self, Vector3(asal.x, DuniaPulau.Y_LAUT, asal.z))
 	AudioManager.putar_sfx("terkena", 0.1)
 	kamera.guncang(0.4)
 	var tujuan: Vector3 = _titik_aman

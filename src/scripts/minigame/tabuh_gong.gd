@@ -27,6 +27,7 @@ var kesalahan: int = 0
 var _meleset: int = 0
 var _jam: float = 0.0
 var _tepat: int = 0
+var _beruntun: int = 0  ## ketukan tepat berturut-turut (kombo tiap 5)
 var _selesai: bool = false
 var _kanvas: Control
 var _label_info: Label
@@ -99,6 +100,7 @@ func _process(delta: float) -> void:
 				_umpan("Tipuan dilewati!", Gaya.HIJAU)
 				continue
 			k["status"] = 2
+			_beruntun = 0
 			_umpan("Luput", Gaya.ABU)
 			_meleset += 1
 			if _meleset % MELESET_PER_NYAWA == 0:
@@ -138,11 +140,17 @@ func _tabuh(jalur: int) -> void:
 		if k["status"] == 0 and not k["tipuan"] and k["jalur"] == jalur and absf(float(k["waktu"]) - _jam) <= JENDELA_TEPAT:
 			k["status"] = 1
 			_tepat += 1
-			_umpan("Tepat!", Gaya.HIJAU)
+			_beruntun += 1
+			if _beruntun % 5 == 0:
+				AudioManager.putar_sfx("kombo")
+				_umpan("Kombo x%d!" % _beruntun, Gaya.KUNING)
+			else:
+				_umpan("Tepat!", Gaya.HIJAU)
 			return
 	for k in _ketukan:
 		if k["status"] == 0 and k["tipuan"] and k["jalur"] == jalur and absf(float(k["waktu"]) - _jam) <= JENDELA_TEPAT:
 			k["status"] = 4
+			_beruntun = 0
 			kesalahan += 1
 			_umpan("Tertipu!", Gaya.MERAH)
 			salah.emit("menabuh ketukan tipuan")

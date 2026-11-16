@@ -235,7 +235,7 @@ func _jawab(indeks: int) -> void:
 			cb.call(indeks)
 		return
 	var benar: bool = indeks == _indeks_benar
-	AudioManager.putar_sfx("berhasil" if benar else "gagal")
+	AudioManager.putar_sfx("benar" if benar else "salah")
 	teka_teki_dijawab.emit(benar)
 	if cb.is_valid():
 		cb.call(benar)

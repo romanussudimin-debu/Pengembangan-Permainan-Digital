@@ -35,6 +35,7 @@ Semua aset dalam prototipe **dibuat sendiri** secara prosedural oleh pembuat pro
 | musik_kampung.wav | Pola gong-gendang tenang + lonceng pentatonik (loop) | `tools/generate_audio.py` (numpy, sintesis aditif) |
 | musik_caci.wav | Pola gong-gendang cepat untuk arena (loop) | idem |
 | gendang.wav, anjing.wav (gonggong), ayam.wav (kotek), gong.wav, cambuk.wav, perisai.wav, terkena.wav, lompat.wav, langkah.wav, ambil.wav, berhasil.wav, gagal.wav, klik.wav | Efek suara | idem |
+| benar.wav, salah.wav, kombo.wav, percik.wav | Umpan balik: jawaban benar, kesalahan (-1 nyawa), kombo beruntun, percikan air/lumpur (tahap 8) | idem |
 
 > Catatan etis: musik **bukan rekaman** gong-gendang atau nyanyian Manggarai asli. Musik disintesis sebagai penghormatan, sehingga tidak ada rekaman budaya yang dipakai tanpa izin.
 

@@ -62,7 +62,8 @@ func kurangi(penyebab: String) -> void:
 	sisa -= 1
 	hilang_di_level += 1
 	berubah.emit(sisa, -1)
-	AudioManager.putar_sfx("gagal")
+	AudioManager.putar_sfx("salah")
+	_teks_di_pemain("-1", Color("ff5a4a"))
 	get_tree().call_group("kamera_ikut", "guncang", 0.45)
 	_kilat.modulate.a = 0.45
 	create_tween().tween_property(_kilat, "modulate:a", 0.0, 0.45).set_ease(Tween.EASE_OUT)
@@ -79,6 +80,7 @@ func tambah() -> bool:
 	sisa += 1
 	berubah.emit(sisa, 1)
 	AudioManager.putar_sfx("ambil")
+	_teks_di_pemain("+1", Color("6ad07a"))
 	return true
 
 
@@ -137,3 +139,11 @@ func _ulangi() -> void:
 		DialogManager.tutup_paksa()
 	if _ulang.is_valid():
 		_ulang.call()
+
+
+## Teks melayang di atas kepala pemain (bila ada pemain di scene aktif).
+func _teks_di_pemain(isi: String, warna: Color) -> void:
+	var adegan: Node = get_tree().current_scene
+	var p: Variant = adegan.get("pemain") if adegan else null
+	if p is Node3D and is_instance_valid(p) and (p as Node3D).is_inside_tree():
+		Efek.teks(adegan, (p as Node3D).global_position + Vector3(0, 2.4, 0), isi, warna)

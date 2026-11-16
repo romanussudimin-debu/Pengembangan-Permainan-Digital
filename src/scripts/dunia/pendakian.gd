@@ -321,6 +321,7 @@ func _pijakan_aman(p: Vector3) -> bool:
 
 func _jatuh() -> void:
 	_jeda_jatuh = 0.8
+	Efek.percikan(self, pemain.global_position + Vector3(0, 0.6, 0))
 	pemain.velocity = Vector3.ZERO
 	pemain.global_position = _titik_aman + Vector3(0, 0.2, 0)
 	pemain.model.squash(Vector3(1.2, 0.8, 1.2))

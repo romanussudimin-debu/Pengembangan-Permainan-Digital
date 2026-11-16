@@ -27,6 +27,7 @@ var _fase: int = Fase.JEDA
 var _waktu_fase: float = 0.0
 var _durasi_terbang: float = 1.2
 var _berhasil: int = 0
+var _beruntun: int = 0  ## tangkisan tepat berturut-turut (kombo tiap 3)
 var _kilat_tangkis: float = 0.0
 var _jalur_tangkis: int = -1
 var _diakhiri: bool = false
@@ -191,8 +192,12 @@ func _tangkis(jalur: int) -> void:
 func _hasil(tepat: bool, penyebab: String) -> void:
 	if tepat:
 		_berhasil += 1
+		_beruntun += 1
 		AudioManager.putar_sfx("perisai", 0.1)
+		if _beruntun % 3 == 0:
+			AudioManager.putar_sfx("kombo")
 	else:
+		_beruntun = 0
 		kesalahan += 1
 		AudioManager.putar_sfx("terkena", 0.1)
 		salah.emit(penyebab)

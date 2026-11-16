@@ -732,6 +732,7 @@ func _perbarui_rapuh(delta: float, p: Vector3) -> void:
 func _runtuhkan(r: Dictionary) -> void:
 	r["runtuh"] = true
 	AudioManager.putar_sfx("terkena", 0.2)
+	Efek.percikan(self, pemain.global_position, true)  # lumpur sawah terciprat
 	var nodes: Array = r["node"]
 	var asal: Array = r["asal"]
 	var batu: bool = (nodes[nodes.size() - 1] as Node).has_meta("batu")
@@ -897,6 +898,8 @@ func _usir(_p: Pemain, i: int) -> void:
 	if not _burung_aktif:
 		return
 	AudioManager.putar_sfx("klik", 0.3)
+	if not _pipit[i].is_empty():
+		Efek.teks(self, POS_PETAK_BURUNG[i] + Vector3(0, 2.0, 0), "Hus!", Gaya.PUTIH)
 	_usir_semua(i)
 	if _kuntul and _petak_kuntul == i and _kuntul.position.distance_to(POS_PETAK_BURUNG[i]) < 2.5:
 		kuntul_diusir += 1

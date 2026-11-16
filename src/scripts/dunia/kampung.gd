@@ -468,6 +468,7 @@ func _beri_kopi(tamu: NpcKampung) -> void:
 	pemain.kecepatan = 5.0
 	_ui_antar.visible = false
 	AudioManager.putar_sfx("berhasil")
+	Efek.kilau(self, tamu.global_position + Vector3(0, 1.4, 0))
 	DialogManager.gelembung(tamu, [str(DATA_RANTAI.data["antar"]["terima"])], "Tamu", 3.9)
 	Nyawa.atur_tantangan("", Callable())
 	if not _pernah_tumpah:
@@ -526,6 +527,7 @@ func _ambil_benang(_p: Pemain, g: Node3D, asli: bool) -> void:
 		Nyawa.kurangi("mengambil benang palsu")
 		return
 	_benang_terkumpul += 1
+	Efek.kilau(self, g.global_position + Vector3(0, 0.4, 0))
 	if _benang_terkumpul >= POS_BENANG_ASLI.size():
 		Prestasi.raih("penjelajah")
 	GameState.benang_emas = maxi(GameState.benang_emas, _benang_terkumpul)

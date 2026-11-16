@@ -121,6 +121,16 @@
 			]
 		},
 		{
+			"id": "burung_sawah",
+			"judul": "Pipit dan Kuntul di Sawah",
+			"level": 2,
+			"ringkas": "Pipit memakan bulir padi; kuntul memakan serangga, jadi biarkan kuntul.",
+			"isi": [
+				"Burung pipit dan bondol datang berkelompok memakan bulir padi saat padi berisi dan menguning. Petani mengusirnya dengan alat pengusir sederhana.",
+				"Kuntul kerbau mencari makan serangga di sawah dan berpotensi menjadi musuh alami hama. Perannya masih diteliti, tetapi kuntul tidak merusak padi. (Tantangan ini adaptasi kreatif.)"
+			]
+		},
+		{
 			"id": "moso",
 			"judul": "Moso",
 			"ringkas": "Garis pembatas dari pusat lingko ke tepi; lebar bagian tiap keluarga bisa berbeda.",

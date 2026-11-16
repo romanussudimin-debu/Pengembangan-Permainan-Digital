@@ -5,13 +5,14 @@ extends Node3D
 ##   UNDANG  -> undang lima kepala keluarga berdasarkan ciri-cirinya (ada pengecoh)
 ##   REKE    -> kembali ke lodok: reke lodok (musyawarah melingkar)
 ##   AIR     -> alirkan air dari wae teku (mini-game SaluranAir)
+##   BURUNG  -> usir pipit dari petak, biarkan kuntul (3 gelombang; adaptasi kreatif)
 ##   BAGI    -> bagi tiga lingko dengan garis moso sesuai musyawarah (mini-game BagiLingko)
 ##   BUKIT   -> naik ke bukit batu dan pandang lingko dari atas
 ##   SELESAI -> level tamat (GameState.selesaikan_level)
 ## Pematang sempit dan ada yang putus: jatuh ke lumpur = kembali ke titik aman terakhir.
 ## Mode Sulit: batas waktu "sebelum senja"; jatuh dan salah orang mengurangi waktu.
 
-enum Tahap { SAMBUT, UNDANG, REKE, AIR, BAGI, BUKIT, SELESAI }
+enum Tahap { SAMBUT, UNDANG, REKE, AIR, BURUNG, BAGI, BUKIT, SELESAI }
 
 const ADEGAN_PEMAIN: PackedScene = preload("res://scenes/pemain.tscn")
 const SALURAN: Script = preload("res://scripts/minigame/saluran_air.gd")
@@ -66,6 +67,25 @@ var _area_bukit: Interaktif
 var _titik_aman: Vector3 = TITIK_MUNCUL
 var _titik_cek: Vector3 = TITIK_MUNCUL  ## tempat mengulang bila nyawa habis saat menyusuri pematang
 var _minigame: Node = null
+var _ruas_rapuh: Array = []  ## {node: [...], asal: [...], waktu, runtuh}
+var _sudah_tahu_rapuh: bool = false
+
+# Usir Burung
+const POS_PETAK_BURUNG: Array[Vector3] = [Vector3(9.3, 0, -9.3), Vector3(-9.3, 0, -9.3), Vector3(-9.3, 0, 9.3), Vector3(9.3, 0, 9.3)]
+const DURASI_GELOMBANG: Array[float] = [22.0, 22.0, 24.0]
+const JEDA_PIPIT: Array[float] = [3.2, 2.2, 1.4]
+var _burung_aktif: bool = false
+var _gelombang: int = 0
+var _waktu_gelombang: float = 0.0
+var _jeda_pipit: float = 0.0
+var _padi: Array[float] = [1.0, 1.0, 1.0, 1.0]
+var _pipit: Array = [[], [], [], []]  ## daftar Burung pipit per petak
+var _kuntul: Burung
+var _petak_kuntul: int = -1
+var _label_padi: Array[Label3D] = []
+var _area_petak: Array[Interaktif] = []
+var _label_gelombang: Label
+var kuntul_diusir: int = 0  ## untuk pencapaian "Penjaga Sawah"
 var _jeda_jatuh: float = 0.0
 var _sisa_waktu: float = WAKTU_SULIT
 var _waktu_berjalan: bool = false
@@ -116,8 +136,12 @@ func _bangun_dunia() -> void:
 	_petak = DuniaLingko.petak_sawah(self, JARI_LODOK - 0.1, JARI_TEPI)
 	DuniaLingko.lodok(self, JARI_LODOK)
 	# Pematang melingkar; sebagian putus sehingga pemain harus melompat
-	DuniaLingko.pematang_lingkar(self, JARI_DALAM, [135.0, -30.0])
-	DuniaLingko.pematang_lingkar(self, JARI_TENGAH, [45.0, 160.0, -135.0])
+	# Pematang rapuh (tanah gelap & retak) runtuh 0,8 detik setelah diinjak
+	_ruas_rapuh.append_array(DuniaLingko.pematang_lingkar(self, JARI_DALAM, [135.0, -30.0], 1.5, [100.0, -120.0]))
+	_ruas_rapuh.append_array(DuniaLingko.pematang_lingkar(self, JARI_TENGAH, [45.0, 160.0, -135.0], 1.5, [110.0, -60.0, 20.0]))
+	for r: Dictionary in _ruas_rapuh:
+		r["waktu"] = 0.0
+		r["runtuh"] = false
 	DuniaLingko.pematang_lingkar(self, JARI_LUAR)
 	# Pematang menjari dari lodok (celah di antara potongan = pematang putus)
 	DuniaLingko.pematang_jari(self, 90.0, [[JARI_LODOK - 0.2, 7.3], [8.8, JARI_LUAR]])  # selatan (jalan masuk)
@@ -157,6 +181,24 @@ func _bangun_bukit() -> void:
 	Dunia.batu_pijakan(self, Vector3(-16.1, 0, 19.0), 2.7, 0.95)
 	Dunia.batu_pijakan(self, Vector3(-17.6, 0, 17.4), 3.6, 0.95)
 	Dunia.batu_pijakan(self, Vector3(POS_PUNCAK_BUKIT.x, 0, POS_PUNCAK_BUKIT.z), POS_PUNCAK_BUKIT.y, 1.8)
+	# Batu goyah (pengecoh): miring sedikit, lebih gelap, bergaris retak; runtuh bila dipijak
+	var tinggi_goyah: float = 2.7
+	var pos_goyah := Vector3(-15.0, tinggi_goyah / 2.0, 21.9)
+	var mi_goyah := Dunia.mesh(self, Dunia.silinder(0.9, 1.0, tinggi_goyah, 10), pos_goyah, Dunia.mat(Color("7a756c"), Dunia.TEX_BATU))
+	mi_goyah.rotation.z = 0.12
+	var m_retak := Dunia.mat(Color("2a2622"))
+	for k in 3:
+		var garis := BoxMesh.new()
+		garis.size = Vector3(1.0 - k * 0.2, 0.02, 0.05)
+		var g := Dunia.mesh(mi_goyah, garis, Vector3(0.1 * k - 0.1, tinggi_goyah / 2.0 + 0.01, 0.15 * k - 0.15), m_retak)
+		g.rotation.y = 0.6 + k * 0.9
+	var b_goyah := CylinderShape3D.new()
+	b_goyah.radius = 0.9
+	b_goyah.height = tinggi_goyah
+	var badan_goyah := Dunia.badan_statis(self, b_goyah, pos_goyah)
+	badan_goyah.set_meta("rapuh", true)
+	badan_goyah.set_meta("batu", true)
+	_ruas_rapuh.append({"node": [mi_goyah, badan_goyah], "asal": [mi_goyah.position, badan_goyah.position], "waktu": 0.0, "runtuh": false})
 	var m_batu := Dunia.mat(Color("8a857c"), Dunia.TEX_BATU)
 	var batu_hias: Array = [[Vector3(-22, 1.2, 14), 2.0], [Vector3(-21, 0.8, 18.5), 1.6], [Vector3(-23.5, 1.6, 17), 2.4],
 		[Vector3(-18.5, 0.6, 12.5), 1.2]]
@@ -332,6 +374,8 @@ func _atur_tahap(baru: int) -> void:
 			GameState.atur_tujuan("Kembali ke Tu'a Teno di lodok untuk reke lodok.")
 		Tahap.AIR:
 			GameState.atur_tujuan("Pergi ke wae teku di utara lingko dan alirkan airnya.")
+		Tahap.BURUNG:
+			GameState.atur_tujuan("Temui Tu'a Teno: usir pipit dari petak, tapi biarkan kuntul putih.")
 		Tahap.BAGI:
 			GameState.atur_tujuan("Kembali ke Tu'a Teno di lodok untuk membagi lingko dengan moso.")
 		Tahap.BUKIT:
@@ -393,6 +437,10 @@ func _bicara_tu_a_teno() -> void:
 			_mulai_reke_lodok()
 		Tahap.AIR:
 			_obrol(_tu_a_teno, "Tu'a Teno", d["menunggu_air"])
+		Tahap.BURUNG:
+			if not _burung_aktif:
+				_obrol(_tu_a_teno, "Tu'a Teno", d["burung_mulai"])
+				_mulai_burung()
 		Tahap.BAGI:
 			DialogManager.mulai_baris("mulai_bagi", _baris("Tu'a Teno", d["mulai_bagi"]), _mulai_bagi)
 		Tahap.BUKIT:
@@ -520,7 +568,7 @@ func _hasil_saluran(berhasil: bool, s: SaluranAir) -> void:
 		return
 	_alirkan_air()
 	_obrol(pemain, "Nggohak", d["air_berhasil"])
-	_beri_kartu("wae_teku", _atur_tahap.bind(Tahap.BAGI))
+	_beri_kartu("wae_teku", _atur_tahap.bind(Tahap.BURUNG))
 
 
 ## Visual: saluran dan petak sawah berubah dari kering menjadi berair.
@@ -617,6 +665,7 @@ func _tamat() -> void:
 # ------------------------------------------------------------------ per frame
 
 func _process(delta: float) -> void:
+	_process_burung(delta)
 	if _kamera_pandang:
 		_kamera_pandang.look_at(Vector3(0, 0, -1.0), Vector3.UP)
 	if _waktu_berjalan and not _waktu_habis and GameState.sedang(GameState.State.BERMAIN):
@@ -653,11 +702,53 @@ func _physics_process(delta: float) -> void:
 	_jeda_jatuh = maxf(_jeda_jatuh - delta, 0.0)
 	var p: Vector3 = pemain.global_position
 	var di_sawah: bool = Vector2(p.x, p.z).length() < JARI_TEPI and p.y < DuniaLingko.TINGGI_AIR
+	_perbarui_rapuh(delta, p)
 	if di_sawah:
 		if _jeda_jatuh <= 0.0:
 			_jatuh_ke_lumpur()
 	elif pemain.is_on_floor() and _pijakan_aman(p):
 		_titik_aman = p
+
+
+## Pematang rapuh dan batu goyah runtuh 0,8 detik setelah diinjak, lalu pulih beberapa detik kemudian.
+func _perbarui_rapuh(delta: float, p: Vector3) -> void:
+	var q := PhysicsRayQueryParameters3D.create(p + Vector3(0, 0.3, 0), p + Vector3(0, -0.4, 0), Dunia.LAPISAN_DUNIA)
+	q.exclude = [pemain.get_rid()]
+	var lantai: Object = get_world_3d().direct_space_state.intersect_ray(q).get("collider", null)
+	for r: Dictionary in _ruas_rapuh:
+		if r["runtuh"]:
+			continue
+		var nodes: Array = r["node"]
+		if lantai == nodes[nodes.size() - 1] and pemain.is_on_floor():
+			r["waktu"] = float(r["waktu"]) + delta
+			var goyang := Vector3(randf_range(-0.03, 0.03), 0, randf_range(-0.03, 0.03))
+			(nodes[0] as Node3D).position = (r["asal"] as Array)[0] + goyang
+			if float(r["waktu"]) >= 0.8:
+				_runtuhkan(r)
+		else:
+			r["waktu"] = 0.0
+
+
+func _runtuhkan(r: Dictionary) -> void:
+	r["runtuh"] = true
+	AudioManager.putar_sfx("terkena", 0.2)
+	var nodes: Array = r["node"]
+	var asal: Array = r["asal"]
+	var batu: bool = (nodes[nodes.size() - 1] as Node).has_meta("batu")
+	if not _sudah_tahu_rapuh or batu:
+		_sudah_tahu_rapuh = true
+		_obrol(pemain, "Nggohak", _dialog()["batu_goyah" if batu else "rapuh"])
+	if batu:
+		Nyawa.kurangi("tertipu batu goyah")
+	var tw := create_tween().set_parallel()
+	for i in nodes.size():
+		tw.tween_property(nodes[i], "position:y", (asal[i] as Vector3).y - 3.0, 0.5).set_ease(Tween.EASE_IN)
+	tw.chain().tween_interval(4.0)
+	tw.chain().tween_callback(func() -> void:
+		for i in nodes.size():
+			(nodes[i] as Node3D).position = asal[i]
+		r["waktu"] = 0.0
+		r["runtuh"] = false)
 
 
 ## Titik aman bila tanah di sekeliling kaki pemain juga padat (bukan di tepi pematang).
@@ -666,7 +757,8 @@ func _pijakan_aman(p: Vector3) -> bool:
 	for geser: Vector3 in [Vector3(0.35, 0, 0), Vector3(-0.35, 0, 0), Vector3(0, 0, 0.35), Vector3(0, 0, -0.35)]:
 		var q := PhysicsRayQueryParameters3D.create(p + geser + Vector3(0, 0.5, 0), p + geser + Vector3(0, -0.4, 0), Dunia.LAPISAN_DUNIA)
 		q.exclude = [pemain.get_rid()]
-		if ruang.intersect_ray(q).is_empty():
+		var hasil: Dictionary = ruang.intersect_ray(q)
+		if hasil.is_empty() or (hasil["collider"] as Object).has_meta("rapuh"):
 			return false
 	return true
 
@@ -681,3 +773,156 @@ func _jatuh_ke_lumpur() -> void:
 	if GameState.mode_sulit:
 		_tampilkan_denda(DENDA_JATUH)
 	Nyawa.kurangi("jatuh ke lumpur")
+
+
+# ------------------------------------------------------------------ Usir Burung (adaptasi kreatif)
+
+## Tiga gelombang pipit menyerbu empat petak. Dekati petak lalu tekan interaksi (Usir burung) untuk
+## mengusir pipit di petak itu. Pengecoh: kuntul putih yang memakan serangga hama - jangan diusir.
+## Padi satu petak habis = -1 nyawa; mengusir kuntul = -1 nyawa.
+func _mulai_burung() -> void:
+	_burung_aktif = true
+	_gelombang = 0
+	_waktu_gelombang = 0.0
+	_jeda_pipit = 1.5
+	_padi = [1.0, 1.0, 1.0, 1.0]
+	for i in 4:
+		for b: Burung in _pipit[i]:
+			if is_instance_valid(b):
+				b.queue_free()
+		_pipit[i] = []
+	if _label_padi.is_empty():
+		_bangun_petak_burung()
+	for i in 4:
+		_label_padi[i].visible = true
+		_area_petak[i].monitoring = true
+	if is_instance_valid(_kuntul):
+		_kuntul.queue_free()
+	_kuntul = null
+	_petak_kuntul = -1
+	_label_gelombang.visible = true
+	Nyawa.atur_tantangan("Mengusir burung", _mulai_burung)
+
+
+func _bangun_petak_burung() -> void:
+	for i in 4:
+		var p: Vector3 = POS_PETAK_BURUNG[i]
+		# Rumpun padi menguning sebagai penanda petak
+		for k in 6:
+			var a: float = TAU * k / 6.0
+			var rumpun := Dunia.mesh(self, Dunia.silinder(0.02, 0.12, 0.6, 5), p + Vector3(cos(a) * 0.6, DuniaLingko.TINGGI_AIR + 0.3, sin(a) * 0.6),
+					Dunia.mat(Color("d8c060")))
+			rumpun.rotation.z = randf_range(-0.2, 0.2)
+		var label := Label3D.new()
+		label.font_size = 40
+		label.pixel_size = 0.006
+		label.outline_size = 10
+		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+		label.no_depth_test = true
+		label.position = p + Vector3(0, 1.8, 0)
+		add_child(label)
+		_label_padi.append(label)
+		var area := Interaktif.new()
+		area.teks_petunjuk = "Usir burung"
+		area.jari_jari = 3.0
+		area.tinggi_petunjuk = 2.4
+		area.position = p + Vector3(0, DuniaLingko.TINGGI_AIR, 0)
+		add_child(area)
+		area.diinteraksi.connect(_usir.bind(i))
+		_area_petak.append(area)
+	_label_gelombang = Gaya.label("", 10, Gaya.KUNING)
+	_label_gelombang.position = Vector2(456, 44)
+	_ui.add_child(_label_gelombang)
+
+
+func _process_burung(delta: float) -> void:
+	if not _burung_aktif or not GameState.sedang(GameState.State.BERMAIN):
+		return
+	_waktu_gelombang += delta
+	_jeda_pipit -= delta
+	if _jeda_pipit <= 0.0:
+		_jeda_pipit = JEDA_PIPIT[_gelombang]
+		_datangkan_pipit(randi() % 4)
+	# Kuntul muncul mulai gelombang 2 dan berpindah petak perlahan
+	if _gelombang >= 1 and _kuntul == null:
+		_kuntul = Burung.new()
+		_kuntul.jenis = "kuntul"
+		add_child(_kuntul)
+		_pindahkan_kuntul()
+	if _kuntul and fmod(_waktu_gelombang, 9.0) < delta:
+		_pindahkan_kuntul()
+	for i in 4:
+		var jumlah: int = (_pipit[i] as Array).size()
+		_padi[i] = maxf(_padi[i] - jumlah * 0.022 * delta, 0.0)
+		var bar: String = ""
+		for k in 5:
+			bar += "■" if _padi[i] > k * 0.2 + 0.05 else "□"
+		_label_padi[i].text = "Padi %s%s" % [bar, ("  (%d pipit)" % jumlah) if jumlah > 0 else ""]
+		_label_padi[i].modulate = Gaya.HIJAU.lerp(Gaya.MERAH, 1.0 - _padi[i])
+		if _padi[i] <= 0.0:
+			_padi[i] = 0.5
+			_usir_semua(i)
+			_obrol(pemain, "Nggohak", _dialog()["burung_habis"])
+			Nyawa.kurangi("padi habis dimakan pipit")
+	_label_gelombang.text = "Gelombang pipit %d/3" % (_gelombang + 1)
+	if _waktu_gelombang >= DURASI_GELOMBANG[_gelombang]:
+		_gelombang += 1
+		_waktu_gelombang = 0.0
+		if _gelombang >= DURASI_GELOMBANG.size():
+			_selesai_burung()
+
+
+func _datangkan_pipit(i: int) -> void:
+	var b := Burung.new()
+	b.jenis = "pipit"
+	var tujuan: Vector3 = POS_PETAK_BURUNG[i] + Vector3(randf_range(-0.6, 0.6), DuniaLingko.TINGGI_AIR, randf_range(-0.6, 0.6))
+	b.position = tujuan + Vector3(randf_range(-3, 3), 6.0, -4.0)
+	add_child(b)
+	b.rotation.y = randf() * TAU
+	create_tween().tween_property(b, "position", tujuan, 1.0).set_ease(Tween.EASE_OUT)
+	(_pipit[i] as Array).append(b)
+
+
+func _pindahkan_kuntul() -> void:
+	var baru: int = (_petak_kuntul + 1 + randi() % 3) % 4
+	_petak_kuntul = baru
+	var tujuan: Vector3 = POS_PETAK_BURUNG[baru] + Vector3(0.9, DuniaLingko.TINGGI_AIR - 0.3, 0.4)
+	if _kuntul.position == Vector3.ZERO:
+		_kuntul.position = tujuan
+	_kuntul.tujuan_jalan = tujuan
+
+
+## Mengusir burung di petak `i`. Bila kuntul sedang di petak itu, kuntul ikut terusir (-1 nyawa).
+func _usir(_p: Pemain, i: int) -> void:
+	if not _burung_aktif:
+		return
+	AudioManager.putar_sfx("klik", 0.3)
+	_usir_semua(i)
+	if _kuntul and _petak_kuntul == i and _kuntul.position.distance_to(POS_PETAK_BURUNG[i]) < 2.5:
+		kuntul_diusir += 1
+		_kuntul.terbang()
+		_kuntul = null
+		_obrol(pemain, "Nggohak", _dialog()["burung_kuntul"])
+		Nyawa.kurangi("mengusir kuntul")
+
+
+func _usir_semua(i: int) -> void:
+	for b: Burung in _pipit[i]:
+		if is_instance_valid(b):
+			b.terbang()
+	_pipit[i] = []
+
+
+func _selesai_burung() -> void:
+	_burung_aktif = false
+	for i in 4:
+		_usir_semua(i)
+		_label_padi[i].visible = false
+		_area_petak[i].monitoring = false
+	_label_gelombang.visible = false
+	if is_instance_valid(_kuntul):
+		_kuntul.tujuan_jalan = Vector3.INF
+	AudioManager.putar_sfx("berhasil")
+	_obrol(_tu_a_teno, "Tu'a Teno", _dialog()["burung_selesai"])
+	_atur_tantangan_jelajah()
+	_beri_kartu("burung_sawah", _atur_tahap.bind(Tahap.BAGI))

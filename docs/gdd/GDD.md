@@ -128,6 +128,14 @@ Masukan playtest: *"mainnya sedikit, kebanyakan ngobrol"*. Target ritme: ±70% b
 
 Kartu dari warga yang teka-tekinya diganti tetap didapat setelah tantangan aksinya selesai; kartu bonus baru **Kopi Wae Rebo** (Level 1 kini 10 kartu).
 
+**Level 2 (tahap 5):** pola: jelajah pematang → saluran air → **Usir Burung** → membagi lingko → bukit.
+
+| Bagian | Tantangan | Pengecoh | Fakta / adaptasi |
+|---|---|---|---|
+| Pematang | Menyusuri pematang ke lodok | **Pematang rapuh** (gelap, bergaris retak) runtuh setelah 0,8 detik; batu goyah di jalan bukit | Adaptasi |
+| Wae teku | Saluran air (putar pipa) | **Pipa retak** membocorkan air (-1 nyawa) | Pembagian air sawah = fakta; pipa = adaptasi |
+| Usir Burung | 3 gelombang pipit di 4 petak; jaga padi | **Kuntul putih** tidak boleh diusir (pemakan serangga, dilindungi) | Pipit hama padi & kuntul predator hama = fakta [S51–S54]; praktik khas Manggarai `[PERLU VERIFIKASI]` |
+
 **Antar-level:** layar "Level N berhasil" (kartu, waktu, nyawa) → tombol "Lanjutkan ke Level N+1" → animasi orb atom "LEVEL N+1" + tagline → tombol Mulai.
 
 ### 4.6 Level 3 — Songke ke Labuan Bajo (data: `src/data/labuan_bajo.json`)

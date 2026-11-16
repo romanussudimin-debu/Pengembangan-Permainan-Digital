@@ -21,7 +21,8 @@ static func _mat_rumput_pematang() -> StandardMaterial3D:
 
 
 ## Satu ruas pematang (kotak tanah + rumput di atasnya) dengan collision.
-static func _ruas(induk: Node3D, pusat: Vector3, panjang: float, rotasi_y: float, m_tanah: Material, m_rumput: Material) -> void:
+## Mengembalikan [mesh tanah, mesh rumput, badan] agar ruas rapuh bisa diruntuhkan.
+static func _ruas(induk: Node3D, pusat: Vector3, panjang: float, rotasi_y: float, m_tanah: Material, m_rumput: Material) -> Array:
 	var kotak := BoxMesh.new()
 	kotak.size = Vector3(panjang, TINGGI_PEMATANG, LEBAR_PEMATANG)
 	var mi := Dunia.mesh(induk, kotak, pusat + Vector3(0, TINGGI_PEMATANG / 2.0, 0), m_tanah)
@@ -34,13 +35,19 @@ static func _ruas(induk: Node3D, pusat: Vector3, panjang: float, rotasi_y: float
 	bentuk.size = kotak.size
 	var b := Dunia.badan_statis(induk, bentuk, pusat + Vector3(0, TINGGI_PEMATANG / 2.0, 0))
 	b.rotation.y = rotasi_y
+	return [mi, mr, b]
 
 
 ## Pematang melingkar berjari-jari `jari`. `celah` = daftar sudut (derajat) tempat pematang putus
 ## selebar `lebar_celah` meter (pemain harus melompat).
-static func pematang_lingkar(induk: Node3D, jari: float, celah: Array = [], lebar_celah: float = 1.5) -> void:
+## `rapuh` = daftar sudut (derajat) ruas pematang rapuh: tanah lebih gelap dengan garis retak,
+## runtuh sesaat setelah diinjak (pengecoh). Mengembalikan data ruas rapuh untuk skrip level.
+static func pematang_lingkar(induk: Node3D, jari: float, celah: Array = [], lebar_celah: float = 1.5, rapuh: Array = []) -> Array:
+	var hasil: Array = []
 	var m_tanah := _mat_pematang()
 	var m_rumput := _mat_rumput_pematang()
+	var m_tanah_rapuh := Dunia.mat(Color("6a4e30"), Dunia.TEX_TANAH)
+	var m_rumput_rapuh := Dunia.mat(Color("8a8a50"), Dunia.TEX_RUMPUT, Vector3(0.5, 0.5, 1))
 	var jumlah: int = maxi(int(ceil(TAU * jari / 0.9)), 12)
 	var panjang: float = TAU * jari / jumlah * 1.08
 	for i in jumlah:
@@ -51,7 +58,26 @@ static func pematang_lingkar(induk: Node3D, jari: float, celah: Array = [], leba
 				putus = true
 		if putus:
 			continue
-		_ruas(induk, Vector3(cos(a), 0, sin(a)) * jari, panjang, -a - PI / 2.0, m_tanah, m_rumput)
+		var adalah_rapuh: bool = false
+		for r: float in rapuh:
+			if absf(wrapf(a - deg_to_rad(r), -PI, PI)) * jari < panjang * 0.55:
+				adalah_rapuh = true
+		var pos := Vector3(cos(a), 0, sin(a)) * jari
+		if not adalah_rapuh:
+			_ruas(induk, pos, panjang, -a - PI / 2.0, m_tanah, m_rumput)
+			continue
+		var ruas: Array = _ruas(induk, pos, panjang, -a - PI / 2.0, m_tanah_rapuh, m_rumput_rapuh)
+		var badan: StaticBody3D = ruas[2]
+		badan.set_meta("rapuh", true)
+		# Garis retak di permukaan atas
+		var m_retak := Dunia.mat(Color("2a1e14"))
+		for k in 2:
+			var garis := BoxMesh.new()
+			garis.size = Vector3(panjang * 0.8, 0.02, 0.05)
+			var g := Dunia.mesh(ruas[1], garis, Vector3(0, 0.025, (k - 0.5) * 0.3), m_retak)
+			g.rotation.y = 0.5 - k
+		hasil.append({"node": [ruas[0], ruas[1], badan], "asal": [ruas[0].position, ruas[1].position, badan.position]})
+	return hasil
 
 
 ## Pematang lurus menjari dari lodok ke tepi pada sudut `sudut` (derajat).
@@ -64,7 +90,7 @@ static func pematang_jari(induk: Node3D, sudut: float, potongan: Array) -> void:
 	for p: Array in potongan:
 		var r0: float = p[0]
 		var r1: float = p[1]
-		_ruas(induk, arah * (r0 + r1) / 2.0, r1 - r0, -a, m_tanah, m_rumput)
+		_ruas(induk, arah * (r0 + r1) / 2.0, r1 - r0, -a, m_tanah, m_rumput)  # hasil tidak dipakai
 
 
 ## Mesh juring (cincin terpotong) datar pada ketinggian `y`, dari sudut a0 ke a1 (radian).

@@ -69,7 +69,7 @@
 			"Wae teku ada di utara lingko, Kraeng."
 		],
 		"buka_saluran": "Salurannya tersumbat. Putar potongannya agar air sampai ke kedua petak.",
-		"air_berhasil": "Air mengalir! Kembali ke Tu'a Teno.",
+		"air_berhasil": "Air mengalir! Tapi lihat, burung mulai datang. Temui Tu'a Teno.",
 		"air_gagal": "Airnya belum sampai. Coba lagi.",
 		"wae_teku_selesai": "Air wae teku mengalir deras ke lingko.",
 		"mulai_bagi": [
@@ -87,7 +87,16 @@
 			"Setiap keluarga mendapat bagian lewat musyawarah. Saatnya pulang."
 		],
 		"waktu_habis": "Matahari sudah terbenam. Kita ulangi besok pagi.",
-		"lihat_wae_teku": "Wae teku, mata air kampung. Airnya jernih."
+		"lihat_wae_teku": "Wae teku, mata air kampung. Airnya jernih.",
+		"menunggu_burung": [
+			"Pipit mulai berdatangan ke petak, Kraeng!"
+		],
+		"burung_mulai": "Usir pipit dari petak, tapi biarkan kuntul putih: ia memakan serangga hama.",
+		"burung_kuntul": "Jangan usir kuntul! Ia membantu memakan serangga hama.",
+		"burung_habis": "Padi di petak itu habis dimakan pipit!",
+		"burung_selesai": "Padi aman dari pipit. Sekarang kita bagi lingko.",
+		"rapuh": "Pematang ini rapuh! Perhatikan tanah yang gelap dan retak.",
+		"batu_goyah": "Batu goyah! Batu yang miring dan retak tidak kuat dipijak."
 	},
 	"ronde": [
 		{

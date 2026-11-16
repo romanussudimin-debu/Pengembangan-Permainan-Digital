@@ -119,6 +119,12 @@
 - Cara menyangrai yang khas Wae Rebo (alat, durasi) **tidak ditemukan** dalam sumber; di Flores Timur kopi digoreng di tembikar dan ditumbuk di lesung (pembanding, bukan data Wae Rebo). Tantangan menyangrai di game adalah **adaptasi kreatif** `[PERLU VERIFIKASI]`. [S50]
 - Menyuguhkan kopi kepada tamu sebagai bagian penyambutan di Wae Rebo dipakai sebagai latar tantangan Mengantar Kopi `[PERLU VERIFIKASI: sumber tertulis]`.
 
+## 11. Burung di sawah (tantangan Mengusir Burung, Level 2, ditambahkan 16 Nov 2026)
+- Burung pipit/bondol (mis. bondol jawa *Lonchura leucogastroides*) datang berkelompok memakan bulir padi, terutama saat bulir mulai menguning; dianggap hama padi. [S51, S52]
+- Petani mengusir burung secara tradisional dengan orang-orangan sawah, kaleng berisi kerikil, tali berhias plastik, dan menjaga sawah hampir seharian menjelang panen. [S52]
+- Kuntul kerbau (*Bubulcus ibis*) mencari makan di sawah dan padang rumput (serangga, krustasea, moluska, amfibi, reptil kecil), berperan sebagai pengendali hama alami dan termasuk satwa dilindungi. [S53, S54]
+- Praktik menjaga sawah dari burung secara khusus di lingko Manggarai **belum ditemukan sumber tertulisnya**; tantangan Usir Burung adalah **adaptasi kreatif** berbasis praktik pertanian padi umum di Indonesia `[PERLU VERIFIKASI: praktik lokal Manggarai]`. Besaran manfaat kuntul bagi sawah belum terukur dalam sumber (bukti terbatas).
+
 ## Daftar Pustaka (diakses 12 November 2026)
 
 **Mbaru Niang & Wae Rebo**
@@ -189,3 +195,7 @@
 - [S48] Suara Pemerintah. (t.t.). *Nikmatnya kopi Wae Rebo bikin susah move on*. https://suarapemerintah.id/?p=264113
 - [S49] Kompas. (2018, 2 Juni). *Preserving the heritage of Waerebo coffee*. https://kompas.id/baca/english/2018/06/02/preserving-the-heritage-of-waerebo-coffee/
 - [S50] Mongabay Indonesia. (2021, 4 April). *Leworook, kopi warisan leluhur Flores Timur*. https://mongabay.co.id/2021/04/04/leworook-kopi-warisan-leluhur-flores-timur/
+- [S51] Mongabay Indonesia. (2020, 2 Mei). *Burung bondol jawa, si burung mungil pemakan bulir*. https://mongabay.co.id/2020/05/02/burung-bondol-jawa-si-burung-mungil-pemakan-bulir/
+- [S52] detikJogja. (2024). *7 cara mengusir hama burung di sawah agar padi aman*. https://www.detik.com/jogja/berita/d-7624582/7-cara-mengusir-hama-burung-di-sawah-agar-padi-aman-bisa-pakai-apa
+- [S53] Balai Besar KSDA Jawa Barat (KLHK). (t.t.). *[Buku panduan satwa burung air; judul PERLU VERIFIKASI]* (e-book). https://bbksdajabar.ksdae.menlhk.go.id/uploads/publikasi/e-book/0fb783dd9318b9f97279e45c8443370b.pdf
+- [S54] [Penulis PERLU VERIFIKASI]. [Studi burung kuntul kerbau di persawahan]. *Biofaal Journal* (Universitas Pattimura). https://ojs3.unpatti.ac.id/index.php/biofaal/article/download/8078/5830

@@ -11,12 +11,18 @@ signal salah(penyebab: String)  ## satu kesalahan (pengurang nyawa)
 const UKURAN: int = 5
 const SISI_KOTAK: float = 30.0
 ## Urutan warna benang: hitam (dasar), kuning, merah, hijau.
-const WARNA_BENANG: Array[Color] = [Color("1b1818"), Color("e8b430"), Color("b02a2a"), Color("2e7d46")]
-const NAMA_BENANG: Array[String] = ["hitam", "kuning", "merah", "hijau"]
+## Pengecoh: merah bata (lebih jingga-cokelat dari merah) dan kuning gading (lebih pucat dari kuning).
+## Contoh motif hanya memakai empat warna pertama; benang mirip baru ketahuan saat kain diperiksa.
+const WARNA_BENANG: Array[Color] = [Color("1b1818"), Color("e8b430"), Color("b02a2a"), Color("2e7d46"),
+	Color("b8603c"), Color("e8dcae")]
+const NAMA_BENANG: Array[String] = ["hitam", "kuning", "merah", "hijau", "merah bata", "kuning gading"]
 const POS_CONTOH := Vector2(90, 120)
 const POS_KAIN := Vector2(400, 120)
 
 var batal: bool = false  ## true bila pemain menekan Berhenti (bukan gagal)
+var kesalahan: int = 0
+var _salah_petak: Array[int] = []  ## petak yang keliru pada pemeriksaan terakhir (ditandai merah sebentar)
+var _waktu_tanda: float = 0.0
 var _contoh: Array[int] = []
 var _kain: Array[int] = []
 var _kursor := Vector2i(2, 2)
@@ -91,6 +97,12 @@ func _bangun_ui() -> void:
 		batal = true
 		_akhiri(false))
 	add_child(berhenti)
+	var periksa := Gaya.tombol("Periksa kain [C]")
+	periksa.custom_minimum_size = Vector2(150, 26)
+	periksa.position = Vector2(436, 72)
+	periksa.focus_mode = Control.FOCUS_NONE
+	periksa.pressed.connect(_periksa)
+	add_child(periksa)
 	_perbarui_info()
 
 
@@ -107,7 +119,7 @@ func _gambar() -> void:
 
 
 func _kotak_palet(i: int) -> Rect2:
-	return Rect2(Vector2(298, 122 + i * 37), Vector2(44, 30))
+	return Rect2(Vector2(298, 120 + i * 29), Vector2(44, 24))
 
 
 func _gambar_grid(asal: Vector2, data: Array[int], dengan_kursor: bool) -> void:
@@ -116,6 +128,8 @@ func _gambar_grid(asal: Vector2, data: Array[int], dengan_kursor: bool) -> void:
 			var r := Rect2(asal + Vector2(x, y) * SISI_KOTAK, Vector2(SISI_KOTAK - 2, SISI_KOTAK - 2))
 			_kanvas.draw_rect(r, WARNA_BENANG[data[y * UKURAN + x]])
 			_kanvas.draw_rect(r, Color("3a3434"), false, 1.0)
+			if dengan_kursor and _salah_petak.has(y * UKURAN + x):
+				_kanvas.draw_rect(r.grow(-1.0), Color("ff4a4a"), false, 3.0)
 	if dengan_kursor:
 		var rk := Rect2(asal + Vector2(_kursor) * SISI_KOTAK - Vector2(2, 2), Vector2(SISI_KOTAK + 2, SISI_KOTAK + 2))
 		_kanvas.draw_rect(rk, Gaya.PUTIH, false, 3.0)
@@ -139,6 +153,8 @@ func _unhandled_input(event: InputEvent) -> void:
 		var angka: int = tombol.keycode - KEY_1
 		if angka >= 0 and angka < WARNA_BENANG.size():
 			_ganti_warna(angka)
+		elif tombol.keycode == KEY_C:
+			_periksa()
 		elif tombol.keycode == KEY_BACKSPACE:
 			_akhiri(false)
 		else:
@@ -175,11 +191,38 @@ func _indeks_kursor() -> int:
 func _ganti_warna(warna: int) -> void:
 	_kain[_indeks_kursor()] = warna
 	_langkah += 1
+	_salah_petak.erase(_indeks_kursor())
 	AudioManager.putar_sfx("klik", 0.2)
 	_kanvas.queue_redraw()
 	_perbarui_info()
-	if _kain == _contoh:
+
+
+## Periksa kain: semua petak harus sama persis dengan contoh. Petak keliru ditandai = -1 nyawa.
+func _periksa() -> void:
+	if _selesai:
+		return
+	_salah_petak.clear()
+	for i in _kain.size():
+		if _kain[i] != _contoh[i]:
+			_salah_petak.append(i)
+	if _salah_petak.is_empty():
 		_berhasil()
+		return
+	kesalahan += 1
+	_waktu_tanda = 2.5
+	AudioManager.putar_sfx("gagal")
+	salah.emit("petak salah warna")
+	_label_info.text = "Ada %d petak yang belum sama (bertanda merah). Perhatikan warna benang yang mirip!" % _salah_petak.size()
+	_kanvas.queue_redraw()
+
+
+func _process(delta: float) -> void:
+	if _waktu_tanda > 0.0:
+		_waktu_tanda -= delta
+		if _waktu_tanda <= 0.0:
+			_salah_petak.clear()
+			_perbarui_info()
+		_kanvas.queue_redraw()
 
 
 func _sisa_berbeda() -> int:
@@ -191,9 +234,9 @@ func _sisa_berbeda() -> int:
 
 
 func _perbarui_info() -> void:
-	var cara: String = "Ketuk/klik kotak: ganti benang · ketuk palet: pilih warna · Panah/WASD, E/Spasi, 1-4 juga bisa"
-	_label_info.text = cara + "\nKotak yang belum sama: %d · Langkah: %d · Benang terpilih: %s" % [
-		_sisa_berbeda(), _langkah, NAMA_BENANG[_kain[_indeks_kursor()]]]
+	var cara: String = "Ketuk kotak: ganti benang · ketuk palet: pilih warna · Panah/WASD, E, 1-6 · C: periksa"
+	_label_info.text = cara + "\nBenang terpilih: %s. Awas benang yang mirip! Tekan Periksa kain bila sudah yakin." % [
+		NAMA_BENANG[_kain[_indeks_kursor()]]]
 
 
 func _berhasil() -> void:

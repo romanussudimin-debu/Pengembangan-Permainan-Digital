@@ -104,6 +104,10 @@ func selesaikan_level(n: int) -> void:
 	kartu_awal_level.assign(kartu_terkumpul)
 	level_baru_selesai = n
 	Prestasi.selesai_level(n)
+	Analitik.catat("level_selesai", {
+		"durasi": int((Time.get_ticks_msec() - waktu_mulai_level) / 1000.0) if waktu_mulai_level > 0 else 0,
+		"nyawa_hilang": Nyawa.hilang_di_level, "bintang": int(Prestasi.bintang_terbaik.get(n, 0)),
+	})
 	durasi_level_terakhir = (Time.get_ticks_msec() - waktu_mulai_level) / 1000.0 if waktu_mulai_level > 0 else 0.0
 	if ADEGAN_LEVEL.has(n + 1):
 		level = n + 1
@@ -117,6 +121,7 @@ func mulai_level(n: int) -> void:
 	level = n
 	waktu_mulai_level = Time.get_ticks_msec()
 	Prestasi.mulai_level()
+	Analitik.catat("level_mulai")
 	Nyawa.isi_penuh()
 	tujuan_khusus = ""
 	Transisi.pindah_scene(ADEGAN_LEVEL[n])

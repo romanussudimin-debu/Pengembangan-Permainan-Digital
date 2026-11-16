@@ -29,7 +29,7 @@
 | 0.x | 2D: teka-teki lingko + duel caci | — |
 | 1.x | 3D: jelajah kampung + duel caci (ta'ang/paki, 3 lawan) | Lebih imersif |
 | **2.0** | **3D: jelajah budaya dengan rantai teka-teki, menenun songke, tabuh gong-gendang; caci sebagai pertunjukan Penti** | Duel caci dinilai terlalu sulit untuk pemain umum. Jelajah budaya mengenalkan lebih banyak unsur budaya. Caci tetap tampil dengan hormat sebagai pertunjukan. |
-| 2.3 | Perbaikan playtest: nyawa, pengecoh, tantangan aksi baru Level 1, dialog ringkas & gelembung, layar antar-level | Masukan "kebanyakan ngobrol, mainnya sedikit" |
+| 2.3 | Perbaikan playtest: nyawa, pengecoh di semua tantangan, tantangan aksi baru Level 1–3 (pendakian, sangrai & antar kopi, tangkis nggiling, usir burung, sampah laut, semak komodo), dialog ringkas & gelembung, layar antar-level, bintang & 7 pencapaian, Pilih Level, efek & suara umpan balik, analitik playtest lokal | Masukan "kebanyakan ngobrol, mainnya sedikit" |
 | 2.2 | + **Level 3 Songke ke Labuan Bajo** (peta kapal, 6 destinasi TN Komodo, mini-game menjual), ending Penti dipindah ke akhir Level 3 | Menghubungkan budaya (songke) dengan ekonomi kreatif & wisata bertanggung jawab; persiapan Proyek UAS (3 level) |
 | 2.1 | + **Level 2 Lingko Lodok** (undangan reke lodok, saluran wae teku, pembagian moso, pandangan dari bukit), Mode Sulit, simpan & lanjutkan | Mengangkat lingko, yang sudah diriset sebagai kandidat mekanik, menjadi level kedua |
 
@@ -139,6 +139,17 @@ Kartu dari warga yang teka-tekinya diganti tetap didapat setelah tantangan aksin
 **Bintang & pencapaian (v2.3):** setiap tantangan memberi ★1–3 dari nyawa yang hilang (0 salah = ★★★, 1–2 = ★★, 3+ = ★); ringkasan bintang tampil di layar Level Berhasil, bintang terbaik per level di menu **Pilih Level** (hanya level yang sudah terbuka). Tujuh pencapaian tersimpan: *Tanpa Tumpah* (antar kopi tanpa tumpah), *Mata Elang* (tamat satu level tanpa kehilangan nyawa), *Penjelajah* (5 benang emas), *Penangkis Ulung* (tangkis nggiling tanpa salah), *Penjaga Sawah* (tidak mengusir kuntul), *Sahabat Laut* (sampah Pink Beach & Manjarite tanpa mengganggu biota), *Penjual Andal* (satu destinasi tanpa salah barang/cerita).
 
 **Game feel (v2.3):** percikan air/lumpur, debu mendarat, kilau emas saat berhasil, teks melayang ("−1", "+1", "Terjual!"), suara khas untuk benar / salah / kombo (5 ketukan gong atau 3 tangkisan beruntun).
+
+**Analitik playtest (lokal):** kejadian permainan dicatat ke `user://analitik.json` (sesi, mulai/tamat level + durasi, nyawa hilang + penyebab + tantangan, ulangi, dialog dilewati, koleksi dibuka, pencapaian, mode; kejadian terakhir per sesi = titik berhenti/drop-off). Tanpa data pribadi dan tanpa internet. Panel ekspor tersembunyi: ketuk logo menu utama 5× → Salin CSV / Salin JSON / Simpan CSV (web: diunduh).
+
+**Estimasi durasi (permainan pertama, Mode Normal):**
+
+| Bagian | Isi | Perkiraan |
+|---|---|---|
+| Level 1 | Pendakian (3 titik cek) + 9 tantangan rantai + benang emas opsional | 12–15 menit |
+| Level 2 | Pematang, saluran air, Usir Burung (3 gelombang), membagi lingko, bukit | 7–9 menit |
+| Level 3 | 6 destinasi × (3 penjualan + mekanik khas; 2 pulau + 5 sampah) | 15–20 menit |
+| **Total** | termasuk ending Penti | **±35–45 menit** (≥ 15 menit terpenuhi); rasio bermain ±70% karena dialog maks. 2 baris & gelembung |
 
 **Antar-level:** layar "Level N berhasil" (kartu, waktu, nyawa) → tombol "Lanjutkan ke Level N+1" → animasi orb atom "LEVEL N+1" + tagline → tombol Mulai.
 

@@ -384,6 +384,7 @@ func lewati() -> void:
 	if suara_tersedia():
 		DisplayServer.tts_stop()
 	AudioManager.putar_sfx("klik")
+	Analitik.catat("dialog_dilewati", {"baris": _indeks + 1, "dari": _baris.size()})
 	_selesai()
 
 

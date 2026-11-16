@@ -112,6 +112,7 @@ func buka() -> void:
 	if not GameState.ubah_state(GameState.State.JEDA):
 		return
 	_isi_kartu()
+	Analitik.catat("koleksi_dibuka", {"kartu": GameState.kartu_terkumpul.size()})
 	_akar.visible = true
 	get_tree().paused = true
 	_tombol_lanjut.grab_focus()

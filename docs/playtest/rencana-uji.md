@@ -52,3 +52,7 @@ Centang ☐ → ☑ saat menguji di Godot. Catat bug di tabel paling bawah.
 | ID | Deskripsi | Langkah reproduksi | Keparahan | Status |
 |---|---|---|---|---|
 | | | | | |
+
+## Data analitik otomatis (v2.3)
+Setelah sesi uji, buka menu utama lalu **ketuk logo 5 kali** untuk membuka panel *Data Playtest*. Pilih **Simpan CSV** (web: berkas `analitik_jejak_penti.csv` terunduh) atau **Salin CSV/JSON**. Kolom: `sesi, detik, jenis, level, mode, detail`. Gunakan untuk: durasi per level, tantangan dengan nyawa hilang terbanyak, pengecoh yang paling sering menipu (`penyebab`), jumlah dialog dilewati, dan titik berhenti (kejadian terakhir per sesi).
+

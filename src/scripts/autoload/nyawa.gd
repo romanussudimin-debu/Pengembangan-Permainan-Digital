@@ -8,7 +8,8 @@ extends CanvasLayer
 
 signal berubah(sisa: int, selisih: int)
 signal habis(tantangan: String)
-signal tantangan_berubah(nama: String)  ## didengar Prestasi (bintang per tantangan)
+signal tantangan_berubah(nama: String)  ## (Prestasi)
+signal dikurangi(penyebab: String, tantangan: String)  ## didengar Analitik
 
 var sisa: int = 5
 var hilang_di_level: int = 0  ## jumlah nyawa yang hilang sejak level dimulai (untuk bintang/analytics)
@@ -61,6 +62,7 @@ func kurangi(penyebab: String) -> void:
 		return
 	sisa -= 1
 	hilang_di_level += 1
+	dikurangi.emit(penyebab, _tantangan)
 	berubah.emit(sisa, -1)
 	AudioManager.putar_sfx("salah")
 	_teks_di_pemain("-1", Color("ff5a4a"))

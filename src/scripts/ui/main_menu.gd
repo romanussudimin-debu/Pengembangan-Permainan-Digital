@@ -19,6 +19,7 @@ var _tombol_mulai: Button
 var _tombol_mode: Button
 var _tombol_layar: Button
 var _pita: Control  ## sapaan kanan bawah (disembunyikan saat panel terbuka)
+var _ketukan_logo: Array[int] = []  ## waktu ketukan logo (ekspor analitik tersembunyi: 5x dalam 3 detik)
 var _panel_daftar: NinePatchRect  ## panel Pilih Level / Pencapaian (isinya dibangun ulang tiap dibuka)
 
 
@@ -89,6 +90,7 @@ func _bangun_ui() -> void:
 	logo.size = Vector2(100, 100)
 	logo.pivot_offset = Vector2(50, 50)
 	ui.add_child(logo)
+	logo.gui_input.connect(_ketuk_logo)
 	var napas := logo.create_tween().set_loops()
 	napas.tween_property(logo, "scale", Vector2(1.04, 1.04), 1.6).set_trans(Tween.TRANS_SINE)
 	napas.tween_property(logo, "scale", Vector2.ONE, 1.6).set_trans(Tween.TRANS_SINE)
@@ -272,6 +274,48 @@ func _tampilkan_pencapaian() -> void:
 		syarat.size = Vector2(330, 22)
 		syarat.add_theme_constant_override("line_spacing", -3)
 		_panel_daftar.add_child(syarat)
+
+
+func _ketuk_logo(event: InputEvent) -> void:
+	var ketuk: bool = (event is InputEventMouseButton and (event as InputEventMouseButton).pressed) \
+			or (event is InputEventScreenTouch and (event as InputEventScreenTouch).pressed)
+	if not ketuk:
+		return
+	var kini: int = Time.get_ticks_msec()
+	_ketukan_logo.append(kini)
+	_ketukan_logo = _ketukan_logo.filter(func(t: int) -> bool: return kini - t < 3000)
+	if _ketukan_logo.size() >= 5:
+		_ketukan_logo.clear()
+		_tampilkan_analitik()
+
+
+## Panel tersembunyi untuk penguji: ringkasan & ekspor data analitik playtest.
+func _tampilkan_analitik() -> void:
+	_kosongkan_daftar("Data Playtest (lokal)")
+	var info := Gaya.label(Analitik.ringkasan(), 9, Gaya.PUTIH)
+	info.position = Vector2(20, 40)
+	_panel_daftar.add_child(info)
+	var status := Gaya.label("", 9, Gaya.KUNING)
+	status.position = Vector2(20, 270)
+	status.size = Vector2(350, 24)
+	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_panel_daftar.add_child(status)
+	var aksi: Array = [
+		["Salin CSV", func() -> void:
+			DisplayServer.clipboard_set(Analitik.ke_csv())
+			status.text = "CSV disalin ke papan klip."],
+		["Salin JSON", func() -> void:
+			DisplayServer.clipboard_set(Analitik.ke_json())
+			status.text = "JSON disalin ke papan klip."],
+		["Simpan CSV", func() -> void: status.text = Analitik.simpan_csv()],
+	]
+	for i in aksi.size():
+		var b := Gaya.tombol(str(aksi[i][0]))
+		b.position = Vector2(20 + i * 120, 220)
+		b.custom_minimum_size = Vector2(112, 30)
+		b.add_theme_font_size_override("font_size", 10)
+		b.pressed.connect(aksi[i][1])
+		_panel_daftar.add_child(b)
 
 
 func _ganti_layar() -> void:

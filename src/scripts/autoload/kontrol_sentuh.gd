@@ -89,14 +89,24 @@ func _input(event: InputEvent) -> void:
 		if sentuh.pressed:
 			_mulai_sentuh(sentuh.index, sentuh.position)
 		else:
+			if _milik_kontrol(sentuh.index):
+				get_viewport().set_input_as_handled()  # jari joystick/tombol tidak boleh sampai ke kamera
 			_akhiri_sentuh(sentuh.index)
 	elif event is InputEventScreenDrag:
 		var geser: InputEventScreenDrag = _kanvas.make_input_local(event)
 		if geser.index == _jari_joystick:
 			_gerak_joystick(geser.position)
+			get_viewport().set_input_as_handled()
 		elif _seret_awal.has(geser.index):
 			_seret_kini[geser.index] = geser.position
 			_kanvas.queue_redraw()
+			get_viewport().set_input_as_handled()
+		elif _jari_tombol.has(geser.index):
+			get_viewport().set_input_as_handled()
+
+
+func _milik_kontrol(indeks: int) -> bool:
+	return indeks == _jari_joystick or _jari_tombol.has(indeks)
 
 
 func _mulai_sentuh(indeks: int, pos: Vector2) -> void:

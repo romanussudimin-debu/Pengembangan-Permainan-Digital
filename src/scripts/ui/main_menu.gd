@@ -389,7 +389,7 @@ Di sela tugas cerita, perampok dan hewan liar menyerbu dalam 3 gelombang, lalu m
 • Lingkaran merah di tanah = serangan akan datang, menyingkirlah!
 • Kalahkan musuh untuk koin & XP (naik level sampai 10). Belanja di Lapak Songke [B] saat jeda.
 • Kalah = bangkit lagi di checkpoint. Kesulitan Mudah/Normal/Sulit di menu utama.
-• Kamera: tahan klik kanan + geser untuk memutar, roda mouse untuk zoom (HP: geser & cubit).
+• Kamera: tahan klik kanan + geser untuk memutar, roda mouse untuk zoom. HP: geser satu jari di separuh KANAN layar untuk memutar, cubit untuk zoom, ketuk dua kali untuk meluruskan kamera.
 
 Delapan warga kampung masing-masing menyimpan kartu budaya. Kumpulkan kartu BERURUTAN: mulailah dari Tu'a Golo di dekat compang. Setiap warga memberi tantangan, lalu petunjuk berupa teka-teki menuju warga berikutnya (lihat kiri atas). Ada warga yang menunggu di DALAM Mbaru Niang (masuklah lewat pintunya) dan ada yang suka berpindah tempat.
 

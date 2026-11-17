@@ -37,7 +37,7 @@ func start_wave(wave: WaveData, index: int, total_waves: int = 3) -> void:
 	current_index = index
 	CombatManager.set_active(true)
 	for p: Node3D in CombatManager.players:
-		CombatManager.set_respawn_point(p, p.global_position)
+		CombatManager.respawn_points[p] = p.global_position
 	var title: String = "BOS!" if wave.boss else "Gelombang %d/%d" % [index + 1, total_waves]
 	CombatManager.announce.emit(title, wave.title)
 	AudioManager.putar_sfx("gong")
@@ -71,6 +71,7 @@ func _spawn(d: EnemyData, is_boss: bool) -> void:
 	Efek.debu(world, e.global_position + Vector3(0, 0.3, 0))
 	if is_boss:
 		CombatManager.set_boss(e)
+		AudioManager.putar_sfx("raung")
 	elif not _seen_types.has(d.id):
 		_seen_types[d.id] = true
 		if d.hint != "":

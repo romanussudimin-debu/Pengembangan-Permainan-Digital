@@ -100,6 +100,8 @@ jobs:
           ls -la "$GITHUB_WORKSPACE/apk"
           # Pastikan deklarasi TTS ikut masuk ke manifest APK
           unzip -p "$GITHUB_WORKSPACE/apk/JejakPenti.apk" AndroidManifest.xml | python3 -c "import sys; d=sys.stdin.buffer.read(); ok='TTS_SERVICE'.encode('utf-16-le') in d or b'TTS_SERVICE' in d; print('TTS_SERVICE di manifest:', ok); sys.exit(0 if ok else 1)"
+          # Main Bersama (LAN) butuh izin jaringan
+          unzip -p "$GITHUB_WORKSPACE/apk/JejakPenti.apk" AndroidManifest.xml | python3 -c "import sys; d=sys.stdin.buffer.read(); k='android.permission.INTERNET'; ok=k.encode('utf-16-le') in d or k.encode() in d; print('INTERNET di manifest:', ok); sys.exit(0 if ok else 1)"
           "$ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | sort -V | tail -1)/apksigner" verify --print-certs "$GITHUB_WORKSPACE/apk/JejakPenti.apk" | head -3
 
       - name: Simpan APK sebagai artifact

@@ -106,7 +106,7 @@ func _on_combat_changed(active: bool) -> void:
 	if character.model:
 		character.model.tampilkan_busur(active)
 	if active:
-		CombatManager.set_respawn_point(character, character.global_position)
+		CombatManager.respawn_points[character] = character.global_position
 
 
 func set_player_name(n: String) -> void:
@@ -145,7 +145,7 @@ func _update_aim(input: PlayerInput) -> void:
 	if dir.length() < 0.01:
 		dir = aim_dir
 	dir = dir.normalized()
-	var target: Node3D = CombatManager.nearest_enemy(origin, CombatConst.AIM_ASSIST_RANGE)
+	var target: Node3D = CombatManager.nearest_target(origin, CombatConst.AIM_ASSIST_RANGE, team)
 	if target:
 		var to_target: Vector3 = target.global_position - origin
 		to_target.y = 0.0
@@ -165,7 +165,7 @@ func shoot() -> void:
 	Projectile.spawn(character.get_parent(), from, aim_dir, CombatConst.ARROW_SPEED,
 			CombatConst.ARROW_DAMAGE * damage_multiplier(), team, character, CombatConst.ARROW_RANGE)
 	character.model.lepas_panah()
-	AudioManager.putar_sfx("cambuk", 0.15)
+	AudioManager.putar_sfx("busur", 0.15)
 	shot.emit(aim_dir)
 
 

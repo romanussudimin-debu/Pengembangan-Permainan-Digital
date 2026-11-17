@@ -11,6 +11,8 @@ signal leveled_up(player: Node3D, level: int)
 signal shop_changed(available: bool)
 signal announce(title: String, subtitle: String)  ## banner HUD (gelombang, musuh baru, bos)
 signal boss_changed(boss: Node3D)
+## Kejadian di host yang perlu ditiru klien (dipancarkan hanya saat online & otoritas): NetArena menyiarkannya.
+signal net_event(kind: String, data: Dictionary)
 
 ## Barang Lapak Songke (daftar eksplisit agar aman di build ekspor).
 const SHOP_ITEMS: Array[ShopItem] = [
@@ -26,12 +28,15 @@ const SHOP_ITEMS: Array[ShopItem] = [
 var active: bool = false
 var players: Array[Node3D] = []
 var enemies: Array[Node3D] = []
-var _respawn_points: Dictionary = {}  ## pemain -> Vector3 (checkpoint terakhir)
+var respawn_points: Dictionary = {}  ## pemain -> Vector3 (checkpoint terakhir; ditulis Checkpoint/gelombang)
 var _stats: Dictionary = {}  ## peer id -> CombatStats (progres per level cerita)
 var _session_level: int = -1
+var _enemy_seq: int = 0
 var shop_available: bool = false  ## true saat jeda antar-gelombang (Lapak Songke boleh dibuka)
 var break_time_left: float = 0.0  ## sisa jeda antar-gelombang (ditampilkan HUD)
 var boss: Node3D  ## bos yang sedang dilawan (bar HP besar di HUD)
+var pvp: bool = false  ## mode PvP Arena: pemain tim lain juga sasaran
+var respawn_override: float = 0.0  ## > 0 = waktu bangkit tetap (PvP)
 var story_waves_done: Dictionary = {}  ## "level:gelombang" -> true (sesi level cerita)
 
 
@@ -87,7 +92,7 @@ func register_player(p: Node3D) -> void:
 
 func unregister_player(p: Node3D) -> void:
 	players.erase(p)
-	_respawn_points.erase(p)
+	respawn_points.erase(p)
 
 
 # ------------------------------------------------------------------ progres (level, XP, koin)
@@ -119,9 +124,21 @@ func _on_level_up(key: int, lv: int) -> void:
 func register_enemy(e: Node3D) -> void:
 	if not enemies.has(e):
 		enemies.append(e)
+		if networked():
+			_enemy_seq += 1
+			e.name = "E_%d" % _enemy_seq
+			net_event.emit("enemy", {"name": e.name, "path": (e.get("data") as Resource).resource_path,
+					"pos": e.global_position, "boss": false})
+
+
+## true bila sedang main LAN dan perangkat ini host (kejadian harus disiarkan ke klien).
+func networked() -> bool:
+	return NetworkManager.is_online() and is_authority()
 
 
 func unregister_enemy(e: Node3D) -> void:
+	if enemies.has(e) and networked():
+		net_event.emit("enemy_dead", {"name": e.name})
 	enemies.erase(e)
 
 
@@ -135,8 +152,15 @@ func alive_enemies() -> int:
 
 # ------------------------------------------------------------------ pencarian target
 
-func nearest_enemy(from: Vector3, max_distance: float) -> Node3D:
-	return _nearest(enemies, from, max_distance)
+## Sasaran terdekat bagi tim `team`: musuh bot, ditambah pemain tim lain saat PvP.
+func nearest_target(from: Vector3, max_distance: float, team: int = CombatConst.TEAM_PLAYERS) -> Node3D:
+	var calon: Array[Node3D] = enemies.duplicate()
+	if pvp:
+		for p: Node3D in players:
+			var c: Variant = p.get("combat")
+			if c != null and int((c as Node).get("team")) != team:
+				calon.append(p)
+	return _nearest(calon, from, max_distance)
 
 
 func nearest_player(from: Vector3, max_distance: float) -> Node3D:
@@ -165,16 +189,12 @@ func is_combat_dead(n: Node3D) -> bool:
 
 # ------------------------------------------------------------------ respawn & hadiah
 
-func set_respawn_point(p: Node3D, point: Vector3) -> void:
-	_respawn_points[p] = point
-
-
 func respawn_point(p: Node3D) -> Vector3:
-	return _respawn_points.get(p, p.global_position)
+	return respawn_points.get(p, p.global_position)
 
 
 func respawn_time() -> float:
-	return difficulty("respawn")
+	return respawn_override if respawn_override > 0.0 else difficulty("respawn")
 
 
 func add_reward(p: Node3D, coins: int, xp: int) -> void:

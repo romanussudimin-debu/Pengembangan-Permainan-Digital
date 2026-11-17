@@ -20,6 +20,7 @@ var cooldowns: Array[float] = [0.0, 0.0, 0.0, 0.0]
 var energy: float = MAX_ENERGY
 var combat: CombatPlayer
 var _fail_cooldown: float = 0.0
+var last_center: Vector3 = Vector3.ZERO  ## titik Hujan Panah terakhir (disiarkan ke klien)
 
 
 func _ready() -> void:
@@ -71,11 +72,19 @@ func try_cast(i: int) -> bool:
 	cooldowns[i] = s.cooldown * combat.stats.cooldown_multiplier()
 	energy -= s.energy_cost
 	energy_changed.emit(energy, MAX_ENERGY)
+	_play(i, _rain_target(s))
+	cast.emit(i)
+	return true
+
+
+## Menjalankan efek skill. Di klien LAN dipanggil dari siaran host (damage tidak dihitung di klien).
+func _play(i: int, center: Vector3) -> void:
+	var s: SkillData = skills[i]
 	match s.kind:
 		"fire_arrow":
 			_fire_arrow(s)
 		"arrow_rain":
-			_arrow_rain(s)
+			_arrow_rain(s, center)
 		"wind_arrow":
 			_wind_arrow(s)
 		"ultimate":
@@ -83,13 +92,17 @@ func try_cast(i: int) -> bool:
 	combat.aiming_time = 0.6
 	combat.character.model.lepas_panah()
 	get_tree().call_group("kamera_ikut", "guncang", s.shake)
-	cast.emit(i)
-	return true
+
+
+## Klien: tiru skill pemain lain (atau diri sendiri) sesuai siaran host.
+func play_remote(i: int, aim: Vector3, center: Vector3) -> void:
+	combat.aim_dir = aim
+	_play(i, center)
 
 
 func _fail(i: int, reason: String) -> void:
-	if _fail_cooldown > 0.0:
-		return
+	if _fail_cooldown > 0.0 or not combat.character.input is KeyboardInput:
+		return  # pesan hanya untuk pemain manusia di perangkatnya sendiri (bukan bot/pemain jaringan)
 	_fail_cooldown = 0.5
 	AudioManager.putar_sfx("klik")
 	cast_failed.emit(i, reason)
@@ -118,8 +131,8 @@ func _fire_arrow(s: SkillData) -> void:
 
 
 ## Hujan Panah: lingkaran emas di titik bidik, lalu beberapa gelombang panah jatuh.
-func _arrow_rain(s: SkillData) -> void:
-	var center: Vector3 = _rain_target(s)
+func _arrow_rain(s: SkillData, center: Vector3) -> void:
+	last_center = center
 	var world: Node3D = _world()
 	Efek.cincin(world, center, s.radius, Color(1.0, 0.85, 0.3, 0.9), 0.45 + s.ticks * s.tick_interval)
 	AudioManager.putar_sfx("gendang", 0.1)
@@ -142,7 +155,7 @@ func _rain_target(s: SkillData) -> Vector3:
 	if input.has_aim_point:
 		point = Vector3(input.aim_point.x, origin.y, input.aim_point.z)
 	else:
-		var e: Node3D = CombatManager.nearest_enemy(origin, s.cast_range)
+		var e: Node3D = CombatManager.nearest_target(origin, s.cast_range, combat.team)
 		if e:
 			point = e.global_position
 	var offset: Vector3 = point - origin

@@ -367,6 +367,24 @@ func _change_state(s: State) -> void:
 	_anim_moving(s == State.CHASE or s == State.PATROL or s == State.FLEE)
 
 
+## Klien LAN: tampilkan state dari snapshot host (isyarat serangan & animasi) tanpa menjalankan AI.
+func apply_remote_state(s: int) -> void:
+	if s == state:
+		return
+	var lama: int = state
+	state = s as State
+	_telegraph.visible = s == State.ATTACK and not self is BossBase
+	if s == State.ATTACK and lama != State.ATTACK:
+		_anim_windup(data.attack_windup)
+		var r: float = data.attack_range * 0.6 if data.attack_type == "melee" else 0.6
+		_telegraph.scale = Vector3(r, 1, r)
+		_telegraph.position = Vector3(0, 0.03, 0)
+		_telegraph_mat.albedo_color.a = 0.4
+	elif lama == State.ATTACK:
+		_anim_strike()
+	_anim_moving(s == State.CHASE or s == State.PATROL or s == State.FLEE)
+
+
 # ------------------------------------------------------------------ animasi (sama untuk semua jenis model)
 
 func _anim_windup(duration: float) -> void:
@@ -439,9 +457,9 @@ func _on_damaged(amount: float, _source: Node) -> void:
 	Efek.angka_damage(parent, global_position + Vector3(0, 2.4 * data.scale, 0), amount)
 	Efek.percikan_kena(parent, global_position + Vector3(0, 1.2 * data.scale, 0))
 	Efek.kilat(model)
+	AudioManager.putar_sfx("kena", 0.2)
 	if model.has_method("squash"):
 		model.call("squash", Vector3(1.15, 0.85, 1.15), 0.18)
-	AudioManager.putar_sfx("terkena", 0.15)
 
 
 ## Kalah: memudar & menyusut (tanpa mayat), menjatuhkan koin dan XP.
@@ -453,7 +471,8 @@ func _on_died(killer: Node) -> void:
 	hp_bar.visible = false
 	hurtbox.monitorable = false
 	collision_layer = 0
-	CombatPickup.drop(get_parent(), global_position, data.coins + bonus_coins, data.xp)
+	if CombatManager.is_authority():
+		CombatPickup.drop(get_parent(), global_position, data.coins + bonus_coins, data.xp)
 	var tw := create_tween()
 	tw.tween_property(model, "scale", Vector3(1.2, 0.2, 1.2), 0.35).set_ease(Tween.EASE_IN)
 	tw.tween_callback(func() -> void: Efek.debu(get_parent(), global_position + Vector3(0, 0.3, 0)))

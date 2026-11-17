@@ -15,7 +15,11 @@
 - **Windows:** ekstrak ZIP → klik dua kali `JejakPenti.exe` → bila muncul "Windows protected your PC", klik **More info → Run anyway**.
 - **macOS:** ekstrak ZIP → pertama kali, **klik kanan** aplikasi → **Open** → **Open**.
 
+- **Main bersama teman (LAN):** menu **Main Bersama / PvP**. Semua perangkat di WiFi atau hotspot HP yang sama (aplikasi Android/Windows/macOS). Satu perangkat *Buat Room*, yang lain memilih room yang muncul atau mengetik IP host. Mode **Co-op** (2-4 pemain melawan gelombang + bos) atau **PvP Arena** (1v1, 2v2, bebas; slot kosong diisi bot). Versi web: *Latihan PvP vs Bot*.
+
 Semua versi dibangun otomatis oleh GitHub Actions (`web.yml`, `android.yml`, `desktop.yml`) setiap ada perubahan di `src/`. Semua rilis ada di [halaman Releases](https://github.com/romanussudimin-debu/Pengembangan-Permainan-Digital/releases).
+
+**v3.1 — kini dengan pertarungan busur panah ala MOBA** di sela tugas cerita: 21 jenis musuh (perampok & hewan liar) + 3 bos, 3 skill + ultimate, naik level, toko Lapak Songke, kesulitan Mudah/Normal/Sulit, serta Co-op & PvP lewat WiFi.
 
 Game **3D jelajah budaya Manggarai** (Flores, NTT) untuk mata kuliah *Pengembangan Permainan Digital*. Engine: **Godot 4.3+**. Tiga level: **Kampung Wae Rebo** (rantai teka-teki, menenun songke, tabuh gong-gendang), **Lingko Lodok** (undangan reke lodok, saluran wae teku, pembagian moso), dan **Songke ke Labuan Bajo** (menjual songke & foto budaya di 6 destinasi Taman Nasional Komodo), ditutup perayaan Penti dan caci.
 

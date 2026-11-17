@@ -318,7 +318,8 @@ func _draw_minimap() -> void:
 	for pl: Node3D in CombatManager.players:
 		if pl == player or not is_instance_valid(pl):
 			continue
-		c.draw_circle(pusat + _peta(pl.global_position - asal, yaw, r), 3.0, Color("5fa8e8"))
+		var lawan: bool = CombatManager.pvp and (pl as Pemain).combat.team != player.combat.team
+		c.draw_circle(pusat + _peta(pl.global_position - asal, yaw, r), 3.0, Color("ff9a3a") if lawan else Color("5fa8e8"))
 	# Pemain lokal: segitiga putih menunjuk arah bidik
 	var arah: Vector3 = player.combat.aim_dir
 	var ujung := Vector2(arah.x, arah.z).rotated(yaw).normalized()

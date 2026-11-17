@@ -136,3 +136,23 @@ simpan("kombo.wav", np.concatenate([lonceng(659, .07), lonceng(784, .07), loncen
 tt = t(.4)
 percik = np.convolve(rng.standard_normal(len(tt)), np.ones(6) / 6, mode="same") * np.exp(-tt * 9)
 simpan("percik.wav", percik, .5)
+
+
+# --- SFX tempur (tahap tempur 9): busur, kena panah, ledakan api, raungan bos ---
+# busur: dentingan tali (frekuensi turun cepat) + desis anak panah
+tt = t(.3)
+tali = np.sin(2 * np.pi * np.cumsum(420 * np.exp(-tt * 9) + 120) / SR) * np.exp(-tt * 14)
+desis = np.convolve(rng.standard_normal(len(tt)), np.ones(4) / 4, mode="same") * np.exp(-((tt - .05) ** 2) / .002) * .4
+simpan("busur.wav", tali + desis, .55)
+# kena: hentakan teredam (bukan suara sadis)
+tt = t(.18)
+simpan("kena.wav", np.sin(2 * np.pi * 140 * tt) * np.exp(-tt * 30) + .4 * rng.standard_normal(len(tt)) * np.exp(-tt * 60), .5)
+# ledakan api: derau rendah + gemuruh
+tt = t(.6)
+gemuruh = np.convolve(rng.standard_normal(len(tt)), np.ones(30) / 30, mode="same") * np.exp(-tt * 5)
+simpan("ledakan.wav", gemuruh + .5 * np.sin(2 * np.pi * 60 * tt) * np.exp(-tt * 6), .7)
+# raung: geraman bos (gergaji frekuensi rendah bergetar)
+tt = t(1.0)
+f = 70 + 15 * np.sin(2 * np.pi * 7 * tt)
+geram = np.sign(np.sin(2 * np.pi * np.cumsum(f) / SR)) * np.minimum(1, tt * 8) * np.exp(-tt * 2.2)
+simpan("raung.wav", np.convolve(geram, np.ones(8) / 8, mode="same"), .6)

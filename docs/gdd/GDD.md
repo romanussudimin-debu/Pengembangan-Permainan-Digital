@@ -29,6 +29,7 @@
 | 0.x | 2D: teka-teki lingko + duel caci | — |
 | 1.x | 3D: jelajah kampung + duel caci (ta'ang/paki, 3 lawan) | Lebih imersif |
 | **2.0** | **3D: jelajah budaya dengan rantai teka-teki, menenun songke, tabuh gong-gendang; caci sebagai pertunjukan Penti** | Duel caci dinilai terlalu sulit untuk pemain umum. Jelajah budaya mengenalkan lebih banyak unsur budaya. Caci tetap tampil dengan hormat sebagai pertunjukan. |
+| **3.1** | **Main Bersama LAN**: Co-op 2-4 pemain & PvP Arena (1v1/2v2/bebas, bot pengisi slot), LAN discovery, lobi bernama, suara tempur baru | Permintaan bermain bersama teman di satu WiFi/hotspot |
 | **3.0** | **Pertarungan busur panah ala MOBA di sela cerita**: 21 musuh + 3 bos, skill, level tempur, Lapak Songke, kesulitan 3 tingkat, nama pemain, kontrol sentuh tempur, minimap | Penguji (termasuk anak 9 tahun) menilai game membosankan dan menyukai genre bertarung |
 | 2.3 | Perbaikan playtest: nyawa, pengecoh di semua tantangan, tantangan aksi baru Level 1–3 (pendakian, sangrai & antar kopi, tangkis nggiling, usir burung, sampah laut, semak komodo), dialog ringkas & gelembung, layar antar-level, bintang & 7 pencapaian, Pilih Level, efek & suara umpan balik, analitik playtest lokal | Masukan "kebanyakan ngobrol, mainnya sedikit" |
 | 2.2 | + **Level 3 Songke ke Labuan Bajo** (peta kapal, 6 destinasi TN Komodo, mini-game menjual), ending Penti dipindah ke akhir Level 3 | Menghubungkan budaya (songke) dengan ekonomi kreatif & wisata bertanggung jawab; persiapan Proyek UAS (3 level) |
@@ -204,6 +205,14 @@ Musuh tidak pernah muncul di compang (sakral). Musuh perampok adalah tokoh fikti
 
 **Nama pemain:** layar "Isi Nama" (3-12 huruf/angka/spasi) saat pertama bermain; nama tampil di atas kepala Nggohak, lobi, papan skor; bisa diganti di menu.
 **Arsitektur siap multiplayer:** input terpisah dari karakter (`PlayerInput`: keyboard/sentuh/bot/jaringan), daftar pemain di `CombatManager` (bukan satu pemain), damage hanya dihitung oleh otoritas (host). Data di Resource: `EnemyData`, `SkillData`, `ShopItem` (.tres), tabel gelombang `EncounterTable`, pengali kesulitan `CombatConst`.
+
+### 4.9 Main Bersama: Co-op & PvP Arena LAN (v3.1)
+Menu **Main Bersama / PvP**. Hanya jaringan lokal (WiFi atau hotspot HP yang sama), **tanpa server internet**; PC dan Android bisa bermain bersama (keduanya dibangun dengan Godot 4.3). Di versi web tersedia **Latihan PvP vs Bot** (tanpa jaringan).
+
+- **Room & lobi:** host membuat room; pemain lain menemukannya otomatis (**LAN discovery** UDP broadcast port 47100) atau memasukkan IP host (ditampilkan di lobi). Nama dikirim ke host dan dibuat unik (Nggohak, Nggohak2). Status siap/tidak; host memilih mode lalu menekan Mulai.
+- **CO-OP (2-4 pemain):** arena bertema level pilihan (Wae Rebo / Lingko Lodok / Labuan Bajo), 3 gelombang + bos level itu, jeda Lapak Songke di antara gelombang. Jumlah musuh x (1 + 0,5 per pemain tambahan), HP musuh ikut diskalakan.
+- **PvP ARENA:** 1v1, 2v2, atau bebas berempat di 3 arena (Wae Rebo tanpa compang, Lingko Lodok, Labuan Bajo) dengan batu perlindungan simetris. Slot kosong diisi **bot** (Bot Mbureng, Bot Mbodol, ...). Menang dengan **10 eliminasi** pertama atau skor tertinggi setelah **5 menit**; bangkit 3 detik. Papan skor dengan nama pemain, banner "A mengalahkan B", layar menang. Penyeimbang: panah biasa antar-pemain x0,6, skill memakai pengali PvP masing-masing (0,5-0,7). Aturan di `data/combat/pvp_rules.tres`.
+- **Arsitektur jaringan:** ENet (port 47101). **Host = otoritas**: menjalankan fisika semua karakter (input pemain lain lewat `NetworkInput`), AI musuh, gelombang, dan damage; mengirim snapshot 20x/detik (posisi, HP, status, cooldown, progres). Klien mengirim input (30x/detik + kejadian andal: lompat, skill, beli) dan meniru efek dari siaran host (musuh muncul/kalah, tembakan, skill, isyarat bos, area api, banner).
 
 ### 4.7 Kurva kesulitan
 | Level | Kesulitan | Tantangan utama |

@@ -11,6 +11,7 @@ var hurtbox: Hurtbox
 var hp_bar: HealthBar3D
 var status: StatusEffects
 var caster: SkillCaster
+var stats: CombatStats
 var team: int = CombatConst.TEAM_PLAYERS
 var player_name: String = "Nggohak"
 var aim_dir: Vector3 = Vector3.FORWARD
@@ -41,12 +42,59 @@ func _ready() -> void:
 	health.changed.connect(func(hp: float, max_hp: float) -> void: hp_bar.set_ratio(hp / max_hp))
 	health.died.connect(_on_died)
 	CombatManager.register_player(character)
+	stats = CombatManager.stats_for(character)
+	stats.upgrades_changed.connect(apply_stats)
+	stats.leveled_up.connect(_on_level_up)
+	apply_stats()
 	CombatManager.combat_changed.connect(_on_combat_changed)
 	_on_combat_changed(CombatManager.active)
 
 
 func _exit_tree() -> void:
 	CombatManager.unregister_player(character)
+	if stats:
+		if stats.upgrades_changed.is_connected(apply_stats):
+			stats.upgrades_changed.disconnect(apply_stats)
+		if stats.leveled_up.is_connected(_on_level_up):
+			stats.leveled_up.disconnect(_on_level_up)
+
+
+## Terapkan stat dari level tempur & upgrade (HP maks naik = HP ikut bertambah sebesar selisihnya).
+func apply_stats() -> void:
+	var new_max: float = stats.max_hp()
+	var diff: float = new_max - health.max_hp
+	health.set_max_hp(new_max, false)
+	if diff > 0.0 and not health.dead:
+		health.heal(diff)
+
+
+func speed_multiplier() -> float:
+	var m: float = status.speed_multiplier()
+	if CombatManager.active:
+		m *= stats.move_speed_multiplier()
+	return m
+
+
+func damage_multiplier() -> float:
+	return stats.damage_multiplier()
+
+
+func _on_level_up(lv: int) -> void:
+	apply_stats()
+	health.heal(health.max_hp * CombatStats.LEVEL_UP_HEAL)
+	var world: Node = character.get_parent()
+	Efek.cincin(world, character.global_position, 2.2, Color(0.4, 0.8, 1.0, 0.9), 0.6)
+	Efek.kilau(world, character.global_position + Vector3(0, 1.4, 0))
+	Efek.teks(world, character.global_position + Vector3(0, 3.0, 0), "Naik Level %d!" % lv, Color("7fd0ff"))
+	AudioManager.putar_sfx("kombo")
+	Analitik.catat("level_tempur", {"level_tempur": lv})
+
+
+## Barang habis pakai dari toko (Kopi Wae Rebo).
+func use_consumable(item: ShopItem) -> void:
+	if item.stat == "heal":
+		health.heal(health.max_hp * item.value_per_rank)
+		Efek.kilau(character.get_parent(), character.global_position + Vector3(0, 1.2, 0))
 
 
 func _on_combat_changed(active: bool) -> void:
@@ -109,11 +157,11 @@ func _update_aim(input: PlayerInput) -> void:
 
 
 func shoot() -> void:
-	_fire_cooldown = CombatConst.FIRE_INTERVAL
+	_fire_cooldown = CombatConst.FIRE_INTERVAL * stats.fire_interval_multiplier()
 	aiming_time = 0.6
 	var from: Vector3 = character.global_position + Vector3(0, CombatConst.COMBAT_HEIGHT, 0) + aim_dir * 0.6
-	Projectile.spawn(character.get_parent(), from, aim_dir, CombatConst.ARROW_SPEED, CombatConst.ARROW_DAMAGE,
-			team, character, CombatConst.ARROW_RANGE)
+	Projectile.spawn(character.get_parent(), from, aim_dir, CombatConst.ARROW_SPEED,
+			CombatConst.ARROW_DAMAGE * damage_multiplier(), team, character, CombatConst.ARROW_RANGE)
 	character.model.lepas_panah()
 	AudioManager.putar_sfx("cambuk", 0.15)
 	shot.emit(aim_dir)

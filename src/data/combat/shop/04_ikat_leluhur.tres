@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ShopItem" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/progress/shop_item.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "ikat_leluhur"
+display_name = "Ikat Kepala Leluhur"
+description = "Cooldown skill -10% per tingkat."
+stat = "cooldown"
+value_per_rank = 0.1
+max_rank = 3
+base_price = 12
+price_step = 8
+color = Color(0.91, 0.71, 0.19, 1)

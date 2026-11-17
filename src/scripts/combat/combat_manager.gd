@@ -7,13 +7,27 @@ signal combat_changed(active: bool)
 signal player_died(player: Node3D, respawn_time: float)
 signal player_respawned(player: Node3D)
 signal rewards_changed(player: Node3D)
+signal leveled_up(player: Node3D, level: int)
+signal shop_changed(available: bool)
+
+## Barang Lapak Songke (daftar eksplisit agar aman di build ekspor).
+const SHOP_ITEMS: Array[ShopItem] = [
+	preload("res://data/combat/shop/01_mata_panah.tres"),
+	preload("res://data/combat/shop/02_tali_busur.tres"),
+	preload("res://data/combat/shop/03_sarung_tebal.tres"),
+	preload("res://data/combat/shop/04_ikat_leluhur.tres"),
+	preload("res://data/combat/shop/05_sirih_pinang.tres"),
+	preload("res://data/combat/shop/06_gelang_kaki.tres"),
+	preload("res://data/combat/shop/07_kopi_wae_rebo.tres"),
+]
 
 var active: bool = false
 var players: Array[Node3D] = []
 var enemies: Array[Node3D] = []
 var _respawn_points: Dictionary = {}  ## pemain -> Vector3 (checkpoint terakhir)
-var _coins: Dictionary = {}  ## pemain -> int (koin sesi tempur; toko di Tahap 3)
-var _xp: Dictionary = {}  ## pemain -> int
+var _stats: Dictionary = {}  ## peer id -> CombatStats (progres per level cerita)
+var _session_level: int = -1
+var shop_available: bool = false  ## true saat jeda antar-gelombang (Lapak Songke boleh dibuka)
 
 
 func is_authority() -> bool:
@@ -24,7 +38,16 @@ func set_active(value: bool) -> void:
 	if active == value:
 		return
 	active = value
+	if not active:
+		set_shop_available(false)
 	combat_changed.emit(active)
+
+
+func set_shop_available(value: bool) -> void:
+	if shop_available == value:
+		return
+	shop_available = value
+	shop_changed.emit(value)
 
 
 # ------------------------------------------------------------------ kesulitan
@@ -51,15 +74,41 @@ func enemy_hp_scale() -> float:
 func register_player(p: Node3D) -> void:
 	if not players.has(p):
 		players.append(p)
-		_coins[p] = 0
-		_xp[p] = 0
 
 
 func unregister_player(p: Node3D) -> void:
 	players.erase(p)
 	_respawn_points.erase(p)
-	_coins.erase(p)
-	_xp.erase(p)
+
+
+# ------------------------------------------------------------------ progres (level, XP, koin)
+
+func shop_items() -> Array[ShopItem]:
+	return SHOP_ITEMS
+
+
+## Progres tempur milik pemain (dibuat bila belum ada). Direset saat level cerita berganti.
+func stats_for(p: Node3D) -> CombatStats:
+	if GameState.level != _session_level:
+		_session_level = GameState.level
+		_stats.clear()
+	var key: int = int(p.get("peer_id")) if p.get("peer_id") != null else 1
+	if not _stats.has(key):
+		var st := CombatStats.new()
+		st.leveled_up.connect(func(lv: int) -> void: _on_level_up(key, lv))
+		_stats[key] = st
+	return _stats[key]
+
+
+func reset_session() -> void:
+	_stats.clear()
+	_session_level = GameState.level
+
+
+func _on_level_up(key: int, lv: int) -> void:
+	for p: Node3D in players:
+		if is_instance_valid(p) and (int(p.get("peer_id")) if p.get("peer_id") != null else 1) == key:
+			leveled_up.emit(p, lv)
 
 
 func register_enemy(e: Node3D) -> void:
@@ -122,16 +171,17 @@ func respawn_time() -> float:
 
 
 func add_reward(p: Node3D, coins: int, xp: int) -> void:
-	if not _coins.has(p):
+	if not players.has(p):
 		return
-	_coins[p] = int(_coins[p]) + coins
-	_xp[p] = int(_xp[p]) + xp
+	var st: CombatStats = stats_for(p)
+	st.add_coins(coins)
+	st.add_xp(xp)
 	rewards_changed.emit(p)
 
 
 func coins_of(p: Node3D) -> int:
-	return int(_coins.get(p, 0))
+	return stats_for(p).coins
 
 
 func xp_of(p: Node3D) -> int:
-	return int(_xp.get(p, 0))
+	return stats_for(p).total_xp

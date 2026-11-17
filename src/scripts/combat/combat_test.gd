@@ -7,6 +7,7 @@ const KETAPEL: EnemyData = preload("res://data/combat/enemies/perampok_ketapel.t
 
 var pemain: Pemain
 var kamera: KameraIkut
+var _shop_dipakai: bool = false
 
 
 func _ready() -> void:
@@ -29,6 +30,9 @@ func _ready() -> void:
 	add_child(kamera)
 	kamera.current = true
 	add_child(CombatHud.new())
+	GameState.state_berubah.connect(func(lama: int, _baru: int) -> void:
+		if lama == GameState.State.MINIGAME:
+			_shop_dipakai = true)
 	GameState.ubah_state(GameState.State.BERMAIN)
 	CombatManager.set_active(true)
 	spawn_wave()
@@ -45,11 +49,25 @@ func spawn_wave() -> void:
 		e.defeated.connect(_on_enemy_defeated)
 
 
+## Gelombang habis: jeda dengan Lapak Songke (maks. 20 detik atau sampai toko ditutup), lalu gelombang baru.
+## (WaveManager lengkap di Tahap 5.)
 func _on_enemy_defeated(_e: EnemyBase) -> void:
 	await get_tree().create_timer(1.0).timeout
-	if CombatManager.alive_enemies() == 0:
-		Efek.teks(self, pemain.global_position + Vector3(0, 3, 0), "Gelombang baru!")
-		spawn_wave()
+	if CombatManager.alive_enemies() > 0 or CombatManager.shop_available:
+		return
+	Efek.teks(self, pemain.global_position + Vector3(0, 3, 0), "Gelombang selesai! [B] Lapak Songke")
+	CombatManager.set_shop_available(true)
+	var sisa: float = 20.0
+	while sisa > 0.0 and is_inside_tree():
+		await get_tree().create_timer(0.5, false).timeout
+		if GameState.sedang(GameState.State.BERMAIN):
+			sisa -= 0.5
+		if _shop_dipakai and GameState.sedang(GameState.State.BERMAIN):
+			break
+	_shop_dipakai = false
+	CombatManager.set_shop_available(false)
+	Efek.teks(self, pemain.global_position + Vector3(0, 3, 0), "Gelombang baru!")
+	spawn_wave()
 
 
 func _exit_tree() -> void:

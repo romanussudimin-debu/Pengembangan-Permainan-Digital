@@ -19,6 +19,7 @@ extends CharacterBody3D
 @onready var mesin: StateMachine = $StateMachine
 
 var input: PlayerInput  ## sumber perintah; default KeyboardInput (pemain lokal)
+var peer_id: int = 1  ## pemilik di jaringan (1 = host / mode Solo); kunci progres tempur
 var combat: CombatPlayer
 var interaktif_terdekat: Interaktif = null
 var _dalam_jangkauan: Array[Interaktif] = []
@@ -115,7 +116,7 @@ func arah_input() -> Vector3:
 
 
 func gerak_horizontal(delta: float, arah: Vector3) -> void:
-	var target: Vector3 = arah * kecepatan * combat.status.speed_multiplier()
+	var target: Vector3 = arah * kecepatan * combat.speed_multiplier()
 	var laju: float = akselerasi if arah != Vector3.ZERO else gesekan
 	var horizontal := Vector3(velocity.x, 0.0, velocity.z).move_toward(target, laju * delta)
 	velocity.x = horizontal.x

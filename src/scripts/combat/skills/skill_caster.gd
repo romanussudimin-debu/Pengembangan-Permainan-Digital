@@ -33,12 +33,18 @@ func _physics_process(delta: float) -> void:
 	for i in cooldowns.size():
 		cooldowns[i] = maxf(cooldowns[i] - delta, 0.0)
 	if energy < MAX_ENERGY:
-		energy = minf(energy + ENERGY_REGEN * delta, MAX_ENERGY)
+		energy = minf(energy + ENERGY_REGEN * combat.stats.energy_regen_multiplier() * delta, MAX_ENERGY)
 		energy_changed.emit(energy, MAX_ENERGY)
 
 
 func cooldown_ratio(i: int) -> float:
-	return cooldowns[i] / skills[i].cooldown if skills[i].cooldown > 0.0 else 0.0
+	var full: float = skills[i].cooldown * combat.stats.cooldown_multiplier()
+	return cooldowns[i] / full if full > 0.0 else 0.0
+
+
+## Damage skill setelah bonus level tempur & upgrade.
+func _dmg(s: SkillData) -> float:
+	return s.damage * combat.damage_multiplier()
 
 
 func can_cast(i: int) -> bool:
@@ -62,7 +68,7 @@ func try_cast(i: int) -> bool:
 	if energy < s.energy_cost:
 		_fail(i, "Energi kurang")
 		return false
-	cooldowns[i] = s.cooldown
+	cooldowns[i] = s.cooldown * combat.stats.cooldown_multiplier()
 	energy -= s.energy_cost
 	energy_changed.emit(energy, MAX_ENERGY)
 	match s.kind:
@@ -106,7 +112,7 @@ func _fire_arrow(s: SkillData) -> void:
 			combat.character, s.cast_range, "fire")
 	p.on_impact = func(pos: Vector3, _t: Hurtbox) -> void:
 		Efek.ledakan_api(_world(), pos, s.radius)
-		CombatUtil.area_skill(_world(), pos, s, combat.team, combat.character)
+		CombatUtil.area_skill(_world(), pos, s, combat.team, combat.character, _dmg(s))
 		get_tree().call_group("kamera_ikut", "guncang", s.shake)
 	AudioManager.putar_sfx("cambuk", 0.1)
 
@@ -124,7 +130,7 @@ func _arrow_rain(s: SkillData) -> void:
 			if not is_instance_valid(world):
 				return
 			_falling_arrows(world, center, s.radius)
-			CombatUtil.area_skill(world, center, s, combat.team, combat.character)
+			CombatUtil.area_skill(world, center, s, combat.team, combat.character, _dmg(s))
 			AudioManager.putar_sfx("cambuk", 0.25))
 		tw.tween_interval(s.tick_interval)
 
@@ -164,7 +170,7 @@ func _falling_arrows(world: Node3D, center: Vector3, radius: float) -> void:
 
 ## Panah Angin Lingko: menembus semua musuh di jalurnya, mendorong mundur dan memperlambat.
 func _wind_arrow(s: SkillData) -> void:
-	var p := Projectile.spawn(_world(), _origin(), combat.aim_dir, s.projectile_speed, s.damage, combat.team,
+	var p := Projectile.spawn(_world(), _origin(), combat.aim_dir, s.projectile_speed, _dmg(s), combat.team,
 			combat.character, s.cast_range, "wind")
 	p.pierce = true
 	p.skill = s
@@ -183,4 +189,4 @@ func _ultimate(s: SkillData) -> void:
 	Efek._partikel(world, pos + Vector3(0, 0.5, 0), Color(1.0, 0.85, 0.3), 22, 6.0, 0.9, 0.1, -6.0, 3.0)
 	Efek.teks(world, pos + Vector3(0, 3.2, 0), s.display_name + "!", Gaya.KUNING)
 	AudioManager.putar_sfx("gong")
-	CombatUtil.area_skill(world, pos, s, combat.team, combat.character)
+	CombatUtil.area_skill(world, pos, s, combat.team, combat.character, _dmg(s))

@@ -14,6 +14,8 @@ var _label_reward: Label
 var _respawn_panel: Control
 var _label_respawn: Label
 var _skills_canvas: Control
+var _shop_button: Button
+var _shop: LapakSongke
 
 
 func _ready() -> void:
@@ -23,8 +25,8 @@ func _ready() -> void:
 	_root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_root)
 	_hp_canvas = Control.new()
-	_hp_canvas.position = Vector2(200, 316)
-	_hp_canvas.size = Vector2(200, 34)
+	_hp_canvas.position = Vector2(198, 312)
+	_hp_canvas.size = Vector2(232, 42)
 	_hp_canvas.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_hp_canvas.draw.connect(_draw_hp)
 	_root.add_child(_hp_canvas)
@@ -34,8 +36,21 @@ func _ready() -> void:
 	_skills_canvas.draw.connect(_draw_skills)
 	_root.add_child(_skills_canvas)
 	_label_reward = Gaya.label("", 10, Gaya.KUNING)
-	_label_reward.position = Vector2(200, 298)
+	_label_reward.position = Vector2(232, 297)
 	_root.add_child(_label_reward)
+	_shop_button = Gaya.tombol("Lapak Songke [B]")
+	_shop_button.position = Vector2(470, 262)
+	_shop_button.custom_minimum_size = Vector2(160, 28)
+	_shop_button.add_theme_font_size_override("font_size", 10)
+	_shop_button.pressed.connect(open_shop)
+	_shop_button.visible = false
+	_root.add_child(_shop_button)
+	CombatManager.shop_changed.connect(func(a: bool) -> void:
+		_shop_button.visible = a
+		if a:
+			var tw := _shop_button.create_tween()
+			_shop_button.scale = Vector2(0.6, 0.6)
+			tw.tween_property(_shop_button, "scale", Vector2.ONE, 0.25).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT))
 	_respawn_panel = ColorRect.new()
 	(_respawn_panel as ColorRect).color = Color(0.25, 0.02, 0.02, 0.45)
 	_respawn_panel.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -59,10 +74,23 @@ func _process(_delta: float) -> void:
 	var c: CombatPlayer = player.combat
 	_hp_canvas.queue_redraw()
 	_skills_canvas.queue_redraw()
-	_label_reward.text = "Koin %d   XP %d" % [CombatManager.coins_of(player), CombatManager.xp_of(player)]
+	_label_reward.text = "Koin %d" % CombatManager.coins_of(player)
 	_respawn_panel.visible = c.is_dead
 	if c.is_dead:
 		_label_respawn.text = "Kamu terjatuh!\nBangkit lagi dalam %d..." % ceili(c.respawn_left)
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action_pressed("shop") and CombatManager.shop_available and _shop == null:
+		get_viewport().set_input_as_handled()
+		open_shop()
+
+
+func open_shop() -> void:
+	if player == null or _shop != null or not CombatManager.shop_available:
+		return
+	_shop = LapakSongke.open_for(player)
+	_shop.closed.connect(func() -> void: _shop = null)
 
 
 func _find_local_player() -> Pemain:
@@ -78,21 +106,36 @@ func _draw_hp() -> void:
 	var h: HealthComponent = player.combat.health
 	var c: Control = _hp_canvas
 	var r: float = h.ratio()
-	var hp_rect := Rect2(0, 0, c.size.x, 20)
+	# Lencana level tempur (kiri) + bar XP tipis di bawah bar energi
+	var st: CombatStats = player.combat.stats
+	var badge := Vector2(14, 18)
+	c.draw_circle(badge, 15.0, Color(0.08, 0.06, 0.05, 0.95))
+	c.draw_circle(badge, 13.0, Color("2c5c96"))
+	c.draw_arc(badge, 13.0, 0.0, TAU, 24, Gaya.KUNING, 1.5)
+	var lv: String = "MAX" if st.level >= CombatStats.MAX_LEVEL else str(st.level)
+	c.draw_string(ThemeDB.fallback_font, badge + Vector2(-14, 5), lv, HORIZONTAL_ALIGNMENT_CENTER, 28, 12 if lv.length() < 3 else 8, Gaya.PUTIH)
+	c.draw_set_transform(Vector2(34, 0))
+	var w: float = c.size.x - 34.0
+	var hp_rect := Rect2(0, 0, w, 20)
 	c.draw_rect(hp_rect, Color(0.08, 0.06, 0.05, 0.85))
 	var warna: Color = Color("6ad07a") if r > 0.3 else Color("d83a2a")
 	if h.is_invulnerable():
 		warna = Color("f2d060")  # kebal: bar keemasan
-	c.draw_rect(Rect2(Vector2(2, 2), Vector2((c.size.x - 4) * r, 16)), warna)
+	c.draw_rect(Rect2(Vector2(2, 2), Vector2((w - 4) * r, 16)), warna)
 	c.draw_rect(hp_rect, Gaya.KUNING, false, 1.0)
 	var teks: String = "%d / %d" % [ceili(h.hp), int(h.max_hp)]
-	c.draw_string(ThemeDB.fallback_font, Vector2(0, 15), teks, HORIZONTAL_ALIGNMENT_CENTER, c.size.x, 11, Gaya.PUTIH)
+	c.draw_string(ThemeDB.fallback_font, Vector2(0, 15), teks, HORIZONTAL_ALIGNMENT_CENTER, w, 11, Gaya.PUTIH)
 	# Bar energi (biru) di bawah HP
 	var caster: SkillCaster = player.combat.caster
-	var e_rect := Rect2(0, 23, c.size.x, 9)
+	var e_rect := Rect2(0, 23, w, 9)
 	c.draw_rect(e_rect, Color(0.08, 0.06, 0.05, 0.85))
-	c.draw_rect(Rect2(2, 25, (c.size.x - 4) * caster.energy / SkillCaster.MAX_ENERGY, 5), Color("5fa8e8"))
+	c.draw_rect(Rect2(2, 25, (w - 4) * caster.energy / SkillCaster.MAX_ENERGY, 5), Color("5fa8e8"))
 	c.draw_rect(e_rect, Color("5fa8e8").darkened(0.3), false, 1.0)
+	# Bar XP (hijau muda) menuju level berikutnya
+	var xp_r: float = 1.0 if st.level >= CombatStats.MAX_LEVEL else float(st.xp) / CombatStats.xp_needed(st.level)
+	c.draw_rect(Rect2(0, 35, w, 5), Color(0.08, 0.06, 0.05, 0.85))
+	c.draw_rect(Rect2(1, 36, (w - 2) * xp_r, 3), Color("a8e070"))
+	c.draw_set_transform(Vector2.ZERO)
 
 
 ## Ikon skill: lingkaran berwarna skill; saat cooldown, sapuan gelap melingkar + sisa detik;

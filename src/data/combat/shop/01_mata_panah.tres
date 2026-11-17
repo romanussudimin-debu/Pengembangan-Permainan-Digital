@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ShopItem" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/progress/shop_item.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "mata_panah"
+display_name = "Mata Panah Besi"
+description = "Damage panah & skill +15% per tingkat."
+stat = "damage"
+value_per_rank = 0.15
+max_rank = 3
+base_price = 10
+price_step = 8
+color = Color(0.78, 0.78, 0.82, 1)

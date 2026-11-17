@@ -17,6 +17,7 @@ const PETA_INPUT: Dictionary = {
 	"skill_2": [KEY_E],
 	"skill_3": [KEY_R],
 	"ultimate": [KEY_F],
+	"shop": [KEY_B],  # buka Lapak Songke saat jeda antar-gelombang
 }
 
 ## Aksi tombol mouse: klik kiri menembak, tahan klik kanan + geser untuk memutar kamera.

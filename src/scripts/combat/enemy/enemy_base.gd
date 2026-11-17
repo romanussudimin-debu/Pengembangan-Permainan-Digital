@@ -148,7 +148,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _update_target() -> void:
-	if target and (not is_instance_valid(target) or CombatManager._combat_dead(target)):
+	if target and (not is_instance_valid(target) or CombatManager.is_combat_dead(target)):
 		target = null
 	if target == null or _flat_distance(target.global_position) > data.detect_range * 1.5:
 		target = CombatManager.nearest_player(global_position, data.detect_range)

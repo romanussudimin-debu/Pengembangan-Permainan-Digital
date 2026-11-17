@@ -74,7 +74,7 @@ func _process(_delta: float) -> void:
 	var c: CombatPlayer = player.combat
 	_hp_canvas.queue_redraw()
 	_skills_canvas.queue_redraw()
-	_label_reward.text = "Koin %d" % CombatManager.coins_of(player)
+	_label_reward.text = "Koin %d" % CombatManager.stats_for(player).coins
 	_respawn_panel.visible = c.is_dead
 	if c.is_dead:
 		_label_respawn.text = "Kamu terjatuh!\nBangkit lagi dalam %d..." % ceili(c.respawn_left)
@@ -113,7 +113,8 @@ func _draw_hp() -> void:
 	c.draw_circle(badge, 13.0, Color("2c5c96"))
 	c.draw_arc(badge, 13.0, 0.0, TAU, 24, Gaya.KUNING, 1.5)
 	var lv: String = "MAX" if st.level >= CombatStats.MAX_LEVEL else str(st.level)
-	c.draw_string(ThemeDB.fallback_font, badge + Vector2(-14, 5), lv, HORIZONTAL_ALIGNMENT_CENTER, 28, 12 if lv.length() < 3 else 8, Gaya.PUTIH)
+	var ukuran: int = 12 if lv.length() < 3 else 8
+	c.draw_string(ThemeDB.fallback_font, badge + Vector2(-14, 5), lv, HORIZONTAL_ALIGNMENT_CENTER, 28, ukuran, Gaya.PUTIH)
 	c.draw_set_transform(Vector2(34, 0))
 	var w: float = c.size.x - 34.0
 	var hp_rect := Rect2(0, 0, w, 20)

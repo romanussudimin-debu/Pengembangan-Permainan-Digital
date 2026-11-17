@@ -79,7 +79,7 @@ func _rebuild() -> void:
 		c.queue_free()
 	var stats: CombatStats = CombatManager.stats_for(player)
 	_label_coins.text = "Koin: %d" % stats.coins
-	var items: Array[ShopItem] = CombatManager.shop_items()
+	var items: Array[ShopItem] = CombatManager.SHOP_ITEMS
 	for i in items.size():
 		var item: ShopItem = items[i]
 		var col: int = i % 4

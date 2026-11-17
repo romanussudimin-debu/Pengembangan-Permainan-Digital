@@ -83,10 +83,6 @@ func unregister_player(p: Node3D) -> void:
 
 # ------------------------------------------------------------------ progres (level, XP, koin)
 
-func shop_items() -> Array[ShopItem]:
-	return SHOP_ITEMS
-
-
 ## Progres tempur milik pemain (dibuat bila belum ada). Direset saat level cerita berganti.
 func stats_for(p: Node3D) -> CombatStats:
 	if GameState.level != _session_level:
@@ -142,7 +138,7 @@ func _nearest(list: Array[Node3D], from: Vector3, max_distance: float) -> Node3D
 	var best: Node3D = null
 	var best_d: float = max_distance
 	for n: Node3D in list:
-		if not is_instance_valid(n) or not n.is_inside_tree() or n.get("is_dead") or _combat_dead(n):
+		if not is_instance_valid(n) or not n.is_inside_tree() or n.get("is_dead") or is_combat_dead(n):
 			continue
 		var d: float = n.global_position.distance_to(from)
 		if d < best_d:
@@ -151,7 +147,8 @@ func _nearest(list: Array[Node3D], from: Vector3, max_distance: float) -> Node3D
 	return best
 
 
-func _combat_dead(n: Node3D) -> bool:
+## true bila `n` adalah pemain yang sedang kalah (menunggu respawn).
+func is_combat_dead(n: Node3D) -> bool:
 	var c: Variant = n.get("combat")
 	return c != null and (c as Node).get("is_dead") == true
 
@@ -178,10 +175,3 @@ func add_reward(p: Node3D, coins: int, xp: int) -> void:
 	st.add_xp(xp)
 	rewards_changed.emit(p)
 
-
-func coins_of(p: Node3D) -> int:
-	return stats_for(p).coins
-
-
-func xp_of(p: Node3D) -> int:
-	return stats_for(p).total_xp

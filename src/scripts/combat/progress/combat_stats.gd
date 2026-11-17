@@ -72,7 +72,7 @@ func buy(item: ShopItem) -> String:
 
 func _sum(stat_name: String) -> float:
 	var total: float = 0.0
-	for item: ShopItem in CombatManager.shop_items():
+	for item: ShopItem in CombatManager.SHOP_ITEMS:
 		if item.stat == stat_name:
 			total += item.value_per_rank * rank(item.id)
 	return total

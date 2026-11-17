@@ -22,6 +22,8 @@ signal momen_pukul  ## dipancarkan saat cambuk mencapai titik pukul
 @export var ikat_songke: bool = false  ## ikat kepala bermotif songke dengan ujung kain menjuntai
 @export var rambut_gimbal: bool = false  ## rambut gimbal diikat ke atas
 @export var berotot: bool = false  ## bahu lebar, dada & perut berotot (tubuh atletis)
+@export_group("Musuh")
+@export var penutup_wajah: bool = false  ## kain penutup hidung-mulut (perampok)
 @export_group("Gaya Wisatawan / Ranger")
 @export var celana_polos: bool = false  ## bawahan polos (celana pendek) menggantikan sarung songke
 @export var warna_celana: Color = Color("c8b48a")
@@ -48,6 +50,9 @@ var _larik: Node3D
 var _nggiling: Node3D
 var _nampan: Node3D
 var _ekor_ikat: Node3D
+var _busur: Node3D  ## busur bambu di tangan kiri (mode tempur), dibuat saat pertama dipakai
+var _tabung_panah: Node3D
+var _bidik_sisa: float = 0.0  ## > 0 = lengan menahan pose membidik
 var _fase: float = 0.0
 var _waktu: float = 0.0
 var _aksi_aktif: bool = false
@@ -148,6 +153,10 @@ func _bangun() -> void:
 	leher.height = 0.16
 	_bagian(_badan, leher, Vector3(0, 0.66, 0), m_kulit)
 	_bangun_kepala(m_kulit)
+	if penutup_wajah:
+		var kain := BoxMesh.new()
+		kain.size = Vector3(0.44, 0.15, 0.3)
+		_bagian(_badan, kain, Vector3(0, TINGGI_KEPALA - 0.08, -0.06), _mat(warna_ikat.darkened(0.3)))
 	_bangun_rambut()
 	if rambut_gimbal:
 		_bangun_gimbal()
@@ -465,6 +474,13 @@ func _process(delta: float) -> void:
 		var kuat: float = 0.35 if mode == "jalan" or mode == "udara" else 0.1
 		_ekor_ikat.rotation.x = lerpf(_ekor_ikat.rotation.x, 0.25 + sin(_waktu * 5.0) * kuat, delta * 8.0)
 		_ekor_ikat.rotation.z = sin(_waktu * 3.1) * kuat * 0.4
+	if _bidik_sisa > 0.0:
+		# Pose membidik: lengan kiri lurus ke depan memegang busur, lengan kanan menarik tali
+		_bidik_sisa -= delta
+		_lengan_kiri.rotation.x = lerpf(_lengan_kiri.rotation.x, 1.5, delta * 18.0)
+		_lengan_kiri.rotation.z = lerpf(_lengan_kiri.rotation.z, 0.15, delta * 18.0)
+		_lengan_kanan.rotation.x = lerpf(_lengan_kanan.rotation.x, 1.3, delta * 18.0)
+		_lengan_kanan.rotation.z = lerpf(_lengan_kanan.rotation.z, -0.5, delta * 18.0)
 	if bawa_nampan:
 		# Kedua lengan menahan nampan di depan badan (menimpa ayunan lengan)
 		_lengan_kiri.rotation.x = lerpf(_lengan_kiri.rotation.x, 1.15, delta * 10.0)
@@ -570,3 +586,58 @@ func batal_aksi() -> void:
 func tampilkan_senjata(tampil: bool) -> void:
 	_larik.visible = tampil
 	_nggiling.visible = tampil
+
+
+# ---------------------------------------------------------------- busur (mode tempur)
+
+## Busur bambu (busur melengkung + tali) di tangan kiri dan tabung panah di punggung.
+func _bangun_busur() -> void:
+	var m_bambu := _mat(Color("c8a050"))
+	_busur = _pivot(_lengan_kiri, Vector3(0, -0.56, -0.04))
+	for i in 7:
+		# Lengkung busur dari 7 ruas silinder (vertikal, melengkung ke depan)
+		var t: float = (i - 3) / 3.0
+		var ruas := CylinderMesh.new()
+		ruas.top_radius = 0.02
+		ruas.bottom_radius = 0.02
+		ruas.height = 0.2
+		ruas.radial_segments = 5
+		var mi := _bagian(_busur, ruas, Vector3(0, -0.12 - (1.0 - t * t) * 0.12, t * 0.55), m_bambu)
+		mi.rotation.x = PI / 2.0 + t * 0.55
+	var tali := CylinderMesh.new()
+	tali.top_radius = 0.005
+	tali.bottom_radius = 0.005
+	tali.height = 1.1
+	var mt := _bagian(_busur, tali, Vector3(0, -0.02, 0), _mat(Color("f0e8d0")))
+	mt.rotation.x = PI / 2.0
+	_busur.rotation.x = -PI / 2.0  # busur tegak saat lengan diangkat ke depan
+	_tabung_panah = _pivot(_badan, Vector3(0.12, 0.42, 0.16))
+	var tabung := CylinderMesh.new()
+	tabung.top_radius = 0.07
+	tabung.bottom_radius = 0.06
+	tabung.height = 0.5
+	var mq := _bagian(_tabung_panah, tabung, Vector3.ZERO, _mat(Color("6a4428")))
+	mq.rotation.z = 0.35
+	for i in 3:
+		var bulu := BoxMesh.new()
+		bulu.size = Vector3(0.03, 0.12, 0.01)
+		var mb := _bagian(_tabung_panah, bulu, Vector3(-0.08 + i * 0.03, 0.3, 0), _mat(Color("b02a2a")))
+		mb.rotation.z = 0.35
+
+
+func tampilkan_busur(tampil: bool) -> void:
+	if tampil and _busur == null:
+		_bangun_busur()
+	if _busur:
+		_busur.visible = tampil
+		_tabung_panah.visible = tampil
+
+
+## Melepas panah: tahan pose bidik sebentar + hentakan kecil (follow-through) pada badan.
+func lepas_panah() -> void:
+	tampilkan_busur(true)
+	_bidik_sisa = 0.6
+	_badan.rotation.x = -0.08
+	var tw := create_tween()
+	tw.tween_property(_badan, "rotation:x", 0.0, 0.25).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+

@@ -1,0 +1,22 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/enemy/enemy_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "perampok_perisai"
+display_name = "Perampok Perisai"
+behavior = "shield"
+hint = "Perisainya menahan panah dari depan. Serang dari samping atau belakang!"
+body_color = Color(0.165, 0.165, 0.188, 1)
+accent_color = Color(0.541, 0.165, 0.125, 1)
+max_hp = 90.0
+move_speed = 2.0
+damage = 16.0
+knockback_resist = 0.6
+attack_range = 1.8
+attack_windup = 0.7
+attack_cooldown = 1.6
+front_block = 0.1
+coins = 5
+xp = 18

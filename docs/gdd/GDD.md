@@ -29,6 +29,7 @@
 | 0.x | 2D: teka-teki lingko + duel caci | — |
 | 1.x | 3D: jelajah kampung + duel caci (ta'ang/paki, 3 lawan) | Lebih imersif |
 | **2.0** | **3D: jelajah budaya dengan rantai teka-teki, menenun songke, tabuh gong-gendang; caci sebagai pertunjukan Penti** | Duel caci dinilai terlalu sulit untuk pemain umum. Jelajah budaya mengenalkan lebih banyak unsur budaya. Caci tetap tampil dengan hormat sebagai pertunjukan. |
+| **3.0** | **Pertarungan busur panah ala MOBA di sela cerita**: 21 musuh + 3 bos, skill, level tempur, Lapak Songke, kesulitan 3 tingkat, nama pemain, kontrol sentuh tempur, minimap | Penguji (termasuk anak 9 tahun) menilai game membosankan dan menyukai genre bertarung |
 | 2.3 | Perbaikan playtest: nyawa, pengecoh di semua tantangan, tantangan aksi baru Level 1–3 (pendakian, sangrai & antar kopi, tangkis nggiling, usir burung, sampah laut, semak komodo), dialog ringkas & gelembung, layar antar-level, bintang & 7 pencapaian, Pilih Level, efek & suara umpan balik, analitik playtest lokal | Masukan "kebanyakan ngobrol, mainnya sedikit" |
 | 2.2 | + **Level 3 Songke ke Labuan Bajo** (peta kapal, 6 destinasi TN Komodo, mini-game menjual), ending Penti dipindah ke akhir Level 3 | Menghubungkan budaya (songke) dengan ekonomi kreatif & wisata bertanggung jawab; persiapan Proyek UAS (3 level) |
 | 2.1 | + **Level 2 Lingko Lodok** (undangan reke lodok, saluran wae teku, pembagian moso, pandangan dari bukit), Mode Sulit, simpan & lanjutkan | Mengangkat lingko, yang sudah diriset sebagai kandidat mekanik, menjadi level kedua |
@@ -177,6 +178,33 @@ Kartu tambahan: **Songke sebagai Ekonomi Kreatif** (diberikan di awal Level 3) [
 
 **Mode Sulit Level 3:** batas waktu 5 menit per pulau (habis → ulangi pulau), salah cerita = wisatawan pergi, tenaga Padar lebih cepat habis, komodo lebih banyak dan lebih cepat, denda waktu saat jatuh ke laut/menginjak karang (−10 dtk) atau terlalu dekat komodo (−15 dtk).
 
+### 4.8 Pertarungan busur panah (v3.0, masukan penguji: "ingin bertarung")
+Penguji (termasuk anak 9 tahun) menilai game kurang menantang dan lebih menyukai genre bertarung. Pertarungan **disisipkan ke dalam level cerita**: tugas cerita tetap utuh, pertempuran terjadi di sela-selanya. Senjata Nggohak: **busur panah**. Kekerasan dijaga ringan: percikan merah kecil saat kena, musuh yang kalah menyusut dan memudar (tanpa darah/mayat).
+
+**Struktur per level:** 3 gelombang makin sulit + 1 bos. Jenis musuh diperkenalkan bertahap; saat jenis baru muncul tampil banner berisi kiat menghadapinya.
+
+| Level | Gelombang dipicu | Musuh (7 jenis) | Bos (fase MARAH < 50% HP) |
+|---|---|---|---|
+| 1 Wae Rebo | setelah tantangan ke-3, 6, 8 di kampung; bos sebelum berangkat ke lingko | Perampok Pemukul, Ketapel, Pelempar Jaring, Perisai, Kera Pencuri, Ular Hijau, Kawanan Lebah | **Ketua Perampok Songke**: jaring (marah: 3), sabetan berputar, memanggil anak buah |
+| 2 Lingko Lodok | sebelum Usir Burung, membagi lingko, naik bukit; bos sebelum tamat | Tikus Sawah, Babi Hutan Kecil, Pipit Perusak, Pencuri Padi, Ular Sawah, Perampok Pembakar, Kerbau Mengamuk | **Babi Hutan Raksasa**: seruduk beruntun 3x lalu kelelahan (marah: lebih cepat + memanggil babi kecil) |
+| 3 Labuan Bajo | saat tiba di Padar, Pink Beach, Pulau Komodo; bos saat Pulau Komodo tuntas | Komodo Muda, Kepiting Bakau, Penyelundup Pencuri, Kawanan Kalong, Penyelundup Pemanah, Ubur-ubur, Monyet Ekor Panjang | **Komodo Raksasa**: sapuan ekor, semburan racun (marah: menggali & muncul di bawah pemain) |
+
+Musuh tidak pernah muncul di compang (sakral). Musuh perampok adalah tokoh fiktif; hewan liar digambarkan sebagai hewan yang mengganggu kebun/sawah/pantai, bukan dijelek-jelekkan. Komodo raksasa adalah **fantasi** game (komodo nyata dilindungi; pesan ranger di Level 3 tetap: jaga jarak).
+
+**Skill (ala MOBA, cooldown + energi 100):** Panah Api [Q] (ledakan 1,5 m + terbakar), Hujan Panah [E] (lingkaran 3 m, 5 tik), Panah Angin Lingko [R] (menembus, dorong & lambat), ultimate **Semangat Leluhur** [F] (gelombang 5 m + kebal 2,5 dtk).
+**Progres:** level tempur maks. 10 (XP), koin dari musuh, toko **Lapak Songke** di jeda antar-gelombang (7 barang bertema Manggarai). Progres direset tiap level cerita (seperti satu pertandingan).
+**Kalah:** bangkit di checkpoint setelah hitung mundur, tanpa batas nyawa (Nyawa hati tetap untuk tantangan cerita).
+
+| Kesulitan | Mudah | Normal | Sulit |
+|---|---|---|---|
+| HP musuh | x0,7 | x1,0 | x1,4 |
+| Damage musuh | x0,6 | x1,0 | x1,3 |
+| Bangkit | 3 detik | 5 detik | 8 detik |
+| Bantuan bidik | kuat | sedang | mati |
+
+**Nama pemain:** layar "Isi Nama" (3-12 huruf/angka/spasi) saat pertama bermain; nama tampil di atas kepala Nggohak, lobi, papan skor; bisa diganti di menu.
+**Arsitektur siap multiplayer:** input terpisah dari karakter (`PlayerInput`: keyboard/sentuh/bot/jaringan), daftar pemain di `CombatManager` (bukan satu pemain), damage hanya dihitung oleh otoritas (host). Data di Resource: `EnemyData`, `SkillData`, `ShopItem` (.tres), tabel gelombang `EncounterTable`, pengali kesulitan `CombatConst`.
+
 ### 4.7 Kurva kesulitan
 | Level | Kesulitan | Tantangan utama |
 |---|---|---|
@@ -196,6 +224,10 @@ Kartu tambahan: **Songke sebagai Ekonomi Kreatif** (diberikan di awal Level 3) [
 | Menenun | panah/WASD, E/Spasi/klik, 1–4 | ketuk kotak kain & palet benang; tombol Berhenti |
 | Tabuh | J (gong), K (gendang) | tombol GONG / GENDANG |
 | Jeda & koleksi kartu | Esc / P | tombol II (kanan atas) |
+| **Tempur:** bidik / tembak | mouse / klik kiri (tahan) | bidik otomatis; tombol TEMBAK |
+| Skill / ultimate | Q, E, R / F | tombol Q, E, R, ULT (seret untuk bidik manual) |
+| Lapak Songke | B (saat jeda gelombang) | tombol Lapak Songke |
+| Putar / zoom kamera | tahan klik kanan + geser / roda mouse | geser satu jari / cubit dua jari |
 
 Kontrol sentuh (`KontrolSentuh`) hanya muncul di perangkat layar sentuh dan hanya saat state BERMAIN.
 

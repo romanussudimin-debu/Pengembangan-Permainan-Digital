@@ -10,6 +10,8 @@ enum Perilaku { DIAM, JALAN }
 @export var titik_b: Vector3
 @export var kecepatan: float = 1.0
 @export var selalu_bergerak: bool = false  ## untuk opening/menu: tetap berjalan di luar state BERMAIN
+var dikendalikan_luar: bool = false  ## true = posisi diatur pemilik (musuh tempur), komodo hanya beranimasi
+var berjalan_luar: bool = false
 
 const WARNA_KULIT := Color("4a4232")
 
@@ -110,6 +112,9 @@ func _bangun() -> void:
 
 func _process(delta: float) -> void:
 	_waktu += delta
+	if dikendalikan_luar:
+		_animasi(delta, berjalan_luar)
+		return
 	var bergerak: bool = selalu_bergerak or GameState.sedang(GameState.State.BERMAIN) or GameState.sedang(GameState.State.MINIGAME)
 	if bergerak:
 		match _perilaku:

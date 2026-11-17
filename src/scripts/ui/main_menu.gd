@@ -17,6 +17,7 @@ var _panel_info: NinePatchRect
 var _label_info: RichTextLabel
 var _tombol_mulai: Button
 var _tombol_mode: Button
+var _tombol_nama: Button
 var _tombol_layar: Button
 var _pita: Control  ## sapaan kanan bawah (disembunyikan saat panel terbuka)
 var _ketukan_logo: Array[int] = []  ## waktu ketukan logo (ekspor analitik tersembunyi: 5x dalam 3 detik)
@@ -119,15 +120,18 @@ func _bangun_ui() -> void:
 	if GameState.ada_simpanan():
 		var lv: int = clampi(GameState.level_tertinggi, 1, GameState.ADEGAN_LEVEL.size())
 		var lanjut := _tombol_menu("Lanjutkan (Level %d)" % lv, kolom)
-		lanjut.pressed.connect(func() -> void: GameState.lanjutkan())
+		lanjut.pressed.connect(_pastikan_nama.bind(GameState.lanjutkan))
 	var baris_prestasi := _baris_menu(kolom)
 	if GameState.level_tertinggi > 1:
 		var pilih := _tombol_kecil(Prestasi.teks("pilih_level"), baris_prestasi)
 		pilih.pressed.connect(_tampilkan_pilih_level)
 	var capai := _tombol_kecil(Prestasi.teks("judul_menu"), baris_prestasi)
 	capai.pressed.connect(_tampilkan_pencapaian)
-	_tombol_mode = _tombol_menu(_teks_mode(), kolom)
+	var baris_mode := _baris_menu(kolom)
+	_tombol_mode = _tombol_kecil(_teks_mode(), baris_mode)
 	_tombol_mode.pressed.connect(_ganti_mode)
+	_tombol_nama = _tombol_kecil(PlayerProfile.player_name, baris_mode)
+	_tombol_nama.pressed.connect(_ganti_nama)
 	var baris_info := _baris_menu(kolom)
 	var cara := _tombol_kecil("Cara Bermain", baris_info)
 	cara.pressed.connect(_tampilkan_info.bind(_teks_cara_bermain()))
@@ -233,7 +237,7 @@ func _tampilkan_pilih_level() -> void:
 		b.position = Vector2(20, 48 + (n - 1) * 56)
 		b.custom_minimum_size = Vector2(250, 32)
 		b.add_theme_font_size_override("font_size", 11)
-		b.pressed.connect(GameState.pilih_level.bind(n))
+		b.pressed.connect(_pastikan_nama.bind(GameState.pilih_level.bind(n)))
 		_panel_daftar.add_child(b)
 		var bintang := Control.new()
 		bintang.position = Vector2(290, 54 + (n - 1) * 56)
@@ -329,17 +333,35 @@ func _teks_layar() -> String:
 
 
 func _mulai() -> void:
-	GameState.reset_progres()
-	GameState.mulai_level(1)
+	_pastikan_nama(func() -> void:
+		GameState.reset_progres()
+		GameState.mulai_level(1))
 
 
+## Saat pertama kali bermain, pemain mengisi nama dulu (layar "Isi Nama"), lalu lanjut.
+func _pastikan_nama(lanjut: Callable) -> void:
+	if PlayerProfile.has_saved:
+		lanjut.call()
+		return
+	var layar := IsiNama.open(self)
+	layar.done.connect(func(_n: String) -> void: lanjut.call())
+
+
+func _ganti_nama() -> void:
+	var layar := IsiNama.open(self, "Simpan")
+	layar.done.connect(func(n: String) -> void: _tombol_nama.text = n)
+
+
+## Kesulitan berputar: Mudah -> Normal -> Sulit (pengali tempur & aturan cerita).
 func _ganti_mode() -> void:
-	GameState.atur_mode_sulit(not GameState.mode_sulit)
+	var urutan: Array[String] = ["mudah", "normal", "sulit"]
+	var i: int = urutan.find(GameState.kesulitan)
+	GameState.atur_kesulitan(urutan[(i + 1) % urutan.size()])
 	_tombol_mode.text = _teks_mode()
 
 
 func _teks_mode() -> String:
-	return "Mode: Sulit" if GameState.mode_sulit else "Mode: Normal"
+	return "Mode " + str({"mudah": "Mudah", "normal": "Normal", "sulit": "Sulit"}.get(GameState.kesulitan, "Normal"))
 
 
 func _tampilkan_info(teks: String) -> void:
@@ -358,6 +380,15 @@ func _teks_cara_bermain() -> String:
 • E: bicara / lanjut dialog   • Esc: jeda & koleksi kartu
 • Di HP/tablet: joystick kiri untuk berjalan, tombol LOMPAT, BICARA, dan II (jeda); dialog & tantangan cukup diketuk
 
+BERTARUNG (busur panah)
+Di sela tugas cerita, perampok dan hewan liar menyerbu dalam 3 gelombang, lalu muncul BOS.
+• PC: mouse membidik, klik kiri menembak, Q Panah Api, E Hujan Panah, R Panah Angin Lingko, F ultimate Semangat Leluhur, Spasi lompat untuk menghindar
+• HP: joystick kiri, tombol TEMBAK besar di kanan (bidik otomatis), tombol skill (seret untuk membidik manual)
+• Lingkaran merah di tanah = serangan akan datang, menyingkirlah!
+• Kalahkan musuh untuk koin & XP (naik level sampai 10). Belanja di Lapak Songke [B] saat jeda.
+• Kalah = bangkit lagi di checkpoint. Kesulitan Mudah/Normal/Sulit di menu utama.
+• Kamera: tahan klik kanan + geser untuk memutar, roda mouse untuk zoom (HP: geser & cubit).
+
 Delapan warga kampung masing-masing menyimpan kartu budaya. Kumpulkan kartu BERURUTAN: mulailah dari Tu'a Golo di dekat compang. Setiap warga memberi tantangan, lalu petunjuk berupa teka-teki menuju warga berikutnya (lihat kiri atas). Ada warga yang menunggu di DALAM Mbaru Niang (masuklah lewat pintunya) dan ada yang suka berpindah tempat.
 
 Tantangan:
@@ -371,7 +402,7 @@ Undang lima kepala keluarga berdasarkan ciri-cirinya, susuri pematang yang sempi
 LEVEL 3 – SONGKE KE LABUAN BAJO
 Ikut kapal wisata ke 6 destinasi Taman Nasional Komodo. Di tiap destinasi, jual kain songke titipan penenun atau foto budaya kepada 3 wisatawan: pilih barang yang cocok dengan keinginannya, lalu ceritakan maknanya. Tiap destinasi punya tantangan: mendaki Padar (jaga tenaga), karang di Pink Beach, komodo di Pulau Komodo, air pasang di Taka Makassar, dan arus di Teluk Manjarite.
 
-MODE SULIT: ada batas waktu "sebelum senja", jatuh dan salah orang mengurangi waktu, kesempatan salah lebih sedikit, dan ukuran bagian tidak ditampilkan.
+KESULITAN SULIT: musuh lebih kuat, bangkit 8 detik, tanpa bantuan bidik; di cerita ada batas waktu "sebelum senja", jatuh dan salah orang mengurangi waktu, kesempatan salah lebih sedikit, dan ukuran bagian tidak ditampilkan.
 
 Dialog diucapkan dengan suara; teks dialog bisa dinyalakan di menu jeda."""
 

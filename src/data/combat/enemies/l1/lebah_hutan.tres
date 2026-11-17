@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/enemy/enemy_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "lebah_hutan"
+display_name = "Kawanan Lebah Hutan"
+model_kind = "bees"
+behavior = "flyer"
+hint = "Cepat tapi rapuh. Satu dua panah cukup!"
+body_color = Color(0.910, 0.706, 0.188, 1)
+accent_color = Color(0.106, 0.094, 0.094, 1)
+bar_height = 1.0
+max_hp = 22.0
+move_speed = 4.5
+damage = 5.0
+attack_range = 1.2
+attack_windup = 0.3
+attack_cooldown = 0.9
+hit_poison_dps = 2.0
+hit_poison_duration = 2.0
+fly_height = 1.2
+zigzag = 0.5
+coins = 2
+xp = 8

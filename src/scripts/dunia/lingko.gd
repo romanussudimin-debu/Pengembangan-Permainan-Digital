@@ -86,6 +86,7 @@ var _label_padi: Array[Label3D] = []
 var _area_petak: Array[Interaktif] = []
 var _label_gelombang: Label
 var kuntul_diusir: int = 0  ## untuk pencapaian "Penjaga Sawah"
+var _tempur: StoryCombat  ## pertempuran di sela tugas lingko (gelombang 1-3 + bos)
 var _jeda_jatuh: float = 0.0
 var _sisa_waktu: float = WAKTU_SULIT
 var _waktu_berjalan: bool = false
@@ -109,6 +110,8 @@ func _ready() -> void:
 	_bangun_warga()
 	_munculkan_pemain()
 	add_child(preload("res://scripts/ui/hud.gd").new())
+	_tempur = StoryCombat.new(self, 2)
+	add_child(_tempur)
 	_bangun_ui()
 	AudioManager.putar_musik("kampung")
 	GameState.ubah_state(GameState.State.BERMAIN)
@@ -361,6 +364,14 @@ func _tampilkan_denda(detik: float) -> void:
 
 func _atur_tahap(baru: int) -> void:
 	tahap = baru
+	# Pertempuran di sela tugas: sebelum Usir Burung, membagi lingko, dan naik bukit
+	match baru:
+		Tahap.BURUNG:
+			_tempur.run(0)
+		Tahap.BAGI:
+			_tempur.run(1)
+		Tahap.BUKIT:
+			_tempur.run(2)
 	if pemain:
 		_titik_cek = _titik_aman  # titik cek tahap: tempat pemain berdiri saat tahap dimulai
 	_atur_tantangan_jelajah()
@@ -657,7 +668,12 @@ func _interaksi_bukit(_p: Pemain) -> void:
 		_beri_kartu("lingko_lodok", _tamat))
 
 
+## Bos Babi Hutan Raksasa dilawan dulu, lalu level tamat.
 func _tamat() -> void:
+	_tempur.run(3, _tamat_lanjut)
+
+
+func _tamat_lanjut() -> void:
 	AudioManager.putar_sfx("gong")
 	GameState.selesaikan_level(NOMOR_LEVEL)
 

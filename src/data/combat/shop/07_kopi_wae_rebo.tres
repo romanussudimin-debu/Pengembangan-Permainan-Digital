@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ShopItem" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/progress/shop_item.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "kopi_wae_rebo"
+display_name = "Kopi Wae Rebo"
+description = "Pulihkan 50% HP sekarang. Bisa dibeli berulang."
+stat = "heal"
+value_per_rank = 0.5
+max_rank = 0
+base_price = 5
+price_step = 0
+color = Color(0.42, 0.27, 0.16, 1)

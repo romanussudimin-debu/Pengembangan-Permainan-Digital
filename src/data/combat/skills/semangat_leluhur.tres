@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/skills/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "semangat_leluhur"
+display_name = "Semangat Leluhur"
+key_hint = "F"
+kind = "ultimate"
+color = Color(1, 0.82, 0.25, 1)
+cooldown = 40.0
+energy_cost = 50.0
+damage = 120.0
+radius = 5.0
+invulnerable_time = 2.5
+knockback = 7.0
+pvp_multiplier = 0.5
+shake = 0.7

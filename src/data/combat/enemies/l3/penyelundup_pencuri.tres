@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/enemy/enemy_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "penyelundup_pencuri"
+display_name = "Penyelundup Pencuri"
+behavior = "thief"
+hint = "Mengincar kain songke daganganmu. Jangan biarkan lolos!"
+body_color = Color(0.118, 0.165, 0.251, 1)
+accent_color = Color(0.227, 0.353, 0.541, 1)
+max_hp = 75.0
+move_speed = 3.8
+damage = 8.0
+attack_range = 1.5
+attack_windup = 0.4
+attack_cooldown = 1.2
+steal_coins = 10
+steal_label = "kain songke"
+flee_time = 7.0
+coins = 5
+xp = 20

@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ShopItem" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/progress/shop_item.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "tali_busur"
+display_name = "Tali Busur Rotan"
+description = "Menembak 12% lebih cepat per tingkat."
+stat = "fire_rate"
+value_per_rank = 0.12
+max_rank = 3
+base_price = 8
+price_step = 6
+color = Color(0.78, 0.63, 0.31, 1)

@@ -10,9 +10,13 @@ var damage: float = 10.0
 var team: int = CombatConst.TEAM_PLAYERS
 var source: Node
 var max_distance: float = 18.0
-var kind: String = "arrow"  ## "arrow" | "stone"
+var kind: String = "arrow"  ## "arrow" | "stone" | "fire" | "wind"
+var pierce: bool = false  ## menembus musuh (Panah Angin)
+var skill: SkillData  ## bila diisi: efek status skill diterapkan pada setiap kena
+var on_impact: Callable  ## dipanggil (posisi, target) saat berhenti (mis. ledakan Panah Api)
 var _travelled: float = 0.0
 var _done: bool = false
+var _pierced: Array[Hurtbox] = []
 
 
 static func spawn(parent: Node, from: Vector3, direction: Vector3, speed: float, dmg: float, team_id: int,
@@ -33,6 +37,8 @@ static func spawn(parent: Node, from: Vector3, direction: Vector3, speed: float,
 
 func _build_mesh() -> void:
 	var m := StandardMaterial3D.new()
+	if kind == "fire" or kind == "wind":
+		_build_glow()
 	if kind == "stone":
 		var bola := SphereMesh.new()
 		bola.radius = 0.1
@@ -85,6 +91,44 @@ func _build_mesh() -> void:
 		add_child(mf)
 
 
+## Panah skill bercahaya: inti terang + cahaya titik kecil (api oranye / angin hijau pucat).
+func _build_glow() -> void:
+	var warna: Color = Color("ff8a30") if kind == "fire" else Color("c8f0d8")
+	var inti := MeshInstance3D.new()
+	var bola := SphereMesh.new()
+	bola.radius = 0.16
+	bola.height = 0.32
+	bola.radial_segments = 8
+	bola.rings = 4
+	inti.mesh = bola
+	var m := StandardMaterial3D.new()
+	m.albedo_color = Color(warna, 0.85)
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	inti.material_override = m
+	inti.position = Vector3(0, 0, -0.42)
+	inti.scale = Vector3(1, 1, 2.2)
+	add_child(inti)
+	var cahaya := OmniLight3D.new()
+	cahaya.light_color = warna
+	cahaya.light_energy = 2.0
+	cahaya.omni_range = 3.0
+	add_child(cahaya)
+	if kind == "wind":
+		for i in 2:
+			var cincin := MeshInstance3D.new()
+			var t := TorusMesh.new()
+			t.inner_radius = 0.16
+			t.outer_radius = 0.2
+			t.rings = 10
+			t.ring_segments = 4
+			cincin.mesh = t
+			cincin.material_override = m
+			cincin.rotation.x = PI / 2.0
+			cincin.position.z = 0.1 + i * 0.3
+			add_child(cincin)
+
+
 func _face_velocity() -> void:
 	if velocity.length() > 0.01:
 		look_at(global_position + velocity, Vector3.UP if absf(velocity.normalized().y) < 0.99 else Vector3.FORWARD)
@@ -108,10 +152,18 @@ func _physics_process(delta: float) -> void:
 		var collider: Object = hit["collider"]
 		if collider is Hurtbox:
 			var target: Hurtbox = collider
-			if target.team == team or target.health == null or target.health.dead:
-				exclude.append(target.get_rid())  # kawan sendiri / sudah kalah: tembus
+			if target.team == team or target.health == null or target.health.dead or _pierced.has(target):
+				exclude.append(target.get_rid())  # kawan sendiri / sudah kalah / sudah ditembus: lewat
 				continue
-			target.receive_hit(damage, source, hit["position"])
+			if skill:
+				CombatUtil.apply_skill_hit(target, skill, source, from, damage)
+			else:
+				target.receive_hit(damage, source, hit["position"])
+			if pierce:
+				_pierced.append(target)
+				exclude.append(target.get_rid())
+				Efek.percikan_kena(get_parent(), hit["position"])
+				continue
 			_impact(hit["position"], target)
 			return
 		_impact(hit["position"], null)  # dunia: panah menancap sebentar lalu hilang
@@ -119,6 +171,9 @@ func _physics_process(delta: float) -> void:
 	global_position = to
 	_travelled += step.length()
 	if _travelled >= max_distance:
+		if on_impact.is_valid() and not _done:
+			_done = true
+			on_impact.call(global_position, null)  # Panah Api tetap meledak di ujung jangkauan
 		queue_free()
 
 
@@ -126,6 +181,8 @@ func _impact(pos: Vector3, target: Hurtbox) -> void:
 	_done = true
 	global_position = pos
 	impacted.emit(pos, target)
+	if on_impact.is_valid():
+		on_impact.call(pos, target)
 	if target == null:
 		Efek.debu(get_parent(), pos)
 		var tw := create_tween()

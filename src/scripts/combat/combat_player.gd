@@ -9,6 +9,8 @@ var character: Pemain
 var health: HealthComponent
 var hurtbox: Hurtbox
 var hp_bar: HealthBar3D
+var status: StatusEffects
+var caster: SkillCaster
 var team: int = CombatConst.TEAM_PLAYERS
 var player_name: String = "Nggohak"
 var aim_dir: Vector3 = Vector3.FORWARD
@@ -26,6 +28,13 @@ func _ready() -> void:
 	add_child(health)
 	hurtbox = Hurtbox.create_capsule(character, health, team, 0.4, 1.9)
 	hurtbox.name = "Hurtbox"
+	status = StatusEffects.new()
+	status.health = health
+	add_child(status)
+	hurtbox.status = status
+	caster = SkillCaster.new()
+	caster.name = "Skills"
+	add_child(caster)
 	hp_bar = HealthBar3D.create(character, 3.0, Color("6ad07a"), "")
 	hp_bar.always_visible = false
 	health.damaged.connect(_on_damaged)
@@ -65,7 +74,12 @@ func _physics_process(delta: float) -> void:
 	aiming_time = maxf(aiming_time - delta, 0.0)
 	var input: PlayerInput = character.input
 	_update_aim(input)
-	if input.shoot_held and _fire_cooldown <= 0.0 and GameState.sedang(GameState.State.BERMAIN):
+	if not GameState.sedang(GameState.State.BERMAIN):
+		return
+	for i in input.skill_pressed.size():
+		if input.skill_pressed[i]:
+			caster.try_cast(i)
+	if input.shoot_held and _fire_cooldown <= 0.0:
 		shoot()
 
 
@@ -117,6 +131,7 @@ func _on_damaged(amount: float, _source: Node) -> void:
 
 func _on_died(_killer: Node) -> void:
 	is_dead = true
+	status.clear()
 	respawn_left = CombatManager.respawn_time()
 	character.velocity = Vector3.ZERO
 	hp_bar.visible = false
@@ -143,9 +158,34 @@ func respawn() -> void:
 	character.model.scale = Vector3.ONE
 	health.revive()
 	health.invulnerable_time = CombatConst.INVULNERABLE_AFTER_RESPAWN
+	caster.energy = SkillCaster.MAX_ENERGY
 	hp_bar.visible = true
 	hp_bar.set_ratio(1.0)
 	character.model.squash(Vector3(0.8, 1.25, 0.8), 0.35)
 	Efek.kilau(character.get_parent(), character.global_position + Vector3(0, 1.2, 0))
 	AudioManager.putar_sfx("ambil")
 	CombatManager.player_respawned.emit(character)
+
+
+## Aura emas berputar selama kebal (ultimate Semangat Leluhur).
+func show_aura(duration: float) -> void:
+	var aura := MeshInstance3D.new()
+	var t := TorusMesh.new()
+	t.inner_radius = 0.75
+	t.outer_radius = 0.9
+	t.rings = 24
+	t.ring_segments = 4
+	aura.mesh = t
+	var m := StandardMaterial3D.new()
+	m.albedo_color = Color(1.0, 0.82, 0.25, 0.7)
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	aura.material_override = m
+	aura.position.y = 0.15
+	character.add_child(aura)
+	var tw := aura.create_tween()
+	tw.set_loops(int(ceil(duration / 0.5)))
+	tw.tween_property(aura, "position:y", 2.2, 0.5)
+	tw.tween_property(aura, "position:y", 0.15, 0.0)
+	get_tree().create_timer(duration, false).timeout.connect(aura.queue_free)
+

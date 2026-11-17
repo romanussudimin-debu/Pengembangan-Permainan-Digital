@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/skills/skill_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "hujan_panah"
+display_name = "Hujan Panah"
+key_hint = "E"
+kind = "arrow_rain"
+color = Color(0.91, 0.71, 0.19, 1)
+cooldown = 10.0
+energy_cost = 30.0
+damage = 15.0
+radius = 3.0
+cast_range = 12.0
+ticks = 5
+tick_interval = 0.3
+pvp_multiplier = 0.6
+shake = 0.15

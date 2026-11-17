@@ -115,7 +115,7 @@ func arah_input() -> Vector3:
 
 
 func gerak_horizontal(delta: float, arah: Vector3) -> void:
-	var target: Vector3 = arah * kecepatan
+	var target: Vector3 = arah * kecepatan * combat.status.speed_multiplier()
 	var laju: float = akselerasi if arah != Vector3.ZERO else gesekan
 	var horizontal := Vector3(velocity.x, 0.0, velocity.z).move_toward(target, laju * delta)
 	velocity.x = horizontal.x

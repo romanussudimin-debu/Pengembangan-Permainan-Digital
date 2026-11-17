@@ -19,6 +19,7 @@ var hurtbox: Hurtbox
 var hitbox: Hitbox
 var model: Node3D
 var hp_bar: HealthBar3D
+var status: StatusEffects
 var target: Node3D
 var damage: float = 10.0
 var home: Vector3
@@ -51,6 +52,10 @@ func _ready() -> void:
 	add_child(health)
 	damage = data.damage * CombatManager.difficulty("enemy_damage")
 	hurtbox = Hurtbox.create_capsule(self, health, CombatConst.TEAM_ENEMIES, 0.5 * data.scale, 2.0 * data.scale)
+	status = StatusEffects.new()
+	status.health = health
+	add_child(status)
+	hurtbox.status = status
 	hitbox = Hitbox.create_sphere(self, 0.8 * data.scale, Vector3(0, 1.0, -0.9) * data.scale)
 	hitbox.team = CombatConst.TEAM_ENEMIES
 	hitbox.source = self
@@ -226,7 +231,7 @@ func _change_state(s: State) -> void:
 # ------------------------------------------------------------------ gerak
 
 func _move(horizontal: Vector3, delta: float) -> void:
-	var target_v: Vector3 = horizontal + _knockback
+	var target_v: Vector3 = horizontal * status.speed_multiplier() + _knockback
 	velocity.x = move_toward(velocity.x, target_v.x, 30.0 * delta)
 	velocity.z = move_toward(velocity.z, target_v.z, 30.0 * delta)
 	if model is KarakterModel:
@@ -256,6 +261,10 @@ func _flat_distance(point: Vector3) -> float:
 
 # ------------------------------------------------------------------ kena & kalah
 
+## Dorongan dari skill (Panah Angin, ultimate); dikurangi ketahanan dorong musuh.
+func apply_knockback(push: Vector3) -> void:
+	_knockback = push * (1.0 - data.knockback_resist)
+
 func _on_hit(_amount: float, source: Node, _hit_position: Vector3) -> void:
 	if source is Node3D:
 		var push: Vector3 = global_position - (source as Node3D).global_position
@@ -281,6 +290,7 @@ func _on_damaged(amount: float, _source: Node) -> void:
 func _on_died(killer: Node) -> void:
 	is_dead = true
 	state = State.DEAD
+	status.clear()
 	_telegraph.visible = false
 	hp_bar.visible = false
 	hurtbox.monitorable = false

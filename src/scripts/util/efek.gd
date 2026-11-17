@@ -113,3 +113,54 @@ static func kilat(model: Node) -> void:
 		for n: Node in meshes:
 			if is_instance_valid(n):
 				(n as MeshInstance3D).material_overlay = null)
+
+
+## Cincin datar di tanah yang melebar lalu memudar (gelombang skill, isyarat area).
+static func cincin(induk: Node, pos: Vector3, radius: float, warna: Color, durasi: float = 0.45) -> void:
+	if induk == null or not induk.is_inside_tree():
+		return
+	var mi := MeshInstance3D.new()
+	var t := TorusMesh.new()
+	t.inner_radius = 0.86
+	t.outer_radius = 1.0
+	t.rings = 32
+	t.ring_segments = 4
+	mi.mesh = t
+	var m := StandardMaterial3D.new()
+	m.albedo_color = warna
+	m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	mi.material_override = m
+	mi.cast_shadow = GeometryInstance3D.SHADOW_CASTING_SETTING_OFF
+	induk.add_child(mi)
+	mi.global_position = pos + Vector3(0, 0.08, 0)
+	mi.scale = Vector3(radius * 0.2, 0.3, radius * 0.2)
+	var tw := mi.create_tween().set_parallel()
+	tw.tween_property(mi, "scale", Vector3(radius, 0.3, radius), durasi).set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
+	tw.tween_property(m, "albedo_color:a", 0.0, durasi).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_EXPO)
+	tw.chain().tween_callback(mi.queue_free)
+
+
+## Cahaya titik singkat (kilat skill). Dibatasi singkat agar ringan di HP.
+static func cahaya(induk: Node, pos: Vector3, warna: Color, kuat: float = 3.0, durasi: float = 0.35, jangkau: float = 6.0) -> void:
+	if induk == null or not induk.is_inside_tree():
+		return
+	var l := OmniLight3D.new()
+	l.light_color = warna
+	l.light_energy = kuat
+	l.omni_range = jangkau
+	induk.add_child(l)
+	l.global_position = pos
+	var tw := l.create_tween()
+	tw.tween_property(l, "light_energy", 0.0, durasi).set_ease(Tween.EASE_IN)
+	tw.tween_callback(l.queue_free)
+
+
+## Ledakan api kecil: partikel oranye-kuning, cincin, cahaya.
+static func ledakan_api(induk: Node, pos: Vector3, radius: float) -> void:
+	if induk == null or not induk.is_inside_tree():
+		return
+	_partikel(induk, pos, Color(1.0, 0.55, 0.12), 16, 4.0, 0.6, 0.11, -6.0, 1.6)
+	_partikel(induk, pos, Color(1.0, 0.85, 0.3), 10, 2.5, 0.45, 0.08, -3.0, 2.0)
+	cincin(induk, pos, radius, Color(1.0, 0.5, 0.1, 0.8))
+	cahaya(induk, pos + Vector3(0, 1.0, 0), Color(1.0, 0.6, 0.2), 4.0, 0.4)

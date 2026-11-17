@@ -8,6 +8,7 @@ signal hit(damage: float, source: Node, hit_position: Vector3)
 @export var health: HealthComponent
 var team: int = CombatConst.TEAM_ENEMIES
 var entity: Node3D  ## pemilik (pemain/musuh), dipakai untuk knockback & bidik otomatis
+var status: StatusEffects  ## efek terbakar/lambat milik pemilik (boleh null)
 
 
 func _init() -> void:

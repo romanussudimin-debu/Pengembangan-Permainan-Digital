@@ -43,6 +43,8 @@ func _physics_process(delta: float) -> void:
 	if _active_time <= 0.0:
 		return
 	_active_time -= delta
+	if not is_instance_valid(source):
+		source = null
 	for area: Area3D in get_overlapping_areas():
 		if area is Hurtbox:
 			var target: Hurtbox = area

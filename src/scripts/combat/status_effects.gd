@@ -62,6 +62,8 @@ func _process(delta: float) -> void:
 	_burn_timer += delta
 	if _burn_timer >= 1.0:  # satu "tik" terbakar per detik
 		_burn_timer -= 1.0
+		if not is_instance_valid(_burn_source):
+			_burn_source = null  # sumber api/racun sudah kalah
 		if health and not health.dead and CombatManager.is_authority():
 			if health.take_damage(_burn_dps, _burn_source):
 				burn_tick.emit(_burn_dps)

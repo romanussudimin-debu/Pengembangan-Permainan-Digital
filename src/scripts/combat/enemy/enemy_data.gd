@@ -15,7 +15,8 @@ extends Resource
 @export var scale: float = 1.0
 @export var bar_height: float = 2.7
 @export_group("Perilaku")
-@export_enum("basic", "charger", "thief", "shield", "flyer", "ambush") var behavior: String = "basic"
+@export_enum("basic", "charger", "thief", "shield", "flyer", "ambush", "boss_bandit", "boss_boar", "boss_komodo")
+var behavior: String = "basic"
 @export var max_hp: float = 60.0
 @export var move_speed: float = 2.6
 @export var damage: float = 12.0

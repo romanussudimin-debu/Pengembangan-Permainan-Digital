@@ -18,6 +18,9 @@ var is_dead: bool = false
 var targetable: bool = true  ## false = tidak bisa dibidik (bersembunyi, terbang tinggi)
 var gravity_enabled: bool = true
 var hit_effect: SkillData  ## efek racun/lambat/dorong dari data, dipakai serangan jarak dekat & proyektil
+var speed_mult: float = 1.0  ## pengali kecepatan (mis. bos marah)
+var detect_override: float = 0.0  ## > 0 = jarak deteksi diganti (musuh gelombang memburu pemain)
+var from_wave: bool = false
 var health: HealthComponent
 var hurtbox: Hurtbox
 var hitbox: Hitbox
@@ -53,6 +56,12 @@ static func create(enemy_data: EnemyData) -> EnemyBase:
 			e = EnemyFlyer.new()
 		"ambush":
 			e = EnemyAmbusher.new()
+		"boss_bandit":
+			e = BossBandit.new()
+		"boss_boar":
+			e = BossBoar.new()
+		"boss_komodo":
+			e = BossKomodo.new()
 		_:
 			e = EnemyBase.new()
 	e.data = enemy_data
@@ -215,7 +224,7 @@ func _physics_process(delta: float) -> void:
 				_patrol_point = home + Vector3(randf_range(-3, 3), 0, randf_range(-3, 3))
 				_change_state(State.PATROL)
 		State.PATROL:
-			_move_towards(_patrol_point, data.move_speed * 0.5, delta)
+			_move_towards(_patrol_point, move_speed() * 0.5, delta)
 			if target:
 				_change_state(State.CHASE)
 			elif _flat_distance(_patrol_point) < 0.4 or _state_time > 4.0:
@@ -247,8 +256,13 @@ func _process_flee(_delta: float) -> void:
 func _update_target() -> void:
 	if target and (not is_instance_valid(target) or CombatManager.is_combat_dead(target)):
 		target = null
-	if target == null or _flat_distance(target.global_position) > data.detect_range * 1.5:
-		target = CombatManager.nearest_player(global_position, data.detect_range)
+	var jangkau: float = detect_override if detect_override > 0.0 else data.detect_range
+	if target == null or _flat_distance(target.global_position) > jangkau * 1.5:
+		target = CombatManager.nearest_player(global_position, jangkau)
+
+
+func move_speed() -> float:
+	return data.move_speed * speed_mult
 
 
 ## Arah depan model (musuh menghadap -Z lokal model).
@@ -268,15 +282,15 @@ func _process_chase(delta: float) -> void:
 		# Bergeser ke samping setelah menembak (berlindung / sulit dibidik)
 		_strafe_time -= delta
 		var to_t: Vector3 = (target.global_position - global_position).normalized()
-		_move(Vector3(-to_t.z, 0, to_t.x) * _strafe_dir * data.move_speed, delta)
+		_move(Vector3(-to_t.z, 0, to_t.x) * _strafe_dir * move_speed(), delta)
 		_face(target.global_position, delta)
 	elif data.keep_distance > 0.0 and d < data.keep_distance:
 		# Penembak mundur menjaga jarak
 		var away: Vector3 = global_position - target.global_position
-		_move(away.normalized() * data.move_speed, delta)
+		_move(away.normalized() * move_speed(), delta)
 		_face(target.global_position, delta)
 	elif d > data.attack_range * 0.85:
-		_move_towards(target.global_position, data.move_speed, delta)
+		_move_towards(target.global_position, move_speed(), delta)
 	else:
 		_move(Vector3.ZERO, delta)
 		_face(target.global_position, delta)

@@ -9,6 +9,8 @@ signal player_respawned(player: Node3D)
 signal rewards_changed(player: Node3D)
 signal leveled_up(player: Node3D, level: int)
 signal shop_changed(available: bool)
+signal announce(title: String, subtitle: String)  ## banner HUD (gelombang, musuh baru, bos)
+signal boss_changed(boss: Node3D)
 
 ## Barang Lapak Songke (daftar eksplisit agar aman di build ekspor).
 const SHOP_ITEMS: Array[ShopItem] = [
@@ -28,6 +30,9 @@ var _respawn_points: Dictionary = {}  ## pemain -> Vector3 (checkpoint terakhir)
 var _stats: Dictionary = {}  ## peer id -> CombatStats (progres per level cerita)
 var _session_level: int = -1
 var shop_available: bool = false  ## true saat jeda antar-gelombang (Lapak Songke boleh dibuka)
+var break_time_left: float = 0.0  ## sisa jeda antar-gelombang (ditampilkan HUD)
+var boss: Node3D  ## bos yang sedang dilawan (bar HP besar di HUD)
+var story_waves_done: Dictionary = {}  ## "level:gelombang" -> true (sesi level cerita)
 
 
 func is_authority() -> bool:
@@ -43,6 +48,11 @@ func set_active(value: bool) -> void:
 	combat_changed.emit(active)
 
 
+func set_boss(b: Node3D) -> void:
+	boss = b
+	boss_changed.emit(b)
+
+
 func set_shop_available(value: bool) -> void:
 	if shop_available == value:
 		return
@@ -53,7 +63,7 @@ func set_shop_available(value: bool) -> void:
 # ------------------------------------------------------------------ kesulitan
 
 ## Kunci kesulitan aktif. Tahap 6 menambah pilihan Mudah; sekarang mengikuti Mode Normal/Sulit lama.
-func difficulty_key() -> String:
+func _difficulty_key() -> String:
 	var key: String = str(GameState.get("kesulitan")) if GameState.get("kesulitan") != null else ""
 	if CombatConst.DIFFICULTY.has(key):
 		return key
@@ -61,7 +71,7 @@ func difficulty_key() -> String:
 
 
 func difficulty(stat: String) -> float:
-	return float(CombatConst.DIFFICULTY[difficulty_key()][stat])
+	return float(CombatConst.DIFFICULTY[_difficulty_key()][stat])
 
 
 ## Pengali HP/jumlah musuh untuk co-op: 1 + 0,5 per pemain tambahan (Tahap 7).
@@ -86,8 +96,7 @@ func unregister_player(p: Node3D) -> void:
 ## Progres tempur milik pemain (dibuat bila belum ada). Direset saat level cerita berganti.
 func stats_for(p: Node3D) -> CombatStats:
 	if GameState.level != _session_level:
-		_session_level = GameState.level
-		_stats.clear()
+		reset_session()
 	var key: int = int(p.get("peer_id")) if p.get("peer_id") != null else 1
 	if not _stats.has(key):
 		var st := CombatStats.new()
@@ -98,6 +107,7 @@ func stats_for(p: Node3D) -> CombatStats:
 
 func reset_session() -> void:
 	_stats.clear()
+	story_waves_done.clear()
 	_session_level = GameState.level
 
 

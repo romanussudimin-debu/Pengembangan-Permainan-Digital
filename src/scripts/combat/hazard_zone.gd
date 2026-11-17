@@ -78,5 +78,7 @@ func _process(delta: float) -> void:
 	_tick_t += delta
 	if _tick_t >= TICK and CombatManager.is_authority() and GameState.sedang(GameState.State.BERMAIN):
 		_tick_t -= TICK
+		if not is_instance_valid(source):
+			source = null
 		for hb: Hurtbox in CombatUtil.hurtboxes_in_radius(self, global_position + Vector3(0, 0.5, 0), radius, team):
 			hb.receive_hit(dps * TICK, source, hb.global_position)

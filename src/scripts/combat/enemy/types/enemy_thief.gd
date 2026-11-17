@@ -35,7 +35,7 @@ func _process_flee(delta: float) -> void:
 	if p:
 		var away: Vector3 = global_position - p.global_position
 		away.y = 0.0
-		_move(away.normalized() * data.move_speed * 1.35, delta)
+		_move(away.normalized() * move_speed() * 1.35, delta)
 		_face(global_position + away, delta)
 	if data.fly_height > 0.0 and _flee_t > 1.5:
 		_climb = minf(_climb + delta * 1.6, data.fly_height)  # memanjat

@@ -121,6 +121,7 @@ func mulai_level(n: int) -> void:
 	level = n
 	waktu_mulai_level = Time.get_ticks_msec()
 	Prestasi.mulai_level()
+	CombatManager.reset_session()
 	Analitik.catat("level_mulai")
 	Nyawa.isi_penuh()
 	tujuan_khusus = ""

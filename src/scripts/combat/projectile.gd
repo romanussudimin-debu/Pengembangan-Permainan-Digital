@@ -189,6 +189,8 @@ func _face_velocity() -> void:
 func _physics_process(delta: float) -> void:
 	if _done:
 		return
+	if not is_instance_valid(source):
+		source = null  # penembak sudah kalah; proyektil tetap melaju tanpa sumber
 	var step: Vector3 = velocity * delta
 	var from: Vector3 = global_position
 	var to: Vector3 = from + step

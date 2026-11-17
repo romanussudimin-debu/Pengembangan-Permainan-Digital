@@ -63,6 +63,8 @@ func _process(delta: float) -> void:
 	if not GameState.sedang(GameState.State.BERMAIN):
 		return
 	var p: Node3D = CombatManager.nearest_player(global_position, data.ambush_range)
+	if p == null and from_wave and _t > 10.0:
+		p = CombatManager.nearest_player(global_position, 80.0)  # gelombang tidak boleh macet
 	if p:
 		_reveal(p)
 

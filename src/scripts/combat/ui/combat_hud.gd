@@ -16,6 +16,12 @@ var _label_respawn: Label
 var _skills_canvas: Control
 var _shop_button: Button
 var _shop: LapakSongke
+var _always: Control  ## lapisan yang tampil walau tempur nonaktif (banner, tombol Lapak saat jeda)
+var _banner_title: Label
+var _banner_sub: Label
+var _banner_tween: Tween
+var _boss_canvas: Control
+var _label_break: Label
 
 
 func _ready() -> void:
@@ -64,6 +70,82 @@ func _ready() -> void:
 	_respawn_panel.add_child(_label_respawn)
 	CombatManager.combat_changed.connect(func(a: bool) -> void: _root.visible = a)
 	_root.visible = CombatManager.active
+	_build_always_layer()
+
+
+func _build_always_layer() -> void:
+	_always = Control.new()
+	_always.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_always.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_always)
+	_shop_button.reparent(_always)
+	_label_break = Gaya.label("", 10, Gaya.PUTIH)
+	_label_break.position = Vector2(470, 244)
+	_label_break.size = Vector2(160, 16)
+	_label_break.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_always.add_child(_label_break)
+	_banner_title = Gaya.label("", 20, Gaya.KUNING)
+	_banner_title.add_theme_constant_override("outline_size", 6)
+	_banner_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_banner_title.size = Vector2(640, 30)
+	_banner_title.position = Vector2(0, 222)
+	_banner_title.pivot_offset = Vector2(320, 15)
+	_always.add_child(_banner_title)
+	_banner_sub = Gaya.label("", 11, Gaya.PUTIH)
+	_banner_sub.add_theme_constant_override("outline_size", 5)
+	_banner_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	_banner_sub.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_banner_sub.size = Vector2(520, 36)
+	_banner_sub.position = Vector2(60, 252)
+	_always.add_child(_banner_sub)
+	_banner_title.modulate.a = 0.0
+	_banner_sub.modulate.a = 0.0
+	_boss_canvas = Control.new()
+	_boss_canvas.position = Vector2(160, 92)
+	_boss_canvas.size = Vector2(320, 22)
+	_boss_canvas.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_boss_canvas.draw.connect(_draw_boss)
+	_boss_canvas.visible = false
+	_always.add_child(_boss_canvas)
+	CombatManager.announce.connect(show_banner)
+	CombatManager.boss_changed.connect(func(b: Node3D) -> void: _boss_canvas.visible = b != null)
+
+
+## Banner tengah layar: judul besar + keterangan (gelombang, musuh baru beserta kiatnya, bos).
+func show_banner(title: String, subtitle: String) -> void:
+	_banner_title.text = title
+	_banner_sub.text = subtitle
+	if _banner_tween:
+		_banner_tween.kill()
+	_banner_title.scale = Vector2(1.4, 1.4)
+	_banner_tween = create_tween()
+	_banner_tween.set_parallel()
+	_banner_tween.tween_property(_banner_title, "modulate:a", 1.0, 0.15)
+	_banner_tween.tween_property(_banner_sub, "modulate:a", 1.0, 0.15)
+	_banner_tween.tween_property(_banner_title, "scale", Vector2.ONE, 0.3).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	_banner_tween.chain().tween_interval(2.8 if subtitle.length() > 30 else 1.8)
+	_banner_tween.chain().tween_property(_banner_title, "modulate:a", 0.0, 0.4)
+	_banner_tween.parallel().tween_property(_banner_sub, "modulate:a", 0.0, 0.4)
+
+
+## Bar HP bos: nama, bar merah (gelap saat marah), garis tengah penanda fase marah.
+func _draw_boss() -> void:
+	var b: Node3D = CombatManager.boss
+	if b == null or not is_instance_valid(b):
+		return
+	var c: Control = _boss_canvas
+	var h: HealthComponent = b.get("health")
+	var nama: String = str((b.get("data") as EnemyData).display_name)
+	var marah: bool = b.get("enraged") == true
+	var r: float = h.ratio() if h else 0.0
+	c.draw_rect(Rect2(0, 8, c.size.x, 14), Color(0.08, 0.05, 0.05, 0.9))
+	c.draw_rect(Rect2(2, 10, (c.size.x - 4) * r, 10), Color("8a1010") if marah else Color("d8402a"))
+	c.draw_line(Vector2(c.size.x * 0.5, 8), Vector2(c.size.x * 0.5, 22), Gaya.KUNING, 1.0)
+	c.draw_rect(Rect2(0, 8, c.size.x, 14), Gaya.KUNING, false, 1.0)
+	var font: Font = ThemeDB.fallback_font
+	var teks: String = nama + ("  (MARAH!)" if marah else "")
+	c.draw_string_outline(font, Vector2(0, 6), teks, HORIZONTAL_ALIGNMENT_CENTER, c.size.x, 10, 4, Gaya.HITAM)
+	c.draw_string(font, Vector2(0, 6), teks, HORIZONTAL_ALIGNMENT_CENTER, c.size.x, 10, Gaya.KUNING)
 
 
 func _process(_delta: float) -> void:
@@ -74,6 +156,11 @@ func _process(_delta: float) -> void:
 	var c: CombatPlayer = player.combat
 	_hp_canvas.queue_redraw()
 	_skills_canvas.queue_redraw()
+	if _boss_canvas.visible:
+		_boss_canvas.queue_redraw()
+	_label_break.visible = CombatManager.shop_available and CombatManager.break_time_left > 0.0
+	if _label_break.visible:
+		_label_break.text = "Jeda: %d detik" % ceili(CombatManager.break_time_left)
 	_label_reward.text = "Koin %d" % CombatManager.stats_for(player).coins
 	_respawn_panel.visible = c.is_dead
 	if c.is_dead:

@@ -69,6 +69,10 @@ var _cakram: Array = []  ## [MeshInstance3D, CollisionShape3D, indeks]
 var _pasang: float = 0.0
 var _sampah_wajib: int = 0  ## 0 = pulau tanpa syarat sampah
 var _sampah_dipungut: int = 0
+## Pertempuran Level 3: gelombang 1-3 saat tiba di Padar, Pink Beach, Pulau Komodo;
+## bos Komodo Raksasa saat Pulau Komodo tuntas (sebelum kembali ke kapal).
+const GELOMBANG_PULAU: Dictionary = {"padar": 0, "pink": 1, "komodo": 2}
+var _tempur: StoryCombat
 var _salah_jual: int = 0  ## salah barang/cerita di pulau ini (pencapaian "Penjual Andal")
 var _salah_laut: int = 0  ## mengambil pengecoh, menyentuh satwa, menginjak karang (untuk pencapaian "Sahabat Laut")
 var _penyu: Array[Penyu] = []
@@ -119,6 +123,12 @@ func _ready() -> void:
 		add_child(kelapa)
 	_munculkan_pemain()
 	add_child(preload("res://scripts/ui/hud.gd").new())
+	_tempur = StoryCombat.new(self, 3)
+	add_child(_tempur)
+	if GELOMBANG_PULAU.has(jenis):
+		get_tree().create_timer(4.0, false).timeout.connect(func() -> void:
+			if is_instance_valid(_tempur) and not _tuntas and not _gagal:
+				_tempur.run(GELOMBANG_PULAU[jenis]))
 	_bangun_ui()
 	AudioManager.putar_musik("kampung")
 	GameState.ubah_state(GameState.State.BERMAIN)
@@ -591,6 +601,10 @@ func _baca_info(_p: Pemain) -> void:
 
 
 func _pulau_tuntas() -> void:
+	if jenis == "komodo" and not _tempur.is_done(3):
+		_waktu_berjalan = false
+		_tempur.run(3, _pulau_tuntas)
+		return
 	_tuntas = true
 	if _salah_jual == 0:
 		Prestasi.raih("penjual_andal")
@@ -682,7 +696,7 @@ func _munculkan_pemain() -> void:
 
 func _process(delta: float) -> void:
 	var aktif: bool = GameState.sedang(GameState.State.BERMAIN) or GameState.sedang(GameState.State.MINIGAME)
-	if _waktu_berjalan and aktif and not _tuntas and not _gagal:
+	if _waktu_berjalan and aktif and not _tuntas and not _gagal and not CombatManager.active:
 		_sisa_waktu = maxf(_sisa_waktu - delta, 0.0)
 		if _sisa_waktu <= 0.0:
 			_gagal_pulau("waktu_habis")
@@ -834,7 +848,7 @@ func _cek_bahaya_baru(p: Vector3) -> bool:
 	for sm: Array in _semak:
 		var semak: Semak = sm[0]
 		if semak.bersembunyi and Vector2(p.x - semak.position.x, p.z - semak.position.z).length() < JARAK_SEMAK:
-			_komodo_menerjang(sm[1], p)
+			Semak.terjang(sm[1], p)
 			_kembali_aman(DataLabuanBajo.teks("semak_komodo"), DENDA_KOMODO)
 			return true
 	if _batas_arus > 0.0 and Vector2(p.x, p.z).length() > _batas_arus:
@@ -875,18 +889,6 @@ func _perbarui_batu(delta: float, p: Vector3) -> void:
 				tw.tween_callback(mi.hide)
 				Nyawa.kurangi(DataLabuanBajo.teks("batu_goyah"))
 				_toast(DataLabuanBajo.teks("batu_goyah"))
-
-
-## Komodo yang bersembunyi menerjang keluar sebentar ke arah pemain, lalu kembali ke semak.
-func _komodo_menerjang(komodo: Komodo, p: Vector3) -> void:
-	if komodo == null:
-		return
-	var asal: Vector3 = komodo.titik_a
-	var tuju: Vector3 = asal + (Vector3(p.x, asal.y, p.z) - asal).normalized() * 1.2
-	var tw := create_tween()
-	tw.tween_property(komodo, "position", tuju, 0.15)
-	tw.tween_interval(0.6)
-	tw.tween_property(komodo, "position", asal, 0.8)
 
 
 ## Taka Makassar: cakram pasir menyempit dan ujung-ujung sabit tenggelam saat air pasang.

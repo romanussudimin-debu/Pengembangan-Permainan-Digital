@@ -75,6 +75,10 @@ var _pos_ambil_kopi := Vector3.ZERO
 # Benang emas
 var _benang_terkumpul: int = 0
 var _pernah_tumpah: bool = false  ## untuk pencapaian "Tanpa Tumpah"
+## Pertempuran di sela rantai: setelah tantangan ke-3, ke-6, ke-8 (gelombang 1-3); bos sebelum ke lingko.
+## Compang (pusat kampung, sakral) tidak dipakai sebagai tempat munculnya musuh.
+const GELOMBANG_SETELAH: Dictionary = {3: 0, 6: 1, 8: 2}
+var _tempur: StoryCombat
 
 
 func _ready() -> void:
@@ -90,6 +94,8 @@ func _ready() -> void:
 		add_child(kopi)
 	_munculkan_pemain()
 	add_child(preload("res://scripts/ui/hud.gd").new())
+	_tempur = StoryCombat.new(self, 1, [Vector4(0, 0, 7.0, 0)])
+	add_child(_tempur)
 	AudioManager.putar_musik("kampung")
 	GameState.ubah_state(GameState.State.BERMAIN)
 	if GameState.langkah_rantai == 0:
@@ -305,9 +311,12 @@ func _sampaikan_petunjuk(tantangan: Dictionary) -> void:
 	var teks: String = ("Petunjuk berikutnya: " + str(tantangan["petunjuk"])) if not GameState.rantai_selesai() else str(tantangan["petunjuk"])
 	var baris: Array = [{"nama": tantangan["pemegang"], "teks": teks}]
 	if GameState.rantai_selesai():
-		DialogManager.mulai_baris("penutup", baris, _mulai_penti)
+		DialogManager.mulai_baris("penutup", baris, func() -> void: _tempur.run(3, _mulai_penti))
 	else:
-		DialogManager.mulai_baris("petunjuk", baris)
+		var gelombang: int = int(GELOMBANG_SETELAH.get(GameState.langkah_rantai, -1))
+		DialogManager.mulai_baris("petunjuk", baris, func() -> void:
+			if gelombang >= 0:
+				_tempur.run(gelombang))
 
 
 ## Level 1 tamat: lanjut ke Level 2 (Lingko Lodok). Penti kini menjadi penutup level terakhir.

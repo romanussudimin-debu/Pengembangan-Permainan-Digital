@@ -58,3 +58,15 @@ func _process(delta: float) -> void:
 			goyang = sin(_waktu * 1.6) * 0.05  # angin: semua daun seirama, pelan
 		_daun[i].rotation.z = goyang
 		_daun[i].rotation.x = goyang * 0.6
+
+
+## Komodo yang bersembunyi menerjang keluar sebentar ke arah `p`, lalu kembali ke semak.
+static func terjang(komodo: Komodo, p: Vector3) -> void:
+	if komodo == null:
+		return
+	var asal: Vector3 = komodo.titik_a
+	var tuju: Vector3 = asal + (Vector3(p.x, asal.y, p.z) - asal).normalized() * 1.2
+	var tw := komodo.create_tween()
+	tw.tween_property(komodo, "position", tuju, 0.15)
+	tw.tween_interval(0.6)
+	tw.tween_property(komodo, "position", asal, 0.8)

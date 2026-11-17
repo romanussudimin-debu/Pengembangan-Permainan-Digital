@@ -83,3 +83,33 @@ static func teks(induk: Node, pos: Vector3, isi: String, warna: Color = Gaya.KUN
 	tw.tween_property(l, "global_position:y", pos.y + 1.2, 0.9).set_ease(Tween.EASE_OUT)
 	tw.tween_property(l, "modulate:a", 0.0, 0.4).set_delay(0.6)
 	tw.chain().tween_callback(l.queue_free)
+
+
+## Percikan merah kecil saat terkena serangan (tidak sadis: sedikit, kecil, cepat hilang).
+static func percikan_kena(induk: Node, pos: Vector3) -> void:
+	if induk == null or not induk.is_inside_tree():
+		return
+	_partikel(induk, pos, Color(0.85, 0.12, 0.1), 6, 2.2, 0.35, 0.05, -8.0, 1.2)
+
+
+## Angka damage melayang (putih biasa, kuning untuk serangan kuat) dengan geser acak kecil.
+static func angka_damage(induk: Node, pos: Vector3, nilai: float, kuat: bool = false) -> void:
+	var geser := Vector3(randf_range(-0.35, 0.35), randf_range(0.0, 0.25), 0.0)
+	teks(induk, pos + geser, str(int(round(nilai))), Gaya.KUNING if kuat else Color("f4f2ea"))
+
+
+## Kilat putih sesaat pada semua mesh di bawah `model` (umpan balik kena hit).
+static func kilat(model: Node) -> void:
+	if model == null or not model.is_inside_tree():
+		return
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color(1, 1, 1, 0.75)
+	mat.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
+	mat.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+	var meshes: Array[Node] = model.find_children("*", "MeshInstance3D", true, false)
+	for n: Node in meshes:
+		(n as MeshInstance3D).material_overlay = mat
+	model.get_tree().create_timer(0.08, false).timeout.connect(func() -> void:
+		for n: Node in meshes:
+			if is_instance_valid(n):
+				(n as MeshInstance3D).material_overlay = null)

@@ -36,7 +36,7 @@ func _ready() -> void:
 	caster = SkillCaster.new()
 	caster.name = "Skills"
 	add_child(caster)
-	hp_bar = HealthBar3D.create(character, 3.0, Color("6ad07a"), "")
+	hp_bar = HealthBar3D.create(character, 3.0, Color("6ad07a"), player_name)
 	hp_bar.always_visible = false
 	health.damaged.connect(_on_damaged)
 	health.changed.connect(func(hp: float, max_hp: float) -> void: hp_bar.set_ratio(hp / max_hp))
@@ -48,6 +48,8 @@ func _ready() -> void:
 	apply_stats()
 	CombatManager.combat_changed.connect(_on_combat_changed)
 	_on_combat_changed(CombatManager.active)
+	if character.input is KeyboardInput:
+		set_player_name(PlayerProfile.player_name)  # pemain lokal: nama dari profil
 
 
 func _exit_tree() -> void:

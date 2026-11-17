@@ -64,10 +64,9 @@ func set_shop_available(value: bool) -> void:
 
 ## Kunci kesulitan aktif. Tahap 6 menambah pilihan Mudah; sekarang mengikuti Mode Normal/Sulit lama.
 func _difficulty_key() -> String:
-	var key: String = str(GameState.get("kesulitan")) if GameState.get("kesulitan") != null else ""
-	if CombatConst.DIFFICULTY.has(key):
-		return key
-	return "sulit" if GameState.mode_sulit else "normal"
+	if GameState.mode_sulit:
+		return "sulit"
+	return GameState.kesulitan if CombatConst.DIFFICULTY.has(GameState.kesulitan) else "normal"
 
 
 func difficulty(stat: String) -> float:

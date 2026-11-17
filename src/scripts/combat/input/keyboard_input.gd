@@ -27,11 +27,16 @@ func update_input(character: Node3D, _delta: float) -> void:
 	jump_pressed = Input.is_action_just_pressed("lompat")
 	jump_held = Input.is_action_pressed("lompat")
 	interact_pressed = Input.is_action_just_pressed("interaksi")
-	shoot_held = Input.is_action_pressed("shoot") and _mouse_used
+	shoot_held = (Input.is_action_pressed("shoot") and _mouse_used) or KontrolSentuh.tembak_ditekan
 	for i in SKILL_ACTIONS.size():
 		skill_pressed[i] = Input.is_action_just_pressed(SKILL_ACTIONS[i])
 	auto_aim = not _mouse_used
 	has_aim_point = false
+	if Time.get_ticks_msec() < KontrolSentuh.aim_override_until:
+		# Bidik manual dari seret tombol skill (sentuh)
+		aim_point = character.global_position + camera_relative(character, KontrolSentuh.aim_override).normalized() * 8.0
+		has_aim_point = true
+		return
 	if _mouse_used:
 		var point: Variant = mouse_ground_point(character)
 		if point != null:

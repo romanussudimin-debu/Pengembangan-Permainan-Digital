@@ -42,7 +42,7 @@ func _build(color: Color, label_text: String) -> void:
 		_label = Label3D.new()
 		_label.text = label_text
 		_label.font_size = 32
-		_label.pixel_size = 0.006
+		_label.pixel_size = 0.009
 		_label.outline_size = 8
 		_label.position = Vector3(0, 0.2, 0)
 		_label.billboard = BaseMaterial3D.BILLBOARD_ENABLED

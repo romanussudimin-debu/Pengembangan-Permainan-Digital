@@ -47,6 +47,7 @@ var level_tertinggi: int = 1  ## level terjauh yang sudah terbuka (disimpan)
 var kartu_awal_level: Array[String] = []  ## kartu saat level dimulai (untuk mengulang level)
 var teks_cepat: bool = false  ## pengaturan: teks dialog langsung tampil utuh (disimpan)
 var mode_sulit: bool = false  ## Sulit: batas waktu "sebelum senja", kesempatan salah lebih sedikit
+var kesulitan: String = "normal"  ## "mudah" | "normal" | "sulit" (pengali tempur di CombatConst.DIFFICULTY)
 var tujuan_khusus: String = ""  ## teks tujuan yang diatur level aktif (Level 2 dst.)
 var level_baru_selesai: int = 0  ## level yang baru tamat (dibaca layar Level Berhasil)
 var waktu_mulai_level: int = 0  ## Time.get_ticks_msec() saat level dimulai
@@ -206,7 +207,13 @@ func ulangi_pulau() -> void:
 
 
 func atur_mode_sulit(aktif: bool) -> void:
-	mode_sulit = aktif
+	atur_kesulitan("sulit" if aktif else "normal")
+
+
+## Mudah / Normal / Sulit. Sulit juga mengaktifkan aturan Mode Sulit cerita (nyawa 3, batas waktu).
+func atur_kesulitan(k: String) -> void:
+	kesulitan = k if k in ["mudah", "normal", "sulit"] else "normal"
+	mode_sulit = kesulitan == "sulit"
 	simpan()
 
 
@@ -218,6 +225,7 @@ func simpan() -> void:
 	cfg.set_value("progres", "terjual_total", terjual_total)
 	cfg.set_value("progres", "pembuka_l3_dilihat", pembuka_l3_dilihat)
 	cfg.set_value("pengaturan", "mode_sulit", mode_sulit)
+	cfg.set_value("pengaturan", "kesulitan", kesulitan)
 	cfg.set_value("pengaturan", "teks_cepat", teks_cepat)
 	var hasil: Error = cfg.save(BERKAS_SIMPAN)
 	if hasil != OK:
@@ -235,6 +243,8 @@ func muat() -> void:
 	terjual_total = int(cfg.get_value("progres", "terjual_total", 0))
 	pembuka_l3_dilihat = bool(cfg.get_value("progres", "pembuka_l3_dilihat", false))
 	mode_sulit = bool(cfg.get_value("pengaturan", "mode_sulit", false))
+	kesulitan = str(cfg.get_value("pengaturan", "kesulitan", "sulit" if mode_sulit else "normal"))
+	mode_sulit = kesulitan == "sulit"
 	teks_cepat = bool(cfg.get_value("pengaturan", "teks_cepat", false))
 
 

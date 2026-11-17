@@ -22,6 +22,8 @@ var _banner_sub: Label
 var _banner_tween: Tween
 var _boss_canvas: Control
 var _label_break: Label
+var _minimap: Control
+const MINIMAP_RANGE: float = 22.0  ## meter dari pemain ke tepi minimap
 
 
 func _ready() -> void:
@@ -41,6 +43,12 @@ func _ready() -> void:
 	_skills_canvas.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_skills_canvas.draw.connect(_draw_skills)
 	_root.add_child(_skills_canvas)
+	_minimap = Control.new()
+	_minimap.position = Vector2(8, 88)
+	_minimap.size = Vector2(84, 84)
+	_minimap.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_minimap.draw.connect(_draw_minimap)
+	_root.add_child(_minimap)
 	_label_reward = Gaya.label("", 10, Gaya.KUNING)
 	_label_reward.position = Vector2(232, 297)
 	_root.add_child(_label_reward)
@@ -79,6 +87,8 @@ func _build_always_layer() -> void:
 	_always.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(_always)
 	_shop_button.reparent(_always)
+	if KontrolSentuh.aktif_di_perangkat:
+		_shop_button.position = Vector2(440, 118)  # jangan menutupi tombol skill sentuh
 	_label_break = Gaya.label("", 10, Gaya.PUTIH)
 	_label_break.position = Vector2(470, 244)
 	_label_break.size = Vector2(160, 16)
@@ -156,6 +166,7 @@ func _process(_delta: float) -> void:
 	var c: CombatPlayer = player.combat
 	_hp_canvas.queue_redraw()
 	_skills_canvas.queue_redraw()
+	_minimap.queue_redraw()
 	if _boss_canvas.visible:
 		_boss_canvas.queue_redraw()
 	_label_break.visible = CombatManager.shop_available and CombatManager.break_time_left > 0.0
@@ -229,8 +240,8 @@ func _draw_hp() -> void:
 ## Ikon skill: lingkaran berwarna skill; saat cooldown, sapuan gelap melingkar + sisa detik;
 ## redup bila energi tidak cukup. Huruf tombol di bawah ikon.
 func _draw_skills() -> void:
-	if player == null:
-		return
+	if player == null or KontrolSentuh.visible:
+		return  # di layar sentuh tombol skill digambar KontrolSentuh (bisa diketuk & diseret)
 	var c: Control = _skills_canvas
 	var caster: SkillCaster = player.combat.caster
 	var font: Font = ThemeDB.fallback_font
@@ -279,3 +290,43 @@ func _draw_icon(c: Control, pos: Vector2, r: float, kind: String) -> void:
 			c.draw_line(pos + Vector2(-r * 0.6, 0), pos + Vector2(r * 0.6, 0), w, 2.0)
 		_:
 			GambarBintang.gambar(c, pos, r * 0.6, true, Color(1, 0.95, 0.7))
+
+
+## Minimap bundar (atas = arah hadap kamera): pemain lokal putih, kawan biru, musuh merah,
+## bos merah besar. Musuh di luar jangkauan ditandai di tepi lingkaran.
+func _draw_minimap() -> void:
+	if player == null:
+		return
+	var c: Control = _minimap
+	var pusat := Vector2(42, 42)
+	var r: float = 40.0
+	c.draw_circle(pusat, r + 2.0, Color(0.08, 0.06, 0.05, 0.85))
+	c.draw_circle(pusat, r, Color(0.25, 0.35, 0.2, 0.75))
+	c.draw_arc(pusat, r, 0.0, TAU, 32, Gaya.KUNING, 1.5)
+	var cam := get_viewport().get_camera_3d()
+	var yaw: float = cam.global_rotation.y if cam else 0.0
+	var asal: Vector3 = player.global_position
+	for e: Node3D in CombatManager.enemies:
+		if not is_instance_valid(e) or e.get("is_dead"):
+			continue
+		var is_boss: bool = e == CombatManager.boss
+		var tersembunyi: bool = e.get("targetable") == false and not is_boss
+		if tersembunyi:
+			continue
+		var p: Vector2 = _peta(e.global_position - asal, yaw, r)
+		c.draw_circle(pusat + p, 5.0 if is_boss else 2.6, Color("e83a2a") if is_boss else Color("ff6a4a"))
+	for pl: Node3D in CombatManager.players:
+		if pl == player or not is_instance_valid(pl):
+			continue
+		c.draw_circle(pusat + _peta(pl.global_position - asal, yaw, r), 3.0, Color("5fa8e8"))
+	# Pemain lokal: segitiga putih menunjuk arah bidik
+	var arah: Vector3 = player.combat.aim_dir
+	var ujung := Vector2(arah.x, arah.z).rotated(yaw).normalized()
+	c.draw_colored_polygon(PackedVector2Array([pusat + ujung * 6.0, pusat + ujung.rotated(2.4) * 4.0,
+			pusat + ujung.rotated(-2.4) * 4.0]), Gaya.PUTIH)
+
+
+func _peta(rel: Vector3, yaw: float, r: float) -> Vector2:
+	var v := Vector2(rel.x, rel.z).rotated(yaw) / MINIMAP_RANGE * r
+	return v.limit_length(r - 3.0)
+

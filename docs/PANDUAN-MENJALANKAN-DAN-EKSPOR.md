@@ -39,6 +39,13 @@ iPhone/iPad (aplikasi native) butuh Xcode dan akun Apple Developer, jadi gunakan
 **Mencoba kontrol sentuh di laptop:** Project → Project Settings → (aktifkan *Advanced Settings*) → Input Devices → Pointing → centang **Emulate Touch From Mouse**, lalu F5. Matikan lagi sebelum ekspor ke Windows/macOS.
 
 
+## B2. Menguji Main Bersama (LAN)
+**Dua jendela di satu komputer (Godot editor):** menu *Debug > Customize Run Instances...* → centang *Enable Multiple Instances*, isi 2 → tekan F5. Jendela 1: *Main Bersama / PvP > Buat Room (Host)*. Jendela 2: *Main Bersama / PvP*, pilih room yang muncul (atau ketik IP `127.0.0.1` lalu *Gabung*) → *Siap!*. Jendela 1: pilih mode (Co-op/PvP, level/format/arena) → *Mulai!*.
+
+**HP + laptop (aplikasi):** sambungkan keduanya ke WiFi yang sama, atau nyalakan hotspot di HP lalu sambungkan laptop ke hotspot itu. Buka game di keduanya (APK di HP, `.exe`/`.app` di laptop). Perangkat pertama *Buat Room*; IP-nya tampil di lobi (mis. `192.168.43.1` bila HP menjadi hotspot). Perangkat kedua memilih room yang ditemukan, atau mengetik IP tersebut. Bila room tidak muncul otomatis (sebagian jaringan memblokir broadcast), pakai IP manual. Izinkan aplikasi di firewall Windows bila diminta. APK sudah membawa izin INTERNET & jaringan WiFi.
+
+**Tanpa teman:** *Latihan PvP vs Bot* (juga di versi web).
+
 ## C. Publikasi
 - **itch.io:** buat akun → *Upload new project* → jenis *HTML* → unggah ZIP berisi seluruh isi `build/web` → centang *This file will be played in the browser*. Atur *Viewport* ke 1280 × 720.
 - **GitHub Releases:** di halaman repo → *Releases → Create a new release* → lampirkan `JejakPenti.exe` dan ZIP macOS.

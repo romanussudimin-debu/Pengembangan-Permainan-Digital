@@ -32,6 +32,9 @@ static func spawn(parent: Node, from: Vector3, direction: Vector3, speed: float,
 	p.global_position = from
 	p._build_mesh()
 	p._face_velocity()
+	if src is EnemyBase and CombatManager.networked():
+		CombatManager.net_event.emit("shot", {"from": from, "dir": direction, "speed": speed, "range": range_m,
+				"kind": projectile_kind})
 	return p
 
 
@@ -212,7 +215,10 @@ func _physics_process(delta: float) -> void:
 			if skill:
 				CombatUtil.apply_skill_hit(target, skill, source, from, damage)
 			else:
-				target.receive_hit(damage, source, hit["position"])
+				var dmg: float = damage
+				if target.entity in CombatManager.players and source in CombatManager.players:
+					dmg *= CombatConst.PVP_ARROW_MULT  # penyeimbang damage antar-pemain (PvP)
+				target.receive_hit(dmg, source, hit["position"])
 			if pierce:
 				_pierced.append(target)
 				exclude.append(target.get_rid())

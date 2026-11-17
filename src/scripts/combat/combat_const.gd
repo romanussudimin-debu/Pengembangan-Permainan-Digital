@@ -29,3 +29,4 @@ const AIM_ASSIST_RANGE: float = 16.0
 const AIM_ASSIST_ANGLE: float = 0.45  ## radian; bantuan "kuat" menarik bidikan dalam sudut ini
 const INVULNERABLE_AFTER_RESPAWN: float = 2.0
 const COMBAT_HEIGHT: float = 1.25  ## tinggi badan (titik bidik & asal panah)
+const PVP_ARROW_MULT: float = 0.6  ## panah biasa antar-pemain (lihat juga PvpRules); skill memakai pvp_multiplier

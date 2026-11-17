@@ -43,7 +43,7 @@ func _ready() -> void:
 func _on_body_entered(body: Node3D) -> void:
 	if not body in CombatManager.players:
 		return
-	CombatManager.set_respawn_point(body, global_position)
+	CombatManager.respawn_points[body] = global_position
 	if not _active:
 		_active = true
 		_flag_mat.albedo_color = Color("b02a2a")

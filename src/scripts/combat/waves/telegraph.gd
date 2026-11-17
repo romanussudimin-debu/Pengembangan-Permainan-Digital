@@ -28,6 +28,8 @@ static func circle(parent: Node, pos: Vector3, radius: float, duration: float, c
 	fill.material_override = m
 	fill.scale = Vector3(0.05, 1, 0.05)
 	root.add_child(fill)
+	if CombatManager.networked():
+		CombatManager.net_event.emit("telegraph", {"pos": pos, "r": radius, "dur": duration, "color": color})
 	var tw := root.create_tween()
 	tw.tween_property(fill, "scale", Vector3(radius, 1, radius), duration)
 	tw.tween_callback(root.queue_free)

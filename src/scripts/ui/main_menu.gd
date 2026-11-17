@@ -121,6 +121,8 @@ func _bangun_ui() -> void:
 		var lv: int = clampi(GameState.level_tertinggi, 1, GameState.ADEGAN_LEVEL.size())
 		var lanjut := _tombol_menu("Lanjutkan (Level %d)" % lv, kolom)
 		lanjut.pressed.connect(_pastikan_nama.bind(GameState.lanjutkan))
+	var bersama := _tombol_menu("Main Bersama / PvP", kolom)
+	bersama.pressed.connect(_pastikan_nama.bind(func() -> void: Transisi.pindah_scene("res://scenes/lobby.tscn")))
 	var baris_prestasi := _baris_menu(kolom)
 	if GameState.level_tertinggi > 1:
 		var pilih := _tombol_kecil(Prestasi.teks("pilih_level"), baris_prestasi)

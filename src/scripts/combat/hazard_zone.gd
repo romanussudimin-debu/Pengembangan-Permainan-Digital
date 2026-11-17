@@ -27,6 +27,8 @@ static func spawn(parent: Node, pos: Vector3, r: float, damage_per_second: float
 	z.color = tint
 	parent.add_child(z)
 	z.global_position = Vector3(pos.x, pos.y, pos.z)
+	if CombatManager.networked():
+		CombatManager.net_event.emit("hazard", {"pos": pos, "r": r, "dur": dur, "tint": tint})
 	return z
 
 

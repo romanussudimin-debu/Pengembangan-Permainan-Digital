@@ -164,3 +164,4 @@ static func ledakan_api(induk: Node, pos: Vector3, radius: float) -> void:
 	_partikel(induk, pos, Color(1.0, 0.85, 0.3), 10, 2.5, 0.45, 0.08, -3.0, 2.0)
 	cincin(induk, pos, radius, Color(1.0, 0.5, 0.1, 0.8))
 	cahaya(induk, pos + Vector3(0, 1.0, 0), Color(1.0, 0.6, 0.2), 4.0, 0.4)
+	AudioManager.putar_sfx("ledakan", 0.1)

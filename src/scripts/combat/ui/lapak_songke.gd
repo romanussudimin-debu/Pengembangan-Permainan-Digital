@@ -13,6 +13,7 @@ var _cards: Control
 var _label_coins: Label
 var _label_info: Label
 var _state_before: int = GameState.State.BERMAIN
+var _pause: bool = true  ## main sendiri: permainan ditahan; LAN: dunia tetap berjalan
 
 
 static func open_for(p: Pemain) -> LapakSongke:
@@ -26,7 +27,9 @@ func _ready() -> void:
 	layer = 40
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	_state_before = GameState.state
-	GameState.ubah_state(GameState.State.MINIGAME)
+	_pause = not NetworkManager.is_online()
+	if _pause:
+		GameState.ubah_state(GameState.State.MINIGAME)
 	var gelap := ColorRect.new()
 	gelap.color = Color(0, 0, 0, 0.55)
 	gelap.set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -68,7 +71,7 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func close() -> void:
-	if GameState.sedang(GameState.State.MINIGAME):
+	if _pause and GameState.sedang(GameState.State.MINIGAME):
 		GameState.ubah_state(GameState.State.BERMAIN if _state_before == GameState.State.MINIGAME else _state_before)
 	closed.emit()
 	queue_free()
@@ -137,6 +140,17 @@ func _make_card(item: ShopItem, stats: CombatStats) -> Control:
 
 
 func _buy(item: ShopItem) -> void:
+	if NetworkManager.is_online() and not NetworkManager.is_host():
+		# Klien LAN: pembelian diproses host (otoritas), hasilnya datang lewat snapshot
+		var arena: Node = get_tree().current_scene
+		if arena.has_method("request_buy"):
+			arena.call("request_buy", item.id)
+		_label_info.text = "Membeli %s..." % item.display_name
+		AudioManager.putar_sfx("klik")
+		get_tree().create_timer(0.35).timeout.connect(func() -> void:
+			if is_inside_tree():
+				_rebuild())
+		return
 	var stats: CombatStats = CombatManager.stats_for(player)
 	var alasan: String = stats.buy(item)
 	if alasan != "":

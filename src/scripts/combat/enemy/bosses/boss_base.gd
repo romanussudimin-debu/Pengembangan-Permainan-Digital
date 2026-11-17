@@ -27,7 +27,7 @@ func _check_rage(hp: float, max_hp: float) -> void:
 	speed_mult = 1.4
 	CombatManager.announce.emit("%s marah!" % data.display_name, "Pola serangannya berubah. Hati-hati!")
 	get_tree().call_group("kamera_ikut", "guncang", 0.6)
-	AudioManager.putar_sfx("gong")
+	AudioManager.putar_sfx("raung")
 	Efek.cincin(get_parent(), global_position, 4.0, Color(0.9, 0.1, 0.05, 0.9), 0.6)
 	_rage_light = OmniLight3D.new()
 	_rage_light.light_color = Color(1.0, 0.2, 0.1)

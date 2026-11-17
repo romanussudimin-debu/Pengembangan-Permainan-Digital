@@ -36,6 +36,8 @@ Semua aset dalam prototipe **dibuat sendiri** secara prosedural oleh pembuat pro
 | musik_caci.wav | Pola gong-gendang cepat untuk arena (loop) | idem |
 | gendang.wav, anjing.wav (gonggong), ayam.wav (kotek), gong.wav, cambuk.wav, perisai.wav, terkena.wav, lompat.wav, langkah.wav, ambil.wav, berhasil.wav, gagal.wav, klik.wav | Efek suara | idem |
 | benar.wav, salah.wav, kombo.wav, percik.wav | Umpan balik: jawaban benar, kesalahan (-1 nyawa), kombo beruntun, percikan air/lumpur (tahap 8) | idem |
+| busur.wav, kena.wav, ledakan.wav, raung.wav | Tempur: dentingan busur, hentakan kena (teredam, tidak sadis), ledakan Panah Api, raungan bos | idem |
+| Model musuh & bos (perampok, kera, ular, lebah, babi hutan, tikus, kalong, kepiting, ubur-ubur, kerbau, komodo) | Low-poly prosedural (`CreatureModel`, `KarakterModel`, `Komodo`, `Burung`) | Dibuat sendiri di kode |
 
 > Catatan etis: musik **bukan rekaman** gong-gendang atau nyanyian Manggarai asli. Musik disintesis sebagai penghormatan, sehingga tidak ada rekaman budaya yang dipakai tanpa izin.
 

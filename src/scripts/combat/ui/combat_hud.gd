@@ -120,8 +120,9 @@ func _draw_skills() -> void:
 				poly.append(pos + Vector2(cos(a), sin(a)) * r)
 			if poly.size() >= 3:
 				c.draw_colored_polygon(poly, Color(0, 0, 0, 0.6))
-			c.draw_string_outline(font, pos + Vector2(-r, 5), str(ceili(caster.cooldowns[i])), HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 13, 4, Gaya.HITAM)
-			c.draw_string(font, pos + Vector2(-r, 5), str(ceili(caster.cooldowns[i])), HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 13, Gaya.PUTIH)
+			var sisa: String = str(ceili(caster.cooldowns[i]))
+			c.draw_string_outline(font, pos + Vector2(-r, 5), sisa, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 13, 4, Gaya.HITAM)
+			c.draw_string(font, pos + Vector2(-r, 5), sisa, HORIZONTAL_ALIGNMENT_CENTER, r * 2.0, 13, Gaya.PUTIH)
 		c.draw_arc(pos, r, 0.0, TAU, 32, Gaya.KUNING if siap else Color("6a625a"), 2.0)
 		c.draw_string_outline(font, pos + Vector2(-10, r + 9), s.key_hint, HORIZONTAL_ALIGNMENT_CENTER, 20, 9, 3, Gaya.HITAM)
 		c.draw_string(font, pos + Vector2(-10, r + 9), s.key_hint, HORIZONTAL_ALIGNMENT_CENTER, 20, 9, Gaya.PUTIH)

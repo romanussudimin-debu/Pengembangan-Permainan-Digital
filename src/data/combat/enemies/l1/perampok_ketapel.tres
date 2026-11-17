@@ -6,8 +6,9 @@
 script = ExtResource("1")
 id = "perampok_ketapel"
 display_name = "Perampok Ketapel"
-body_color = Color(0.29, 0.247, 0.165, 1)
-accent_color = Color(0.6, 0.4, 0.1, 1)
+hint = "Menjaga jarak dan menembak batu. Kejar dia!"
+body_color = Color(0.290, 0.247, 0.165, 1)
+accent_color = Color(0.600, 0.400, 0.098, 1)
 max_hp = 45.0
 move_speed = 2.8
 damage = 9.0

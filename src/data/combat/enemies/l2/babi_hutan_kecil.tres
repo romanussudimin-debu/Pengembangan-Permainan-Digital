@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/enemy/enemy_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "babi_hutan_kecil"
+display_name = "Babi Hutan Kecil"
+model_kind = "boar"
+behavior = "charger"
+hint = "Menyeruduk lurus. Menyingkir ke samping saat jalurnya muncul!"
+body_color = Color(0.290, 0.227, 0.188, 1)
+accent_color = Color(0.165, 0.125, 0.094, 1)
+bar_height = 1.6
+max_hp = 60.0
+move_speed = 3.0
+damage = 16.0
+knockback_resist = 0.3
+attack_range = 8.0
+attack_windup = 0.8
+attack_cooldown = 2.2
+charge_speed = 11.0
+charge_distance = 9.0
+hit_knockback = 6.0
+coins = 4
+xp = 15

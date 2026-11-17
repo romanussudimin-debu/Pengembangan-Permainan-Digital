@@ -6,12 +6,12 @@
 script = ExtResource("1")
 id = "perampok_pemukul"
 display_name = "Perampok Pemukul"
+hint = "Lambat tapi pukulannya keras. Menjauh saat ia mengangkat tongkat."
 body_color = Color(0.227, 0.188, 0.188, 1)
 accent_color = Color(0.416, 0.102, 0.102, 1)
 max_hp = 70.0
 move_speed = 2.4
 damage = 14.0
-attack_type = "melee"
 attack_range = 1.7
 attack_windup = 0.6
 attack_cooldown = 1.4

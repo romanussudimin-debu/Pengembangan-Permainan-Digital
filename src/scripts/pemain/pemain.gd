@@ -25,6 +25,7 @@ var interaktif_terdekat: Interaktif = null
 var _dalam_jangkauan: Array[Interaktif] = []
 var _sisa_coyote: float = 0.0
 var _sisa_buffer: float = 0.0
+var _dorongan: Vector3 = Vector3.ZERO  ## knockback/tarikan dari serangan musuh, meluruh cepat
 
 
 func _ready() -> void:
@@ -118,7 +119,9 @@ func arah_input() -> Vector3:
 func gerak_horizontal(delta: float, arah: Vector3) -> void:
 	var target: Vector3 = arah * kecepatan * combat.speed_multiplier()
 	var laju: float = akselerasi if arah != Vector3.ZERO else gesekan
-	var horizontal := Vector3(velocity.x, 0.0, velocity.z).move_toward(target, laju * delta)
+	_dorongan = _dorongan.move_toward(Vector3.ZERO, 14.0 * delta)
+	target += _dorongan
+	var horizontal := Vector3(velocity.x, 0.0, velocity.z).move_toward(target, laju * delta + _dorongan.length())
 	velocity.x = horizontal.x
 	velocity.z = horizontal.z
 	var hadap: Vector3 = arah
@@ -128,6 +131,11 @@ func gerak_horizontal(delta: float, arah: Vector3) -> void:
 		var sudut: float = atan2(-hadap.x, -hadap.z)
 		model.rotation.y = lerp_angle(model.rotation.y, sudut, kecepatan_putar * delta)
 	model.kecepatan_jalan = clampf(horizontal.length() / kecepatan, 0.0, 1.0)
+
+
+## Dorongan (positif menjauh) atau tarikan dari serangan musuh, mis. seruduk kerbau / ular sawah.
+func apply_knockback(push: Vector3) -> void:
+	_dorongan = push
 
 
 func terapkan_gravitasi(delta: float) -> void:

@@ -39,6 +39,9 @@ func _build_mesh() -> void:
 	var m := StandardMaterial3D.new()
 	if kind == "fire" or kind == "wind":
 		_build_glow()
+	if kind == "net" or kind == "venom" or kind == "torch":
+		_build_enemy_shot()
+		return
 	if kind == "stone":
 		var bola := SphereMesh.new()
 		bola.radius = 0.1
@@ -127,6 +130,55 @@ func _build_glow() -> void:
 			cincin.rotation.x = PI / 2.0
 			cincin.position.z = 0.1 + i * 0.3
 			add_child(cincin)
+
+
+## Proyektil musuh khusus: jaring (putih, melebar), bisa (hijau), obor (kayu + nyala + cahaya).
+func _build_enemy_shot() -> void:
+	match kind:
+		"net":
+			for i in 3:
+				var t := TorusMesh.new()
+				t.inner_radius = 0.18 + i * 0.1
+				t.outer_radius = 0.21 + i * 0.1
+				t.rings = 12
+				t.ring_segments = 3
+				var mi := MeshInstance3D.new()
+				mi.mesh = t
+				var m := StandardMaterial3D.new()
+				m.albedo_color = Color("e8e2d2")
+				mi.material_override = m
+				mi.rotation.x = PI / 2.0
+				add_child(mi)
+			var spin := create_tween().set_loops()
+			spin.tween_property(self, "rotation:z", TAU, 0.6).as_relative()
+		"venom":
+			var b := SphereMesh.new()
+			b.radius = 0.12
+			b.height = 0.24
+			var mv := MeshInstance3D.new()
+			mv.mesh = b
+			var m2 := StandardMaterial3D.new()
+			m2.albedo_color = Color(0.45, 0.9, 0.3)
+			m2.emission_enabled = true
+			m2.emission = Color(0.3, 0.7, 0.2)
+			mv.material_override = m2
+			mv.scale = Vector3(1, 1, 1.6)
+			add_child(mv)
+		"torch":
+			var c := CylinderMesh.new()
+			c.top_radius = 0.035
+			c.bottom_radius = 0.035
+			c.height = 0.6
+			var mt := MeshInstance3D.new()
+			mt.mesh = c
+			var m3 := StandardMaterial3D.new()
+			m3.albedo_color = Color("6a4428")
+			mt.material_override = m3
+			mt.rotation.x = PI / 2.0
+			add_child(mt)
+			_build_glow()  # nyala oranye di ujung (kind != wind => api)
+			var roll := create_tween().set_loops()
+			roll.tween_property(self, "rotation:x", TAU, 0.5).as_relative()
 
 
 func _face_velocity() -> void:

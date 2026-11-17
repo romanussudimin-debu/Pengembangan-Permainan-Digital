@@ -13,11 +13,16 @@ var _burn_timer: float = 0.0
 var _slow_factor: float = 1.0
 var _slow_left: float = 0.0
 var _fire_fx: Node3D
+var _poison: bool = false  ## true = racun (nyala hijau), false = api
 
 
-func apply_burn(dps: float, duration: float, source: Node) -> void:
+## Damage per detik: api (Panah Api, obor) atau racun (ular, komodo) bila `poison` = true.
+func apply_burn(dps: float, duration: float, source: Node, poison: bool = false) -> void:
 	if dps <= 0.0 or duration <= 0.0:
 		return
+	if poison != _poison and _fire_fx:
+		_show_fire(false)
+	_poison = poison
 	_burn_dps = maxf(_burn_dps, dps)
 	_burn_left = maxf(_burn_left, duration)
 	_burn_source = source
@@ -73,7 +78,7 @@ func _show_fire(on: bool) -> void:
 		owner_node.add_child(_fire_fx)
 		_fire_fx.position = Vector3(0, 1.2, 0)
 		var m := StandardMaterial3D.new()
-		m.albedo_color = Color(1.0, 0.55, 0.15, 0.8)
+		m.albedo_color = Color(0.45, 0.9, 0.3, 0.8) if _poison else Color(1.0, 0.55, 0.15, 0.8)
 		m.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
 		m.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
 		for i in 3:

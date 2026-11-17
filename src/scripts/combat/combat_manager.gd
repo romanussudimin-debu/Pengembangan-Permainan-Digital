@@ -138,7 +138,8 @@ func _nearest(list: Array[Node3D], from: Vector3, max_distance: float) -> Node3D
 	var best: Node3D = null
 	var best_d: float = max_distance
 	for n: Node3D in list:
-		if not is_instance_valid(n) or not n.is_inside_tree() or n.get("is_dead") or is_combat_dead(n):
+		if not is_instance_valid(n) or not n.is_inside_tree() or n.get("is_dead") or is_combat_dead(n) \
+				or n.get("targetable") == false:
 			continue
 		var d: float = n.global_position.distance_to(from)
 		if d < best_d:

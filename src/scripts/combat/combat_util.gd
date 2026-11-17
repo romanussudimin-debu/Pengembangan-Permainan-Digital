@@ -43,9 +43,9 @@ static func apply_skill_hit(hb: Hurtbox, skill: SkillData, source: Node, from: V
 	if not hb.receive_hit(dmg, source, hb.global_position):
 		return false
 	if hb.status:
-		hb.status.apply_burn(skill.burn_dps, skill.burn_duration, source)
+		hb.status.apply_burn(skill.burn_dps, skill.burn_duration, source, skill.burn_is_poison)
 		hb.status.apply_slow(skill.slow_factor, skill.slow_duration)
-	if skill.knockback > 0.0 and hb.entity and hb.entity.has_method("apply_knockback"):
+	if skill.knockback != 0.0 and hb.entity and hb.entity.has_method("apply_knockback"):  # negatif = menarik
 		var push: Vector3 = hb.entity.global_position - from
 		push.y = 0.0
 		hb.entity.call("apply_knockback", push.normalized() * skill.knockback)

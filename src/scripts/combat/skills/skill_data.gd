@@ -20,6 +20,7 @@ extends Resource
 @export var tick_interval: float = 0.3
 @export var burn_dps: float = 0.0
 @export var burn_duration: float = 0.0
+@export var burn_is_poison: bool = false  ## racun (hijau) alih-alih api
 @export var slow_factor: float = 1.0  ## 0,5 = kecepatan jadi separuh
 @export var slow_duration: float = 0.0
 @export var knockback: float = 0.0

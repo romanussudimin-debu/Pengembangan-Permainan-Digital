@@ -8,6 +8,7 @@ signal landed(target: Hurtbox)
 var damage: float = 10.0
 var team: int = CombatConst.TEAM_ENEMIES
 var source: Node
+var effect: SkillData  ## opsional: efek racun/lambat/dorong saat kena (serangan musuh)
 var _active_time: float = 0.0
 var _already_hit: Array[Hurtbox] = []
 
@@ -47,7 +48,12 @@ func _physics_process(delta: float) -> void:
 			var target: Hurtbox = area
 			if target.team != team and not _already_hit.has(target):
 				_already_hit.append(target)
-				if target.receive_hit(damage, source, global_position):
+				var kena: bool
+				if effect:
+					kena = CombatUtil.apply_skill_hit(target, effect, source, global_position, damage)
+				else:
+					kena = target.receive_hit(damage, source, global_position)
+				if kena:
 					landed.emit(target)
 	if _active_time <= 0.0:
 		monitoring = false

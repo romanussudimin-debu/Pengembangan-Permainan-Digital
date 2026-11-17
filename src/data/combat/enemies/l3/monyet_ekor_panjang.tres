@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/combat/enemy/enemy_data.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+id = "monyet_ekor_panjang"
+display_name = "Monyet Ekor Panjang"
+model_kind = "monkey"
+behavior = "thief"
+hint = "Menyambar barang lalu memanjat. Tangkap sebelum ia naik!"
+body_color = Color(0.42, 0.38, 0.33, 1)
+accent_color = Color(0.353, 0.314, 0.282, 1)
+bar_height = 1.9
+max_hp = 60.0
+move_speed = 4.6
+damage = 6.0
+attack_range = 1.4
+attack_windup = 0.3
+attack_cooldown = 1.0
+steal_coins = 8
+steal_label = "barang"
+flee_time = 6.0
+fly_height = 2.6
+coins = 4
+xp = 18

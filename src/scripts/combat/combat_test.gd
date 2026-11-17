@@ -2,8 +2,8 @@ extends Node3D
 ## Arena uji tempur (Tahap 1). Jalankan scenes/combat/combat_test.tscn dengan F6.
 ## Isi: lapangan rumput, 1 checkpoint, perampok pemukul & ketapel yang muncul lagi setelah semuanya kalah.
 
-const PEMUKUL: EnemyData = preload("res://data/combat/enemies/perampok_pemukul.tres")
-const KETAPEL: EnemyData = preload("res://data/combat/enemies/perampok_ketapel.tres")
+const PEMUKUL: EnemyData = preload("res://data/combat/enemies/l1/perampok_pemukul.tres")
+const KETAPEL: EnemyData = preload("res://data/combat/enemies/l1/perampok_ketapel.tres")
 
 var pemain: Pemain
 var kamera: KameraIkut
@@ -41,11 +41,7 @@ func _ready() -> void:
 func spawn_wave() -> void:
 	var titik: Array[Vector3] = [Vector3(-4, 0.2, -1), Vector3(4, 0.2, -1), Vector3(0, 0.2, -7)]
 	for i in titik.size():
-		var e := EnemyBase.new()
-		e.data = KETAPEL if i == 2 else PEMUKUL
-		add_child(e)
-		e.global_position = titik[i]
-		e.home = titik[i]
+		var e: EnemyBase = EnemyBase.spawn(self, KETAPEL if i == 2 else PEMUKUL, titik[i])
 		e.defeated.connect(_on_enemy_defeated)
 
 

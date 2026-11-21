@@ -1,0 +1,7 @@
+# Cache impor Godot (dibuat ulang otomatis saat proyek dibuka)
+.godot/
+*.import.tmp
+# Hasil ekspor
+build/
+# Python
+__pycache__/

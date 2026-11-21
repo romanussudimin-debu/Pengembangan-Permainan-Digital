@@ -1,0 +1,332 @@
+[gd_scene load_steps=37 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemies/buta_kilat.gd" id="1_e"]
+[ext_resource type="Script" path="res://scripts/common/komponen_hp.gd" id="2_e"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
+resource_name = "kulit_butakilat"
+albedo_color = Color(0.22, 0.52, 0.26, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2"]
+resource_name = "kain"
+albedo_color = Color(0.46, 0.08, 0.11, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3"]
+resource_name = "emas"
+albedo_color = Color(0.86, 0.66, 0.22, 1)
+metallic = 0.75
+roughness = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4"]
+resource_name = "putih"
+albedo_color = Color(0.95, 0.93, 0.86, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5"]
+resource_name = "hitam"
+albedo_color = Color(0.06, 0.05, 0.05, 1)
+roughness = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6"]
+resource_name = "kayu_sogan"
+albedo_color = Color(0.45, 0.29, 0.16, 1)
+roughness = 0.8
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7"]
+radius = 0.468
+height = 2.7
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_8"]
+radius = 0.18
+height = 1.15
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_9"]
+top_radius = 0.2
+bottom_radius = 0.2
+height = 0.08
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_10"]
+radius = 0.18
+height = 1.15
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_11"]
+top_radius = 0.2
+bottom_radius = 0.2
+height = 0.08
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_12"]
+top_radius = 0.52
+bottom_radius = 0.64
+height = 0.62
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_13"]
+top_radius = 0.56
+bottom_radius = 0.56
+height = 0.1
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_14"]
+radius = 0.56
+height = 1.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_15"]
+radius = 0.5
+height = 1
+
+[sub_resource type="TorusMesh" id="TorusMesh_16"]
+inner_radius = 0.32
+outer_radius = 0.42
+
+[sub_resource type="SphereMesh" id="SphereMesh_17"]
+radius = 0.42
+height = 0.84
+
+[sub_resource type="BoxMesh" id="BoxMesh_18"]
+size = Vector3(0.75, 0.95, 0.25)
+
+[sub_resource type="SphereMesh" id="SphereMesh_19"]
+radius = 0.1
+height = 0.2
+
+[sub_resource type="SphereMesh" id="SphereMesh_20"]
+radius = 0.11
+height = 0.22
+
+[sub_resource type="SphereMesh" id="SphereMesh_21"]
+radius = 0.055
+height = 0.11
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_22"]
+top_radius = 0.05
+bottom_radius = 0
+height = 0.2
+
+[sub_resource type="TorusMesh" id="TorusMesh_23"]
+inner_radius = 0.06
+outer_radius = 0.1
+
+[sub_resource type="SphereMesh" id="SphereMesh_24"]
+radius = 0.11
+height = 0.22
+
+[sub_resource type="SphereMesh" id="SphereMesh_25"]
+radius = 0.055
+height = 0.11
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_26"]
+top_radius = 0.05
+bottom_radius = 0
+height = 0.2
+
+[sub_resource type="TorusMesh" id="TorusMesh_27"]
+inner_radius = 0.06
+outer_radius = 0.1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_28"]
+top_radius = 0.16
+bottom_radius = 0.3
+height = 0.24
+radial_segments = 8
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_29"]
+radius = 0.16
+height = 1.12
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_30"]
+top_radius = 0.19
+bottom_radius = 0.19
+height = 0.1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_31"]
+top_radius = 0.18
+bottom_radius = 0.18
+height = 0.09
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_32"]
+radius = 0.16
+height = 1.12
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_33"]
+top_radius = 0.19
+bottom_radius = 0.19
+height = 0.1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_34"]
+top_radius = 0.18
+bottom_radius = 0.18
+height = 0.09
+
+[node name="ButaKilat" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+script = ExtResource("1_e")
+hp_maks = 45
+kecepatan = 5.8
+kecepatan_putar = 10.0
+damage = 8
+jarak_serang = 4.6
+waktu_ancang = 0.4
+waktu_pulih = 0.9
+gesekan_pulih = 14.0
+kekuatan_dorong = 7.0
+ketahanan_dorong = 0.0
+lama_terhuyung = 0.3
+nama_jenis = "Buta Kilat"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+shape = SubResource("CapsuleShape3D_7")
+
+[node name="Model" type="Node3D" parent="."]
+transform = Transform3D(0.78, 0, 0, 0, 0.9, 0, 0, 0, 0.78, 0, 0, 0)
+
+[node name="KakiKiri" type="Node3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.28, 1.1, 0)
+
+[node name="Kaki" type="MeshInstance3D" parent="Model/KakiKiri"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
+mesh = SubResource("CapsuleMesh_8")
+surface_material_override/0 = SubResource("StandardMaterial3D_1")
+
+[node name="GelangKaki" type="MeshInstance3D" parent="Model/KakiKiri"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
+mesh = SubResource("CylinderMesh_9")
+surface_material_override/0 = SubResource("StandardMaterial3D_3")
+
+[node name="KakiKanan" type="Node3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28, 1.1, 0)
+
+[node name="Kaki" type="MeshInstance3D" parent="Model/KakiKanan"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.55, 0)
+mesh = SubResource("CapsuleMesh_10")
+surface_material_override/0 = SubResource("StandardMaterial3D_1")
+
+[node name="GelangKaki" type="MeshInstance3D" parent="Model/KakiKanan"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
+mesh = SubResource("CylinderMesh_11")
+surface_material_override/0 = SubResource("StandardMaterial3D_3")
+
+[node name="Kain" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
+mesh = SubResource("CylinderMesh_12")
+surface_material_override/0 = SubResource("StandardMaterial3D_2")
+
+[node name="Sabuk" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.38, 0)
+mesh = SubResource("CylinderMesh_13")
+surface_material_override/0 = SubResource("StandardMaterial3D_3")
+
+[node name="Badan" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85, 0)
+mesh = SubResource("CapsuleMesh_14")
+surface_material_override/0 = SubResource("StandardMaterial3D_1")
+
+[node name="Perut" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.62, -0.18)
+mesh = SubResource("SphereMesh_15")
+surface_material_override/0 = SubResource("StandardMaterial3D_1")
+
+[node name="Kalung" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 0.96593, -0.25882, 0, 0.25882, 0.96593, 0, 2.28, -0.05)
+mesh = SubResource("TorusMesh_16")
+surface_material_override/0 = SubResource("StandardMaterial3D_3")
+
+[node name="Kepala" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.68, 0)
+mesh = SubResource("SphereMesh_17")
+surface_material_override/0 = SubResource("StandardMaterial3D_1")
+
+[node name="Rambut" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.45, 0.36)
+mesh = SubResource("BoxMesh_18")
+surface_material_override/0 = SubResource("StandardMaterial3D_5")
+
+[node name="Hidung" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.66, -0.42)
+mesh = SubResource("SphereMesh_19")
+surface_material_override/0 = SubResource("StandardMaterial3D_1")
+
+[node name="Mata1" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 2.78, -0.33)
+mesh = SubResource("SphereMesh_20")
+surface_material_override/0 = SubResource("StandardMaterial3D_4")
+
+[node name="Pupil1" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 2.78, -0.43)
+mesh = SubResource("SphereMesh_21")
+surface_material_override/0 = SubResource("StandardMaterial3D_5")
+
+[node name="Taring1" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.12, 2.47, -0.36)
+mesh = SubResource("CylinderMesh_22")
+surface_material_override/0 = SubResource("StandardMaterial3D_4")
+
+[node name="Anting1" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, -0.432, 2.6, 0)
+mesh = SubResource("TorusMesh_23")
+surface_material_override/0 = SubResource("StandardMaterial3D_3")
+
+[node name="Mata2" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16, 2.78, -0.33)
+mesh = SubResource("SphereMesh_24")
+surface_material_override/0 = SubResource("StandardMaterial3D_4")
+
+[node name="Pupil2" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.16, 2.78, -0.43)
+mesh = SubResource("SphereMesh_25")
+surface_material_override/0 = SubResource("StandardMaterial3D_5")
+
+[node name="Taring2" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12, 2.47, -0.36)
+mesh = SubResource("CylinderMesh_26")
+surface_material_override/0 = SubResource("StandardMaterial3D_4")
+
+[node name="Anting2" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(0, -1, 0, 1, 0, 0, 0, 0, 1, 0.432, 2.6, 0)
+mesh = SubResource("TorusMesh_27")
+surface_material_override/0 = SubResource("StandardMaterial3D_3")
+
+[node name="Mahkota" type="MeshInstance3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.08, 0.04)
+mesh = SubResource("CylinderMesh_28")
+surface_material_override/0 = SubResource("StandardMaterial3D_3")
+
+[node name="LenganKiri" type="Node3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.72, 2.3, 0)
+
+[node name="Lengan" type="MeshInstance3D" parent="Model/LenganKiri"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.52, 0)
+mesh = SubResource("CapsuleMesh_29")
+surface_material_override/0 = SubResource("StandardMaterial3D_1")
+
+[node name="KelatBahu" type="MeshInstance3D" parent="Model/LenganKiri"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12, 0)
+mesh = SubResource("CylinderMesh_30")
+surface_material_override/0 = SubResource("StandardMaterial3D_3")
+
+[node name="Gelang" type="MeshInstance3D" parent="Model/LenganKiri"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.85, 0)
+mesh = SubResource("CylinderMesh_31")
+surface_material_override/0 = SubResource("StandardMaterial3D_3")
+
+[node name="LenganKanan" type="Node3D" parent="Model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.72, 2.3, 0)
+
+[node name="Lengan" type="MeshInstance3D" parent="Model/LenganKanan"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.52, 0)
+mesh = SubResource("CapsuleMesh_32")
+surface_material_override/0 = SubResource("StandardMaterial3D_1")
+
+[node name="KelatBahu" type="MeshInstance3D" parent="Model/LenganKanan"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.12, 0)
+mesh = SubResource("CylinderMesh_33")
+surface_material_override/0 = SubResource("StandardMaterial3D_3")
+
+[node name="Gelang" type="MeshInstance3D" parent="Model/LenganKanan"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.85, 0)
+mesh = SubResource("CylinderMesh_34")
+surface_material_override/0 = SubResource("StandardMaterial3D_3")
+
+[node name="KomponenHP" type="Node" parent="."]
+script = ExtResource("2_e")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3]
+[gd_scene load_steps=19 format=3]
 
 [ext_resource type="Script" path="res://scripts/level/level_1.gd" id="1_lv"]
 [ext_resource type="PackedScene" path="res://scenes/boss/bos_raksasa.tscn" id="2_bos"]
@@ -9,6 +9,9 @@
 [ext_resource type="PackedScene" path="res://scenes/level/pagar_keliling.tscn" id="7_pg"]
 [ext_resource type="PackedScene" path="res://scenes/level/beringin.tscn" id="8_br"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="9_hud"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/buta_kilat.tscn" id="10_kl"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/buta_gempal.tscn" id="11_gp"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/buta_pelempar.tscn" id="12_pl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1"]
 sky_top_color = Color(0.3, 0.45, 0.7, 1)
@@ -159,23 +162,47 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24)
 
 [node name="Musuh" type="Node3D" parent="."]
 
-[node name="Buta1" parent="Musuh" instance=ExtResource("4_bt")]
+[node name="Gelombang1" type="Node3D" parent="Musuh"]
+
+[node name="ButaPrajurit1" parent="Musuh/Gelombang1" instance=ExtResource("4_bt")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -4, 0, 10)
 
-[node name="Buta2" parent="Musuh" instance=ExtResource("4_bt")]
+[node name="ButaPrajurit2" parent="Musuh/Gelombang1" instance=ExtResource("4_bt")]
 transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 4, 0, 10)
 
-[node name="Buta3" parent="Musuh" instance=ExtResource("4_bt")]
-transform = Transform3D(-0.86603, 0, -0.5, 0, 1, 0, 0.5, 0, -0.86603, -14, 0, -4)
+[node name="ButaPrajurit3" parent="Musuh/Gelombang1" instance=ExtResource("4_bt")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -8, 0, -4)
 
-[node name="Buta4" parent="Musuh" instance=ExtResource("4_bt")]
-transform = Transform3D(-0.86603, 0, 0.5, 0, 1, 0, -0.5, 0, -0.86603, 14, 0, -4)
+[node name="ButaKilat1" parent="Musuh/Gelombang1" instance=ExtResource("10_kl")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 8, 0, -4)
 
-[node name="Buta5" parent="Musuh" instance=ExtResource("4_bt")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -6, 0, -12)
+[node name="Gelombang2" type="Node3D" parent="Musuh"]
 
-[node name="Buta6" parent="Musuh" instance=ExtResource("4_bt")]
-transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 6, 0, -12)
+[node name="ButaKilat1" parent="Musuh/Gelombang2" instance=ExtResource("10_kl")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -10, 0, 4)
+
+[node name="ButaKilat2" parent="Musuh/Gelombang2" instance=ExtResource("10_kl")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 10, 0, 4)
+
+[node name="ButaPelempar1" parent="Musuh/Gelombang2" instance=ExtResource("12_pl")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -14, 0, -12)
+
+[node name="ButaPelempar2" parent="Musuh/Gelombang2" instance=ExtResource("12_pl")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 14, 0, -12)
+
+[node name="Gelombang3" type="Node3D" parent="Musuh"]
+
+[node name="ButaGempal1" parent="Musuh/Gelombang3" instance=ExtResource("11_gp")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -5, 0, -9)
+
+[node name="ButaGempal2" parent="Musuh/Gelombang3" instance=ExtResource("11_gp")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 5, 0, -9)
+
+[node name="ButaPrajurit1" parent="Musuh/Gelombang3" instance=ExtResource("4_bt")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -12, 0, 6)
+
+[node name="ButaPelempar1" parent="Musuh/Gelombang3" instance=ExtResource("12_pl")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, 0, 0, -13)
 
 [node name="TitikMunculBos" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -11)

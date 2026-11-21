@@ -210,29 +210,86 @@ def model_raksasa(s, M, kulit, kain, emas, putih, hitam, mata, rambut, senjata):
         s.mesh("GadaKayu", L, "CylinderMesh", senjata, (0, -1.02, -0.45), (-90, 0, 0), top_radius=0.16, bottom_radius=0.07, height=1.1, radial_segments=8)
 
 
-def buat_buta():
+def buat_varian_buta(nama_file, nama_node, skrip_path, kulit_rgb, kain_rgb, skala, props,
+                     senjata=True, batu_di_tangan=False, ext_lain=None):
+    """Membuat scene buta. `props` = nilai @export yang ditimpa pada node akar."""
     s = Scene()
-    skrip = s.ext_res("Script", "res://scripts/enemies/buta.gd")
+    skrip = s.ext_res("Script", skrip_path)
     skrip_hp = s.ext_res("Script", "res://scripts/common/komponen_hp.gd")
-    kulit = s.bahan("kulit_buta_merah", (0.62, 0.2, 0.14))
-    kain = s.bahan("kain_hijau_tua", (0.08, 0.22, 0.12))
+    ext_ids = {}
+    for kunci, (tipe, path) in (ext_lain or {}).items():
+        ext_ids[kunci] = s.ext_res(tipe, path)
+    kulit = s.bahan("kulit_" + nama_node.lower(), kulit_rgb)
+    kain = s.bahan("kain", kain_rgb)
     emas = s.bahan("emas", (0.86, 0.66, 0.22), logam=True)
     putih = s.bahan("putih", (0.95, 0.93, 0.86))
     hitam = s.bahan("hitam", (0.06, 0.05, 0.05))
     kayu = s.bahan("kayu_sogan", (0.45, 0.29, 0.16))
-    bentuk = s.sub_res("CapsuleShape3D", radius="0.6", height="3.0")
-    s.node("Buta", "CharacterBody3D", None, None, collision_layer="4", collision_mask="7", script=f'ExtResource("{skrip}")')
-    s.node("CollisionShape3D", "CollisionShape3D", ".", transform((0, 1.5, 0)), shape=f'SubResource("{bentuk}")')
-    s.node("Model", "Node3D", ".")
-    model_raksasa(s, "Model", kulit, kain, emas, putih, hitam, hitam, hitam, kayu)
+    sx, sy, sz = skala
+    r = 0.6 * max(sx, sz)
+    h = max(3.0 * sy, 2 * r + 0.1)
+    bentuk = s.sub_res("CapsuleShape3D", radius=fmt(r), height=fmt(h))
+    akar_props = {"collision_layer": "4", "collision_mask": "7", "script": f'ExtResource("{skrip}")'}
+    for k, v in props.items():
+        if isinstance(v, str) and v.startswith("@"):
+            v = f'ExtResource("{ext_ids[v[1:]]}")'
+        akar_props[k] = v
+    s.node(nama_node, "CharacterBody3D", None, None, **akar_props)
+    s.node("CollisionShape3D", "CollisionShape3D", ".", transform((0, h / 2, 0)), shape=f'SubResource("{bentuk}")')
+    s.node("Model", "Node3D", ".", transform(skala=skala))
+    model_raksasa(s, "Model", kulit, kain, emas, putih, hitam, hitam, hitam, kayu if senjata else None)
+    if batu_di_tangan:
+        batu = s.bahan("batu", (0.45, 0.42, 0.38))
+        s.mesh("BatuDiTangan", "Model/LenganKanan", "SphereMesh", batu, (0, -1.1, -0.1), skala=(1, 0.8, 0.9), radius=0.3, height=0.6)
     s.node("KomponenHP", "Node", ".", None, script=f'ExtResource("{skrip_hp}")')
-    s.simpan(AKAR / "scenes/enemies/buta.tscn")
+    s.simpan(AKAR / f"scenes/enemies/{nama_file}.tscn")
+
+
+def buat_buta():
+    merah = (0.62, 0.2, 0.14)
+    buat_varian_buta("buta", "Buta", "res://scripts/enemies/buta.gd", merah, (0.08, 0.22, 0.12), (1, 1, 1),
+                     {"nama_jenis": '"Buta Prajurit"'})
+    buat_varian_buta("buta_kilat", "ButaKilat", "res://scripts/enemies/buta_kilat.gd", (0.22, 0.52, 0.26),
+                     (0.46, 0.08, 0.11), (0.78, 0.9, 0.78), {
+                         "hp_maks": "45", "kecepatan": "5.8", "kecepatan_putar": "10.0", "damage": "8",
+                         "jarak_serang": "4.6", "waktu_ancang": "0.4", "waktu_pulih": "0.9",
+                         "gesekan_pulih": "14.0", "kekuatan_dorong": "7.0", "ketahanan_dorong": "0.0",
+                         "lama_terhuyung": "0.3", "nama_jenis": '"Buta Kilat"'}, senjata=False)
+    buat_varian_buta("buta_gempal", "ButaGempal", "res://scripts/enemies/buta_gempal.gd", (0.3, 0.19, 0.11),
+                     (0.46, 0.08, 0.11), (1.5, 1.35, 1.5), {
+                         "hp_maks": "220", "kecepatan": "1.9", "kecepatan_putar": "3.5", "damage": "24",
+                         "jarak_serang": "3.0", "waktu_ancang": "1.0", "waktu_pulih": "1.3",
+                         "kekuatan_dorong": "10.0", "ketahanan_dorong": "0.9", "nama_jenis": '"Buta Gempal"'})
+    buat_varian_buta("buta_pelempar", "ButaPelempar", "res://scripts/enemies/buta_pelempar.gd", (0.78, 0.56, 0.2),
+                     (0.17, 0.4, 0.22), (0.95, 1.0, 0.95), {
+                         "hp_maks": "50", "kecepatan": "2.8", "damage": "12", "waktu_ancang": "0.75",
+                         "waktu_pulih": "0.6", "scene_batu": "@batu", "nama_jenis": '"Buta Pelempar"'},
+                     senjata=False, batu_di_tangan=True,
+                     ext_lain={"batu": ("PackedScene", "res://scenes/enemies/batu_lempar.tscn")})
+    buat_varian_buta("buta_cilik", "ButaCilik", "res://scripts/enemies/buta.gd", merah, (0.08, 0.22, 0.12),
+                     (0.6, 0.6, 0.6), {
+                         "hp_maks": "30", "kecepatan": "4.3", "damage": "6", "jarak_serang": "1.6",
+                         "waktu_ancang": "0.5", "ketahanan_dorong": "0.0", "dihitung_misi": "false",
+                         "nama_jenis": '"Buta Cilik"'})
+
+
+def buat_batu():
+    s = Scene()
+    skrip = s.ext_res("Script", "res://scripts/enemies/batu_lempar.gd")
+    batu = s.bahan("batu", (0.45, 0.42, 0.38))
+    bentuk = s.sub_res("SphereShape3D", radius="0.35")
+    s.node("BatuLempar", "Area3D", None, None, collision_layer="0", collision_mask="3", monitorable="false",
+           script=f'ExtResource("{skrip}")')
+    s.node("CollisionShape3D", "CollisionShape3D", ".", None, shape=f'SubResource("{bentuk}")')
+    s.mesh("Mesh", ".", "SphereMesh", batu, skala=(1, 0.8, 0.9), radius=0.35, height=0.7, radial_segments=10, rings=6)
+    s.simpan(AKAR / "scenes/enemies/batu_lempar.tscn")
 
 
 def buat_bos():
     s = Scene()
     skrip = s.ext_res("Script", "res://scripts/boss/bos_raksasa.gd")
     skrip_hp = s.ext_res("Script", "res://scripts/common/komponen_hp.gd")
+    cilik = s.ext_res("PackedScene", "res://scenes/enemies/buta_cilik.tscn")
     kulit = s.bahan("kulit_bos_hijau", (0.16, 0.27, 0.16))
     kain = s.bahan("kain_marun", (0.46, 0.08, 0.11))
     emas = s.bahan("emas", (0.86, 0.66, 0.22), logam=True)
@@ -241,7 +298,8 @@ def buat_bos():
     mata = s.bahan("mata_merah", (0.9, 0.1, 0.05), emisi=(1.0, 0.15, 0.05))
     penanda = s.bahan("penanda_hantam", (0.95, 0.12, 0.08, 0.4), transparan=True, unshaded=True)
     bentuk = s.sub_res("CapsuleShape3D", radius="1.2", height="6.0")
-    s.node("BosRaksasa", "CharacterBody3D", None, None, collision_layer="4", collision_mask="3", script=f'ExtResource("{skrip}")')
+    s.node("BosRaksasa", "CharacterBody3D", None, None, collision_layer="4", collision_mask="3", script=f'ExtResource("{skrip}")',
+           scene_buta_kecil=f'ExtResource("{cilik}")')
     s.node("CollisionShape3D", "CollisionShape3D", ".", transform((0, 3.0, 0)), shape=f'SubResource("{bentuk}")')
     s.node("Model", "Node3D", ".", transform(skala=(1.95, 1.95, 1.95)))
     model_raksasa(s, "Model", kulit, kain, emas, putih, hitam, mata, hitam, None)
@@ -249,11 +307,15 @@ def buat_bos():
     s.mesh("PrabaBos", "Model", "TorusMesh", emas, (0, 2.5, 0.55), (90, 0, 0), inner_radius=0.55, outer_radius=0.68)
     s.mesh("MahkotaTinggi", "Model", "CylinderMesh", emas, (0, 3.35, 0.04), top_radius=0.03, bottom_radius=0.2, height=0.45, radial_segments=8)
     s.mesh("PenandaHantam", ".", "CylinderMesh", penanda, (0, 0.06, 0), bayangan=False, top_radius=6.5, bottom_radius=6.5, height=0.04, radial_segments=48)
+    # Penanda Serbuan Lurus: jalur merah sepanjang 18 m ke arah depan bos.
+    s.node("PenandaSerbu", "Node3D", ".", transform((0, 0.07, 0)))
+    s.mesh("Jalur", "PenandaSerbu", "BoxMesh", penanda, (0, 0, -10), bayangan=False, size="Vector3(2.8, 0.04, 20)")
     s.node("KomponenHP", "Node", ".", None, script=f'ExtResource("{skrip_hp}")')
     s.simpan(AKAR / "scenes/boss/bos_raksasa.tscn")
 
 
 if __name__ == "__main__":
     buat_pemain()
+    buat_batu()
     buat_buta()
     buat_bos()

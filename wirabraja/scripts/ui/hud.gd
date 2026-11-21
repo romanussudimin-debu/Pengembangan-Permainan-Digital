@@ -17,6 +17,8 @@ const WARNA_MARUN := Color(0.55, 0.1, 0.12)
 @onready var _sub_akhir: Label = %SubAkhir
 
 var _tween_pengumuman: Tween
+var _gelombang: int = 1
+var _total_gelombang: int = 1
 
 
 func _ready() -> void:
@@ -35,7 +37,6 @@ func _ready() -> void:
 		pemain.hp_berubah.connect(_saat_hp_berubah)
 		_saat_hp_berubah(pemain.komponen_hp.hp, pemain.komponen_hp.hp_maks)
 	_saat_musuh_berubah(GameManager.musuh_tersisa)
-	tampilkan_pengumuman("Kalahkan bala buta yang menyerbu alun-alun!")
 
 
 func tampilkan_pengumuman(teks: String, durasi: float = 3.0) -> void:
@@ -48,6 +49,12 @@ func tampilkan_pengumuman(teks: String, durasi: float = 3.0) -> void:
 	_tween_pengumuman.tween_property(_pengumuman, "modulate:a", 0.0, 0.6)
 
 
+func atur_gelombang(ke: int, total: int) -> void:
+	_gelombang = ke
+	_total_gelombang = total
+	_saat_musuh_berubah(GameManager.musuh_tersisa)
+
+
 func _saat_hp_berubah(hp: int, hp_maks: int) -> void:
 	_bar_hp.max_value = hp_maks
 	_bar_hp.value = hp
@@ -56,7 +63,7 @@ func _saat_hp_berubah(hp: int, hp_maks: int) -> void:
 
 func _saat_musuh_berubah(sisa: int) -> void:
 	if GameManager.state == GameManager.State.BERTARUNG:
-		_label_musuh.text = "Buta tersisa: %d" % sisa
+		_label_musuh.text = "Gelombang %d/%d  ·  Buta tersisa: %d" % [_gelombang, _total_gelombang, sisa]
 	elif GameManager.state == GameManager.State.BOS:
 		_label_musuh.text = "Kalahkan sang raksasa!"
 
@@ -73,6 +80,15 @@ func _saat_bos_muncul(bos: Node) -> void:
 		_bar_bos.max_value = m
 		_bar_bos.value = h
 	)
+	b.fase_berubah.connect(_saat_fase_bos_berubah)
+	tampilkan_pengumuman("Ditya Kalamurka: Hantaman Bumi, Serbuan Lurus, Panggil Bala!")
+
+
+func _saat_fase_bos_berubah(fase: int) -> void:
+	if fase == 2:
+		_nama_bos.text = "Ditya Kalamurka  —  MURKA!"
+		_gaya_bar(_bar_bos, Color(0.85, 0.12, 0.08))
+		tampilkan_pengumuman("Ditya Kalamurka murka! Serangannya makin cepat dan ganas!")
 
 
 func _saat_state_berubah(state_baru: GameManager.State) -> void:

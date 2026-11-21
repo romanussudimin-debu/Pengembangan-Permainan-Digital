@@ -1,0 +1,164 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/narasi_pembuka.gd" id="1_n"]
+[ext_resource type="Script" path="res://scripts/ui/kayon.gd" id="2_k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kelir"]
+bg_color = Color(0.86, 0.79, 0.64, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.46, 0.08, 0.11, 1)
+
+[sub_resource type="Gradient" id="Gradient_cahaya"]
+colors = PackedColorArray(1, 0.86, 0.5, 0.6, 1, 0.8, 0.45, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_cahaya"]
+gradient = SubResource("Gradient_cahaya")
+fill = 1
+fill_from = Vector2(0.5, 0)
+fill_to = Vector2(0.5, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kotak"]
+bg_color = Color(0.16, 0.09, 0.05, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.86, 0.66, 0.22, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 24.0
+content_margin_top = 14.0
+content_margin_right = 24.0
+content_margin_bottom = 14.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_judul"]
+font_size = 34
+font_color = Color(0.46, 0.08, 0.11, 1)
+outline_size = 6
+outline_color = Color(0.98, 0.93, 0.8, 1)
+
+[node name="NarasiPembuka" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_n")
+
+[node name="Latar" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.07, 0.045, 0.03, 1)
+
+[node name="Kelir" type="Panel" parent="."]
+layout_mode = 1
+anchor_left = 0.08
+anchor_top = 0.04
+anchor_right = 0.92
+anchor_bottom = 0.68
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kelir")
+
+[node name="Cahaya" type="TextureRect" parent="Kelir"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = SubResource("GradientTexture2D_cahaya")
+expand_mode = 1
+
+[node name="Kayon" type="Control" parent="Kelir"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -115.0
+offset_top = -205.0
+offset_right = 115.0
+offset_bottom = 150.0
+mouse_filter = 2
+script = ExtResource("2_k")
+
+[node name="JudulLakon" type="Label" parent="Kelir"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -64.0
+offset_bottom = -14.0
+text = "Lakon: Geger Alun-Alun Keraton"
+label_settings = SubResource("LabelSettings_judul")
+horizontal_alignment = 1
+
+[node name="KotakNarasi" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchor_left = 0.08
+anchor_top = 0.71
+anchor_right = 0.92
+anchor_bottom = 0.94
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_kotak")
+
+[node name="Isi" type="VBoxContainer" parent="KotakNarasi"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="NamaDalang" type="Label" parent="KotakNarasi/Isi"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.75, 0.3, 1)
+theme_override_font_sizes/font_size = 18
+text = "Ki Dalang"
+
+[node name="TeksNarasi" type="Label" parent="KotakNarasi/Isi"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/font_color = Color(0.98, 0.94, 0.85, 1)
+theme_override_font_sizes/font_size = 23
+text = "Hong wilaheng..."
+autowrap_mode = 3
+
+[node name="Petunjuk" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -34.0
+offset_bottom = -8.0
+theme_override_colors/font_color = Color(1, 0.92, 0.75, 0.7)
+theme_override_font_sizes/font_size = 15
+text = "Spasi / Enter / klik: lanjut   ·   Esc: lewati"
+horizontal_alignment = 1
+
+[node name="Tirai" type="ColorRect" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

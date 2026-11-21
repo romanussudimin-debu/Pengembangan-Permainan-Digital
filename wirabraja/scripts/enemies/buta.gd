@@ -32,10 +32,19 @@ enum State { DIAM, MENGEJAR, ANCANG, PULIH, TERKENA, MATI }
 @export var waktu_pulih: float = 0.8
 @export var kekuatan_dorong: float = 6.0
 
+@export var gesekan_pulih: float = 20.0
+
 @export_group("Reaksi")
 @export var lama_terhuyung: float = 0.35
+## True = tidak terhuyung saat dipukul (super armor), hanya berkilat.
+@export var tahan_terhuyung: bool = false
 ## 0 = mudah terpental, 1 = tidak terpental sama sekali.
 @export_range(0.0, 1.0) var ketahanan_dorong: float = 0.2
+
+@export_group("Lain-lain")
+## False untuk buta panggilan bos (tidak dihitung dalam jumlah buta misi).
+@export var dihitung_misi: bool = true
+@export var nama_jenis: String = "Buta Prajurit"
 
 @onready var model: Node3D = $Model
 @onready var komponen_hp: KomponenHP = $KomponenHP
@@ -86,10 +95,11 @@ func _physics_process(delta: float) -> void:
 			_rem(delta, 20.0)
 			_hadap_ke(_arah_ke_target(), delta)
 			if _waktu_state >= waktu_ancang:
-				_lakukan_serangan()
 				_ganti_state(State.PULIH)
+				_lakukan_serangan()
 		State.PULIH:
-			_rem(delta, 20.0)
+			_rem(delta, gesekan_pulih)
+			_proses_pulih(delta)
 			if _waktu_state >= waktu_pulih:
 				_ganti_state(State.MENGEJAR)
 		State.TERKENA:
@@ -110,11 +120,19 @@ func terima_serangan(jumlah: int, arah_dorong: Vector3, kekuatan: float = 6.0) -
 	if not komponen_hp.kurangi(jumlah):
 		return
 	EfekVisual.kilat_kena(model)
-	if komponen_hp.mati:
-		velocity = arah_dorong * kekuatan * (1.0 - ketahanan_dorong)
+	AudioManager.putar_sfx("pukul", global_position)
+	var dorong := arah_dorong * kekuatan * (1.0 - ketahanan_dorong)
+	velocity.x = dorong.x
+	velocity.z = dorong.z
+	if komponen_hp.mati or tahan_terhuyung:
 		return
-	velocity = arah_dorong * kekuatan * (1.0 - ketahanan_dorong)
 	_ganti_state(State.TERKENA)
+
+
+## Membuat buta langsung mengejar pemain dari jarak jauh (dipakai untuk gelombang & panggilan bos).
+func jadikan_agresif() -> void:
+	jarak_deteksi = 200.0
+	jarak_lepas = 200.0
 
 
 # ---------------------------------------------------------------- AI
@@ -131,16 +149,28 @@ func _proses_mengejar(delta: float) -> void:
 		return
 	var arah := _arah_ke_target()
 	if _jarak_datar_ke_target() <= jarak_serang:
-		_ganti_state(State.ANCANG)
-		_animasi_ancang()
+		_mulai_ancang()
 		return
 	velocity.x = arah.x * kecepatan
 	velocity.z = arah.z * kecepatan
 	_hadap_ke(arah, delta)
 
 
+# Fungsi-fungsi berikut boleh ditimpa (override) oleh varian buta.
+
+func _mulai_ancang() -> void:
+	_ganti_state(State.ANCANG)
+	_animasi_ancang()
+
+
+## Dipanggil setiap frame selama state PULIH (mis. untuk cek tabrakan terjangan).
+func _proses_pulih(_delta: float) -> void:
+	pass
+
+
 func _lakukan_serangan() -> void:
 	_animasi_pukul()
+	AudioManager.putar_sfx("buta_ayun", global_position)
 	if _target == null:
 		return
 	var ke_target := _target.global_position - global_position
@@ -158,7 +188,9 @@ func _saat_mati() -> void:
 	collision_layer = 0
 	collision_mask = 1
 	kalah.emit()
-	GameManager.lapor_buta_kalah()
+	AudioManager.putar_sfx("buta_mati", global_position)
+	if dihitung_misi:
+		GameManager.lapor_buta_kalah()
 	var t := create_tween()
 	t.tween_property(model, "rotation:x", deg_to_rad(-85.0), 0.5).set_ease(Tween.EASE_IN)
 	t.tween_interval(0.6)

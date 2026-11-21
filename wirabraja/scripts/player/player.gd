@@ -86,6 +86,7 @@ func _physics_process(delta: float) -> void:
 			_proses_gerak(delta, 1.0)
 			if Input.is_action_just_pressed("lompat") and is_on_floor():
 				velocity.y = kekuatan_lompat
+				AudioManager.putar_sfx("lompat")
 			if _minta_serang:
 				_mulai_serang()
 		State.MENYERANG:
@@ -114,6 +115,7 @@ func terima_serangan(jumlah: int, arah_dorong: Vector3, kekuatan_dorong: float =
 		return
 	_sisa_kebal = waktu_kebal
 	EfekVisual.kilat_kena(model)
+	AudioManager.putar_sfx("kena")
 	var dorong := arah_dorong
 	dorong.y = 0.0
 	velocity = dorong.normalized() * kekuatan_dorong + Vector3.UP * 2.5
@@ -167,6 +169,7 @@ func _mulai_serang() -> void:
 	velocity.x = maju.x
 	velocity.z = maju.z
 	_animasi_ayunan()
+	AudioManager.putar_sfx("ayun")
 
 
 func _periksa_hitbox() -> void:
@@ -213,7 +216,11 @@ func _animasi_langkah(delta: float) -> void:
 	var laju_datar := Vector2(velocity.x, velocity.z).length()
 	var bergerak := is_on_floor() and laju_datar > 0.3 and state != State.MATI
 	if bergerak:
+		var fase_lama := _fase_langkah
 		_fase_langkah += delta * laju_datar * 2.2
+		# Bunyi langkah setiap kali kaki menapak (sinus melewati nol).
+		if floori(fase_lama / PI) != floori(_fase_langkah / PI):
+			AudioManager.putar_sfx("langkah")
 	else:
 		_fase_langkah = lerpf(_fase_langkah, roundf(_fase_langkah / PI) * PI, 10.0 * delta)
 	var ayun := sin(_fase_langkah) * clampf(laju_datar / kecepatan_lari, 0.0, 1.0) * 0.8

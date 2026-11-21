@@ -124,7 +124,7 @@ theme_override_colors/font_color = Color(1, 1, 1, 0.8)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 0.8)
 theme_override_constants/outline_size = 4
 theme_override_font_sizes/font_size = 15
-text = "WASD gerak  ·  Shift lari  ·  Spasi lompat  ·  Klik kiri serang  ·  Mouse putar kamera  ·  Esc lepas mouse"
+text = "WASD gerak  ·  Shift lari  ·  Spasi lompat  ·  Klik kiri serang  ·  Mouse putar kamera  ·  Esc lepas mouse  ·  M musik"
 horizontal_alignment = 1
 
 [node name="LayarAkhir" type="ColorRect" parent="Akar"]

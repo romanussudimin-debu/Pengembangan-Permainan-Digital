@@ -1,7 +1,8 @@
-[gd_scene load_steps=41 format=3]
+[gd_scene load_steps=43 format=3]
 
 [ext_resource type="Script" path="res://scripts/boss/bos_raksasa.gd" id="1_e"]
 [ext_resource type="Script" path="res://scripts/common/komponen_hp.gd" id="2_e"]
+[ext_resource type="PackedScene" path="res://scenes/enemies/buta_cilik.tscn" id="3_e"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
 resource_name = "kulit_bos_hijau"
@@ -183,10 +184,14 @@ bottom_radius = 6.5
 height = 0.04
 radial_segments = 48
 
+[sub_resource type="BoxMesh" id="BoxMesh_39"]
+size = Vector3(2.8, 0.04, 20)
+
 [node name="BosRaksasa" type="CharacterBody3D"]
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_e")
+scene_buta_kecil = ExtResource("3_e")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
@@ -355,6 +360,15 @@ surface_material_override/0 = SubResource("StandardMaterial3D_3")
 [node name="PenandaHantam" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0)
 mesh = SubResource("CylinderMesh_38")
+surface_material_override/0 = SubResource("StandardMaterial3D_7")
+cast_shadow = 0
+
+[node name="PenandaSerbu" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07, 0)
+
+[node name="Jalur" type="MeshInstance3D" parent="PenandaSerbu"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+mesh = SubResource("BoxMesh_39")
 surface_material_override/0 = SubResource("StandardMaterial3D_7")
 cast_shadow = 0
 

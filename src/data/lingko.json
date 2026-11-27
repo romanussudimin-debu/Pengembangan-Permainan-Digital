@@ -1,83 +1,20 @@
 {
-	"keluarga": [
-		{
-			"nama": "Ema Petrus",
-			"ciri": "Lelaki bersongke merah di persimpangan pematang lingkar tengah, tepat di seberang jalan masuk.",
-			"undang": "Reke lodok? Baik, Kraeng. Aku segera ke lodok."
-		},
-		{
-			"nama": "Ine Maria",
-			"ciri": "Perempuan bersongke hijau yang menjaga wae teku, mata air di utara lingko.",
-			"undang": "Terima kasih sudah datang jauh-jauh ke mata air, Kraeng."
-		},
-		{
-			"nama": "Ema Bonis",
-			"ciri": "Lelaki bersongke kuning di lingkar paling dalam, di sisi matahari terbit.",
-			"undang": "Akhirnya ada yang menyeberangi pematang sampai ke sini. Aku datang, Kraeng."
-		},
-		{
-			"nama": "Ine Sisi",
-			"ciri": "Perempuan bersongke biru yang berteduh di pondok, di sisi matahari terbenam.",
-			"undang": "Aku hanya berteduh sebentar. Tentu, aku ikut bermusyawarah."
-		},
-		{
-			"nama": "Ema Gabriel",
-			"ciri": "Lelaki bersongke biru yang tak pernah berhenti berjalan menyusuri pematang terluar.",
-			"undang": "Oh, kamu mengejarku dari tadi? Neka rabo, Kraeng. Aku akan ke lodok."
-		}
-	],
-	"pengecoh": [
-		{
-			"nama": "Ema Lukas",
-			"petunjuk": "Bukan aku. Lelaki bersongke merah itu di seberang jalan masuk."
-		},
-		{
-			"nama": "Ine Rosa",
-			"petunjuk": "Aku tidak menerima bagian. Cari perempuan penjaga mata air di utara."
-		},
-		{
-			"nama": "Ema Edu",
-			"petunjuk": "Aku di lingkar luar. Yang kamu cari di lingkar paling dalam."
-		}
-	],
-	"pengecoh_sulit": "Bukan aku, Kraeng. Perhatikan lagi cirinya.",
-	"sudah_diundang": "Aku akan datang ke lodok, Kraeng.",
 	"dialog": {
 		"pembuka": [
 			"Tu'a Teno menunggu di lodok. Pematang yang putus harus kulompati."
 		],
 		"sambutan": [
 			"Ité datang, Kraeng. Aku Tu'a Teno, pembagi tanah lingko ini.",
-			"Undang lima kepala keluarga ke reke lodok. Ciri mereka ada di kanan atas."
+			"Sawah kita kering. Alirkan air dari wae teku di utara lingko."
 		],
 		"sambutan_sulit": "Selesaikan sebelum senja!",
-		"ajak": "Tu'a Teno mengundang Ité ke reke lodok.",
-		"belum_waktunya": "Tu'a Teno menunggumu di lodok, Kraeng.",
-		"sapa_warga": "Semoga panen musim ini berlimpah, Kraeng.",
-		"tua_golo": [
-			"Pembagian lingko urusan seluruh kampung. Bantu Tu'a Teno, Kraeng."
-		],
-		"menunggu_undangan": [
-			"Masih ada yang belum diundang. Perhatikan cirinya."
-		],
-		"semua_diundang": "Semua sudah diundang. Kembali ke lodok!",
-		"reke_lodok": [
-			"Mari duduk melingkar dan bermusyawarah, seperti lonto leok.",
-			"Adil di lingko tidak selalu sama luas. Tapi petak butuh air: alirkan dari wae teku."
-		],
 		"menunggu_air": [
 			"Wae teku ada di utara lingko, Kraeng."
 		],
 		"buka_saluran": "Salurannya tersumbat. Putar potongannya agar air sampai ke kedua petak.",
-		"air_berhasil": "Air mengalir! Tapi lihat, burung mulai datang. Temui Tu'a Teno.",
+		"air_berhasil": "Air mengalir! Sekarang naiklah ke bukit batu di barat daya dan pandang lingko.",
 		"air_gagal": "Airnya belum sampai. Coba lagi.",
 		"wae_teku_selesai": "Air wae teku mengalir deras ke lingko.",
-		"mulai_bagi": [
-			"Tarik garis moso dari lodok, searah jarum jam dari garis utara.",
-			"Ikuti aturan musyawarah tiap lingko. Keluargamu juga mendapat bagian."
-		],
-		"bagi_berhasil": "Lingko terbagi adil. Naiklah ke bukit batu di barat daya.",
-		"bagi_gagal": "Kita ulangi musyawarahnya kapan pun kamu siap.",
 		"menunggu_bukit": [
 			"Naiklah ke bukit batu di barat daya, Kraeng."
 		],
@@ -88,76 +25,7 @@
 		],
 		"waktu_habis": "Matahari sudah terbenam. Kita ulangi besok pagi.",
 		"lihat_wae_teku": "Wae teku, mata air kampung. Airnya jernih.",
-		"menunggu_burung": [
-			"Pipit mulai berdatangan ke petak, Kraeng!"
-		],
-		"burung_mulai": "Usir pipit dari petak, tapi biarkan kuntul putih: ia memakan serangga hama.",
-		"burung_kuntul": "Jangan usir kuntul! Ia membantu memakan serangga hama.",
-		"burung_habis": "Padi di petak itu habis dimakan pipit!",
-		"burung_selesai": "Padi aman dari pipit. Sekarang kita bagi lingko.",
 		"rapuh": "Pematang ini rapuh! Perhatikan tanah yang gelap dan retak.",
 		"batu_goyah": "Batu goyah! Batu yang miring dan retak tidak kuat dipijak."
-	},
-	"ronde": [
-		{
-			"bagian": 12,
-			"penerima": [
-				"Tu'a Teno",
-				"Tu'a Golo",
-				"Ema Petrus",
-				"Ine Maria"
-			],
-			"target": [
-				4,
-				4,
-				2,
-				2
-			],
-			"aturan": "Tu'a teno dan tu'a golo masing-masing mendapat dua kali bagian keluarga biasa."
-		},
-		{
-			"bagian": 18,
-			"penerima": [
-				"Tu'a Teno",
-				"Tu'a Golo",
-				"Ema Petrus",
-				"Ine Maria",
-				"Ema Bonis",
-				"Ine Sisi"
-			],
-			"target": [
-				6,
-				4,
-				2,
-				2,
-				2,
-				2
-			],
-			"aturan": "Tu'a teno mendapat tiga kali bagian keluarga biasa, tu'a golo dua kali."
-		},
-		{
-			"bagian": 24,
-			"penerima": [
-				"Tu'a Teno",
-				"Tu'a Golo",
-				"Ema Petrus",
-				"Ine Maria",
-				"Ema Bonis",
-				"Ine Sisi",
-				"Ema Gabriel",
-				"Keluarga Nggohak"
-			],
-			"target": [
-				6,
-				4,
-				3,
-				3,
-				2,
-				2,
-				2,
-				2
-			],
-			"aturan": "Tu'a teno tiga kali dan tu'a golo dua kali bagian keluarga biasa. Ema Petrus dan Ine Maria menanggung keluarga besar, jadi masing-masing mendapat satu setengah kali bagian keluarga biasa."
-		}
-	]
+	}
 }

@@ -1,9 +1,8 @@
 class_name Pemain
 extends CharacterBody3D
 ## Pemain 3D (Nggohak). Logika gerak dipecah ke state: Idle, Jalan, Lompat, Jatuh, Interaksi.
-## Perintah dibaca dari `input` (PlayerInput: keyboard/sentuh/bot/jaringan), bukan langsung dari Input,
-## sehingga karakter yang sama bisa dikendalikan pemain lokal, bot, atau pemain lain di LAN.
-## Komponen tempur (`combat`: HP, busur, respawn) aktif saat CombatManager.active.
+## Input: aksi maju/mundur/kiri/kanan (keyboard atau joystick sentuh KontrolSentuh) relatif arah kamera,
+## lompat, dan interaksi.
 
 @export var kecepatan: float = 5.0
 @export var akselerasi: float = 30.0
@@ -18,28 +17,14 @@ extends CharacterBody3D
 @onready var model: KarakterModel = $Model
 @onready var mesin: StateMachine = $StateMachine
 
-var input: PlayerInput  ## sumber perintah; default KeyboardInput (pemain lokal)
-var peer_id: int = 1  ## pemilik di jaringan (1 = host / mode Solo); kunci progres tempur
-var combat: CombatPlayer
 var interaktif_terdekat: Interaktif = null
 var _dalam_jangkauan: Array[Interaktif] = []
 var _sisa_coyote: float = 0.0
 var _sisa_buffer: float = 0.0
-var _dorongan: Vector3 = Vector3.ZERO  ## knockback/tarikan dari serangan musuh, meluruh cepat
 
 
 func _ready() -> void:
 	add_to_group("pemain")
-	for anak in get_children():
-		if anak is PlayerInput:
-			input = anak
-	if input == null:
-		input = KeyboardInput.new()
-		input.name = "Input"
-		add_child(input)
-	combat = CombatPlayer.new()
-	combat.name = "Combat"
-	add_child(combat)
 	mesin.mulai()
 	GameState.state_berubah.connect(_pada_state_game)
 
@@ -56,15 +41,12 @@ func boleh_bergerak() -> bool:
 
 
 func _physics_process(delta: float) -> void:
-	input.update_input(self, delta)
-	if combat.is_dead:
-		input.clear()
-	# Coyote time & jump buffer membuat lompatan terasa responsif (lompat juga untuk menghindar)
+	# Coyote time & jump buffer membuat lompatan terasa responsif
 	if is_on_floor():
 		_sisa_coyote = waktu_coyote
 	else:
 		_sisa_coyote = maxf(_sisa_coyote - delta, 0.0)
-	if boleh_bergerak() and input.jump_pressed:
+	if boleh_bergerak() and Input.is_action_just_pressed("lompat"):
 		_sisa_buffer = waktu_buffer_lompat
 	else:
 		_sisa_buffer = maxf(_sisa_buffer - delta, 0.0)
@@ -101,41 +83,41 @@ func _perbarui_interaktif_terdekat() -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Saat bertempur tombol E dipakai skill, jadi interaksi dinonaktifkan
-	if CombatManager.active or not input is KeyboardInput:
-		return
 	if event.is_action_pressed("interaksi") and boleh_bergerak() and interaktif_terdekat != null:
 		get_viewport().set_input_as_handled()
 		interaktif_terdekat.interaksi(self)
 
 
-## Arah gerak di ruang dunia dari PlayerInput (sudah relatif terhadap arah kamera).
+## Arah gerak di ruang dunia: stik/WASD diputar mengikuti arah hadap kamera (kamera bisa diputar pemain).
 func arah_input() -> Vector3:
-	if not boleh_bergerak() or combat.is_dead:
+	if not boleh_bergerak():
 		return Vector3.ZERO
-	return input.move_dir
+	var v: Vector2 = Input.get_vector("kiri", "kanan", "maju", "mundur")
+	var arah := Vector3(v.x, 0.0, v.y)
+	var kamera: Camera3D = get_viewport().get_camera_3d()
+	if kamera:
+		var depan: Vector3 = -kamera.global_transform.basis.z
+		depan.y = 0.0
+		if depan.length() > 0.01:
+			arah = arah.rotated(Vector3.UP, atan2(-depan.x, -depan.z))
+	return arah
+
+
+## Tombol lompat masih ditahan (lompatan dipotong bila dilepas lebih awal).
+func tahan_lompat() -> bool:
+	return boleh_bergerak() and Input.is_action_pressed("lompat")
 
 
 func gerak_horizontal(delta: float, arah: Vector3) -> void:
-	var target: Vector3 = arah * kecepatan * combat.speed_multiplier()
+	var target: Vector3 = arah * kecepatan
 	var laju: float = akselerasi if arah != Vector3.ZERO else gesekan
-	_dorongan = _dorongan.move_toward(Vector3.ZERO, 14.0 * delta)
-	target += _dorongan
-	var horizontal := Vector3(velocity.x, 0.0, velocity.z).move_toward(target, laju * delta + _dorongan.length())
+	var horizontal := Vector3(velocity.x, 0.0, velocity.z).move_toward(target, laju * delta)
 	velocity.x = horizontal.x
 	velocity.z = horizontal.z
-	var hadap: Vector3 = arah
-	if combat.aiming_time > 0.0:
-		hadap = combat.aim_dir  # sedang menembak: badan menghadap arah bidik
-	if hadap != Vector3.ZERO:
-		var sudut: float = atan2(-hadap.x, -hadap.z)
+	if arah != Vector3.ZERO:
+		var sudut: float = atan2(-arah.x, -arah.z)
 		model.rotation.y = lerp_angle(model.rotation.y, sudut, kecepatan_putar * delta)
 	model.kecepatan_jalan = clampf(horizontal.length() / kecepatan, 0.0, 1.0)
-
-
-## Dorongan (positif menjauh) atau tarikan dari serangan musuh, mis. seruduk kerbau / ular sawah.
-func apply_knockback(push: Vector3) -> void:
-	_dorongan = push
 
 
 func terapkan_gravitasi(delta: float) -> void:

@@ -24,10 +24,6 @@ const SFX: Dictionary = {
 	"salah": preload("res://assets/audio/salah.wav"),
 	"kombo": preload("res://assets/audio/kombo.wav"),
 	"percik": preload("res://assets/audio/percik.wav"),
-	"busur": preload("res://assets/audio/busur.wav"),
-	"kena": preload("res://assets/audio/kena.wav"),
-	"ledakan": preload("res://assets/audio/ledakan.wav"),
-	"raung": preload("res://assets/audio/raung.wav"),
 }
 
 const JUMLAH_KANAL_SFX: int = 8

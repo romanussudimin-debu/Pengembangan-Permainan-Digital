@@ -10,15 +10,6 @@
 			]
 		},
 		{
-			"id": "wae_rebo",
-			"judul": "Kampung Wae Rebo",
-			"ringkas": "Tujuh Mbaru Niang melingkari halaman; meraih penghargaan UNESCO tahun 2012.",
-			"isi": [
-				"Wae Rebo memiliki 7 Mbaru Niang yang melingkari halaman tengah: 1 mbaru gendang (rumah utama penyimpan pusaka) dan 6 mbaru gena (rumah pendamping).",
-				"Pelestarian rumah adat Wae Rebo meraih UNESCO Asia-Pacific Award for Cultural Heritage Conservation (Award of Excellence) tahun 2012."
-			]
-		},
-		{
 			"id": "compang",
 			"judul": "Compang",
 			"ringkas": "Altar batu berundak di tengah kampung, tempat sakral yang hanya dilihat.",
@@ -46,51 +37,6 @@
 			]
 		},
 		{
-			"id": "gong_gendang",
-			"judul": "Gong, Gendang & Nyanyian",
-			"ringkas": "Gong dan gendang mengiringi upacara; nyanyian adat antara lain sanda, mbata, danding.",
-			"isi": [
-				"Gong dan gendang mengiringi upacara adat dan caci. Nyanyian Manggarai antara lain sanda (dinyanyikan berdiri melingkar tanpa alat musik), mbata (duduk, diiringi gong dan gendang), dan danding (kelompok bergerak melingkar).",
-				"Musik dalam game ini disintesis dengan pola gong dan gendang sebagai penghormatan, bukan rekaman asli."
-			]
-		},
-		{
-			"id": "caci",
-			"judul": "Caci: Paki dan Ta'ang",
-			"ringkas": "Tarian-tarung dua pria: paki mencambuk, ta'ang menangkis, bergantian.",
-			"isi": [
-				"Caci adalah tarian-tarung antara dua pria. Paki adalah pemain yang mencambuk, sedangkan ta'ang adalah pemain yang menangkis. Peran keduanya bergantian.",
-				"Pukulan hanya sah di bagian tubuh atas pinggang. Pemain yang terkena di mata dianggap kalah."
-			]
-		},
-		{
-			"id": "perlengkapan_caci",
-			"judul": "Perlengkapan Caci",
-			"ringkas": "Larik (cambuk), nggiling (perisai), panggal (penutup kepala), dan ndeki (hiasan ekor).",
-			"isi": [
-				"Paki memegang larik, cambuk dari kulit kerbau. Ta'ang melindungi diri dengan nggiling, perisai bundar dari kulit kerbau, dan busur penangkis dari rotan/bambu (agang atau tereng).",
-				"Pemain mengenakan panggal, penutup kepala yang menyerupai tanduk kerbau, dan ndeki, hiasan menyerupai ekor di pinggang belakang."
-			]
-		},
-		{
-			"id": "nilai_caci",
-			"judul": "Nilai Sportivitas Caci",
-			"ringkas": "Caci adalah ungkapan sportivitas, keberanian, dan persaudaraan, bukan untuk melukai.",
-			"isi": [
-				"Caci bukan untuk saling melukai. Caci adalah ungkapan sportivitas, keberanian, dan persaudaraan antarkampung.",
-				"Setelah bertanding, para pemain saling menghormati. Luka dalam caci diterima dengan lapang dada tanpa dendam."
-			]
-		},
-		{
-			"id": "kopi_wae_rebo",
-			"judul": "Kopi Wae Rebo",
-			"ringkas": "Kopi adalah komoditas utama Wae Rebo, diolah secara tradisional.",
-			"isi": [
-				"Kopi adalah komoditas utama warga Wae Rebo. Kopi robusta mulai ditanam di sana sekitar tahun 1960-an.",
-				"Kopi diolah secara tradisional tanpa mesin. Sejak 2014 warga juga mengemas kopi bubuk; pengemasannya dilakukan para perempuan Wae Rebo."
-			]
-		},
-		{
 			"id": "lingko",
 			"judul": "Lingko",
 			"ringkas": "Tanah ulayat yang diolah bersama: gendang one, lingko pe'ang.",
@@ -101,16 +47,6 @@
 			]
 		},
 		{
-			"id": "reke_lodok",
-			"judul": "Reke Lodok dan Tu'a Teno",
-			"ringkas": "Rapat sebelum lingko dibagi, dipimpin tu'a teno lewat musyawarah.",
-			"level": 2,
-			"isi": [
-				"Sebelum lingko dibagi, diadakan reke lodok, yaitu rapat awal untuk menentukan waktu pembagian dan siapa saja yang berhak menerima bagian.",
-				"Pembagian dipimpin tu'a teno, tetua adat yang berwenang membagi tanah, bersama tu'a golo (tua kampung). Keputusan diambil lewat musyawarah. Adil tidak selalu berarti sama luas: tu'a teno dan tu'a golo umumnya mendapat bagian lebih besar."
-			]
-		},
-		{
 			"id": "wae_teku",
 			"judul": "Wae Teku",
 			"ringkas": "Mata air kampung, bagian penting ruang hidup orang Manggarai.",
@@ -118,26 +54,6 @@
 			"isi": [
 				"Wae teku adalah mata air kampung. Bersama natas (halaman kampung), compang, dan lingko, wae teku menjadi bagian penting ruang hidup orang Manggarai.",
 				"Di sebagian kampung, rangkaian Penti mencakup ritus penghormatan bagi mata air (barong wae teku) sebagai tanda syukur atas sumber kehidupan."
-			]
-		},
-		{
-			"id": "burung_sawah",
-			"judul": "Pipit dan Kuntul di Sawah",
-			"level": 2,
-			"ringkas": "Pipit memakan bulir padi; kuntul memakan serangga, jadi biarkan kuntul.",
-			"isi": [
-				"Burung pipit dan bondol datang berkelompok memakan bulir padi saat padi berisi dan menguning. Petani mengusirnya dengan alat pengusir sederhana.",
-				"Kuntul kerbau mencari makan serangga di sawah dan berpotensi menjadi musuh alami hama. Perannya masih diteliti, tetapi kuntul tidak merusak padi. (Tantangan ini adaptasi kreatif.)"
-			]
-		},
-		{
-			"id": "moso",
-			"judul": "Moso",
-			"ringkas": "Garis pembatas dari pusat lingko ke tepi; lebar bagian tiap keluarga bisa berbeda.",
-			"level": 2,
-			"isi": [
-				"Moso adalah garis pembatas berbentuk jari-jari yang ditarik dari titik pusat lingko ke tepi. Garis ini memisahkan hak garapan setiap keluarga.",
-				"Pembagian dihitung menurut moso, yang dikaitkan dengan jari tangan, dan disesuaikan dengan jumlah penerima serta keturunannya. Karena itu, lebar bagian setiap keluarga bisa berbeda."
 			]
 		},
 		{
@@ -188,36 +104,6 @@
 			"isi": [
 				"Pink Beach (Pantai Merah) di Taman Nasional Komodo berpasir merah muda.",
 				"Warnanya berasal dari serpihan cangkang foraminifera merah (organisme laut bersel satu) dan pecahan karang merah yang bercampur dengan pasir putih. Karang adalah makhluk hidup, jadi jangan diinjak, dipatahkan, atau dibawa pulang."
-			]
-		},
-		{
-			"id": "komodo",
-			"judul": "Komodo",
-			"ringkas": "Kadal terbesar yang masih hidup; kunjungan wajib didampingi ranger.",
-			"level": 3,
-			"isi": [
-				"Komodo (Varanus komodoensis) adalah kadal terbesar yang masih hidup dan satwa yang dilindungi. Di alam liar, komodo hanya ditemukan di kawasan Taman Nasional Komodo dan sebagian Flores.",
-				"Setiap kunjungan wajib didampingi ranger. Tidak ada komodo yang jinak: tetap di jalur, jangan memberi makan, dan jaga jarak."
-			]
-		},
-		{
-			"id": "taka_makassar",
-			"judul": "Taka Makassar",
-			"ringkas": "Pulau pasir sabit yang muncul saat surut, dekat Manta Point.",
-			"level": 3,
-			"isi": [
-				"Taka Makassar adalah gosong pasir kecil berbentuk sabit yang tidak berpenghuni. Pulau pasir ini muncul saat air surut dan sebagian tertutup saat air pasang.",
-				"Letaknya dekat Manta Point (Karang Makassar), tempat pari manta datang untuk dibersihkan ikan-ikan kecil. Kemunculan manta tidak selalu terjamin."
-			]
-		},
-		{
-			"id": "manjarite",
-			"judul": "Teluk Manjarite",
-			"ringkas": "Titik snorkeling: jangan menginjak karang dan bawa kembali sampahmu.",
-			"level": 3,
-			"isi": [
-				"Teluk Manjarite dikenal sebagai salah satu titik snorkeling di kawasan Taman Nasional Komodo. [PERLU VERIFIKASI: detail lokasi dan kondisi teluk]",
-				"Saat snorkeling, jangan menginjak atau menyentuh karang, ikuti arahan pemandu karena arus bisa berubah, dan bawa kembali semua sampahmu."
 			]
 		}
 	]

@@ -12,7 +12,7 @@ func masuk(_data: Dictionary) -> void:
 func physics_update(delta: float) -> void:
 	pemain.terapkan_gravitasi(delta)
 	# Tinggi lompatan variabel: lepas tombol lebih awal = lompatan lebih rendah
-	if not _sudah_dipotong and not pemain.input.jump_held and pemain.velocity.y > 0.0:
+	if not _sudah_dipotong and not pemain.tahan_lompat() and pemain.velocity.y > 0.0:
 		pemain.velocity.y *= 0.5
 		_sudah_dipotong = true
 	pemain.gerak_horizontal(delta, pemain.arah_input())

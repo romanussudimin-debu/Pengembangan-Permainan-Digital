@@ -9,36 +9,36 @@ pemain, alamat IP, atau ID perangkat). Event ini ditangani oleh autoload `Analit
 (`src/scripts/autoload/analitik.gd`, fungsi `catat_level_selesai`).
 
 ## Kapan event dikirim
-| Mode | Pemicu | Sumber |
-|---|---|---|
-| Solo | Level cerita tamat (`GameState.selesaikan_level`): L1 setelah gelombang terakhir di kampung, L2 setelah panen di lingko, L3 saat pulang dari peta kapal setelah enam destinasi | sinyal `GameState.level_selesai` |
-| Co-op LAN | Semua gelombang dan bos dikalahkan ("Kalian menang!") | `NetArena._rpc_game_over` → `GameState.level_selesai` |
-| PvP LAN | Pertandingan berakhir (menang atau seri) | idem |
+Event dikirim satu kali setiap level tamat, melalui `GameState.selesaikan_level` yang memancarkan sinyal
+`GameState.level_selesai`:
 
-Durasi mulai dihitung saat sinyal `GameState.level_dimulai` dipancarkan (`mulai_level`, `pilih_level`,
-`lanjutkan`, atau saat arena LAN dibuka). Waktu selama permainan dijeda (Menu Jeda dan panel "Nyawa habis")
-tidak dihitung. Mengulang tantangan karena nyawa habis **tidak** mereset durasi. Pada LAN, setiap perangkat
-mencatat event-nya sendiri tepat satu kali: host melalui panggilan lokal, klien melalui RPC, dengan penjaga
-`_analitik_tercatat`. Event lama `level_selesai` di `user://analitik.json` tetap dicatat seperti sebelumnya.
+| Level | Titik tamat |
+|---|---|
+| 1. Kampung Wae Rebo | Setelah tantangan menenun songke bersama Ine Wela |
+| 2. Lingko Lodok | Setelah memandang lingko dari bukit batu |
+| 3. Songke ke Labuan Bajo | Saat menekan "Pulang ke Wae Rebo" di peta kapal setelah tiga destinasi tuntas |
 
-## Field (skema versi 1)
+Durasi mulai dihitung saat sinyal `GameState.level_dimulai` dipancarkan (`mulai_level`, `pilih_level`, atau
+`lanjutkan`). Waktu selama permainan dijeda (Menu Jeda dan panel "Nyawa habis") tidak dihitung. Mengulang
+tantangan karena nyawa habis **tidak** mereset durasi. Event lama `level_selesai` di `user://analitik.json`
+tetap dicatat seperti sebelumnya.
+
+## Field (skema versi 2)
 | Field | Tipe | Contoh | Arti |
 |---|---|---|---|
 | `event` | String | `"level_completed"` | Nama event |
-| `versi_skema` | int | `1` | Versi struktur data |
-| `level_id` | int | `1` | Level 1/2/3 (PvP: arena Wae Rebo=1, Lingko=2, Labuan Bajo=3) |
+| `versi_skema` | int | `2` | Versi struktur data (v2: field `mode` dan `koin_didapat` dihapus bersama mode LAN dan pertarungan) |
+| `level_id` | int | `1` | Level 1/2/3 |
 | `nama_level` | String | `"Kampung Wae Rebo"` | Nama level |
-| `kesulitan` | String | `"normal"` | `"mudah"`, `"normal"`, atau `"sulit"` |
-| `mode` | String | `"solo"` | `"solo"`, `"coop"`, atau `"pvp"` |
+| `kesulitan` | String | `"normal"` | `"normal"` atau `"sulit"` |
 | `waktu` | String | `"2026-11-27T14:05:31"` | Waktu lokal ISO 8601 saat tamat |
-| `durasi_detik` | float | `412.7` | Lama bermain level tanpa waktu jeda (1 desimal) |
-| `nyawa_tersisa` | int | `3` | Sisa nyawa saat tamat (LAN: 0) |
-| `nyawa_maks` | int | `5` | Nyawa maksimum (Normal/Mudah 5, Sulit 3; LAN: 0) |
-| `salah_pengecoh` | int | `2` | Salah memilih orang/benda pengecoh (salah tamu, benang palsu, salah orang, batu goyah, bukan pembeli, benda laut) |
+| `durasi_detik` | float | `245.3` | Lama bermain level tanpa waktu jeda (1 desimal) |
+| `nyawa_tersisa` | int | `3` | Sisa nyawa saat tamat |
+| `nyawa_maks` | int | `5` | Nyawa maksimum (Normal 5, Sulit 3) |
+| `salah_pengecoh` | int | `2` | Salah memilih pengecoh (batu goyah, bukan pembeli, kerang/bintang laut) |
 | `tantangan_diulang` | int | `1` | Tantangan yang diulang karena nyawa habis |
-| `kartu_didapat` | Array | `["compang", "mbaru_niang"]` | ID kartu budaya baru di level ini (LAN: `[]`) |
-| `koin_didapat` | int | `40` | Koin yang diperoleh selama level |
-| `pertama_kali` | bool | `true` | `true` bila level ini (untuk mode tersebut) baru pertama kali ditamatkan |
+| `kartu_didapat` | Array | `["compang", "mbaru_niang"]` | ID kartu budaya baru di level ini |
+| `pertama_kali` | bool | `true` | `true` bila level ini baru pertama kali ditamatkan |
 
 ## Lokasi berkas log
 Berkas: `user://analitik/event_log.json`, berupa array event. Hanya 500 event terakhir yang disimpan. Penulisan
@@ -52,16 +52,16 @@ diperlakukan sebagai array kosong.
 - **Web:** IndexedDB peramban (sistem berkas virtual Godot)
 
 Setiap event juga dicetak satu baris di Output/konsol, misalnya
-`[Analitik] level_completed level=1 kesulitan=normal mode=solo durasi=412.7s nyawa=3/5 pengecoh=2 diulang=1 kartu=3 koin=40 pertama_kali=true`.
+`[Analitik] level_completed level=1 kesulitan=normal durasi=245.3s nyawa=3/5 pengecoh=0 diulang=1 kartu=4 pertama_kali=true`.
 Saat game dibuka, `Analitik.ringkasan_level()` (jumlah tamat dan rata-rata durasi per level) dicetak sekali dengan
 awalan `[Analitik] ringkasan_level`.
 
 ## Langkah uji manual
 1. Jalankan proyek dari editor Godot 4.3 dan perhatikan baris `[Analitik] ringkasan_level ...` di panel Output.
-2. Pilih kesulitan **Normal**, lalu mainkan Level 1 sampai layar "Level 1 berhasil". Sengaja salah memilih satu
-   tamu atau benang palsu, dan buka Menu Jeda beberapa detik.
-3. Pastikan muncul satu baris `[Analitik] level_completed level=1 kesulitan=normal ...` dengan `pengecoh` ≥ 1, dan
-   durasi yang tidak memuat waktu jeda.
+2. Pilih kesulitan **Normal**, lalu mainkan Level 1 sampai layar "Level 1 berhasil". Sengaja salah menjawab
+   teka-teki Tu'a Golo sekali (nyawa berkurang), dan buka Menu Jeda beberapa detik.
+3. Pastikan muncul satu baris `[Analitik] level_completed level=1 kesulitan=normal ...` dengan `nyawa=4/5`, dan
+   durasi yang tidak memuat waktu jeda. (`pengecoh` terisi di Level 3, misalnya saat menawarkan kepada bukan pembeli.)
 4. Ulangi Level 1 lewat Pilih Level dengan kesulitan **Sulit**, lalu tamatkan. Baris kedua menunjukkan `kesulitan=sulit`
    dan `nyawa=x/3`.
 5. Buka `event_log.json` di lokasi di atas. Pastikan berisi dua event dengan nilai yang sesuai.

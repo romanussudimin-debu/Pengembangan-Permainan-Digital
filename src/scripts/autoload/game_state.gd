@@ -49,12 +49,8 @@ var level_tertinggi: int = 1  ## level terjauh yang sudah terbuka (disimpan)
 var kartu_awal_level: Array[String] = []  ## kartu saat level dimulai (untuk mengulang level)
 var _kartu_mulai_analitik: Array[String] = []  ## kartu saat level dimulai, tidak diperbarui per destinasi L3
 var teks_cepat: bool = false  ## pengaturan: teks dialog langsung tampil utuh (disimpan)
-## Mode Singkat (demo ±1 menit per level, disimpan): L1 tanpa pendakian & rantai 2 tantangan,
-## L2 langsung membagi lingko, L3 hanya Pelabuhan; tiap level satu gelombang tempur pendek.
-var mode_singkat: bool = false
-var _rantai_singkat: Array = []
 var mode_sulit: bool = false  ## Sulit: batas waktu "sebelum senja", kesempatan salah lebih sedikit
-var kesulitan: String = "normal"  ## "mudah" | "normal" | "sulit" (pengali tempur di CombatConst.DIFFICULTY)
+var kesulitan: String = "normal"  ## "normal" | "sulit" (dicatat Analitik)
 var tujuan_khusus: String = ""  ## teks tujuan yang diatur level aktif (Level 2 dst.)
 var level_baru_selesai: int = 0  ## level yang baru tamat (dibaca layar Level Berhasil)
 var waktu_mulai_level: int = 0  ## Time.get_ticks_msec() saat level dimulai
@@ -65,7 +61,6 @@ var pulau_selesai: int = 0  ## jumlah destinasi yang sudah tuntas (destinasi ter
 var pulau_aktif: int = 0  ## indeks destinasi yang sedang dikunjungi
 var terjual_total: int = 0  ## kain/foto yang terjual di destinasi yang sudah tuntas
 var pembuka_l3_dilihat: bool = false
-var benang_emas: int = 0  ## benang emas terkumpul di Level 1 (pencapaian "Penjelajah")
 
 
 func _ready() -> void:
@@ -126,17 +121,17 @@ func selesaikan_level(n: int) -> void:
 	Transisi.pindah_scene(ADEGAN_LEVEL_SELESAI)
 
 
-## Data level cerita yang baru tamat untuk event analitik level_completed (mode Solo).
+## Data level yang baru tamat untuk event analitik level_completed.
 func _data_level_selesai(n: int) -> Dictionary:
 	var kartu_baru: Array[String] = []
 	for id: String in kartu_terkumpul:
 		if not _kartu_mulai_analitik.has(id):
 			kartu_baru.append(id)
 	return {
-		"level_id": n, "nama_level": str(NAMA_LEVEL.get(n, "")), "mode": "solo",
+		"level_id": n, "nama_level": str(NAMA_LEVEL.get(n, "")),
 		"nyawa_tersisa": Nyawa.sisa, "nyawa_maks": Nyawa.maks(),
 		"salah_pengecoh": Nyawa.pengecoh_di_level, "tantangan_diulang": Nyawa.diulang_di_level,
-		"kartu_didapat": kartu_baru, "koin_didapat": CombatManager.solo_coins_earned,
+		"kartu_didapat": kartu_baru,
 		"pertama_kali": not Prestasi.bintang_terbaik.has(n),
 	}
 
@@ -146,13 +141,12 @@ func mulai_level(n: int) -> void:
 	level = n
 	waktu_mulai_level = Time.get_ticks_msec()
 	Prestasi.mulai_level()
-	CombatManager.reset_session()
 	Analitik.catat("level_mulai")
 	Nyawa.isi_penuh()
 	tujuan_khusus = ""
 	_kartu_mulai_analitik.assign(kartu_terkumpul)
 	level_dimulai.emit(n)
-	Transisi.pindah_scene(_adegan_level(n))
+	Transisi.pindah_scene(ADEGAN_LEVEL[n])
 
 
 func data_level(n: int) -> Dictionary:
@@ -175,7 +169,7 @@ func lanjutkan() -> void:
 	progres_berubah.emit()
 	_kartu_mulai_analitik.assign(kartu_terkumpul)
 	level_dimulai.emit(level)
-	Transisi.pindah_scene(_adegan_level(level))
+	Transisi.pindah_scene(ADEGAN_LEVEL[level])
 
 
 ## Menu Pilih Level: memainkan ulang level `n` yang sudah terbuka (kartu yang sudah didapat tetap).
@@ -199,7 +193,7 @@ func ulangi_level() -> void:
 	Nyawa.isi_penuh()
 	tujuan_khusus = ""
 	progres_berubah.emit()
-	Transisi.pindah_scene(_adegan_level(level))
+	Transisi.pindah_scene(ADEGAN_LEVEL[level])
 
 
 func ada_simpanan() -> bool:
@@ -238,9 +232,9 @@ func atur_mode_sulit(aktif: bool) -> void:
 	atur_kesulitan("sulit" if aktif else "normal")
 
 
-## Mudah / Normal / Sulit. Sulit juga mengaktifkan aturan Mode Sulit cerita (nyawa 3, batas waktu).
+## Normal / Sulit. Sulit mengaktifkan aturan Mode Sulit cerita (nyawa 3, batas waktu).
 func atur_kesulitan(k: String) -> void:
-	kesulitan = k if k in ["mudah", "normal", "sulit"] else "normal"
+	kesulitan = "sulit" if k == "sulit" else "normal"
 	mode_sulit = kesulitan == "sulit"
 	simpan()
 
@@ -255,7 +249,6 @@ func simpan() -> void:
 	cfg.set_value("pengaturan", "mode_sulit", mode_sulit)
 	cfg.set_value("pengaturan", "kesulitan", kesulitan)
 	cfg.set_value("pengaturan", "teks_cepat", teks_cepat)
-	cfg.set_value("pengaturan", "mode_singkat", mode_singkat)
 	var hasil: Error = cfg.save(BERKAS_SIMPAN)
 	if hasil != OK:
 		push_warning("Gagal menyimpan progres (kode %d)" % hasil)
@@ -272,10 +265,9 @@ func muat() -> void:
 	terjual_total = int(cfg.get_value("progres", "terjual_total", 0))
 	pembuka_l3_dilihat = bool(cfg.get_value("progres", "pembuka_l3_dilihat", false))
 	mode_sulit = bool(cfg.get_value("pengaturan", "mode_sulit", false))
-	kesulitan = str(cfg.get_value("pengaturan", "kesulitan", "sulit" if mode_sulit else "normal"))
+	kesulitan = "sulit" if str(cfg.get_value("pengaturan", "kesulitan", "")) == "sulit" or mode_sulit else "normal"
 	mode_sulit = kesulitan == "sulit"
 	teks_cepat = bool(cfg.get_value("pengaturan", "teks_cepat", false))
-	mode_singkat = bool(cfg.get_value("pengaturan", "mode_singkat", false))
 
 
 # ------------------------------------------------------------- kartu
@@ -324,20 +316,7 @@ func jumlah_terkumpul_level(n: int) -> int:
 # ------------------------------------------------------------- rantai teka-teki
 
 func rantai() -> Array:
-	var penuh: Array = DATA_RANTAI.data["rantai"]
-	if not mode_singkat:
-		return penuh
-	if _rantai_singkat.is_empty():
-		# Tu'a Golo (teka-teki) lalu Ine Wela (tenun); petunjuk Ine Wela diganti penutup rantai (menuju lingko)
-		var kedua: Dictionary = (penuh[1] as Dictionary).duplicate()
-		kedua["petunjuk"] = penuh[penuh.size() - 1]["petunjuk"]
-		_rantai_singkat = [penuh[0], kedua]
-	return _rantai_singkat
-
-
-## Scene awal level `n`: di Mode Singkat Level 1 langsung ke kampung (pendakian dilewati).
-func _adegan_level(n: int) -> String:
-	return "res://scenes/kampung.tscn" if n == 1 and mode_singkat else str(ADEGAN_LEVEL[n])
+	return DATA_RANTAI.data["rantai"]
 
 
 func rantai_selesai() -> bool:

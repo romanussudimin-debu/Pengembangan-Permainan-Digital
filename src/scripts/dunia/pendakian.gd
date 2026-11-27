@@ -1,7 +1,7 @@
 extends Node3D
 ## Level 1, pembuka: MENDAKI KE WAE REBO (platformer, ±1,5-2 menit) setelah opening, sebelum kampung.
 ## Jalur hutan menuju utara: sungai dengan batu pijakan, akar pohon melintang, titian di atas jurang,
-## tanjakan batu, lalu sungai kedua di dataran tinggi. Tiga titik cek (bendera songke).
+## lalu tanjakan batu ke dataran tinggi menuju gerbang kampung. Tiga titik cek (bendera songke).
 ## Pengecoh yang adil:
 ##   - batu RETAK: mirip batu biasa tetapi lebih gelap dengan garis retakan; tenggelam bila diinjak sebentar.
 ##   - cabang jalan BUNTU: jalur utama ditandai tiang bambu berkain merah, cabang buntu tidak.
@@ -16,8 +16,6 @@ const DETIK_RETAK: float = 0.35
 const BATU: Array = [
 	[0.0, 13.0, 0.3, false], [-1.6, 10.5, 0.3, false], [1.6, 10.5, 0.3, true], [-0.6, 8.0, 0.3, false],
 	[2.4, 8.0, 0.3, false], [0.8, 5.5, 0.3, false],
-	[-1.8, -46.0, 2.7, false], [1.8, -46.0, 2.7, true], [-0.9, -48.5, 2.7, false], [1.5, -48.5, 2.7, true],
-	[0.8, -51.0, 2.7, false], [-2.2, -51.0, 2.7, true],
 ]
 const TITIK_CEK: Array[Vector3] = [Vector3(0, 0, 25), Vector3(0, 0, -1), Vector3(0, 2.4, -38)]
 
@@ -101,8 +99,7 @@ func _bangun_dunia() -> void:
 	# Bagian jalur (ngarai): [z_awal, z_akhir, puncak_y, jenis] - jenis "tanah", "sungai", "jurang"
 	var segmen: Array = [
 		[30.0, 16.0, 0.0, "tanah"], [16.0, 4.0, 0.0, "sungai"], [4.0, -10.0, 0.0, "tanah"],
-		[-10.0, -22.0, 0.0, "jurang"], [-22.0, -34.0, 0.0, "tanah"], [-34.0, -44.0, 2.4, "tanah"],
-		[-44.0, -54.0, 2.4, "sungai"], [-54.0, -72.0, 2.4, "tanah"],
+		[-10.0, -22.0, 0.0, "jurang"], [-22.0, -34.0, 0.0, "tanah"], [-34.0, -72.0, 2.4, "tanah"],
 	]
 	for sg: Array in segmen:
 		var z0: float = sg[0]

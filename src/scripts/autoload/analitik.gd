@@ -5,15 +5,15 @@ extends Node
 ## (penyebab + tantangan), ulangi (nyawa habis), dialog_dilewati, koleksi_dibuka, pencapaian.
 ## Drop-off = kejadian terakhir tiap sesi (berkas disimpan setiap kali ada kejadian).
 ## Ekspor tersembunyi: ketuk logo menu utama 5x -> Salin CSV / Salin JSON / Simpan CSV.
-## EVENT level_completed (skema v1, lihat docs/event-tracking.md): satu event per level tamat (Solo dari
-## GameState.selesaikan_level, Co-op/PvP dari NetArena), disimpan terpisah di user://analitik/event_log.json.
+## EVENT level_completed (skema v2, lihat docs/event-tracking.md): satu event per level tamat
+## (GameState.selesaikan_level), disimpan terpisah di user://analitik/event_log.json.
 
 const BERKAS: String = "user://analitik.json"
 const MAKS_KEJADIAN: int = 3000
 const FOLDER_EVENT: String = "user://analitik"
 const BERKAS_EVENT: String = "user://analitik/event_log.json"
 const MAKS_EVENT: int = 500
-const VERSI_SKEMA: int = 1
+const VERSI_SKEMA: int = 2  ## v2: tanpa field mode & koin_didapat (mode LAN dan tempur dihapus)
 const MAKS_LANGKAH_DETIK: float = 0.5  ## jeda antar-frame lebih lama (tab disembunyikan, macet) tidak dihitung penuh
 
 var kejadian: Array = []
@@ -74,19 +74,16 @@ func catat(jenis: String, data: Dictionary = {}) -> void:
 	_simpan()
 
 
-## Event level_completed. `data` berisi level_id, nama_level, mode, nyawa_tersisa, nyawa_maks,
-## salah_pengecoh, tantangan_diulang, kartu_didapat, koin_didapat, pertama_kali (opsional; bila tidak ada
-## dihitung dari log). Waktu, durasi, kesulitan, dan versi skema diisi di sini. Tanpa data pribadi.
+## Event level_completed. `data` berisi level_id, nama_level, nyawa_tersisa, nyawa_maks, salah_pengecoh,
+## tantangan_diulang, kartu_didapat, pertama_kali (opsional; bila tidak ada dihitung dari log). Waktu, durasi, kesulitan, dan versi skema diisi di sini. Tanpa data pribadi.
 func catat_level_selesai(data: Dictionary) -> void:
 	var level_id: int = int(data.get("level_id", GameState.level))
-	var mode_main: String = str(data.get("mode", "solo"))
 	var ev: Dictionary = {
 		"event": "level_completed",
 		"versi_skema": VERSI_SKEMA,
 		"level_id": level_id,
 		"nama_level": str(data.get("nama_level", GameState.NAMA_LEVEL.get(level_id, ""))),
 		"kesulitan": GameState.kesulitan,
-		"mode": mode_main,
 		"waktu": Time.get_datetime_string_from_system(),
 		"durasi_detik": snappedf(_detik_level, 0.1),
 		"nyawa_tersisa": int(data.get("nyawa_tersisa", 0)),
@@ -94,18 +91,17 @@ func catat_level_selesai(data: Dictionary) -> void:
 		"salah_pengecoh": int(data.get("salah_pengecoh", 0)),
 		"tantangan_diulang": int(data.get("tantangan_diulang", 0)),
 		"kartu_didapat": Array(data.get("kartu_didapat", [])),
-		"koin_didapat": int(data.get("koin_didapat", 0)),
-		"pertama_kali": bool(data["pertama_kali"]) if data.has("pertama_kali") else not _pernah_selesai(level_id, mode_main),
+		"pertama_kali": bool(data["pertama_kali"]) if data.has("pertama_kali") else not _pernah_selesai(level_id),
 	}
 	_level_berjalan = false
 	event_log.append(ev)
 	if event_log.size() > MAKS_EVENT:
 		event_log = event_log.slice(event_log.size() - MAKS_EVENT)
 	_simpan_event_log()
-	var baris: String = "[Analitik] level_completed level=%d kesulitan=%s mode=%s durasi=%.1fs nyawa=%d/%d" % [
-		level_id, ev["kesulitan"], mode_main, ev["durasi_detik"], ev["nyawa_tersisa"], ev["nyawa_maks"]]
-	print(baris + " pengecoh=%d diulang=%d kartu=%d koin=%d pertama_kali=%s" % [ev["salah_pengecoh"],
-		ev["tantangan_diulang"], (ev["kartu_didapat"] as Array).size(), ev["koin_didapat"], ev["pertama_kali"]])
+	var baris: String = "[Analitik] level_completed level=%d kesulitan=%s durasi=%.1fs nyawa=%d/%d" % [
+		level_id, ev["kesulitan"], ev["durasi_detik"], ev["nyawa_tersisa"], ev["nyawa_maks"]]
+	print(baris + " pengecoh=%d diulang=%d kartu=%d pertama_kali=%s" % [ev["salah_pengecoh"],
+		ev["tantangan_diulang"], (ev["kartu_didapat"] as Array).size(), ev["pertama_kali"]])
 
 
 ## Jumlah tamat dan rata-rata durasi (detik) per level dari event_log: {level_id: {"selesai", "rata_durasi"}}.
@@ -123,9 +119,9 @@ func ringkasan_level() -> Dictionary:
 	return hasil
 
 
-func _pernah_selesai(level_id: int, mode_main: String) -> bool:
+func _pernah_selesai(level_id: int) -> bool:
 	for ev: Dictionary in event_log:
-		if int(ev.get("level_id", 0)) == level_id and str(ev.get("mode", "")) == mode_main:
+		if int(ev.get("level_id", 0)) == level_id:
 			return true
 	return false
 

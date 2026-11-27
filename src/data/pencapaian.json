@@ -1,12 +1,20 @@
 {
 	"pencapaian": [
-		{"id": "tanpa_tumpah", "nama": "Tanpa Tumpah", "syarat": "Mengantar kopi untuk tamu tanpa setetes pun tumpah."},
-		{"id": "mata_elang", "nama": "Mata Elang", "syarat": "Menamatkan satu level tanpa kehilangan nyawa (tidak tertipu pengecoh)."},
-		{"id": "penjelajah", "nama": "Penjelajah", "syarat": "Menemukan kelima gulungan benang emas di Wae Rebo."},
-		{"id": "penangkis_ulung", "nama": "Penangkis Ulung", "syarat": "Latihan tangkis nggiling tanpa sekali pun kena atau tertipu."},
-		{"id": "penjaga_sawah", "nama": "Penjaga Sawah", "syarat": "Mengusir pipit tanpa mengusir kuntul putih."},
-		{"id": "sahabat_laut", "nama": "Sahabat Laut", "syarat": "Memungut semua sampah di Pink Beach & Manjarite tanpa mengambil kerang/bintang laut atau mengganggu satwa."},
-		{"id": "penjual_andal", "nama": "Penjual Andal", "syarat": "Menuntaskan satu destinasi tanpa salah barang atau salah cerita."}
+		{
+			"id": "mata_elang",
+			"nama": "Mata Elang",
+			"syarat": "Menamatkan satu level tanpa kehilangan nyawa (tidak tertipu pengecoh)."
+		},
+		{
+			"id": "sahabat_laut",
+			"nama": "Sahabat Laut",
+			"syarat": "Memungut semua sampah di Pink Beach tanpa mengambil kerang/bintang laut atau mengganggu satwa."
+		},
+		{
+			"id": "penjual_andal",
+			"nama": "Penjual Andal",
+			"syarat": "Menuntaskan satu destinasi tanpa salah barang atau salah cerita."
+		}
 	],
 	"teks": {
 		"diraih": "Pencapaian baru!",

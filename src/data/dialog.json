@@ -8,7 +8,7 @@
 	"belum_giliran": [
 		{
 			"nama": "Pemegang",
-			"teks": "Kartuku belum waktunya, Kraeng. Ikuti petunjukmu."
+			"teks": "Selamat datang di Wae Rebo, Kraeng. Ikuti petunjukmu, ya."
 		}
 	],
 	"sudah_diberikan": [
@@ -21,12 +21,6 @@
 		{
 			"nama": "Ine Wela",
 			"teks": "Coba lagi kapan saja, Kraeng."
-		}
-	],
-	"gong_gagal": [
-		{
-			"nama": "Fransi",
-			"teks": "Iramanya belum pas. Coba lagi!"
 		}
 	]
 }

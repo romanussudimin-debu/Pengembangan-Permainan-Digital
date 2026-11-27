@@ -2,21 +2,16 @@ extends Node3D
 ## Level 2: LINGKO LODOK — lahan adat di luar kampung (gendang one, lingko pe'ang).
 ## Alur (FSM tahap level):
 ##   SAMBUT  -> temui Tu'a Teno di lodok (pusat lingko)
-##   UNDANG  -> undang lima kepala keluarga berdasarkan ciri-cirinya (ada pengecoh)
-##   REKE    -> kembali ke lodok: reke lodok (musyawarah melingkar)
 ##   AIR     -> alirkan air dari wae teku (mini-game SaluranAir)
-##   BURUNG  -> usir pipit dari petak, biarkan kuntul (3 gelombang; adaptasi kreatif)
-##   BAGI    -> bagi tiga lingko dengan garis moso sesuai musyawarah (mini-game BagiLingko)
 ##   BUKIT   -> naik ke bukit batu dan pandang lingko dari atas
 ##   SELESAI -> level tamat (GameState.selesaikan_level)
 ## Pematang sempit dan ada yang putus: jatuh ke lumpur = kembali ke titik aman terakhir.
-## Mode Sulit: batas waktu "sebelum senja"; jatuh dan salah orang mengurangi waktu.
+## Mode Sulit: batas waktu "sebelum senja"; jatuh mengurangi waktu.
 
-enum Tahap { SAMBUT, UNDANG, REKE, AIR, BURUNG, BAGI, BUKIT, SELESAI }
+enum Tahap { SAMBUT, AIR, BUKIT, SELESAI }
 
 const ADEGAN_PEMAIN: PackedScene = preload("res://scenes/pemain.tscn")
 const SALURAN: Script = preload("res://scripts/minigame/saluran_air.gd")
-const BAGI: Script = preload("res://scripts/minigame/bagi_lingko.gd")
 const DATA: JSON = preload("res://data/lingko.json")
 const NOMOR_LEVEL: int = 2
 
@@ -34,31 +29,12 @@ const POS_PUNCAK_BUKIT := Vector3(-19.2, 4.5, 15.6)
 ## Batas waktu Mode Sulit (detik permainan, hanya berjalan saat bermain bebas) dan pengurangannya.
 const WAKTU_SULIT: float = 420.0
 const DENDA_JATUH: float = 10.0
-const DENDA_SALAH_ORANG: float = 15.0
-
-## Lima kepala keluarga (urutan sama dengan "keluarga" di lingko.json).
-const DATA_KELUARGA: Array = [
-	{"pos": [-90.0, JARI_TENGAH], "songke": "songke_merah", "baju": Color("e8e2d2")},
-	{"pos_dunia": Vector3(2.3, 0, -20.2), "songke": "songke_hijau", "baju": Color("b02a2a"), "perempuan": true},
-	{"pos": [0.0, JARI_DALAM], "songke": "songke_kuning", "baju": Color("2c5c96")},
-	{"pos_dunia": Vector3(-13.3, Y_ATAS, 0.6), "songke": "songke_biru", "baju": Color("e8e2d2"), "perempuan": true},
-	{"pos": [-45.0, JARI_LUAR], "songke": "songke_biru", "baju": Color("1b1818"), "keliling": true},
-]
-## Pengecoh (urutan sama dengan "pengecoh" di lingko.json): ciri mirip, tempat berbeda.
-const DATA_PENGECOH: Array = [
-	{"pos": [90.0, JARI_TENGAH], "songke": "songke_merah", "baju": Color("1b1818")},
-	{"pos": [135.0, JARI_LUAR], "songke": "songke_hijau", "baju": Color("e8e2d2"), "perempuan": true},
-	{"pos": [0.0, JARI_LUAR], "songke": "songke_kuning", "baju": Color("e8e2d2")},
-]
 
 var pemain: Pemain
 var kamera: KameraIkut
 var tahap: int = Tahap.SAMBUT
 
 var _tu_a_teno: NpcKampung
-var _tu_a_golo: NpcKampung
-var _keluarga: Array[NpcKampung] = []
-var _diundang: Array[bool] = [false, false, false, false, false]
 var _petak: MeshInstance3D
 var _saluran: MeshInstance3D
 var _area_wae_teku: Interaktif
@@ -70,23 +46,6 @@ var _minigame: Node = null
 var _ruas_rapuh: Array = []  ## {node: [...], asal: [...], waktu, runtuh}
 var _sudah_tahu_rapuh: bool = false
 
-# Usir Burung
-const POS_PETAK_BURUNG: Array[Vector3] = [Vector3(9.3, 0, -9.3), Vector3(-9.3, 0, -9.3), Vector3(-9.3, 0, 9.3), Vector3(9.3, 0, 9.3)]
-const DURASI_GELOMBANG: Array[float] = [22.0, 22.0, 24.0]
-const JEDA_PIPIT: Array[float] = [3.2, 2.2, 1.4]
-var _burung_aktif: bool = false
-var _gelombang: int = 0
-var _waktu_gelombang: float = 0.0
-var _jeda_pipit: float = 0.0
-var _padi: Array[float] = [1.0, 1.0, 1.0, 1.0]
-var _pipit: Array = [[], [], [], []]  ## daftar Burung pipit per petak
-var _kuntul: Burung
-var _petak_kuntul: int = -1
-var _label_padi: Array[Label3D] = []
-var _area_petak: Array[Interaktif] = []
-var _label_gelombang: Label
-var kuntul_diusir: int = 0  ## untuk pencapaian "Penjaga Sawah"
-var _tempur: StoryCombat  ## pertempuran di sela tugas lingko (gelombang 1-3 + bos)
 var _jeda_jatuh: float = 0.0
 var _sisa_waktu: float = WAKTU_SULIT
 var _waktu_berjalan: bool = false
@@ -95,13 +54,10 @@ var _matahari: DirectionalLight3D
 var _langit: ProceduralSkyMaterial
 var _kamera_pandang: Camera3D
 
-# UI level (daftar undangan, sisa waktu, tirai)
+# UI level (sisa waktu Mode Sulit)
 var _ui: CanvasLayer
-var _panel_undangan: NinePatchRect
-var _label_undangan: RichTextLabel
 var _label_waktu: Label
 var _label_denda: Label
-var _tirai: ColorRect
 
 
 func _ready() -> void:
@@ -110,8 +66,6 @@ func _ready() -> void:
 	_bangun_warga()
 	_munculkan_pemain()
 	add_child(preload("res://scripts/ui/hud.gd").new())
-	_tempur = StoryCombat.new(self, 2)
-	add_child(_tempur)
 	_bangun_ui()
 	AudioManager.putar_musik("kampung")
 	GameState.ubah_state(GameState.State.BERMAIN)
@@ -264,24 +218,6 @@ func _buat_npc(nama: String, data: Dictionary) -> NpcKampung:
 func _bangun_warga() -> void:
 	_tu_a_teno = _buat_npc("Tu'a Teno", {"pos_dunia": Vector3(0.9, Y_ATAS, 1.5), "songke": "songke_kuning", "baju": Color("1b1818")})
 	_tu_a_teno.model.rotation.y = PI  # menghadap jalan masuk (selatan)
-	_tu_a_golo = _buat_npc("Tu'a Golo", {"pos_dunia": Vector3(-1.3, Y_ATAS, 1.1), "songke": "songke_kuning", "baju": Color("1b1818")})
-	_tu_a_golo.model.rotation.y = PI - 0.3
-	var daftar: Array = DATA.data["keluarga"]
-	for i in daftar.size():
-		var d: Dictionary = DATA_KELUARGA[i]
-		var n := _buat_npc(str(daftar[i]["nama"]), d)
-		if d.get("keliling", false):
-			# Ema Gabriel tak pernah berhenti menyusuri pematang terluar
-			for k in 24:
-				n.titik_patroli.append(_di_pematang(-45.0 + k * 15.0, JARI_LUAR))
-			n.lama_diam_min = 0.1
-			n.lama_diam_maks = 0.4
-			n.kecepatan = 1.6
-		_keluarga.append(n)
-	var pengecoh: Array = DATA.data["pengecoh"]
-	for i in pengecoh.size():
-		var n := _buat_npc(str(pengecoh[i]["nama"]), DATA_PENGECOH[i])
-		n.set_meta("pengecoh", i)
 
 
 func _munculkan_pemain() -> void:
@@ -309,25 +245,6 @@ func _bangun_ui() -> void:
 	_label_denda.position = Vector2(456, 26)
 	_label_denda.modulate.a = 0.0
 	_ui.add_child(_label_denda)
-	_panel_undangan = Gaya.panel_songke(Vector2(454, 44), Vector2(178, 168))
-	_panel_undangan.visible = false
-	_ui.add_child(_panel_undangan)
-	var judul := Gaya.label("Undangan Reke Lodok", 9, Gaya.KUNING)
-	judul.position = Vector2(10, 6)
-	_panel_undangan.add_child(judul)
-	_label_undangan = RichTextLabel.new()
-	_label_undangan.bbcode_enabled = true
-	_label_undangan.position = Vector2(10, 22)
-	_label_undangan.size = Vector2(162, 142)
-	_label_undangan.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_label_undangan.add_theme_font_size_override("normal_font_size", 7)
-	_panel_undangan.add_child(_label_undangan)
-	_tirai = ColorRect.new()
-	_tirai.color = Color(0.08, 0.06, 0.06)
-	_tirai.set_anchors_preset(Control.PRESET_FULL_RECT)
-	_tirai.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_tirai.modulate.a = 0.0
-	_ui.add_child(_tirai)
 	GameState.state_berubah.connect(_saat_state_berubah)
 
 
@@ -335,18 +252,7 @@ func _saat_state_berubah(_lama: int, baru: int) -> void:
 	if not is_instance_valid(_ui):
 		return
 	var tampak: bool = baru != GameState.State.DIALOG and baru != GameState.State.MINIGAME
-	_panel_undangan.visible = tampak and tahap == Tahap.UNDANG
 	_label_waktu.visible = tampak and _waktu_berjalan
-
-
-func _perbarui_undangan() -> void:
-	var daftar: Array = DATA.data["keluarga"]
-	var teks: String = ""
-	for i in daftar.size():
-		var tanda: String = "[color=#7fd47f][x][/color]" if _diundang[i] else "[color=#e8b430][  ][/color]"
-		var ciri: String = str(daftar[i]["ciri"])
-		teks += "%s %s\n" % [tanda, ("[color=#9a948a]%s[/color]" % ciri) if _diundang[i] else ciri]
-	_label_undangan.text = teks
 
 
 func _tampilkan_denda(detik: float) -> void:
@@ -364,31 +270,14 @@ func _tampilkan_denda(detik: float) -> void:
 
 func _atur_tahap(baru: int) -> void:
 	tahap = baru
-	# Pertempuran di sela tugas: sebelum Usir Burung, membagi lingko, dan naik bukit (Mode Singkat: hanya di akhir)
-	match -1 if GameState.mode_singkat else baru:
-		Tahap.BURUNG:
-			_tempur.run(0)
-		Tahap.BAGI:
-			_tempur.run(1)
-		Tahap.BUKIT:
-			_tempur.run(2)
 	if pemain:
 		_titik_cek = _titik_aman  # titik cek tahap: tempat pemain berdiri saat tahap dimulai
 	_atur_tantangan_jelajah()
 	match tahap:
 		Tahap.SAMBUT:
 			GameState.atur_tujuan("Temui Tu'a Teno di lodok, titik pusat lingko. Susuri pematang dari jalan masuk.")
-		Tahap.UNDANG:
-			GameState.atur_tujuan("Undang lima kepala keluarga ke reke lodok (lihat ciri-cirinya di kanan atas).")
-			_perbarui_undangan()
-		Tahap.REKE:
-			GameState.atur_tujuan("Kembali ke Tu'a Teno di lodok untuk reke lodok.")
 		Tahap.AIR:
 			GameState.atur_tujuan("Pergi ke wae teku di utara lingko dan alirkan airnya.")
-		Tahap.BURUNG:
-			GameState.atur_tujuan("Temui Tu'a Teno: usir pipit dari petak, tapi biarkan kuntul putih.")
-		Tahap.BAGI:
-			GameState.atur_tujuan("Kembali ke Tu'a Teno di lodok untuk membagi lingko dengan moso.")
 		Tahap.BUKIT:
 			GameState.atur_tujuan("Naik ke bukit batu di barat daya dan pandang lingko dari atas.")
 		Tahap.SELESAI:
@@ -426,12 +315,6 @@ func _beri_kartu(id: String, lanjut: Callable) -> void:
 func _bicara(npc: NpcKampung) -> void:
 	if npc == _tu_a_teno:
 		_bicara_tu_a_teno()
-	elif npc == _tu_a_golo:
-		_obrol(_tu_a_golo, "Tu'a Golo", _dialog()["tua_golo"])
-	elif npc.has_meta("pengecoh"):
-		_bicara_pengecoh(npc)
-	else:
-		_bicara_keluarga(_keluarga.find(npc))
 
 
 func _bicara_tu_a_teno() -> void:
@@ -442,18 +325,8 @@ func _bicara_tu_a_teno() -> void:
 			if GameState.mode_sulit:
 				baris.append_array(_baris("Tu'a Teno", d["sambutan_sulit"]))
 			DialogManager.mulai_baris("sambutan", baris, _setelah_sambutan)
-		Tahap.UNDANG:
-			_obrol(_tu_a_teno, "Tu'a Teno", d["menunggu_undangan"])
-		Tahap.REKE:
-			_mulai_reke_lodok()
 		Tahap.AIR:
 			_obrol(_tu_a_teno, "Tu'a Teno", d["menunggu_air"])
-		Tahap.BURUNG:
-			if not _burung_aktif:
-				_obrol(_tu_a_teno, "Tu'a Teno", d["burung_mulai"])
-				_mulai_burung()
-		Tahap.BAGI:
-			DialogManager.mulai_baris("mulai_bagi", _baris("Tu'a Teno", d["mulai_bagi"]), _mulai_bagi)
 		Tahap.BUKIT:
 			_obrol(_tu_a_teno, "Tu'a Teno", d["menunggu_bukit"])
 		_:
@@ -462,88 +335,10 @@ func _bicara_tu_a_teno() -> void:
 
 func _setelah_sambutan() -> void:
 	_beri_kartu("lingko", func() -> void:
-		_atur_tahap(Tahap.BAGI if GameState.mode_singkat else Tahap.UNDANG)  # Mode Singkat: langsung membagi lingko
+		_atur_tahap(Tahap.AIR)
 		if GameState.mode_sulit:
 			_waktu_berjalan = true
 			_saat_state_berubah(GameState.state, GameState.state))
-
-
-func _bicara_keluarga(i: int) -> void:
-	if i < 0:
-		return
-	var data: Dictionary = DATA.data["keluarga"][i]
-	var nama: String = str(data["nama"])
-	var npc: NpcKampung = _keluarga[i]
-	if tahap == Tahap.SAMBUT:
-		_obrol(npc, nama, _dialog()["belum_waktunya"])
-	elif _diundang[i]:
-		_obrol(npc, nama, DATA.data["sudah_diundang"])
-	elif tahap == Tahap.UNDANG:
-		# Undangan diterima lewat gelembung: pemain langsung bisa lanjut mencari yang lain
-		_obrol(npc, nama, data["undang"])
-		_setelah_undang(i)
-
-
-func _setelah_undang(i: int) -> void:
-	_diundang[i] = true
-	AudioManager.putar_sfx("ambil")
-	_perbarui_undangan()
-	if not _diundang.has(false):
-		_atur_tahap(Tahap.REKE)
-		_obrol(pemain, "Nggohak", _dialog()["semua_diundang"])
-
-
-func _bicara_pengecoh(npc: NpcKampung) -> void:
-	var data: Dictionary = DATA.data["pengecoh"][int(npc.get_meta("pengecoh"))]
-	if tahap != Tahap.UNDANG:
-		_obrol(npc, npc.nama, _dialog()["sapa_warga"])
-		return
-	var teks: String = str(DATA.data["pengecoh_sulit"]) if GameState.mode_sulit else str(data["petunjuk"])
-	var pertama: bool = not npc.has_meta("sudah_ditanya")
-	npc.set_meta("sudah_ditanya", true)
-	_obrol(npc, npc.nama, teks)
-	if pertama:
-		# Salah orang: -1 nyawa (sekali per pengecoh); Mode Sulit juga mengurangi waktu
-		if GameState.mode_sulit:
-			_tampilkan_denda(DENDA_SALAH_ORANG)
-		Nyawa.kurangi("salah orang (pengecoh)", true)
-
-
-# ------------------------------------------------------------------ reke lodok
-
-## Layar meredup, para kepala keluarga dan tetua duduk melingkar (lonto leok) di lodok,
-## lalu Tu'a Teno memimpin musyawarah.
-func _mulai_reke_lodok() -> void:
-	if not GameState.ubah_state(GameState.State.MINIGAME):
-		return
-	var tw := create_tween()
-	tw.tween_property(_tirai, "modulate:a", 1.0, 0.5)
-	tw.tween_callback(_atur_lonto_leok)
-	tw.tween_property(_tirai, "modulate:a", 0.0, 0.5)
-	tw.tween_callback(func() -> void:
-		GameState.ubah_state(GameState.State.BERMAIN)
-		DialogManager.mulai_baris("reke_lodok", _baris("Tu'a Teno", _dialog()["reke_lodok"]), _setelah_reke))
-
-
-func _atur_lonto_leok() -> void:
-	var peserta: Array[NpcKampung] = [_tu_a_teno, _tu_a_golo]
-	peserta.append_array(_keluarga)
-	for i in peserta.size():
-		var n: NpcKampung = peserta[i]
-		n.titik_patroli.clear()
-		var a: float = PI / 2.0 + TAU * i / peserta.size() + 0.35
-		n.global_position = Vector3(cos(a) * 1.85, Y_ATAS, sin(a) * 1.85)
-		n.model.rotation.y = atan2(n.global_position.x, n.global_position.z)  # menghadap haju teno
-		n.model.mode = "idle"
-	# Pemain ikut duduk dalam lingkaran, di sisi selatan lodok
-	pemain.global_position = Vector3(0, Y_ATAS + 0.1, JARI_LODOK - 0.3)
-	pemain.velocity = Vector3.ZERO
-	pemain.model.rotation.y = 0.0
-	_titik_aman = pemain.global_position
-
-
-func _setelah_reke() -> void:
-	_beri_kartu("reke_lodok", _atur_tahap.bind(Tahap.AIR))
 
 
 # ------------------------------------------------------------------ wae teku
@@ -579,7 +374,7 @@ func _hasil_saluran(berhasil: bool, s: SaluranAir) -> void:
 		return
 	_alirkan_air()
 	_obrol(pemain, "Nggohak", d["air_berhasil"])
-	_beri_kartu("wae_teku", _atur_tahap.bind(Tahap.BURUNG))
+	_beri_kartu("wae_teku", _atur_tahap.bind(Tahap.BUKIT))
 
 
 ## Visual: saluran dan petak sawah berubah dari kering menjadi berair.
@@ -589,19 +384,6 @@ func _alirkan_air() -> void:
 	_saluran.material_override = m_air
 	_petak.material_override = DuniaLingko.mat_berair()
 	AudioManager.putar_sfx("berhasil")
-
-
-# ------------------------------------------------------------------ membagi lingko
-
-func _mulai_bagi() -> void:
-	var b: BagiLingko = BAGI.new()
-	var ronde: Array = DATA.data["ronde"]
-	b.siapkan([ronde[ronde.size() - 1]] if GameState.mode_singkat else ronde)  # Mode Singkat: ronde terakhir saja
-	b.selesai.connect(_hasil_bagi)
-	b.salah.connect(Nyawa.kurangi)
-	_minigame = b
-	Nyawa.atur_tantangan("Membagi lingko", _ulangi_minigame.bind(_mulai_bagi))
-	add_child(b)
 
 
 ## Nyawa habis di mini-game: tutup lalu buka lagi dari awal.
@@ -619,32 +401,6 @@ func _atur_tantangan_jelajah() -> void:
 		pemain.velocity = Vector3.ZERO
 		pemain.global_position = _titik_cek + Vector3(0, 0.2, 0)
 		_titik_aman = _titik_cek)
-
-
-func _hasil_bagi(berhasil: bool) -> void:
-	_minigame = null
-	_atur_tantangan_jelajah()
-	var d: Dictionary = _dialog()
-	if not berhasil:
-		_obrol(_tu_a_teno, "Tu'a Teno", d["bagi_gagal"])
-		return
-	_tampilkan_juring_terbagi()
-	_obrol(_tu_a_teno, "Tu'a Teno", d["bagi_berhasil"])
-	_beri_kartu("moso", _tamat if GameState.mode_singkat else _atur_tahap.bind(Tahap.BUKIT))
-
-
-## Garis moso hasil pembagian lingko terakhir ditancapkan di sawah: petak tampak seperti jaring laba-laba.
-func _tampilkan_juring_terbagi() -> void:
-	var semua_ronde: Array = DATA.data["ronde"]
-	var ronde: Dictionary = semua_ronde[semua_ronde.size() - 1]
-	var bagian: int = int(ronde["bagian"])
-	var batas: Array = []
-	var jumlah: int = 0
-	for t: Variant in ronde["target"]:
-		batas.append(-PI / 2.0 + TAU * jumlah / bagian)
-		jumlah += int(t)
-	DuniaLingko.juring_terbagi(self, JARI_LODOK - 0.1, JARI_TEPI, batas)
-	_petak.visible = false
 
 
 # ------------------------------------------------------------------ bukit batu
@@ -669,12 +425,7 @@ func _interaksi_bukit(_p: Pemain) -> void:
 		_beri_kartu("lingko_lodok", _tamat))
 
 
-## Bos Babi Hutan Raksasa dilawan dulu, lalu level tamat.
 func _tamat() -> void:
-	_tempur.run(0 if GameState.mode_singkat else 3, _tamat_lanjut)
-
-
-func _tamat_lanjut() -> void:
 	AudioManager.putar_sfx("gong")
 	GameState.selesaikan_level(NOMOR_LEVEL)
 
@@ -682,7 +433,6 @@ func _tamat_lanjut() -> void:
 # ------------------------------------------------------------------ per frame
 
 func _process(delta: float) -> void:
-	_process_burung(delta)
 	if _kamera_pandang:
 		_kamera_pandang.look_at(Vector3(0, 0, -1.0), Vector3.UP)
 	if _waktu_berjalan and not _waktu_habis and GameState.sedang(GameState.State.BERMAIN):
@@ -791,160 +541,3 @@ func _jatuh_ke_lumpur() -> void:
 	if GameState.mode_sulit:
 		_tampilkan_denda(DENDA_JATUH)
 	Nyawa.kurangi("jatuh ke lumpur")
-
-
-# ------------------------------------------------------------------ Usir Burung (adaptasi kreatif)
-
-## Tiga gelombang pipit menyerbu empat petak. Dekati petak lalu tekan interaksi (Usir burung) untuk
-## mengusir pipit di petak itu. Pengecoh: kuntul putih yang memakan serangga hama - jangan diusir.
-## Padi satu petak habis = -1 nyawa; mengusir kuntul = -1 nyawa.
-func _mulai_burung() -> void:
-	_burung_aktif = true
-	_gelombang = 0
-	_waktu_gelombang = 0.0
-	_jeda_pipit = 1.5
-	_padi = [1.0, 1.0, 1.0, 1.0]
-	for i in 4:
-		for b: Burung in _pipit[i]:
-			if is_instance_valid(b):
-				b.queue_free()
-		_pipit[i] = []
-	if _label_padi.is_empty():
-		_bangun_petak_burung()
-	for i in 4:
-		_label_padi[i].visible = true
-		_area_petak[i].monitoring = true
-	if is_instance_valid(_kuntul):
-		_kuntul.queue_free()
-	_kuntul = null
-	_petak_kuntul = -1
-	_label_gelombang.visible = true
-	Nyawa.atur_tantangan("Mengusir burung", _mulai_burung)
-
-
-func _bangun_petak_burung() -> void:
-	for i in 4:
-		var p: Vector3 = POS_PETAK_BURUNG[i]
-		# Rumpun padi menguning sebagai penanda petak
-		for k in 6:
-			var a: float = TAU * k / 6.0
-			var rumpun := Dunia.mesh(self, Dunia.silinder(0.02, 0.12, 0.6, 5), p + Vector3(cos(a) * 0.6, DuniaLingko.TINGGI_AIR + 0.3, sin(a) * 0.6),
-					Dunia.mat(Color("d8c060")))
-			rumpun.rotation.z = randf_range(-0.2, 0.2)
-		var label := Label3D.new()
-		label.font_size = 40
-		label.pixel_size = 0.006
-		label.outline_size = 10
-		label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-		label.no_depth_test = true
-		label.position = p + Vector3(0, 1.8, 0)
-		add_child(label)
-		_label_padi.append(label)
-		var area := Interaktif.new()
-		area.teks_petunjuk = "Usir burung"
-		area.jari_jari = 3.0
-		area.tinggi_petunjuk = 2.4
-		area.position = p + Vector3(0, DuniaLingko.TINGGI_AIR, 0)
-		add_child(area)
-		area.diinteraksi.connect(_usir.bind(i))
-		_area_petak.append(area)
-	_label_gelombang = Gaya.label("", 10, Gaya.KUNING)
-	_label_gelombang.position = Vector2(456, 44)
-	_ui.add_child(_label_gelombang)
-
-
-func _process_burung(delta: float) -> void:
-	if not _burung_aktif or not GameState.sedang(GameState.State.BERMAIN):
-		return
-	_waktu_gelombang += delta
-	_jeda_pipit -= delta
-	if _jeda_pipit <= 0.0:
-		_jeda_pipit = JEDA_PIPIT[_gelombang]
-		_datangkan_pipit(randi() % 4)
-	# Kuntul muncul mulai gelombang 2 dan berpindah petak perlahan
-	if _gelombang >= 1 and _kuntul == null:
-		_kuntul = Burung.new()
-		_kuntul.jenis = "kuntul"
-		add_child(_kuntul)
-		_pindahkan_kuntul()
-	if _kuntul and fmod(_waktu_gelombang, 9.0) < delta:
-		_pindahkan_kuntul()
-	for i in 4:
-		var jumlah: int = (_pipit[i] as Array).size()
-		_padi[i] = maxf(_padi[i] - jumlah * 0.022 * delta, 0.0)
-		var bar: String = ""
-		for k in 5:
-			bar += "■" if _padi[i] > k * 0.2 + 0.05 else "□"
-		_label_padi[i].text = "Padi %s%s" % [bar, ("  (%d pipit)" % jumlah) if jumlah > 0 else ""]
-		_label_padi[i].modulate = Gaya.HIJAU.lerp(Gaya.MERAH, 1.0 - _padi[i])
-		if _padi[i] <= 0.0:
-			_padi[i] = 0.5
-			_usir_semua(i)
-			_obrol(pemain, "Nggohak", _dialog()["burung_habis"])
-			Nyawa.kurangi("padi habis dimakan pipit")
-	_label_gelombang.text = "Gelombang pipit %d/3" % (_gelombang + 1)
-	if _waktu_gelombang >= DURASI_GELOMBANG[_gelombang]:
-		_gelombang += 1
-		_waktu_gelombang = 0.0
-		if _gelombang >= DURASI_GELOMBANG.size():
-			_selesai_burung()
-
-
-func _datangkan_pipit(i: int) -> void:
-	var b := Burung.new()
-	b.jenis = "pipit"
-	var tujuan: Vector3 = POS_PETAK_BURUNG[i] + Vector3(randf_range(-0.6, 0.6), DuniaLingko.TINGGI_AIR, randf_range(-0.6, 0.6))
-	b.position = tujuan + Vector3(randf_range(-3, 3), 6.0, -4.0)
-	add_child(b)
-	b.rotation.y = randf() * TAU
-	create_tween().tween_property(b, "position", tujuan, 1.0).set_ease(Tween.EASE_OUT)
-	(_pipit[i] as Array).append(b)
-
-
-func _pindahkan_kuntul() -> void:
-	var baru: int = (_petak_kuntul + 1 + randi() % 3) % 4
-	_petak_kuntul = baru
-	var tujuan: Vector3 = POS_PETAK_BURUNG[baru] + Vector3(0.9, DuniaLingko.TINGGI_AIR - 0.3, 0.4)
-	if _kuntul.position == Vector3.ZERO:
-		_kuntul.position = tujuan
-	_kuntul.tujuan_jalan = tujuan
-
-
-## Mengusir burung di petak `i`. Bila kuntul sedang di petak itu, kuntul ikut terusir (-1 nyawa).
-func _usir(_p: Pemain, i: int) -> void:
-	if not _burung_aktif:
-		return
-	AudioManager.putar_sfx("klik", 0.3)
-	if not _pipit[i].is_empty():
-		Efek.teks(self, POS_PETAK_BURUNG[i] + Vector3(0, 2.0, 0), "Hus!", Gaya.PUTIH)
-	_usir_semua(i)
-	if _kuntul and _petak_kuntul == i and _kuntul.position.distance_to(POS_PETAK_BURUNG[i]) < 2.5:
-		kuntul_diusir += 1
-		_kuntul.terbang()
-		_kuntul = null
-		_obrol(pemain, "Nggohak", _dialog()["burung_kuntul"])
-		Nyawa.kurangi("mengusir kuntul")
-
-
-func _usir_semua(i: int) -> void:
-	for b: Burung in _pipit[i]:
-		if is_instance_valid(b):
-			b.terbang()
-	_pipit[i] = []
-
-
-func _selesai_burung() -> void:
-	_burung_aktif = false
-	for i in 4:
-		_usir_semua(i)
-		_label_padi[i].visible = false
-		_area_petak[i].monitoring = false
-	_label_gelombang.visible = false
-	if is_instance_valid(_kuntul):
-		_kuntul.tujuan_jalan = Vector3.INF
-	AudioManager.putar_sfx("berhasil")
-	if kuntul_diusir == 0:
-		Prestasi.raih("penjaga_sawah")
-	_obrol(_tu_a_teno, "Tu'a Teno", _dialog()["burung_selesai"])
-	_atur_tantangan_jelajah()
-	_beri_kartu("burung_sawah", _atur_tahap.bind(Tahap.BAGI))

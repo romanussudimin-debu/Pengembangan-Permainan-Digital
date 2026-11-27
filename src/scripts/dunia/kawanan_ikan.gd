@@ -1,6 +1,6 @@
 class_name KawananIkan
 extends Node3D
-## Kawanan ikan kecil yang berputar di sekitar titik pusat (Level 3, Manjarite).
+## Kawanan ikan kecil yang berputar di sekitar titik pusat (Level 3).
 ## kaget() = ikan berhamburan menjauh lalu kembali berkumpul pelan.
 
 const JUMLAH: int = 7

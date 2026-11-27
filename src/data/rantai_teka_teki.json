@@ -16,7 +16,8 @@
 				"Sembilan"
 			],
 			"benar": 2,
-			"petunjuk": "Jari-jarinya menyusun warna di atas dasar hitam. Carilah ia di sisi matahari terbenam."
+			"petunjuk": "Jari-jarinya menyusun warna di atas dasar hitam. Carilah ia di sisi matahari terbenam.",
+			"kartu_bonus": "mbaru_niang"
 		},
 		{
 			"pemegang": "Ine Wela",
@@ -26,100 +27,8 @@
 				"Bantu aku menenun songke, Kraeng.",
 				"Samakan kainmu dengan contoh motif, warna demi warna."
 			],
-			"petunjuk": "Rumah paling besar menyimpan pusaka kampung. Penjaganya duduk di dekat api."
-		},
-		{
-			"pemegang": "Ema Agus",
-			"jenis": "sangrai",
-			"kartu": "mbaru_niang",
-			"kartu_bonus": "kopi_wae_rebo",
-			"pembuka": [
-				"Kopi dari kebun kita perlu disangrai di tungku ini, Kraeng.",
-				"Buang biji yang buruk, lalu jaga apinya agar tidak gosong."
-			],
-			"petunjuk": "Di depan sebuah rumah, kain berdasar hitam dijemur. Pemiliknya menunggu tamu di dalam."
-		},
-		{
-			"pemegang": "Ende Lono",
-			"jenis": "antar_kopi",
-			"kartu": "wae_rebo",
-			"pembuka": [
-				"Kopi sangraimu sudah kuseduh. Ada tamu yang datang ke kampung.",
-				"Antarkan ke tamu berbaju hijau yang duduk dekat compang. Jangan sampai tumpah!"
-			],
-			"pesanan": "Tamu berbaju hijau, duduk dekat compang",
-			"petunjuk": "Aku bulat dan bersuara dalam. Penabuhku tak pernah lama diam di satu tempat."
-		},
-		{
-			"pemegang": "Fransi",
-			"kartu": "gong_gendang",
-			"jenis": "gong",
-			"pembuka": [
-				"Bantu aku menabuh gong dan gendang untuk Penti, Kraeng!",
-				"J untuk gong, K untuk gendang. Ikuti iramanya."
-			],
-			"petunjuk": "Ke arah matahari terbit, di lingkaran tanah, carilah pemakai panggal yang muda."
-		},
-		{
-			"pemegang": "Hingha",
-			"kartu": "caci",
-			"jenis": "teka_teki",
-			"pembuka": [
-				"Saat Penti aku tampil caci, Kraeng. Jawab dulu soal nyanyian adat."
-			],
-			"pertanyaan": "Nyanyian yang dibawakan sambil DUDUK dan diiringi gong-gendang disebut apa?",
-			"pilihan": [
-				"Sanda",
-				"Danding",
-				"Mbata",
-				"Dere caci"
-			],
-			"benar": 2,
-			"petunjuk": "Hitam, pahit, menghangatkan. Pembawanya juga melatih pemuda menangkis."
-		},
-		{
-			"pemegang": "Marngem",
-			"jenis": "tangkis",
-			"kartu": "perlengkapan_caci",
-			"pembuka": [
-				"Latihan menangkis dengan nggiling dulu, Kraeng. Ini latihan sportivitas, bukan untuk melukai.",
-				"Tangkis bola rotan tepat waktu. Awas, kadang aku hanya pura-pura melempar!"
-			],
-			"petunjuk": "Pemain caci tertua beristirahat di rumah yang kayu bakarnya bertumpuk di depan pintu."
-		},
-		{
-			"pemegang": "Ema Yakobus",
-			"kartu": "nilai_caci",
-			"jenis": "teka_teki",
-			"pembuka": [
-				"Kamu menemukanku di dekat tungku. Satu pertanyaan tentang caci, Kraeng."
-			],
-			"pertanyaan": "Hiasan menyerupai ekor yang dipakai di pinggang belakang pemain caci disebut apa?",
-			"pilihan": [
-				"Panggal",
-				"Nggiling",
-				"Larik",
-				"Ndeki"
-			],
-			"benar": 3,
-			"petunjuk": "Kembalilah kepada dia yang pertama menyambutmu, di samping batu yang tak boleh dipijak."
-		},
-		{
-			"pemegang": "Tu'a Golo",
-			"kartu": "penti",
-			"jenis": "teka_teki",
-			"pembuka": [
-				"Semua kartu sudah terkumpul, Kraeng. Satu pertanyaan terakhir."
-			],
-			"pertanyaan": "Pada tahun berapa pelestarian Mbaru Niang Wae Rebo meraih penghargaan UNESCO?",
-			"pilihan": [
-				"2008",
-				"2010",
-				"2012",
-				"2016"
-			],
-			"benar": 2,
-			"petunjuk": "Sebelum Penti, ada pekerjaan di lingko. Tu'a Teno menunggumu di sana."
+			"petunjuk": "Sebelum Penti, ada pekerjaan di lingko. Tu'a Teno menunggumu di sana.",
+			"kartu_bonus": "penti"
 		}
 	],
 	"pendakian": {
@@ -129,16 +38,5 @@
 		"retak": "Batu retak! Perhatikan garis retakannya.",
 		"tiba": "Itu dia, Kampung Wae Rebo!",
 		"tujuan": "Daki jalan hutan menuju Kampung Wae Rebo. Batu bergaris retak akan tenggelam."
-	},
-	"benang": {
-		"asli": "Benang emas berkilau! Ine Wela pasti senang.",
-		"palsu": "Ini hanya benang kuning biasa, tidak berkilau.",
-		"lengkap": "Kelima benang emas terkumpul untuk Ine Wela!"
-	},
-	"antar": {
-		"tumpah": "Aduh, kopinya tumpah! Kembali ke Ende Lono untuk secangkir lagi.",
-		"salah_tamu": "Bukan pesananku, Kraeng.",
-		"terima": "Terima kasih, kopinya harum sekali!",
-		"tamu_lain": "Selamat datang di Wae Rebo, Kraeng."
 	}
 }

@@ -8,21 +8,12 @@ const PETA_INPUT: Dictionary = {
 	"mundur": [KEY_S, KEY_DOWN],
 	"lompat": [KEY_SPACE],
 	"interaksi": [KEY_E, KEY_ENTER],
-	"tabuh_gong": [KEY_J, KEY_Z],
-	"tabuh_gendang": [KEY_K, KEY_X],
 	"ulang": [KEY_R],
 	"jeda": [KEY_ESCAPE, KEY_P],
-	# Tempur (E dipakai bersama "interaksi": di luar pertempuran = interaksi, saat bertempur = skill 2)
-	"skill_1": [KEY_Q],
-	"skill_2": [KEY_E],
-	"skill_3": [KEY_R],
-	"ultimate": [KEY_F],
-	"shop": [KEY_B],  # buka Lapak Songke saat jeda antar-gelombang
 }
 
-## Aksi tombol mouse: klik kiri menembak, tahan klik kanan + geser untuk memutar kamera.
+## Aksi tombol mouse: tahan klik kanan + geser untuk memutar kamera.
 const PETA_MOUSE: Dictionary = {
-	"shoot": [MOUSE_BUTTON_LEFT],
 	"camera_rotate": [MOUSE_BUTTON_RIGHT],
 }
 

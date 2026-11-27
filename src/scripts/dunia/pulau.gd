@@ -6,32 +6,22 @@ extends Node3D
 ##   padar     - mendaki 3 pos; tenaga berkurang saat berjalan, minum di pos
 ##   pink      - pantai & air dangkal; jangan menginjak karang; WAJIB pungut 5 sampah (pengecoh: kerang,
 ##               bintang laut tidak boleh diambil; penyu tidak boleh disentuh)
-##   komodo    - jalur bersama ranger; terlalu dekat komodo = kembali ke titik aman; semak bergoyang
-##               (angin = aman; komodo bersembunyi = goyang tak teratur + jejak kaki + ekor mencuat)
-##   taka      - pulau pasir sabit menyempit karena air pasang (batas waktu alami)
-##   manjarite - berenang antar-kapal; arus mendorong pemain; jangan menginjak karang; WAJIB pungut
-##               5 sampah; terseret melewati garis pelampung = -1 nyawa
 ## Semua wisatawan bisa diajak ngobrol; ciri calon pembeli tampil di panel kanan.
 ## Menawarkan songke kepada yang bukan pembeli = -1 nyawa.
 ## Mode Sulit: batas waktu per pulau, salah cerita = wisatawan pergi, tenaga lebih cepat habis,
-## komodo lebih banyak, dan denda waktu saat jatuh/menginjak karang/terlalu dekat komodo.
+## dan denda waktu saat jatuh/menginjak karang.
 
 const ADEGAN_PEMAIN: PackedScene = preload("res://scenes/pemain.tscn")
 const JUAL: Script = preload("res://scripts/minigame/jual_songke.gd")
 const TARGET_PEMBELI: int = 3
 const Y_TENGGELAM: float = -1.0
 const DENDA_JATUH: float = 10.0
-const DENDA_KOMODO: float = 15.0
 const KECEPATAN_DARAT: float = 5.0
 const KECEPATAN_AIR: float = 2.8
 const TARGET_SAMPAH: int = 5
 const JARAK_SENTUH_PENYU: float = 1.1
-const JARAK_SEMAK: float = 2.3
-## Penambah nyawa (kelapa muda) di 4 destinasi: jenis pulau -> posisi.
-const POS_KELAPA: Dictionary = {
-	"padar": Vector3(3.5, 2.2, 10.0), "pink": Vector3(-7.0, 0.15, -3.0),
-	"komodo": Vector3(14.0, 0.0, 10.0), "manjarite": Vector3(13.0, DuniaPulau.Y_DEK, 1.6),
-}
+## Penambah nyawa (kelapa muda): jenis pulau -> posisi.
+const POS_KELAPA: Dictionary = {"padar": Vector3(3.5, 2.2, 10.0), "pink": Vector3(-7.0, 0.15, -3.0)}
 
 var data: Dictionary
 var jenis: String
@@ -58,29 +48,17 @@ var _batas_waktu: float = 300.0
 
 # Mekanik khas
 var _karang: Array[Vector3] = []
-var _arus: Array = []
-var _garis_arus: Array = []  ## [MeshInstance3D, zona]
-var _sudah_kena_arus: bool = false
-var _komodo: Array[Komodo] = []
 var _stamina: float = 100.0
 var _pos_air_dipakai: Array[bool] = []
 var _sudah_haus: bool = false
-var _cakram: Array = []  ## [MeshInstance3D, CollisionShape3D, indeks]
-var _pasang: float = 0.0
 var _sampah_wajib: int = 0  ## 0 = pulau tanpa syarat sampah
 var _sampah_dipungut: int = 0
-## Pertempuran Level 3: gelombang 1-3 saat tiba di Padar, Pink Beach, Pulau Komodo;
-## bos Komodo Raksasa saat Pulau Komodo tuntas (sebelum kembali ke kapal).
-const GELOMBANG_PULAU: Dictionary = {"padar": 0, "pink": 1, "komodo": 2}
-var _tempur: StoryCombat
 var _salah_jual: int = 0  ## salah barang/cerita di pulau ini (pencapaian "Penjual Andal")
 var _salah_laut: int = 0  ## mengambil pengecoh, menyentuh satwa, menginjak karang (untuk pencapaian "Sahabat Laut")
 var _penyu: Array[Penyu] = []
 var _ikan: Array[KawananIkan] = []
 var _jeda_ikan: float = 0.0
-var _semak: Array = []  ## [Semak, Komodo]
 var _batu: Array = []  ## {"mi", "bentuk", "atas", "goyah", "t", "runtuh"}
-var _batas_arus: float = 0.0
 var _pos_terakhir: Vector3 = Vector3.INF  ## pos minum terakhir (Padar)
 
 # UI
@@ -108,12 +86,6 @@ func _ready() -> void:
 			_bangun_padar()
 		"pink":
 			_bangun_pink()
-		"komodo":
-			_bangun_komodo()
-		"taka":
-			_bangun_taka()
-		"manjarite":
-			_bangun_manjarite()
 	_bangun_wisatawan()
 	_bangun_titik_keluar()
 	if POS_KELAPA.has(jenis):
@@ -123,21 +95,12 @@ func _ready() -> void:
 		add_child(kelapa)
 	_munculkan_pemain()
 	add_child(preload("res://scripts/ui/hud.gd").new())
-	_tempur = StoryCombat.new(self, 3)
-	add_child(_tempur)
-	var gelombang: int = 0 if GameState.mode_singkat and jenis == "pelabuhan" else int(GELOMBANG_PULAU.get(jenis, -1))
-	if gelombang >= 0:
-		get_tree().create_timer(4.0, false).timeout.connect(func() -> void:
-			if is_instance_valid(_tempur) and not _tuntas and not _gagal:
-				_tempur.run(gelombang))
 	_bangun_ui()
 	AudioManager.putar_musik("kampung")
 	GameState.ubah_state(GameState.State.BERMAIN)
 	_perbarui_tujuan()
 	_atur_tantangan_jelajah()
-	if jenis == "taka":
-		_batas_waktu = float(data.get("batas_waktu_sulit", 170)) if GameState.mode_sulit else float(data.get("batas_waktu", 240))
-	elif GameState.mode_sulit:
+	if GameState.mode_sulit:
 		_batas_waktu = float(data.get("batas_waktu", 300))
 		_sisa_waktu = _batas_waktu
 		_waktu_berjalan = true
@@ -247,129 +210,6 @@ func _bangun_pink() -> void:
 	_titik_keluar = Vector3(1.6, 0.1, 19)
 
 
-func _bangun_komodo() -> void:
-	DuniaPulau.daratan(self, Vector3.ZERO, 30.0, DuniaPulau.WARNA_SABANA, Dunia.TEX_RUMPUT)
-	var jalur: Array = data["jalur"]
-	for i in jalur.size() - 1:
-		DuniaLingko.jalan_tanah(self, _v3(jalur[i]), _v3(jalur[i + 1]), 2.4)
-	var acak := RandomNumberGenerator.new()
-	acak.seed = 5
-	for i in 40:
-		var p := Vector3(acak.randf_range(-26, 26), 0, acak.randf_range(-26, 24))
-		if Vector2(p.x, p.z).length() < 27.0 and _jarak_ke_jalur(p, jalur) > 3.5 and absf(p.x) > 3.0:
-			if i % 3 == 0:
-				Dunia.pohon(self, p, acak.randf_range(0.8, 1.2))
-			else:
-				DuniaPulau.lontar(self, p, acak.randf_range(0.8, 1.1))
-	for k: Dictionary in data["komodo"]:
-		if k.get("sulit", false) and not GameState.mode_sulit:
-			continue
-		var komodo := Komodo.new()
-		komodo.titik_a = _v3(k["a"])
-		komodo.titik_b = _v3(k["b"])
-		komodo.kecepatan = 1.2 if GameState.mode_sulit else 0.9
-		add_child(komodo)
-		_komodo.append(komodo)
-	for d: Dictionary in data.get("semak", []):
-		var i: int = int(d["ruas"])
-		var a: Vector3 = _v3(jalur[i])
-		var b: Vector3 = _v3(jalur[i + 1])
-		var arah: Vector3 = (b - a).normalized()
-		var normal := Vector3(-arah.z, 0, arah.x) * float(d.get("sisi", 1))
-		var semak := Semak.new()
-		semak.bersembunyi = d.get("komodo", false)
-		semak.position = a.lerp(b, float(d.get("t", 0.5))) + normal * 2.0
-		semak.rotation.y = atan2(-normal.x, -normal.z)  # sumbu +Z lokal (jejak kaki) menghadap jalur
-		add_child(semak)
-		var komodo: Komodo = null
-		if semak.bersembunyi:
-			komodo = Komodo.new()
-			komodo.titik_a = semak.position + normal * 0.5
-			komodo.titik_b = komodo.titik_a
-			komodo.kecepatan = 0.0
-			komodo.rotation.y = semak.rotation.y  # kepala menjauhi jalur, ekor mencuat ke arah jalur
-			add_child(komodo)
-		_semak.append([semak, komodo])
-	_papan_info(Vector3(2.6, 0, 22), "Pulau Komodo")
-	DuniaPulau.dermaga(self, Vector3(0, 0, 29), Vector3(0, 0, 38))
-	DuniaPulau.kapal(self, Vector3(3.6, 0, 35), 0.0)
-	_titik_muncul = Vector3(0, 0.3, 31)
-	_titik_keluar = Vector3(1.6, 0, 35)
-
-
-func _jarak_ke_jalur(p: Vector3, jalur: Array) -> float:
-	var terdekat: float = INF
-	for i in jalur.size() - 1:
-		var a := Vector2(jalur[i][0], jalur[i][2])
-		var b := Vector2(jalur[i + 1][0], jalur[i + 1][2])
-		var q := Geometry2D.get_closest_point_to_segment(Vector2(p.x, p.z), a, b)
-		terdekat = minf(terdekat, q.distance_to(Vector2(p.x, p.z)))
-	return terdekat
-
-
-## Taka Makassar: gosong pasir sabit dari cakram-cakram pasir yang menyusut saat air pasang.
-func _bangun_taka() -> void:
-	var m_pasir := Dunia.mat(DuniaPulau.WARNA_PASIR, Dunia.TEX_TANAH, Vector3(2, 2, 1))
-	for i in 15:
-		var a: float = deg_to_rad(200.0 + i * 10.0)
-		var pos := Vector3(cos(a) * 11.0, 0, sin(a) * 11.0 + 6.0)
-		var mi := Dunia.mesh(self, Dunia.silinder(3.0, 3.2, 1.6, 16), pos + Vector3(0, 0.15 - 0.8, 0), m_pasir)
-		var bentuk := CylinderShape3D.new()
-		bentuk.radius = 3.0
-		bentuk.height = 1.6
-		var badan := Dunia.badan_statis(self, bentuk, pos + Vector3(0, 0.15 - 0.8, 0))
-		_cakram.append([mi, badan.get_child(0), i])
-	DuniaPulau.dermaga(self, Vector3(0, 0.15, -4.5), Vector3(0, 0.15, 10))
-	DuniaPulau.kapal(self, Vector3(3.6, 0, 8), 0.0)
-	DuniaPulau.kapal(self, Vector3(-12, 0, 14), 0.5, Color("d8e8f0"))
-	_papan_info(Vector3(-1.7, 0.15, 3.0), "Info Awak Kapal")
-	_titik_muncul = Vector3(0, 0.4, 6)
-	_titik_keluar = Vector3(1.6, 0.15, 7.5)
-
-
-func _bangun_manjarite() -> void:
-	_bisa_tenggelam = false
-	DuniaPulau.dasar_dangkal(self, Vector3(0, -1.4, 0), 40.0, Color("c8b88a"))
-	DuniaPulau.kapal(self, Vector3(0, 0, 20), 0.0)
-	_tangga_kapal(Vector3(0, 0, 20), 0.0)
-	for k: Array in data.get("kapal_berlabuh", []):
-		var pos := Vector3(k[0], 0, k[1])
-		DuniaPulau.kapal(self, pos, float(k[2]), Color("d8e8f0") if int(k[0]) % 2 == 0 else Color("f4e0c0"))
-		_tangga_kapal(pos, float(k[2]))
-	for k: Array in data.get("karang", []):
-		var p := _v3(k)
-		DuniaPulau.karang(self, p)
-		_karang.append(p)
-	_arus = data.get("arus", [])
-	var m_buih := Dunia.mat(Color(1, 1, 1, 0.7))
-	m_buih.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
-	for z: Dictionary in _arus:
-		var dorong := Vector2(z["dorong"][0], z["dorong"][1])
-		for i in 8:
-			var garis := BoxMesh.new()
-			garis.size = Vector3(1.2, 0.02, 0.12) if absf(dorong.x) > absf(dorong.y) else Vector3(0.12, 0.02, 1.2)
-			var mi := Dunia.mesh(self, garis, Vector3.ZERO, m_buih)
-			_garis_arus.append([mi, z, randf(), randf()])
-	_bangun_laut()
-	_batas_arus = float(data.get("batas_arus", 0.0))
-	if _batas_arus > 0.0:
-		# Garis pelampung merah-putih: batas aman berenang
-		for i in 36:
-			var a: float = TAU * i / 36.0
-			var b := SphereMesh.new()
-			b.radius = 0.25
-			b.height = 0.4
-			b.radial_segments = 8
-			b.rings = 4
-			Dunia.mesh(self, b, Vector3(cos(a) * _batas_arus, DuniaPulau.Y_LAUT + 0.05, sin(a) * _batas_arus),
-					Dunia.mat(Color("d83a2a") if i % 2 == 0 else Color("f4f2ea")))
-	_papan_info(Vector3(-1.0, DuniaPulau.Y_DEK, 17.0), "Info Awak Kapal")
-	_titik_muncul = Vector3(0, DuniaPulau.Y_DEK + 0.2, 17.6)
-	_titik_keluar = Vector3(0.6, DuniaPulau.Y_DEK, 18.8)
-
-
-## Sampah wajib + pengecoh laut (kerang, bintang laut) + penyu + kawanan ikan. Semua benda yang bisa
-## dipungut berpetunjuk sama ("Pungut") agar pemain harus mengenali bendanya sendiri.
 func _bangun_laut() -> void:
 	var daftar_sampah: Array = data.get("sampah", [])
 	_sampah_wajib = mini(TARGET_SAMPAH, daftar_sampah.size())
@@ -456,13 +296,6 @@ func _bangun_wisatawan() -> void:
 		n.warna_topi = Color(str(w.get("topi", "e8dcb8")))
 		n.perempuan = w.get("perempuan", false)
 		n.position = _v3(w["pos"])
-		if jenis == "komodo" and n.nama.begins_with("Ranger"):
-			# Ranger menyusuri jalur bersama wisatawan
-			for t: Array in data["jalur"]:
-				n.titik_patroli.append(_v3(t))
-			n.lama_diam_min = 2.0
-			n.lama_diam_maks = 4.0
-			n.kecepatan = 1.2
 		add_child(n)
 		var ke_kamera: Vector3 = Vector3(0, 0, 6)
 		n.model.rotation.y = atan2(-ke_kamera.x, -ke_kamera.z) + randf_range(-0.6, 0.6)
@@ -554,7 +387,7 @@ func _hasil_jual(berhasil: bool, npc: NpcKampung, jual: JualSongke) -> void:
 
 
 func _target() -> int:
-	return 2 if GameState.mode_singkat else TARGET_PEMBELI  # Mode Singkat: foto dari kartu yang dilewati tidak dibawa
+	return TARGET_PEMBELI
 
 
 ## Jumlah pembeli yang masih bisa ditawari.
@@ -580,7 +413,7 @@ func _baris(nama: String, isi: Variant) -> Array:
 	return baris
 
 
-## Pulau tuntas bila 3 pembeli DAN (di Pink Beach & Manjarite) 5 sampah sudah dipungut.
+## Pulau tuntas bila 3 pembeli DAN (di Pink Beach) 5 sampah sudah dipungut.
 func _cek_tuntas() -> bool:
 	if _tuntas or _gagal or _terjual < _target() or _sampah_dipungut < _sampah_wajib:
 		return false
@@ -606,14 +439,10 @@ func _baca_info(_p: Pemain) -> void:
 
 
 func _pulau_tuntas() -> void:
-	if jenis == "komodo" and not _tempur.is_done(3):
-		_waktu_berjalan = false
-		_tempur.run(3, _pulau_tuntas)
-		return
 	_tuntas = true
 	if _salah_jual == 0:
 		Prestasi.raih("penjual_andal")
-	if _sampah_wajib > 0 and _salah_laut == 0 and Prestasi.tandai("laut_" + jenis, ["laut_pink", "laut_manjarite"]):
+	if _sampah_wajib > 0 and _salah_laut == 0 and Prestasi.tandai("laut_" + jenis, ["laut_pink"]):
 		Prestasi.raih("sahabat_laut")
 	_waktu_berjalan = false
 	AudioManager.putar_sfx("gong")
@@ -701,17 +530,10 @@ func _munculkan_pemain() -> void:
 
 func _process(delta: float) -> void:
 	var aktif: bool = GameState.sedang(GameState.State.BERMAIN) or GameState.sedang(GameState.State.MINIGAME)
-	if _waktu_berjalan and aktif and not _tuntas and not _gagal and not CombatManager.active:
+	if _waktu_berjalan and aktif and not _tuntas and not _gagal:
 		_sisa_waktu = maxf(_sisa_waktu - delta, 0.0)
 		if _sisa_waktu <= 0.0:
 			_gagal_pulau("waktu_habis")
-	if jenis == "taka" and aktif and not _tuntas and not _gagal:
-		_pasang = minf(_pasang + delta / _batas_waktu, 1.0)
-		_atur_pasang()
-		if _pasang >= 1.0:
-			_gagal_pulau("tenggelam")
-	for g: Array in _garis_arus:
-		_gerak_garis_arus(g, delta)
 	_perbarui_ui()
 
 
@@ -738,38 +560,18 @@ func _physics_process(delta: float) -> void:
 			return
 	if _cek_bahaya_baru(p):
 		return
-	var bahaya: float = 3.5 if GameState.mode_sulit else 3.0
-	for k: Komodo in _komodo:
-		if Vector2(p.x - k.position.x, p.z - k.position.z).length() < bahaya:
-			_kembali_aman(DataLabuanBajo.teks("komodo_dekat"), DENDA_KOMODO)
-			return
-	if di_air:
-		for z: Dictionary in _arus:
-			if p.x > z["min"][0] and p.x < z["max"][0] and p.z > z["min"][1] and p.z < z["max"][1]:
-				pemain.move_and_collide(Vector3(z["dorong"][0], 0, z["dorong"][1]) * delta)
-				if not _sudah_kena_arus:
-					_sudah_kena_arus = true
-					_toast(DataLabuanBajo.teks("arus"))
 	if pemain.is_on_floor() and _pijakan_aman(p):
 		_titik_aman = p
 
 
-## Titik aman: tanah padat di sekeliling kaki, jauh dari karang dan komodo.
+## Titik aman: tanah padat di sekeliling kaki, jauh dari karang dan penyu.
 func _pijakan_aman(p: Vector3) -> bool:
 	for k: Vector3 in _karang:
 		if Vector2(p.x - k.x, p.z - k.z).length() < 2.2:
 			return false
-	for k: Komodo in _komodo:
-		if Vector2(p.x - k.position.x, p.z - k.position.z).length() < 6.5:
-			return false
-	for sm: Array in _semak:
-		if (sm[0] as Semak).bersembunyi and Vector2(p.x - sm[0].position.x, p.z - sm[0].position.z).length() < JARAK_SEMAK + 1.5:
-			return false
 	for py: Penyu in _penyu:
 		if Vector2(p.x - py.position.x, p.z - py.position.z).length() < 3.0:
 			return false
-	if _batas_arus > 0.0 and Vector2(p.x, p.z).length() > _batas_arus - 3.0:
-		return false
 	return _tanah_padat(p)
 
 
@@ -793,10 +595,7 @@ func _kembali_aman(pesan: String, denda: float) -> void:
 	kamera.guncang(0.4)
 	var tujuan: Vector3 = _titik_aman
 	if not _tanah_padat(tujuan):
-		tujuan = _titik_muncul  # titik aman sudah tenggelam (pasang) atau tidak lagi aman
-	for k: Komodo in _komodo:
-		if Vector2(tujuan.x - k.position.x, tujuan.z - k.position.z).length() < 5.0:
-			tujuan = _titik_muncul
+		tujuan = _titik_muncul  # titik aman tidak lagi aman
 	pemain.velocity = Vector3.ZERO
 	pemain.global_position = tujuan + Vector3(0, 0.15, 0)
 	pemain.model.squash(Vector3(1.2, 0.8, 1.2))
@@ -834,7 +633,7 @@ func _perbarui_stamina(delta: float) -> void:
 		_toast(DataLabuanBajo.teks("kehabisan_tenaga"))
 
 
-## Pengecoh tahap 6: penyu, kawanan ikan, semak berkomodo, garis pelampung. true = pemain dipindahkan.
+## Pengecoh laut: penyu dan kawanan ikan. true = pemain dipindahkan.
 func _cek_bahaya_baru(p: Vector3) -> bool:
 	for py: Penyu in _penyu:
 		if Vector2(p.x - py.position.x, p.z - py.position.z).length() < JARAK_SENTUH_PENYU and absf(p.y - py.position.y) < 1.2:
@@ -850,15 +649,6 @@ func _cek_bahaya_baru(p: Vector3) -> bool:
 			AudioManager.putar_sfx("terkena", 0.1)
 			_obrol(pemain, "Nggohak", DataLabuanBajo.teks("ikan"))
 			Nyawa.kurangi(DataLabuanBajo.teks("ikan"))
-	for sm: Array in _semak:
-		var semak: Semak = sm[0]
-		if semak.bersembunyi and Vector2(p.x - semak.position.x, p.z - semak.position.z).length() < JARAK_SEMAK:
-			Semak.terjang(sm[1], p)
-			_kembali_aman(DataLabuanBajo.teks("semak_komodo"), DENDA_KOMODO)
-			return true
-	if _batas_arus > 0.0 and Vector2(p.x, p.z).length() > _batas_arus:
-		_kembali_aman(DataLabuanBajo.teks("terseret"), DENDA_JATUH)
-		return true
 	return false
 
 
@@ -896,44 +686,6 @@ func _perbarui_batu(delta: float, p: Vector3) -> void:
 				_toast(DataLabuanBajo.teks("batu_goyah"))
 
 
-## Taka Makassar: cakram pasir menyempit dan ujung-ujung sabit tenggelam saat air pasang.
-func _atur_pasang() -> void:
-	var jari: float = lerpf(3.0, 1.3, _pasang)
-	var tenggelam: int = int(floor(_pasang * 5.0))
-	for c: Array in _cakram:
-		var mi: MeshInstance3D = c[0]
-		var bentuk: CollisionShape3D = c[1]
-		var i: int = c[2]
-		var tampak: bool = i >= tenggelam and i < 15 - tenggelam
-		mi.visible = tampak
-		mi.scale = Vector3(jari / 3.0, 1.0, jari / 3.0)
-		(bentuk.shape as CylinderShape3D).radius = jari
-		if bentuk.disabled == tampak:
-			bentuk.set_deferred("disabled", not tampak)
-
-
-## Manjarite: garis buih bergerak searah arus sebagai penanda visual.
-func _gerak_garis_arus(g: Array, delta: float) -> void:
-	var mi: MeshInstance3D = g[0]
-	var z: Dictionary = g[1]
-	var dorong := Vector2(z["dorong"][0], z["dorong"][1])
-	var lebar := Vector2(z["max"][0] - z["min"][0], z["max"][1] - z["min"][1])
-	var maju: Vector2 = dorong.normalized()
-	var arah_lebar: float = lebar.x if absf(maju.x) > 0.5 else lebar.y
-	g[2] = fposmod(float(g[2]) + delta * dorong.length() / maxf(arah_lebar, 1.0), 1.0)
-	var t: float = g[2]
-	var s: float = g[3]
-	var x: float
-	var y: float
-	if absf(maju.x) > 0.5:
-		x = z["min"][0] + lebar.x * (t if maju.x > 0 else 1.0 - t)
-		y = z["min"][1] + lebar.y * s
-	else:
-		x = z["min"][0] + lebar.x * s
-		y = z["min"][1] + lebar.y * (t if maju.y > 0 else 1.0 - t)
-	mi.position = Vector3(x, DuniaPulau.Y_LAUT + 0.03, y)
-
-
 # ================================================================== UI
 
 func _bangun_ui() -> void:
@@ -950,8 +702,8 @@ func _bangun_ui() -> void:
 	_label_toast.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_label_toast.modulate.a = 0.0
 	_ui.add_child(_label_toast)
-	if jenis == "padar" or jenis == "taka":
-		_label_bar = Gaya.label("Tenaga" if jenis == "padar" else "Air pasang", 9, Gaya.PUTIH)
+	if jenis == "padar":
+		_label_bar = Gaya.label("Tenaga", 9, Gaya.PUTIH)
 		_label_bar.position = Vector2(456, 46)
 		_ui.add_child(_label_bar)
 		_bar = Control.new()
@@ -968,9 +720,9 @@ func _bangun_ui() -> void:
 
 
 func _gambar_bar() -> void:
-	var nilai: float = _stamina / 100.0 if jenis == "padar" else _pasang
-	var warna: Color = Gaya.HIJAU if jenis == "padar" else Color("5fa8d3")
-	if jenis == "padar" and nilai < 0.25:
+	var nilai: float = _stamina / 100.0
+	var warna: Color = Gaya.HIJAU
+	if nilai < 0.25:
 		warna = Gaya.MERAH
 	_bar.draw_rect(Rect2(Vector2.ZERO, _bar.size), Gaya.HITAM)
 	_bar.draw_rect(Rect2(Vector2(1, 1), Vector2((_bar.size.x - 2) * nilai, _bar.size.y - 2)), warna)
@@ -981,9 +733,6 @@ func _perbarui_ui() -> void:
 	if _waktu_berjalan:
 		var d: int = int(ceil(_sisa_waktu))
 		_label_waktu.text = "Waktu: %d:%02d" % [d / 60, d % 60]
-	elif jenis == "taka":
-		var d: int = int(ceil(_batas_waktu * (1.0 - _pasang)))
-		_label_waktu.text = "Sebelum pasang: %d:%02d" % [d / 60, d % 60]
 	else:
 		_label_waktu.text = ""
 	if _bar:

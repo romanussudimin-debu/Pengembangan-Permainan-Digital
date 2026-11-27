@@ -1,7 +1,7 @@
 extends Node
 ## Level 3: PETA PERJALANAN KAPAL (tampak atas, ilustrasi tidak berskala).
 ## Destinasi Taman Nasional Komodo terbuka berurutan (kesulitan naik). Kapal bergerak ke destinasi
-## terpilih lalu scene pulau dimuat. Setelah keenam destinasi tuntas: pulang ke Wae Rebo (ending Penti).
+## terpilih lalu scene pulau dimuat. Setelah ketiga destinasi tuntas: pulang ke Wae Rebo (ending Penti).
 
 const WARNA_LAUT_ATAS := Color("2a6f97")
 const WARNA_LAUT_BAWAH := Color("1d4a6c")

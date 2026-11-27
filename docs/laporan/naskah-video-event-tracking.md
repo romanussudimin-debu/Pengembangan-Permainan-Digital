@@ -18,13 +18,13 @@
 |---|---|---|
 | 0:00–0:15 | Menu utama | "Saya Romanus Sudimin. Ini game *Jejak Penti di Wae Rebo* buatan Godot. Event yang saya pasang adalah Level Completed, memakai sistem analitik lokal buatan sendiri." |
 | 0:15–0:40 | `analitik.gd` (`catat_level_selesai`) dan `game_state.gd` (`level_selesai.emit`) | "Saat level tamat, GameState memancarkan sinyal, lalu Analitik mencatat datanya. Saya tidak memakai Firebase atau GameAnalytics karena game ini Godot, bisa dimainkan offline, dan tidak menyimpan data pribadi." |
-| 0:40–1:15 | Level 1 di Mode Singkat sampai layar "Level 1 berhasil" | "Untuk demo saya pakai Mode Singkat. Sekarang saya tamatkan Level 1…" |
+| 0:40–1:15 | Bagian akhir Level 1 (menenun songke bersama Ine Wela) sampai layar "Level 1 berhasil" | "Sekarang saya tamatkan Level 1…" |
 | 1:15–1:40 | Panel Output: `[Analitik] level_completed level=1 ...` | "Event langsung tercatat: level, kesulitan, durasi, sisa nyawa, dan jumlah salah pengecoh." |
 | 1:40–1:55 | `event_log.json` dibuka di Notepad | "Data juga tersimpan sebagai JSON, siap diolah untuk evaluasi game." |
 | 1:55–2:00 | Kembali ke game | "Terima kasih." |
 
 ## Tips merekam
-- Aktifkan **Mode Singkat** di menu utama: Level 1 cukup 2 tantangan + 1 gelombang (±1 menit), lalu klik **Mulai Permainan**.
+- Level 1 kini singkat (pendakian, teka-teki Tu'a Golo, menenun songke; ±4–6 menit). Mulai merekam saat sudah di kampung, atau percepat bagian pendakian saat mengedit.
 - Jalankan dari editor Godot (F5) agar panel Output terlihat.
 - Berkas JSON (Windows): Win+R → `%APPDATA%\Godot\app_userdata\Jejak Penti di Wae Rebo\analitik`.
 - Perekam: Win+Alt+R (Xbox Game Bar) atau OBS Studio.

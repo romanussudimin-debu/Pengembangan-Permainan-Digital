@@ -4,12 +4,10 @@ extends Camera3D
 ## - Bisa diputar (tahan klik kanan + geser mouse; di HP: geser satu jari di separuh KANAN layar)
 ##   dan di-zoom (roda mouse; di HP: cubit dua jari). Ketuk dua kali = kamera lurus kembali.
 ##   Gerak pemain mengikuti arah kamera.
-## - Mode tempur: sudut lebih tegak (mendekati top-down) agar medan & musuh terlihat luas.
 ## - Guncangan layar (screen shake) untuk umpan balik.
 
 const ZOOM_MIN: float = 0.55
 const ZOOM_MAX: float = 1.7
-const COMBAT_OFFSET := Vector3(0, 11.0, 7.0)  ## sudut ±57 derajat saat bertempur
 const ROTATE_SPEED: float = 0.006
 
 @export var offset_kamera: Vector3 = Vector3(0, 6.5, 10.5)
@@ -27,7 +25,7 @@ var _jarak_cubit: float = 0.0
 
 
 func _ready() -> void:
-	add_to_group("kamera_ikut")  # Nyawa/tempur menggetarkan kamera
+	add_to_group("kamera_ikut")  # Nyawa menggetarkan kamera
 	fov = 60.0
 	_offset_aktif = offset_kamera
 	if target:
@@ -35,8 +33,7 @@ func _ready() -> void:
 
 
 func _offset_tujuan() -> Vector3:
-	var dasar: Vector3 = COMBAT_OFFSET if CombatManager.active else offset_kamera
-	return (dasar * zoom).rotated(Vector3.UP, yaw)
+	return (offset_kamera * zoom).rotated(Vector3.UP, yaw)
 
 
 func _physics_process(delta: float) -> void:

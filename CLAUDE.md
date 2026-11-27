@@ -32,11 +32,12 @@ Semua dokumen, komentar kode penting, dan komunikasi ditulis dalam **Bahasa Indo
 ## Luaran wajib
 a) File executable (`.exe` / `.apk` / web build) · b) Source code · c) GDD + asset references · d) Laporan penelitian budaya (3–5 hlm) · e) Video demo gameplay (1–2 menit)
 
-## Konsep yang sudah ditetapkan (lihat `docs/gdd/GDD.md` v2.0)
-**Judul:** *Jejak Penti di Wae Rebo*, game 3D jelajah budaya orang ketiga (kamera tetap).
-- Kampung 3D bergaya Wae Rebo (7 Mbaru Niang melingkari compang). Tokoh pemain: **Nggohak** (disapa "Kraeng").
-- **Rantai teka-teki**: 9 kartu budaya dipegang 8 warga (Tu'a Golo, Ine Wela, Ema Agus, Ende Lono, Fransi, Hingha, Marngem, Ema Yakobus) dan dikumpulkan BERURUTAN; setiap warga memberi tantangan + petunjuk berupa teka-teki (ciri orang/rumah) ke warga berikutnya. 3 pemegang menunggu di DALAM Mbaru Niang (semua rumah dapat dimasuki); Fransi, Hingha, Marngem berjalan/bertukar tempat. Data: `src/data/rantai_teka_teki.json`.
-- Mini-game: **Menenun Songke** (pola 5×5) dan **Tabuh Gong-Gendang** (ritme).
+## Konsep yang sudah ditetapkan (lihat `docs/gdd/GDD.md` v4.0, versi disederhanakan)
+**Judul:** *Jejak Penti di Wae Rebo*, game 3D jelajah budaya orang ketiga, 3 level + ending Penti.
+- **Level 1 Kampung Wae Rebo:** mendaki ke Wae Rebo (platformer) → teka-teki Tu'a Golo (kartu Compang + Mbaru Niang) → menenun songke bersama Ine Wela (kartu Songke + Penti). Kampung 3D bergaya Wae Rebo (7 Mbaru Niang melingkari compang); warga lain hanya menyapa. Tokoh pemain: **Nggohak** (disapa "Kraeng"). Data: `src/data/rantai_teka_teki.json`.
+- **Level 2 Lingko Lodok:** temui Tu'a Teno → mini-game Mengalirkan Air (wae teku) → naik bukit batu memandang lingko.
+- **Level 3 Songke ke Labuan Bajo:** peta kapal → Pelabuhan Labuan Bajo, Pulau Padar, Pink Beach; jual songke/foto budaya ke 3 wisatawan per destinasi.
+- Mini-game: **Menenun Songke** (pola 5×5), **Mengalirkan Air**, **Menjual Songke**. Tidak ada pertarungan dan tidak ada mode LAN/PvP (dihapus di v4.0). Kesulitan: Normal / Sulit.
 - Dialog diucapkan dengan TTS bahasa Indonesia; teks hanya cadangan/aksesibilitas.
 - Caci **tidak dimainkan**; tampil sebagai pertunjukan di ending Penti (FSM penampil caci).
 - Bahasa Indonesia + istilah Manggarai terverifikasi (`docs/riset/glosarium.md`). Compang hanya dilihat (sakral).

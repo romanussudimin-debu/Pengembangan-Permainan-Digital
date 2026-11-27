@@ -66,7 +66,7 @@ Isi kartu budaya menjadi bekal untuk menjawab teka-teki dan pertanyaan wisatawan
 ### 4.3 Level 1 — Kampung Wae Rebo (data: `src/data/rantai_teka_teki.json`)
 | # | Bagian | Tantangan | Kartu |
 |---|---|---|---|
-| 1 | Mendaki ke Wae Rebo | Platformer ngarai: batu pijakan di sungai, titian di atas jurang, tanjakan, 3 titik cek. Pengecoh: **batu retak** (lebih gelap, bergaris) dan **cabang jalan buntu** (jalur utama bertiang bambu berkain merah) | — |
+| 1 | Mendaki ke Wae Rebo | Platformer ngarai: **satu sungai** dengan batu pijakan, titian di atas jurang, tanjakan ke dataran tinggi, 3 titik cek. Pengecoh: **batu retak** (lebih gelap, bergaris) dan **cabang jalan buntu** (jalur utama bertiang bambu berkain merah) | — |
 | 2 | Tu'a Golo (dekat compang) | Teka-teki: jumlah Mbaru Niang yang melingkari kampung → **Tujuh** (diamati) | Compang + Mbaru Niang |
 | 3 | Ine Wela (alat tenun, sisi barat) | **Menenun songke**; petunjuk menuju Ine Wela: *"Jari-jarinya menyusun warna di atas dasar hitam. Carilah ia di sisi matahari terbenam."* | Kain Songke + Penti |
 

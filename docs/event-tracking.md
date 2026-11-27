@@ -1,4 +1,4 @@
-# Event Tracking: `level_completed`
+# Event Tracking: `level_completed` dan `daily_login`
 
 ## Tujuan
 Event `level_completed` mencatat setiap kali seorang pemain menamatkan sebuah level. Data ini menjadi bahan
@@ -40,8 +40,29 @@ tetap dicatat seperti sebelumnya.
 | `kartu_didapat` | Array | `["compang", "mbaru_niang"]` | ID kartu budaya baru di level ini |
 | `pertama_kali` | bool | `true` | `true` bila level ini baru pertama kali ditamatkan |
 
+## Event kedua: `daily_login` (skema versi 1)
+Dicatat **sekali per hari kalender** (tanggal lokal perangkat) saat game dibuka. Membuka game lagi di hari yang
+sama tidak menambah event. Bila jam perangkat mundur ke tanggal sebelum login terakhir, tanggal itu diabaikan agar
+tidak terjadi login ganda. Status login (tanggal terakhir, hari berturut-turut, total hari) disimpan di
+`user://analitik/login.cfg`, sehingga tidak hilang walaupun event log dipangkas ke 500 event terakhir.
+
+| Field | Tipe | Contoh | Arti |
+|---|---|---|---|
+| `event` | String | `"daily_login"` | Nama event |
+| `versi_skema` | int | `1` | Versi struktur data |
+| `tanggal` | String | `"2026-11-27"` | Tanggal lokal login (YYYY-MM-DD) |
+| `waktu` | String | `"2026-11-27T14:05:31"` | Waktu lokal ISO 8601 saat game dibuka |
+| `hari_berturut` | int | `3` | Hari berturut-turut bermain (streak); kembali 1 bila ada hari terlewat |
+| `hari_berturut_terbaik` | int | `5` | Streak terpanjang yang pernah dicapai |
+| `total_hari` | int | `8` | Total hari berbeda pemain membuka game |
+| `jeda_hari` | int | `1` | Selisih hari sejak login terakhir (0 = login pertama, 1 = hari berikutnya) |
+| `login_pertama` | bool | `false` | `true` hanya pada login pertama di perangkat itu |
+| `platform` | String | `"Android"` | Sistem operasi (`Windows`, `macOS`, `Android`, `Web`, `Linux`) |
+
+Contoh baris di Output: `[Analitik] daily_login tanggal=2026-11-27 hari_berturut=1 total_hari=1 jeda_hari=0 login_pertama=true`.
+
 ## Lokasi berkas log
-Berkas: `user://analitik/event_log.json`, berupa array event. Hanya 500 event terakhir yang disimpan. Penulisan
+Berkas: `user://analitik/event_log.json`, berupa array event (`level_completed` dan `daily_login`). Hanya 500 event terakhir yang disimpan. Penulisan
 dilakukan ke berkas `.tmp` terlebih dahulu, lalu berkas tersebut diganti nama. Berkas yang rusak atau hilang
 diperlakukan sebagai array kosong.
 - **Windows:** `%APPDATA%\Godot\app_userdata\Jejak Penti di Wae Rebo\analitik\event_log.json`
@@ -66,3 +87,6 @@ awalan `[Analitik] ringkasan_level`.
    dan `nyawa=x/3`.
 5. Buka `event_log.json` di lokasi di atas. Pastikan berisi dua event dengan nilai yang sesuai.
 6. Opsional: isi berkas dengan teks acak, lalu jalankan ulang game. Game tidak boleh crash dan log dimulai kosong.
+7. **Daily login:** saat game dibuka pertama kali, Output menampilkan `[Analitik] daily_login ... login_pertama=true`.
+   Tutup lalu buka lagi di hari yang sama: tidak ada baris `daily_login` baru. Buka lagi keesokan harinya:
+   `hari_berturut=2`. Untuk mengulang dari awal, hapus `login.cfg` dan `event_log.json` di folder `analitik`.

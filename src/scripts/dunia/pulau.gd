@@ -125,10 +125,11 @@ func _ready() -> void:
 	add_child(preload("res://scripts/ui/hud.gd").new())
 	_tempur = StoryCombat.new(self, 3)
 	add_child(_tempur)
-	if GELOMBANG_PULAU.has(jenis):
+	var gelombang: int = 0 if GameState.mode_singkat and jenis == "pelabuhan" else int(GELOMBANG_PULAU.get(jenis, -1))
+	if gelombang >= 0:
 		get_tree().create_timer(4.0, false).timeout.connect(func() -> void:
 			if is_instance_valid(_tempur) and not _tuntas and not _gagal:
-				_tempur.run(GELOMBANG_PULAU[jenis]))
+				_tempur.run(gelombang))
 	_bangun_ui()
 	AudioManager.putar_musik("kampung")
 	GameState.ubah_state(GameState.State.BERMAIN)
@@ -502,7 +503,7 @@ func _pilih_tawaran(indeks: int, npc: NpcKampung) -> void:
 		return
 	if not pembeli:
 		_obrol(npc, npc.nama, DataLabuanBajo.teks("bukan_pembeli"))
-		Nyawa.kurangi(DataLabuanBajo.teks("bukan_pembeli_nyawa"))
+		Nyawa.kurangi(DataLabuanBajo.teks("bukan_pembeli_nyawa"), true)
 		return
 	# Keinginan wisatawan langsung tampil di layar tawaran (tanpa panel dialog terpisah)
 	_obrol(npc, npc.nama, w["keinginan"])
@@ -537,7 +538,7 @@ func _hasil_jual(berhasil: bool, npc: NpcKampung, jual: JualSongke) -> void:
 		npc.area.ubah_petunjuk("Terima kasih")
 		_perbarui_tujuan()
 		if not _cek_tuntas():
-			_toast("Terjual %d/%d!" % [_terjual, TARGET_PEMBELI] if _terjual < TARGET_PEMBELI else DataLabuanBajo.teks("belum_sampah"))
+			_toast("Terjual %d/%d!" % [_terjual, _target()] if _terjual < _target() else DataLabuanBajo.teks("belum_sampah"))
 		return
 	if not jual.pergi:
 		return  # dibatalkan pemain; wisatawan masih bisa ditawari lagi
@@ -546,10 +547,14 @@ func _hasil_jual(berhasil: bool, npc: NpcKampung, jual: JualSongke) -> void:
 	tw.tween_property(npc, "scale", Vector3(0.01, 0.01, 0.01), 0.6).set_ease(Tween.EASE_IN)
 	tw.tween_callback(npc.queue_free)
 	_npc.erase(npc)
-	if _calon_pembeli() + _terjual < TARGET_PEMBELI:
+	if _calon_pembeli() + _terjual < _target():
 		_gagal_pulau("gagal_pulau")
 	else:
 		_toast(DataLabuanBajo.teks("sisa_pembeli"))
+
+
+func _target() -> int:
+	return 2 if GameState.mode_singkat else TARGET_PEMBELI  # Mode Singkat: foto dari kartu yang dilewati tidak dibawa
 
 
 ## Jumlah pembeli yang masih bisa ditawari.
@@ -577,7 +582,7 @@ func _baris(nama: String, isi: Variant) -> Array:
 
 ## Pulau tuntas bila 3 pembeli DAN (di Pink Beach & Manjarite) 5 sampah sudah dipungut.
 func _cek_tuntas() -> bool:
-	if _tuntas or _gagal or _terjual < TARGET_PEMBELI or _sampah_dipungut < _sampah_wajib:
+	if _tuntas or _gagal or _terjual < _target() or _sampah_dipungut < _sampah_wajib:
 		return false
 	_pulau_tuntas()
 	return true
@@ -585,7 +590,7 @@ func _cek_tuntas() -> bool:
 
 func _perbarui_tujuan() -> void:
 	var teks: String = "%s: jual kain/foto ke %d wisatawan (terjual %d/%d). Cocokkan ciri pembeli di panel kanan." % [
-		data["nama"], TARGET_PEMBELI, _terjual, TARGET_PEMBELI]
+		data["nama"], _target(), _terjual, _target()]
 	if _sampah_wajib > 0:
 		teks += " Pungut sampah plastik: %d/%d." % [_sampah_dipungut, _sampah_wajib]
 	GameState.atur_tujuan(teks)
@@ -662,7 +667,7 @@ func _pungut(_p: Pemain, benda: Node3D, jenis_benda: String) -> void:
 		_salah_laut += 1
 		kamera.guncang(0.3)
 		_obrol(pemain, "Nggohak", DataLabuanBajo.teks(jenis_benda))
-		Nyawa.kurangi(DataLabuanBajo.teks(jenis_benda))
+		Nyawa.kurangi(DataLabuanBajo.teks(jenis_benda), true)
 		return
 	AudioManager.putar_sfx("ambil")
 	Efek.kilau(self, benda.global_position + Vector3(0, 0.3, 0))
@@ -887,7 +892,7 @@ func _perbarui_batu(delta: float, p: Vector3) -> void:
 				var tw := create_tween()
 				tw.tween_property(mi, "position:y", atas.y - 4.0, 0.6).set_ease(Tween.EASE_IN)
 				tw.tween_callback(mi.hide)
-				Nyawa.kurangi(DataLabuanBajo.teks("batu_goyah"))
+				Nyawa.kurangi(DataLabuanBajo.teks("batu_goyah"), true)
 				_toast(DataLabuanBajo.teks("batu_goyah"))
 
 

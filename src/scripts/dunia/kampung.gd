@@ -311,7 +311,7 @@ func _sampaikan_petunjuk(tantangan: Dictionary) -> void:
 	var teks: String = ("Petunjuk berikutnya: " + str(tantangan["petunjuk"])) if not GameState.rantai_selesai() else str(tantangan["petunjuk"])
 	var baris: Array = [{"nama": tantangan["pemegang"], "teks": teks}]
 	if GameState.rantai_selesai():
-		DialogManager.mulai_baris("penutup", baris, func() -> void: _tempur.run(3, _mulai_penti))
+		DialogManager.mulai_baris("penutup", baris, func() -> void: _tempur.run(0 if GameState.mode_singkat else 3, _mulai_penti))
 	else:
 		var gelombang: int = int(GELOMBANG_SETELAH.get(GameState.langkah_rantai, -1))
 		DialogManager.mulai_baris("petunjuk", baris, func() -> void:
@@ -470,7 +470,7 @@ func _beri_kopi(tamu: NpcKampung) -> void:
 		return
 	if not tamu.get_meta("benar"):
 		DialogManager.gelembung(tamu, [str(DATA_RANTAI.data["antar"]["salah_tamu"])], "Tamu", 3.9)
-		Nyawa.kurangi("salah tamu")
+		Nyawa.kurangi("salah tamu", true)
 		return
 	_antar_aktif = false
 	pemain.model.atur_nampan(false)
@@ -533,7 +533,7 @@ func _ambil_benang(_p: Pemain, g: Node3D, asli: bool) -> void:
 	g.queue_free()
 	if not asli:
 		DialogManager.gelembung(pemain, [str(teks["palsu"])], "Nggohak", 3.6)
-		Nyawa.kurangi("mengambil benang palsu")
+		Nyawa.kurangi("mengambil benang palsu", true)
 		return
 	_benang_terkumpul += 1
 	Efek.kilau(self, g.global_position + Vector3(0, 0.4, 0))

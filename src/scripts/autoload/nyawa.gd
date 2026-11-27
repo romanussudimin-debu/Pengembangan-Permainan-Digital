@@ -13,6 +13,8 @@ signal dikurangi(penyebab: String, tantangan: String)  ## didengar Analitik
 
 var sisa: int = 5
 var hilang_di_level: int = 0  ## jumlah nyawa yang hilang sejak level dimulai (untuk bintang/analytics)
+var pengecoh_di_level: int = 0  ## salah pilih orang/benda pengecoh sejak level dimulai (Analitik)
+var diulang_di_level: int = 0  ## tantangan yang diulang karena nyawa habis sejak level dimulai (Analitik)
 var _tantangan: String = ""
 var _ulang: Callable = Callable()
 var _kilat: ColorRect
@@ -31,6 +33,7 @@ func _ready() -> void:
 	_kilat.modulate.a = 0.0
 	add_child(_kilat)
 	_bangun_panel()
+	GameState.level_dimulai.connect(_reset_hitungan_level)
 
 
 func maks() -> int:
@@ -57,11 +60,14 @@ func tantangan_aktif() -> String:
 
 
 ## -1 nyawa. `penyebab` dicatat (misalnya "jatuh", "salah jawab", "pengecoh").
-func kurangi(penyebab: String) -> void:
+## `pengecoh` = true bila nyawa hilang karena salah memilih orang/benda pengecoh (dihitung Analitik).
+func kurangi(penyebab: String, pengecoh: bool = false) -> void:
 	if _panel.visible or sisa <= 0:
 		return
 	sisa -= 1
 	hilang_di_level += 1
+	if pengecoh:
+		pengecoh_di_level += 1
 	dikurangi.emit(penyebab, _tantangan)
 	berubah.emit(sisa, -1)
 	AudioManager.putar_sfx("salah")
@@ -134,6 +140,7 @@ func _tampilkan_habis() -> void:
 
 
 func _ulangi() -> void:
+	diulang_di_level += 1
 	_panel.visible = false
 	get_tree().paused = false
 	isi_penuh(false)
@@ -141,6 +148,12 @@ func _ulangi() -> void:
 		DialogManager.tutup_paksa()
 	if _ulang.is_valid():
 		_ulang.call()
+
+
+## Penghitung analitik direset hanya saat level benar-benar dimulai (bukan saat tantangan/level diulang).
+func _reset_hitungan_level(_n: int) -> void:
+	pengecoh_di_level = 0
+	diulang_di_level = 0
 
 
 ## Teks melayang di atas kepala pemain (bila ada pemain di scene aktif).

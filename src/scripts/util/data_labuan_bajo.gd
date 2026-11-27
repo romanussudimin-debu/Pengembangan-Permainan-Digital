@@ -14,8 +14,9 @@ static func pulau(i: int) -> Dictionary:
 	return daftar[clampi(i, 0, daftar.size() - 1)]
 
 
+## Mode Singkat: hanya destinasi pertama (Pelabuhan Labuan Bajo).
 static func jumlah_pulau() -> int:
-	return semua_pulau().size()
+	return 1 if GameState.mode_singkat else semua_pulau().size()
 
 
 static func dialog() -> Dictionary:

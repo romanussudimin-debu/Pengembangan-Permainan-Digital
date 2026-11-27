@@ -134,6 +134,12 @@ func _bangun_ui() -> void:
 	_tombol_mode.pressed.connect(_ganti_mode)
 	_tombol_nama = _tombol_kecil(PlayerProfile.player_name, baris_mode)
 	_tombol_nama.pressed.connect(_ganti_nama)
+	var singkat := _tombol_kecil(_teks_singkat(), _baris_menu(kolom))
+	singkat.tooltip_text = "Versi demo: tiap level sekitar 1 menit (tantangan dipangkas, satu gelombang tempur)."
+	singkat.pressed.connect(func() -> void:
+		GameState.mode_singkat = not GameState.mode_singkat
+		GameState.simpan()
+		singkat.text = _teks_singkat())
 	var baris_info := _baris_menu(kolom)
 	var cara := _tombol_kecil("Cara Bermain", baris_info)
 	cara.pressed.connect(_tampilkan_info.bind(_teks_cara_bermain()))
@@ -360,6 +366,10 @@ func _ganti_mode() -> void:
 	var i: int = urutan.find(GameState.kesulitan)
 	GameState.atur_kesulitan(urutan[(i + 1) % urutan.size()])
 	_tombol_mode.text = _teks_mode()
+
+
+func _teks_singkat() -> String:
+	return "Mode Singkat: " + ("Aktif" if GameState.mode_singkat else "Mati")
 
 
 func _teks_mode() -> String:

@@ -364,8 +364,8 @@ func _tampilkan_denda(detik: float) -> void:
 
 func _atur_tahap(baru: int) -> void:
 	tahap = baru
-	# Pertempuran di sela tugas: sebelum Usir Burung, membagi lingko, dan naik bukit
-	match baru:
+	# Pertempuran di sela tugas: sebelum Usir Burung, membagi lingko, dan naik bukit (Mode Singkat: hanya di akhir)
+	match -1 if GameState.mode_singkat else baru:
 		Tahap.BURUNG:
 			_tempur.run(0)
 		Tahap.BAGI:
@@ -462,7 +462,7 @@ func _bicara_tu_a_teno() -> void:
 
 func _setelah_sambutan() -> void:
 	_beri_kartu("lingko", func() -> void:
-		_atur_tahap(Tahap.UNDANG)
+		_atur_tahap(Tahap.BAGI if GameState.mode_singkat else Tahap.UNDANG)  # Mode Singkat: langsung membagi lingko
 		if GameState.mode_sulit:
 			_waktu_berjalan = true
 			_saat_state_berubah(GameState.state, GameState.state))
@@ -595,7 +595,8 @@ func _alirkan_air() -> void:
 
 func _mulai_bagi() -> void:
 	var b: BagiLingko = BAGI.new()
-	b.siapkan(DATA.data["ronde"])
+	var ronde: Array = DATA.data["ronde"]
+	b.siapkan([ronde[ronde.size() - 1]] if GameState.mode_singkat else ronde)  # Mode Singkat: ronde terakhir saja
 	b.selesai.connect(_hasil_bagi)
 	b.salah.connect(Nyawa.kurangi)
 	_minigame = b
@@ -629,7 +630,7 @@ func _hasil_bagi(berhasil: bool) -> void:
 		return
 	_tampilkan_juring_terbagi()
 	_obrol(_tu_a_teno, "Tu'a Teno", d["bagi_berhasil"])
-	_beri_kartu("moso", _atur_tahap.bind(Tahap.BUKIT))
+	_beri_kartu("moso", _tamat if GameState.mode_singkat else _atur_tahap.bind(Tahap.BUKIT))
 
 
 ## Garis moso hasil pembagian lingko terakhir ditancapkan di sawah: petak tampak seperti jaring laba-laba.
@@ -670,7 +671,7 @@ func _interaksi_bukit(_p: Pemain) -> void:
 
 ## Bos Babi Hutan Raksasa dilawan dulu, lalu level tamat.
 func _tamat() -> void:
-	_tempur.run(3, _tamat_lanjut)
+	_tempur.run(0 if GameState.mode_singkat else 3, _tamat_lanjut)
 
 
 func _tamat_lanjut() -> void:

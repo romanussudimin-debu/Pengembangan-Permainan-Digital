@@ -311,7 +311,7 @@ func _sampaikan_petunjuk(tantangan: Dictionary) -> void:
 	var teks: String = ("Petunjuk berikutnya: " + str(tantangan["petunjuk"])) if not GameState.rantai_selesai() else str(tantangan["petunjuk"])
 	var baris: Array = [{"nama": tantangan["pemegang"], "teks": teks}]
 	if GameState.rantai_selesai():
-		DialogManager.mulai_baris("penutup", baris, func() -> void: _tempur.run(3, _mulai_penti))
+		DialogManager.mulai_baris("penutup", baris, func() -> void: _tempur.run(0 if GameState.mode_singkat else 3, _mulai_penti))
 	else:
 		var gelombang: int = int(GELOMBANG_SETELAH.get(GameState.langkah_rantai, -1))
 		DialogManager.mulai_baris("petunjuk", baris, func() -> void:

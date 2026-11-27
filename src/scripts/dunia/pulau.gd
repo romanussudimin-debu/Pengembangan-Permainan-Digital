@@ -502,7 +502,7 @@ func _pilih_tawaran(indeks: int, npc: NpcKampung) -> void:
 		return
 	if not pembeli:
 		_obrol(npc, npc.nama, DataLabuanBajo.teks("bukan_pembeli"))
-		Nyawa.kurangi(DataLabuanBajo.teks("bukan_pembeli_nyawa"))
+		Nyawa.kurangi(DataLabuanBajo.teks("bukan_pembeli_nyawa"), true)
 		return
 	# Keinginan wisatawan langsung tampil di layar tawaran (tanpa panel dialog terpisah)
 	_obrol(npc, npc.nama, w["keinginan"])
@@ -662,7 +662,7 @@ func _pungut(_p: Pemain, benda: Node3D, jenis_benda: String) -> void:
 		_salah_laut += 1
 		kamera.guncang(0.3)
 		_obrol(pemain, "Nggohak", DataLabuanBajo.teks(jenis_benda))
-		Nyawa.kurangi(DataLabuanBajo.teks(jenis_benda))
+		Nyawa.kurangi(DataLabuanBajo.teks(jenis_benda), true)
 		return
 	AudioManager.putar_sfx("ambil")
 	Efek.kilau(self, benda.global_position + Vector3(0, 0.3, 0))
@@ -887,7 +887,7 @@ func _perbarui_batu(delta: float, p: Vector3) -> void:
 				var tw := create_tween()
 				tw.tween_property(mi, "position:y", atas.y - 4.0, 0.6).set_ease(Tween.EASE_IN)
 				tw.tween_callback(mi.hide)
-				Nyawa.kurangi(DataLabuanBajo.teks("batu_goyah"))
+				Nyawa.kurangi(DataLabuanBajo.teks("batu_goyah"), true)
 				_toast(DataLabuanBajo.teks("batu_goyah"))
 
 

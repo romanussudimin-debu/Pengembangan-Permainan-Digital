@@ -30,6 +30,11 @@ var players: Array[Node3D] = []
 var enemies: Array[Node3D] = []
 var respawn_points: Dictionary = {}  ## pemain -> Vector3 (checkpoint terakhir; ditulis Checkpoint/gelombang)
 var _stats: Dictionary = {}  ## peer id -> CombatStats (progres per level cerita)
+## Koin yang diperoleh pemain Solo (peer 1) di sesi level ini, 0 bila belum ada progres (dibaca Analitik).
+var solo_coins_earned: int:
+	get:
+		var st: CombatStats = _stats.get(1)
+		return st.coins_earned if st else 0
 var _session_level: int = -1
 var _enemy_seq: int = 0
 var shop_available: bool = false  ## true saat jeda antar-gelombang (Lapak Songke boleh dibuka)

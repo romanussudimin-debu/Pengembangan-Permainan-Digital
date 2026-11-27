@@ -5,6 +5,8 @@ enum State { MENU, BERMAIN, DIALOG, JEDA, MINIGAME, SELESAI }
 
 signal state_berubah(lama: int, baru: int)
 signal progres_berubah
+signal level_dimulai(n: int)  ## didengar Analitik (mulai hitung durasi) & Nyawa (reset penghitung)
+signal level_selesai(data: Dictionary)  ## didengar Analitik (event level_completed)
 
 ## Transisi yang diizinkan. Transisi lain ditolak agar state game selalu konsisten.
 const TRANSISI_SAH: Dictionary = {
@@ -101,6 +103,7 @@ func reset_progres() -> void:
 ## (atau ke ending bila level berikutnya belum ada).
 ## Layar "Level N berhasil" ditampilkan dulu; pemain sendiri yang menekan tombol lanjut.
 func selesaikan_level(n: int) -> void:
+	var data_selesai: Dictionary = _data_level_selesai(n)  # dibaca sebelum progres/rekor diperbarui
 	tujuan_khusus = ""
 	kartu_awal_level.assign(kartu_terkumpul)
 	level_baru_selesai = n
@@ -114,7 +117,23 @@ func selesaikan_level(n: int) -> void:
 		level = n + 1
 		level_tertinggi = maxi(level_tertinggi, level)
 	simpan()
+	level_selesai.emit(data_selesai)
 	Transisi.pindah_scene(ADEGAN_LEVEL_SELESAI)
+
+
+## Data level cerita yang baru tamat untuk event analitik level_completed (mode Solo).
+func _data_level_selesai(n: int) -> Dictionary:
+	var kartu_baru: Array[String] = []
+	for id: String in kartu_terkumpul:
+		if not kartu_awal_level.has(id):
+			kartu_baru.append(id)
+	return {
+		"level_id": n, "nama_level": str(NAMA_LEVEL.get(n, "")), "mode": "solo",
+		"nyawa_tersisa": Nyawa.sisa, "nyawa_maks": Nyawa.maks(),
+		"salah_pengecoh": Nyawa.pengecoh_di_level, "tantangan_diulang": Nyawa.diulang_di_level,
+		"kartu_didapat": kartu_baru, "koin_didapat": CombatManager.solo_coins_earned,
+		"pertama_kali": not Prestasi.bintang_terbaik.has(n),
+	}
 
 
 ## Dipanggil saat pemain mulai memainkan level `n` (dari menu atau layar antar-level).
@@ -126,6 +145,7 @@ func mulai_level(n: int) -> void:
 	Analitik.catat("level_mulai")
 	Nyawa.isi_penuh()
 	tujuan_khusus = ""
+	level_dimulai.emit(n)
 	Transisi.pindah_scene(ADEGAN_LEVEL[n])
 
 
@@ -147,6 +167,7 @@ func lanjutkan() -> void:
 	Prestasi.mulai_level()
 	Nyawa.isi_penuh()
 	progres_berubah.emit()
+	level_dimulai.emit(level)
 	Transisi.pindah_scene(ADEGAN_LEVEL[level])
 
 

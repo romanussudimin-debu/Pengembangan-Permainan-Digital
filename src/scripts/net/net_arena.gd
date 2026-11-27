@@ -9,6 +9,7 @@ const PEMAIN: PackedScene = preload("res://scenes/pemain.tscn")
 const RULES: PvpRules = preload("res://data/combat/pvp_rules.tres")
 const SNAP_INTERVAL: float = 0.05
 const INPUT_INTERVAL: float = 1.0 / 30.0
+const LEVEL_ARENA: Dictionary = {"wae_rebo": 1, "lingko": 2, "labuan_bajo": 3}  ## arena PvP -> level_id analitik
 
 var mode: String = "coop"
 var option: Dictionary = {}
@@ -18,6 +19,8 @@ var kamera: KameraIkut
 var scores: Dictionary = {}  ## nama node pemain -> eliminasi (PvP)
 var time_left: float = 0.0
 var ended: bool = false
+var _analitik_tercatat: bool = false  ## level_completed dicatat tepat sekali per perangkat
+var _level_id: int = 1
 var _snap_t: float = 0.0
 var _input_t: float = 0.0
 var _waves: WaveManager
@@ -34,6 +37,7 @@ func _ready() -> void:
 	var theme: String = ArenaBuilder.theme_for_level(level) if mode == "coop" else str(option.get("arena", "wae_rebo"))
 	ArenaBuilder.build(self, theme)
 	GameState.level = level if mode == "coop" else 0
+	_level_id = level if mode == "coop" else int(LEVEL_ARENA.get(theme, 1))
 	CombatManager.reset_session()
 	CombatManager.pvp = mode == "pvp"
 	CombatManager.respawn_override = RULES.respawn_time if mode == "pvp" else 0.0
@@ -54,6 +58,7 @@ func _ready() -> void:
 		else:
 			_run_coop(level)
 	AudioManager.putar_musik("caci" if mode == "pvp" else "kampung")
+	GameState.level_dimulai.emit(_level_id)
 
 
 func _exit_tree() -> void:
@@ -453,7 +458,20 @@ func _rpc_game_over(title: String, subtitle: String, board: Array) -> void:
 	ended = true
 	CombatManager.set_active(false)
 	AudioManager.putar_sfx("gong")
+	_catat_analitik()
 	_show_end(title, subtitle, board)
+
+
+## Tiap peer mencatat di perangkatnya sendiri (host lewat panggilan lokal, klien lewat RPC call_remote),
+## dijaga agar tepat sekali. Nyawa, kartu, dan pengecoh tidak berlaku di arena LAN (0 / []).
+func _catat_analitik() -> void:
+	if _analitik_tercatat:
+		return
+	_analitik_tercatat = true
+	GameState.level_selesai.emit({
+		"level_id": _level_id, "nama_level": str(GameState.NAMA_LEVEL.get(_level_id, "")), "mode": mode,
+		"koin_didapat": CombatManager.stats_for(local_player).coins_earned if is_instance_valid(local_player) else 0,
+	})
 
 
 # ------------------------------------------------------------------ UI arena

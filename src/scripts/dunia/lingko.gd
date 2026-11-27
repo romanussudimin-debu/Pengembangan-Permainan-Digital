@@ -506,7 +506,7 @@ func _bicara_pengecoh(npc: NpcKampung) -> void:
 		# Salah orang: -1 nyawa (sekali per pengecoh); Mode Sulit juga mengurangi waktu
 		if GameState.mode_sulit:
 			_tampilkan_denda(DENDA_SALAH_ORANG)
-		Nyawa.kurangi("salah orang (pengecoh)")
+		Nyawa.kurangi("salah orang (pengecoh)", true)
 
 
 # ------------------------------------------------------------------ reke lodok
@@ -756,7 +756,7 @@ func _runtuhkan(r: Dictionary) -> void:
 		_sudah_tahu_rapuh = true
 		_obrol(pemain, "Nggohak", _dialog()["batu_goyah" if batu else "rapuh"])
 	if batu:
-		Nyawa.kurangi("tertipu batu goyah")
+		Nyawa.kurangi("tertipu batu goyah", true)
 	var tw := create_tween().set_parallel()
 	for i in nodes.size():
 		tw.tween_property(nodes[i], "position:y", (asal[i] as Vector3).y - 3.0, 0.5).set_ease(Tween.EASE_IN)

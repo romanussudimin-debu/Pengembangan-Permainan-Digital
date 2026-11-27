@@ -470,7 +470,7 @@ func _beri_kopi(tamu: NpcKampung) -> void:
 		return
 	if not tamu.get_meta("benar"):
 		DialogManager.gelembung(tamu, [str(DATA_RANTAI.data["antar"]["salah_tamu"])], "Tamu", 3.9)
-		Nyawa.kurangi("salah tamu")
+		Nyawa.kurangi("salah tamu", true)
 		return
 	_antar_aktif = false
 	pemain.model.atur_nampan(false)
@@ -533,7 +533,7 @@ func _ambil_benang(_p: Pemain, g: Node3D, asli: bool) -> void:
 	g.queue_free()
 	if not asli:
 		DialogManager.gelembung(pemain, [str(teks["palsu"])], "Nggohak", 3.6)
-		Nyawa.kurangi("mengambil benang palsu")
+		Nyawa.kurangi("mengambil benang palsu", true)
 		return
 	_benang_terkumpul += 1
 	Efek.kilau(self, g.global_position + Vector3(0, 0.4, 0))

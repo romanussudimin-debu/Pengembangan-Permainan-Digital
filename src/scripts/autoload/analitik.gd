@@ -7,6 +7,8 @@ extends Node
 ## Ekspor tersembunyi: ketuk logo menu utama 5x -> Salin CSV / Salin JSON / Simpan CSV.
 ## EVENT level_completed (skema v2, lihat docs/event-tracking.md): satu event per level tamat
 ## (GameState.selesaikan_level), disimpan terpisah di user://analitik/event_log.json.
+## EVENT daily_login (skema v1): satu event per hari kalender saat game dibuka, dengan hari berturut-turut
+## (streak) dan total hari bermain. Status login disimpan di user://analitik/login.cfg.
 
 const BERKAS: String = "user://analitik.json"
 const MAKS_KEJADIAN: int = 3000
@@ -14,11 +16,14 @@ const FOLDER_EVENT: String = "user://analitik"
 const BERKAS_EVENT: String = "user://analitik/event_log.json"
 const MAKS_EVENT: int = 500
 const VERSI_SKEMA: int = 2  ## v2: tanpa field mode & koin_didapat (mode LAN dan tempur dihapus)
+const VERSI_SKEMA_LOGIN: int = 1
+const BERKAS_LOGIN: String = "user://analitik/login.cfg"
+const JENIS_EVENT: Array[String] = ["level_completed", "daily_login"]
 const MAKS_LANGKAH_DETIK: float = 0.5  ## jeda antar-frame lebih lama (tab disembunyikan, macet) tidak dihitung penuh
 
 var kejadian: Array = []
 var sesi: int = 0
-var event_log: Array = []  ## event level_completed (maks. MAKS_EVENT terakhir)
+var event_log: Array = []  ## event level_completed & daily_login (maks. MAKS_EVENT terakhir)
 var _mulai_ms: int = 0
 var _detik_level: float = 0.0  ## durasi level aktif tanpa waktu jeda
 var _level_berjalan: bool = false
@@ -42,6 +47,7 @@ func _ready() -> void:
 	_tik_terakhir = Time.get_ticks_usec()
 	_muat_event_log()
 	print("[Analitik] ringkasan_level %s" % JSON.stringify(ringkasan_level()))
+	catat_login_harian()
 
 
 ## Menghitung durasi level aktif. Selama pohon scene dijeda (Menu Jeda, panel "Nyawa habis")
@@ -75,7 +81,8 @@ func catat(jenis: String, data: Dictionary = {}) -> void:
 
 
 ## Event level_completed. `data` berisi level_id, nama_level, nyawa_tersisa, nyawa_maks, salah_pengecoh,
-## tantangan_diulang, kartu_didapat, pertama_kali (opsional; bila tidak ada dihitung dari log). Waktu, durasi, kesulitan, dan versi skema diisi di sini. Tanpa data pribadi.
+## tantangan_diulang, kartu_didapat, pertama_kali (opsional; bila tidak ada dihitung dari log).
+## Waktu, durasi, kesulitan, dan versi skema diisi di sini. Tanpa data pribadi.
 func catat_level_selesai(data: Dictionary) -> void:
 	var level_id: int = int(data.get("level_id", GameState.level))
 	var ev: Dictionary = {
@@ -108,6 +115,8 @@ func catat_level_selesai(data: Dictionary) -> void:
 func ringkasan_level() -> Dictionary:
 	var hasil: Dictionary = {}
 	for ev: Dictionary in event_log:
+		if ev.get("event", "") != "level_completed":
+			continue
 		var id: int = int(ev.get("level_id", 0))
 		var r: Dictionary = hasil.get(id, {"selesai": 0, "total": 0.0})
 		r["selesai"] = int(r["selesai"]) + 1
@@ -121,9 +130,58 @@ func ringkasan_level() -> Dictionary:
 
 func _pernah_selesai(level_id: int) -> bool:
 	for ev: Dictionary in event_log:
-		if int(ev.get("level_id", 0)) == level_id:
+		if ev.get("event", "") == "level_completed" and int(ev.get("level_id", 0)) == level_id:
 			return true
 	return false
+
+
+## Event daily_login: dicatat sekali per hari kalender (tanggal lokal perangkat) saat game dibuka.
+## Membuka game lagi di hari yang sama tidak menambah event. `tanggal` (YYYY-MM-DD) hanya diisi saat pengujian.
+func catat_login_harian(tanggal: String = "") -> void:
+	if tanggal == "":
+		tanggal = Time.get_date_string_from_system()
+	var cfg := ConfigFile.new()
+	cfg.load(BERKAS_LOGIN)  # berkas belum ada/rusak = login pertama
+	var terakhir: String = str(cfg.get_value("login", "tanggal_terakhir", ""))
+	if terakhir == tanggal:
+		return
+	var jeda: int = _selisih_hari(terakhir, tanggal) if terakhir != "" else 0
+	if jeda < 0:
+		return  # jam perangkat mundur: tidak dihitung sebagai hari baru (mencegah login ganda)
+	var berturut: int = int(cfg.get_value("login", "hari_berturut", 0)) + 1 if jeda == 1 else 1
+	var total: int = int(cfg.get_value("login", "total_hari", 0)) + 1
+	var terbaik: int = maxi(int(cfg.get_value("login", "hari_berturut_terbaik", 0)), berturut)
+	cfg.set_value("login", "tanggal_terakhir", tanggal)
+	cfg.set_value("login", "hari_berturut", berturut)
+	cfg.set_value("login", "hari_berturut_terbaik", terbaik)
+	cfg.set_value("login", "total_hari", total)
+	DirAccess.make_dir_recursive_absolute(FOLDER_EVENT)
+	cfg.save(BERKAS_LOGIN)
+	var ev: Dictionary = {
+		"event": "daily_login",
+		"versi_skema": VERSI_SKEMA_LOGIN,
+		"tanggal": tanggal,
+		"waktu": Time.get_datetime_string_from_system(),
+		"hari_berturut": berturut,
+		"hari_berturut_terbaik": terbaik,
+		"total_hari": total,
+		"jeda_hari": jeda,
+		"login_pertama": terakhir == "",
+		"platform": OS.get_name(),
+	}
+	event_log.append(ev)
+	if event_log.size() > MAKS_EVENT:
+		event_log = event_log.slice(event_log.size() - MAKS_EVENT)
+	_simpan_event_log()
+	print("[Analitik] daily_login tanggal=%s hari_berturut=%d total_hari=%d jeda_hari=%d login_pertama=%s" % [
+		tanggal, berturut, total, jeda, ev["login_pertama"]])
+
+
+## Selisih hari kalender antara dua tanggal YYYY-MM-DD (negatif bila tanggal `ke` lebih awal).
+static func _selisih_hari(dari: String, ke: String) -> int:
+	var a: int = Time.get_unix_time_from_datetime_string(dari + "T00:00:00")
+	var b: int = Time.get_unix_time_from_datetime_string(ke + "T00:00:00")
+	return roundi((b - a) / 86400.0)
 
 
 ## Tulis aman: isi ke berkas .tmp dulu, lalu diganti nama menjadi event_log.json.
@@ -151,7 +209,7 @@ func _muat_event_log() -> void:
 	if json.parse(FileAccess.get_file_as_string(BERKAS_EVENT)) != OK or not json.data is Array:
 		return
 	for ev: Variant in json.data:
-		if ev is Dictionary and (ev as Dictionary).get("event", "") == "level_completed":
+		if ev is Dictionary and str((ev as Dictionary).get("event", "")) in JENIS_EVENT:
 			event_log.append(ev)
 	if event_log.size() > MAKS_EVENT:
 		event_log = event_log.slice(event_log.size() - MAKS_EVENT)

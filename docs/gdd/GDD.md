@@ -158,7 +158,7 @@ Low-poly prosedural dari mesh primitif Godot; tekstur pixel 64×64 buatan sendir
 | Secondary action | Napas saat idle, ayunan lengan, penari Penti, ekor anjing bergoyang, ayam mematuk |
 
 ## 11. Analitik (event tracking)
-Event `level_completed` dicatat lokal ke `user://analitik/event_log.json` (tanpa internet dan tanpa data pribadi). Rincian field ada di `docs/event-tracking.md`.
+Dua event dicatat lokal ke `user://analitik/event_log.json` (tanpa internet dan tanpa data pribadi): `level_completed` (setiap level tamat) dan `daily_login` (sekali per hari saat game dibuka, dengan hari berturut-turut dan total hari bermain). Rincian field ada di `docs/event-tracking.md`.
 
 ## 12. Arsitektur Teknis
 ```

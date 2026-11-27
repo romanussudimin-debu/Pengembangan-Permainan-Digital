@@ -102,7 +102,7 @@ func raih(id: String) -> void:
 			_tampilkan_popup(str(p["nama"]))
 
 
-## Penanda bertahap (mis. dua pulau Sahabat Laut). Mengembalikan true bila semua `ids` sudah ditandai.
+## Penanda bertahap (pencapaian yang butuh beberapa syarat). Mengembalikan true bila semua `ids` sudah ditandai.
 func tandai(id: String, ids: Array) -> bool:
 	_tanda[id] = true
 	_simpan()

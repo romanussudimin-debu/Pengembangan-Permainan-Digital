@@ -35,7 +35,7 @@ tetap dicatat seperti sebelumnya.
 | `durasi_detik` | float | `245.3` | Lama bermain level tanpa waktu jeda (1 desimal) |
 | `nyawa_tersisa` | int | `3` | Sisa nyawa saat tamat |
 | `nyawa_maks` | int | `5` | Nyawa maksimum (Normal 5, Sulit 3) |
-| `salah_pengecoh` | int | `2` | Salah memilih pengecoh (batu goyah, bukan pembeli, kerang/bintang laut) |
+| `salah_pengecoh` | int | `2` | Salah memilih pengecoh (batu goyah, bukan pembeli) |
 | `tantangan_diulang` | int | `1` | Tantangan yang diulang karena nyawa habis |
 | `kartu_didapat` | Array | `["compang", "mbaru_niang"]` | ID kartu budaya baru di level ini |
 | `pertama_kali` | bool | `true` | `true` bila level ini baru pertama kali ditamatkan |

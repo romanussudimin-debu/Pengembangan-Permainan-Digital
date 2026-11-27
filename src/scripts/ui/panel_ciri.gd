@@ -1,7 +1,7 @@
 class_name PanelCiri
 extends Control
 ## Panel kanan Level 3: ciri calon pembeli (warna topi & baju) - kotak dicentang saat terjual,
-## dicoret bila wisatawan pergi - dan jumlah sampah plastik yang wajib dipungut.
+## dicoret bila wisatawan pergi.
 
 const NAMA_WARNA: Dictionary = {
 	"f1ede4": "putih", "e8e2d2": "putih", "e8b430": "kuning", "e07b39": "oranye", "b02a2a": "merah",
@@ -9,12 +9,12 @@ const NAMA_WARNA: Dictionary = {
 	"c9a45c": "cokelat muda",
 }
 
-var pulau: Node  ## skrip pulau.gd (sumber data pembeli & sampah)
+var pulau: Node  ## skrip pulau.gd (sumber data pembeli)
 
 
 func _ready() -> void:
 	position = Vector2(456, 80)
-	size = Vector2(176, 24 + pulau._pembeli.size() * 14 + (14 if pulau._sampah_wajib > 0 else 0))
+	size = Vector2(176, 24 + pulau._pembeli.size() * 14)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 
@@ -50,8 +50,3 @@ func _draw() -> void:
 		c.draw_string(huruf, Vector2(22, y), ciri(w), HORIZONTAL_ALIGNMENT_LEFT, -1, 9, warna)
 		if st == "pergi":
 			c.draw_line(Vector2(22, y - 3), Vector2(168, y - 3), Gaya.ABU, 1.0)
-	if pulau._sampah_wajib > 0:
-		var y2: float = 28.0 + pulau._pembeli.size() * 14.0
-		var warna2: Color = Color("6ad07a") if pulau._sampah_dipungut >= pulau._sampah_wajib else Color("8fd0e8")
-		var teks_sampah: String = "Sampah plastik: %d/%d" % [pulau._sampah_dipungut, pulau._sampah_wajib]
-		c.draw_string(huruf, Vector2(8, y2), teks_sampah, HORIZONTAL_ALIGNMENT_LEFT, -1, 9, warna2)

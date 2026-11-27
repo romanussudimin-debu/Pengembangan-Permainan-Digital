@@ -95,7 +95,6 @@
 		"haus": "Panas sekali... aku harus minum di pos.",
 		"minum": "Segarnya! Tenagaku pulih lagi.",
 		"pos_kosong": "Botol di pos ini sudah habis. Hemat tenaga!",
-		"sampah": "Sampah plastik kubawa ke kapal.",
 		"tanya_pulang": "Kembali ke kapal dan ke peta perjalanan?",
 		"arus": "Arusnya kuat! Aku harus berenang melawan arus.",
 		"ciri_judul": "Calon pembeli",
@@ -107,14 +106,10 @@
 		"bukan_pembeli": "Terima kasih, aku tidak sedang mencari oleh-oleh.",
 		"bukan_pembeli_nyawa": "Menawarkan kepada yang bukan pembeli",
 		"ngobrol_pembeli": "Aku sedang mencari oleh-oleh. Ada yang cocok?",
-		"sampah_wajib": "Pungut %d sampah plastik di pulau ini.",
-		"kerang": "Kerang itu rumah makhluk laut. Biarkan di tempatnya.",
-		"bintang": "Bintang laut itu hidup! Jangan diambil.",
 		"penyu": "Jangan menyentuh penyu! Beri jarak, ya.",
 		"ikan": "Ikan-ikan kaget. Jangan mengejar atau menyentuh satwa laut.",
 		"batu_goyah": "Batunya goyah! Pilih batu yang kokoh.",
-		"kehabisan_tenaga": "Tenagaku habis... aku kembali ke pos minum terakhir.",
-		"belum_sampah": "Sampahnya belum terkumpul semua."
+		"kehabisan_tenaga": "Tenagaku habis... aku kembali ke pos minum terakhir."
 	},
 	"pulau": [
 		{
@@ -561,33 +556,6 @@
 					3
 				]
 			],
-			"sampah": [
-				[
-					6,
-					0.15,
-					-5
-				],
-				[
-					-8,
-					0.15,
-					-11
-				],
-				[
-					3,
-					0.15,
-					-18
-				],
-				[
-					-6,
-					-0.4,
-					4
-				],
-				[
-					7,
-					-0.4,
-					3
-				]
-			],
 			"wisatawan": [
 				{
 					"nama": "Chloe",
@@ -724,40 +692,6 @@
 						"Pasir merah muda itu jangan dibawa pulang, Kraeng. Biarkan tetap di pantai."
 					],
 					"lokal": true
-				}
-			],
-			"laut_pengecoh": [
-				{
-					"jenis": "kerang",
-					"pos": [
-						-3,
-						0.15,
-						-14
-					]
-				},
-				{
-					"jenis": "bintang",
-					"pos": [
-						9,
-						0.15,
-						-12
-					]
-				},
-				{
-					"jenis": "kerang",
-					"pos": [
-						2,
-						-0.5,
-						6
-					]
-				},
-				{
-					"jenis": "bintang",
-					"pos": [
-						-11,
-						-0.5,
-						1
-					]
 				}
 			],
 			"penyu": [

@@ -370,7 +370,7 @@ LEVEL 2 – LINGKO LODOK
 Temui Tu'a Teno di lodok, susuri pematang yang sempit (jatuh = kembali ke titik aman), alirkan air dari wae teku, lalu naik ke bukit batu untuk memandang lingko dari atas.
 
 LEVEL 3 – SONGKE KE LABUAN BAJO
-Ikut kapal ke 3 destinasi: Pelabuhan Labuan Bajo, Pulau Padar (jaga tenaga, minum di pos, awas batu goyah), dan Pink Beach (pungut sampah, jangan ambil kerang/bintang laut, jangan injak karang). Di tiap destinasi, jual kain songke atau foto budaya kepada 3 wisatawan: pilih barang yang cocok, lalu ceritakan maknanya.
+Ikut kapal ke 3 destinasi: Pelabuhan Labuan Bajo, Pulau Padar (jaga tenaga, minum di pos, awas batu goyah), dan Pink Beach (jangan injak karang, jangan ganggu penyu dan ikan). Di tiap destinasi, jual kain songke atau foto budaya kepada 3 wisatawan: pilih barang yang cocok, lalu ceritakan maknanya.
 
 MODE SULIT: 3 nyawa (Normal 5), batas waktu "sebelum senja", dan jatuh mengurangi waktu.
 

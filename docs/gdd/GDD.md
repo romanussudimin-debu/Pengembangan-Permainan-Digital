@@ -59,9 +59,9 @@ Isi kartu budaya menjadi bekal untuk menjawab teka-teki dan pertanyaan wisatawan
 
 ### 4.2 Nyawa, pengecoh, dan umpan balik
 - **Nyawa:** 5 (Normal) / 3 (Sulit), diisi penuh saat level atau destinasi Level 3 dimulai. −1 saat salah jawab, salah memilih pengecoh, jatuh, atau gagal tantangan (suara gagal, layar berkedip merah, kamera bergetar). Nyawa habis = **hanya tantangan yang sedang dimainkan yang diulang**. Penambah nyawa bertema budaya: kopi (L1), kelapa muda (L3).
-- **Pengecoh yang adil:** batu retak dan jalan buntu (pendakian), pematang rapuh & batu goyah (lingko), bukan pembeli, kerang/bintang laut, dan batu goyah (Labuan Bajo). Semuanya bisa dibedakan bila pemain teliti.
+- **Pengecoh yang adil:** batu retak dan jalan buntu (pendakian), pematang rapuh & batu goyah (lingko), bukan pembeli dan batu goyah (Labuan Bajo). Semuanya bisa dibedakan bila pemain teliti.
 - **Game feel:** percikan air/lumpur, debu mendarat, kilau emas, teks melayang ("−1", "+1", "Terjual!").
-- **Bintang & pencapaian:** tiap tantangan ★1–3 dari nyawa yang hilang; 3 pencapaian: *Mata Elang* (tamat satu level tanpa kehilangan nyawa), *Sahabat Laut* (sampah Pink Beach tanpa mengganggu biota), *Penjual Andal* (satu destinasi tanpa salah barang/cerita).
+- **Bintang & pencapaian:** tiap tantangan ★1–3 dari nyawa yang hilang; 2 pencapaian: *Mata Elang* (tamat satu level tanpa kehilangan nyawa), *Penjual Andal* (satu destinasi tanpa salah barang/cerita).
 
 ### 4.3 Level 1 — Kampung Wae Rebo (data: `src/data/rantai_teka_teki.json`)
 | # | Bagian | Tantangan | Kartu |
@@ -88,9 +88,9 @@ Warga menitipkan **songke tenunan penenun kampung** dan **foto budaya** (dari ka
 |---|---|---|---|
 | 1 | Pelabuhan Labuan Bajo | Tutorial menjual | Labuan Bajo |
 | 2 | Pulau Padar | Mendaki 3 pos; **tenaga** berkurang saat berjalan, minum di pos; jalan pintas dengan **batu goyah** | Pulau Padar |
-| 3 | Pink Beach | Pantai + air dangkal; jangan injak karang; **wajib pungut 5 sampah**; kerang & bintang laut jangan diambil, penyu jangan disentuh | Pink Beach |
+| 3 | Pink Beach | Pantai + air dangkal; jangan injak karang; penyu dan kawanan ikan jangan diganggu (−1 nyawa, kembali ke titik aman) | Pink Beach |
 
-**Pesan wisata bertanggung jawab:** jaga jarak dari satwa, jangan menginjak karang, bawa pulang sampah, hargai karya penenun dengan harga yang adil. Setelah ketiga destinasi tuntas → **Pulang ke Wae Rebo** → ending Penti.
+**Pesan wisata bertanggung jawab:** jaga jarak dari satwa, jangan menginjak karang, hargai karya penenun dengan harga yang adil. Setelah ketiga destinasi tuntas → **Pulang ke Wae Rebo** → ending Penti.
 
 ### 4.6 Kesulitan
 | | Normal | Sulit |
@@ -106,7 +106,7 @@ Warga menitipkan **songke tenunan penenun kampung** dan **foto budaya** (dari ka
 |---|---|---|
 | Level 1 | Pendakian + teka-teki Tu'a Golo + menenun songke | 4–6 menit |
 | Level 2 | Pematang + saluran air + bukit | 3–4 menit |
-| Level 3 | 3 destinasi × 3 penjualan (+ tenaga Padar, sampah Pink Beach) | 5–7 menit |
+| Level 3 | 3 destinasi × 3 penjualan (+ tenaga Padar, karang & satwa Pink Beach) | 5–7 menit |
 | **Total** | termasuk ending Penti | **±12–18 menit** |
 
 ## 5. Kontrol

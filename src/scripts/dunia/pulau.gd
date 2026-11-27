@@ -4,8 +4,7 @@ extends Node3D
 ## Target 3 pembeli per pulau. Mekanik khas tiap destinasi (kesulitan naik berurutan):
 ##   pelabuhan - tutorial menjual
 ##   padar     - mendaki 3 pos; tenaga berkurang saat berjalan, minum di pos
-##   pink      - pantai & air dangkal; jangan menginjak karang; WAJIB pungut 5 sampah (pengecoh: kerang,
-##               bintang laut tidak boleh diambil; penyu tidak boleh disentuh)
+##   pink      - pantai & air dangkal; jangan menginjak karang; penyu dan kawanan ikan jangan diganggu
 ## Semua wisatawan bisa diajak ngobrol; ciri calon pembeli tampil di panel kanan.
 ## Menawarkan songke kepada yang bukan pembeli = -1 nyawa.
 ## Mode Sulit: batas waktu per pulau, salah cerita = wisatawan pergi, tenaga lebih cepat habis,
@@ -18,7 +17,6 @@ const Y_TENGGELAM: float = -1.0
 const DENDA_JATUH: float = 10.0
 const KECEPATAN_DARAT: float = 5.0
 const KECEPATAN_AIR: float = 2.8
-const TARGET_SAMPAH: int = 5
 const JARAK_SENTUH_PENYU: float = 1.1
 ## Penambah nyawa (kelapa muda): jenis pulau -> posisi.
 const POS_KELAPA: Dictionary = {"padar": Vector3(3.5, 2.2, 10.0), "pink": Vector3(-7.0, 0.15, -3.0)}
@@ -51,10 +49,7 @@ var _karang: Array[Vector3] = []
 var _stamina: float = 100.0
 var _pos_air_dipakai: Array[bool] = []
 var _sudah_haus: bool = false
-var _sampah_wajib: int = 0  ## 0 = pulau tanpa syarat sampah
-var _sampah_dipungut: int = 0
 var _salah_jual: int = 0  ## salah barang/cerita di pulau ini (pencapaian "Penjual Andal")
-var _salah_laut: int = 0  ## mengambil pengecoh, menyentuh satwa, menginjak karang (untuk pencapaian "Sahabat Laut")
 var _penyu: Array[Penyu] = []
 var _ikan: Array[KawananIkan] = []
 var _jeda_ikan: float = 0.0
@@ -211,15 +206,6 @@ func _bangun_pink() -> void:
 
 
 func _bangun_laut() -> void:
-	var daftar_sampah: Array = data.get("sampah", [])
-	_sampah_wajib = mini(TARGET_SAMPAH, daftar_sampah.size())
-	for s: Array in daftar_sampah:
-		var n := DuniaPulau.sampah(self, _v3(s))
-		_jadikan_pungutan(n, "sampah")
-	for d: Dictionary in data.get("laut_pengecoh", []):
-		var jenis_benda: String = str(d["jenis"])
-		var n: Node3D = DuniaPulau.kerang(self, _v3(d["pos"])) if jenis_benda == "kerang" else DuniaPulau.bintang_laut(self, _v3(d["pos"]))
-		_jadikan_pungutan(n, jenis_benda)
 	for d: Dictionary in data.get("penyu", []):
 		var penyu := Penyu.new()
 		penyu.titik_a = _v3(d["a"])
@@ -231,14 +217,6 @@ func _bangun_laut() -> void:
 		ikan.position = _v3(d)
 		add_child(ikan)
 		_ikan.append(ikan)
-
-
-func _jadikan_pungutan(n: Node3D, jenis_benda: String) -> void:
-	var area := Interaktif.new()
-	area.teks_petunjuk = "Pungut"
-	area.jari_jari = 1.5
-	n.add_child(area)
-	area.diinteraksi.connect(_pungut.bind(n, jenis_benda))
 
 
 ## Batu pijakan jalan pintas Padar. Batu goyah: lebih gelap, miring, bergaris retak; runtuh 0,35 detik
@@ -371,7 +349,7 @@ func _hasil_jual(berhasil: bool, npc: NpcKampung, jual: JualSongke) -> void:
 		npc.area.ubah_petunjuk("Terima kasih")
 		_perbarui_tujuan()
 		if not _cek_tuntas():
-			_toast("Terjual %d/%d!" % [_terjual, _target()] if _terjual < _target() else DataLabuanBajo.teks("belum_sampah"))
+			_toast("Terjual %d/%d!" % [_terjual, _target()])
 		return
 	if not jual.pergi:
 		return  # dibatalkan pemain; wisatawan masih bisa ditawari lagi
@@ -413,9 +391,9 @@ func _baris(nama: String, isi: Variant) -> Array:
 	return baris
 
 
-## Pulau tuntas bila 3 pembeli DAN (di Pink Beach) 5 sampah sudah dipungut.
+## Pulau tuntas bila 3 pembeli sudah membeli.
 func _cek_tuntas() -> bool:
-	if _tuntas or _gagal or _terjual < _target() or _sampah_dipungut < _sampah_wajib:
+	if _tuntas or _gagal or _terjual < _target():
 		return false
 	_pulau_tuntas()
 	return true
@@ -424,8 +402,6 @@ func _cek_tuntas() -> bool:
 func _perbarui_tujuan() -> void:
 	var teks: String = "%s: jual kain/foto ke %d wisatawan (terjual %d/%d). Cocokkan ciri pembeli di panel kanan." % [
 		data["nama"], _target(), _terjual, _target()]
-	if _sampah_wajib > 0:
-		teks += " Pungut sampah plastik: %d/%d." % [_sampah_dipungut, _sampah_wajib]
 	GameState.atur_tujuan(teks)
 	if _panel_ciri:
 		_panel_ciri.queue_redraw()
@@ -442,8 +418,6 @@ func _pulau_tuntas() -> void:
 	_tuntas = true
 	if _salah_jual == 0:
 		Prestasi.raih("penjual_andal")
-	if _sampah_wajib > 0 and _salah_laut == 0 and Prestasi.tandai("laut_" + jenis, ["laut_pink"]):
-		Prestasi.raih("sahabat_laut")
 	_waktu_berjalan = false
 	AudioManager.putar_sfx("gong")
 	DialogManager.mulai_baris("pulau_tuntas", _baris("Nggohak", data["selesai"]), func() -> void:
@@ -488,23 +462,6 @@ func _minum(_p: Pemain, i: int) -> void:
 	_sudah_haus = false
 	AudioManager.putar_sfx("ambil")
 	_toast(DataLabuanBajo.teks("minum"))
-
-
-func _pungut(_p: Pemain, benda: Node3D, jenis_benda: String) -> void:
-	if jenis_benda != "sampah":
-		# Pengecoh: kerang & bintang laut adalah bagian ekosistem, tidak boleh diambil
-		_salah_laut += 1
-		kamera.guncang(0.3)
-		_obrol(pemain, "Nggohak", DataLabuanBajo.teks(jenis_benda))
-		Nyawa.kurangi(DataLabuanBajo.teks(jenis_benda), true)
-		return
-	AudioManager.putar_sfx("ambil")
-	Efek.kilau(self, benda.global_position + Vector3(0, 0.3, 0))
-	_sampah_dipungut += 1
-	_toast("%s (%d/%d)" % [DataLabuanBajo.teks("sampah"), _sampah_dipungut, _sampah_wajib])
-	benda.queue_free()
-	_perbarui_tujuan()
-	_cek_tuntas()
 
 
 ## Tantangan jelajah pulau: nyawa habis = kembali ke dermaga (penjualan yang sudah terjadi tetap).
@@ -555,7 +512,6 @@ func _physics_process(delta: float) -> void:
 		return
 	for k: Vector3 in _karang:
 		if Vector2(p.x - k.x, p.z - k.z).length() < 1.1 and p.y < k.y + 0.7:
-			_salah_laut += 1
 			_kembali_aman(DataLabuanBajo.teks("karang"), DENDA_JATUH)
 			return
 	if _cek_bahaya_baru(p):
@@ -637,14 +593,12 @@ func _perbarui_stamina(delta: float) -> void:
 func _cek_bahaya_baru(p: Vector3) -> bool:
 	for py: Penyu in _penyu:
 		if Vector2(p.x - py.position.x, p.z - py.position.z).length() < JARAK_SENTUH_PENYU and absf(p.y - py.position.y) < 1.2:
-			_salah_laut += 1
 			_obrol(pemain, "Nggohak", DataLabuanBajo.teks("penyu"))
 			_kembali_aman(DataLabuanBajo.teks("penyu"), DENDA_JATUH)
 			return true
 	for ik: KawananIkan in _ikan:
 		if _jeda_ikan <= 0.0 and Vector2(p.x - ik.position.x, p.z - ik.position.z).length() < 1.3:
 			_jeda_ikan = 3.0
-			_salah_laut += 1
 			ik.kaget()
 			AudioManager.putar_sfx("terkena", 0.1)
 			_obrol(pemain, "Nggohak", DataLabuanBajo.teks("ikan"))
